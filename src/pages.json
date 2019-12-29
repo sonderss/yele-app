@@ -1,6 +1,48 @@
 {
 	"pages": [
     {
+      "path": "pages/mine-info/index",
+      "style": {
+        "navigationBarTitleText": "个人信息"
+      }
+    },
+    {
+      "path": "pages/switch-stores/index",
+      "style": {
+        "navigationBarTitleText": "切换门店"
+      }
+    },
+    {
+      "path": "pages/apply-stores/index",
+      "style": {
+        "navigationBarTitleText": "申请加入其它门店",
+        "titleNView": {
+          "buttons": [
+            {
+              "text": "申请记录",
+              "fontSize": "28rpx",
+              "width": "130rpx"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "path": "pages/apply-log/index",
+      "style": {
+        "navigationBarTitleText": "申请记录",
+        "enablePullDownRefresh": true,
+        "onReachBottomDistance": 50,
+        "backgroundTextStyle": "dark"
+      }
+    },
+    {
+      "path": "pages/bind-mobile/index",
+      "style": {
+        "navigationBarTitleText": "绑定手机号码"
+      }
+    },
+    {
       "path": "pages/modify-mobile/index",
       "style": {
         "navigationBarTitleText": "修改手机号码"
@@ -10,12 +52,6 @@
       "path": "pages/index/index",
       "style": {
         "app-plus": {"titleNView": false}
-      }
-    },
-    {
-      "path": "pages/switch-stores/index",
-      "style": {
-        "navigationBarTitleText": "切换门店"
       }
     },
     {

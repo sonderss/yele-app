@@ -4,14 +4,14 @@
   >
     <view class="min-flex">
       <view v-if="img">
-        <min-avatar :url="img"></min-avatar>
+        <min-avatar :size="imgSize" :url="img"></min-avatar>
       </view>
       <view class="m-left-20">
         <view class="f30">{{title}}</view>
         <view class="label f24 assist-text min-ellipsis">{{label}}</view>
       </view>
     </view>
-    <view class="f28" v-if="tail">{{tail}}</view>
+    <view class="f28 tail" v-if="tail" :style="{color: tailColor}">{{tail}}</view>
     <slot name="tail"></slot>
     <image v-if="arrow" class="arrow" src="/static/images/arrow.png"></image>
   </view>
@@ -29,6 +29,10 @@ export default {
       type: String,
       default: ''
     },
+    imgSize: {
+      type: String,
+      default: 'xs'
+    },
     title: {
       type: String,
       default: ''
@@ -40,6 +44,10 @@ export default {
     tail: {
       type: String,
       default: ''
+    },
+    tailColor: {
+      type: String,
+      default: '#666666'
     },
     border: {
       type: Boolean,
@@ -63,6 +71,9 @@ export default {
 .cell-item {
   .label {
     width: 410rpx;
+  }
+  .tail{
+    float: right;
   }
   .arrow {
     width: 24rpx;

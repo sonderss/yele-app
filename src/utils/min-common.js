@@ -77,4 +77,8 @@ class MinCommon {
   }
 }
 
+MinCommon.install = function (Vue) {
+  Vue.prototype.$minCommon = MinCommon
+}
+
 export default MinCommon

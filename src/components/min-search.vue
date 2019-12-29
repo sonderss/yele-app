@@ -2,7 +2,7 @@
   <view>
     <view class="min-search min-flex">
       <image class="search-icon" src="/static/images/search.png"></image>
-      <input class="search min-flex-1" type="text" placeholder="请输入搜索内容"
+      <input class="search min-flex-1" type="text" :placeholder="placeholder"
         v-model="value"
         @focus="handleFocus"
         @blur="handleBlur"
@@ -16,7 +16,12 @@
 
 <script>
 export default {
-  name: '',
+  props: {
+    placeholder: {
+      default: '请输入搜索内容',
+      type: String
+    }
+  },
   data () {
     return {
       close: false,
@@ -42,7 +47,6 @@ export default {
 <style lang="scss" scoped>
 .min-search {
   position: relative;
-  margin: 0 30rpx;
   padding: 0 30rpx;
   background: #FFFFFF;
   height: 88rpx;

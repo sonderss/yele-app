@@ -4,7 +4,7 @@
 // ============================ 间距 ============================
 $name-list: margin padding;
 $short-name: m p;
-$gap: 16 20 30;
+$gap: 16 20 25 30 35;
 $type: top bottom left right lr tb;
 
 @each $prefix in $short-name {
