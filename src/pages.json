@@ -1,0 +1,49 @@
+{
+	"pages": [
+    {
+      "path": "pages/modify-mobile/index",
+      "style": {
+        "navigationBarTitleText": "修改手机号码"
+      }
+    },
+    {
+      "path": "pages/index/index",
+      "style": {
+        "app-plus": {"titleNView": false}
+      }
+    },
+    {
+      "path": "pages/switch-stores/index",
+      "style": {
+        "navigationBarTitleText": "切换门店"
+      }
+    },
+    {
+      "path": "pages/login/index",
+      "style": {
+        "app-plus": {"titleNView": false}
+      }
+    },
+    {
+			"path": "pages/home/index",
+			"style": {
+				"navigationBarTitleText": "home"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#030313",
+		"backgroundColor": "#F7F7F7"
+	},
+	"condition" : {
+		"current": 0, 
+		"list": [
+			{
+				"name": "",
+				"path": "",
+				"query": ""
+			}
+		]
+	}
+}
