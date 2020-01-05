@@ -7,7 +7,7 @@
         :title="item.title"
         :label="item.subtitle"
         :tail="item.tail"
-        :tailColor="status[item.status]"
+        :tailType="status[item.status]"
         :border="list.length !== index + 1"
       ></min-cell-item>
     </min-cell>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-const status = ['#39BA01', '#FF0000', '#333333']
+const status = ['green', 'red', 'black']
 
 export default {
   name: 'apply-log',

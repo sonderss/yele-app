@@ -6,14 +6,17 @@
       <view v-if="img">
         <min-avatar :size="imgSize" :url="img"></min-avatar>
       </view>
+      <slot name="icon"></slot>
       <view class="m-left-20">
         <view class="f30">{{title}}</view>
         <view class="label f24 assist-text min-ellipsis">{{label}}</view>
       </view>
     </view>
-    <view class="f28 tail" v-if="tail" :style="{color: tailColor}">{{tail}}</view>
-    <slot name="tail"></slot>
-    <image v-if="arrow" class="arrow" src="/static/images/arrow.png"></image>
+    <view class="min-flex flex-end">
+      <view class="f28 tail" v-if="tail" :class="[`tail-${tailType}`]">{{tail}}</view>
+      <slot name="tail"></slot>
+      <image v-if="arrow" class="arrow" src="/static/images/arrow.png"></image>
+    </view>
   </view>
 </template>
 
@@ -45,9 +48,9 @@ export default {
       type: String,
       default: ''
     },
-    tailColor: {
+    tailType: {
       type: String,
-      default: '#666666'
+      default: 'gray'
     },
     border: {
       type: Boolean,
@@ -73,11 +76,24 @@ export default {
     width: 410rpx;
   }
   .tail{
-    float: right;
+    padding-right: 18rpx;
+    &-gray {
+      color: #666;
+    }
+    &-black {
+      color: #333;
+    }
+    &-green {
+      color: #39BA01;
+    }
+    &-red {
+      color: #FF0000;
+    }
   }
   .arrow {
     width: 24rpx;
     height: 24rpx;
+    align-items: center;
   }
 }
 </style>

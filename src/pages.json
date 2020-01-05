@@ -1,9 +1,21 @@
 {
 	"pages": [
     {
+      "path": "pages/drawing-way/index",
+      "style": {
+        "navigationBarTitleText": "提现方式"
+      }
+    },
+    {
+      "path": "pages/verify-name/index",
+      "style": {
+        "navigationBarTitleText": "实名认证"
+      }
+    },
+    {
       "path": "pages/mine-info/index",
       "style": {
-        "navigationBarTitleText": "个人信息"
+        "navigationBarTitleText": "个人资料"
       }
     },
     {
