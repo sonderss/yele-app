@@ -73,7 +73,7 @@ export default {
 }
 .min-btn {
   position: relative;
-  margin: 0 30rpx;
+  /* margin: 0 30rpx; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -125,6 +125,9 @@ export default {
   }
   &-type-theme {
     @include btn-type(#FFE000, #333333, #aaaaaa)
+  }
+  &-type-white {
+    @include btn-type(#fff, #333333, #fff)
   }
   &-disabled {
     background-color: #CCCCCC;

@@ -8,6 +8,7 @@ import MinCache from './utils/min-cache'
 import MinCommon from './utils/min-common'
 import './style/index.scss'
 import './static/font/iconfont.css'
+import store from './store/index'
 
 // 常用的组件注册全局(编译器问题，只能在main.js全局注册)
 import MinAvatar from '@/components/min-avatar'
@@ -58,9 +59,11 @@ Vue.use(MinRequest)
 Vue.use(MinCache)
 Vue.use(MinCommon)
 
+Vue.prototype.$store = store
 const app = new Vue({
   ...App,
   minRouter,
-  minRequest
+  minRequest,
+  store
 })
 app.$mount()
