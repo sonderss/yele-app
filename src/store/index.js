@@ -31,7 +31,6 @@ modulesFiles.keys().forEach(modulePath => {
   if (moduleContent.cache === 'not') localStorage.push(moduleName)
   modules[moduleName] = moduleContent
 })
-
 export default new Vuex.Store({
   modules,
   plugins: [MinVuexCache({ localStorage })]

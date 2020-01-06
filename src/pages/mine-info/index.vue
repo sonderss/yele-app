@@ -43,8 +43,8 @@
         ></min-cell-item>
       </min-cell>
     </view>
-    <view class="m-top-30">
-      <min-btn>退出登录</min-btn>
+    <view class="m-top-30 p-lr-30">
+      <min-btn type="white">退出登录</min-btn>
     </view>
   </view>
 </template>

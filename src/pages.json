@@ -1,6 +1,30 @@
 {
 	"pages": [
     {
+      "path": "pages/reservation-date/index",
+      "style": {
+        "navigationBarTitleText": "预约日期"
+      }
+    },
+    {
+      "path": "pages/reservation-success/index",
+      "style": {
+        "navigationBarTitleText": "订台成功"
+      }
+    },
+    {
+      "path": "pages/submit-success/index",
+      "style": {
+        "navigationBarTitleText": "提交成功"
+      }
+    },
+    {
+      "path": "pages/open-success/index",
+      "style": {
+        "navigationBarTitleText": "开台成功"
+      }
+    },
+    {
       "path": "pages/drawing-way/index",
       "style": {
         "navigationBarTitleText": "提现方式"
