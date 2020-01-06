@@ -158,6 +158,6 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   float: right;
-  margin-left: 5rpx
+  margin-left: 5rpx;
 }
 </style>
