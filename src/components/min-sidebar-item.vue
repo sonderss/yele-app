@@ -1,10 +1,17 @@
 <template>
-  <view class="min-sidebar-item" :class="{'min-active': select}" @click="getValue">
+  <view class="min-sidebar-item" :class="{'min-active': select}" @click="changeVal">
     <view class="min-title">{{ title }}</view>
     <view class="min-label">{{ label }}</view>
   </view>
 </template>
 
+<!--
+*
+* name 与选项卡绑定值 value 对应的标识符
+* title 标题
+* label 副标题
+*
+*  -->
 <script>
 export default {
   props: {
@@ -32,7 +39,7 @@ export default {
     }
   },
   methods: {
-    getValue () {
+    changeVal () {
       this.$parent.changeValue(this.name)
     }
   }

@@ -1,12 +1,19 @@
 <template>
   <view class="min-checkbox">
-    <view class="icon" :class="{'active': value}" @click="checkbox">
+    <view class="icon" :class="{'active': isCheck}" @click="checkbox">
       <img v-show="value" src="/static/images/tick.png" alt="tick">
     </view>
-    <view class="text p-left-20">{{label}}</view>
+    <view class="text p-left-20">{{title}}</view>
   </view>
 </template>
 
+<!--
+*
+* value/v-model  绑定的值或匹配的值
+* title 标题
+* disabled 是否禁用
+*
+*  -->
 <script>
 export default {
   props: {
@@ -14,7 +21,7 @@ export default {
       type: [String, Number, Boolean],
       default: false
     },
-    label: {
+    title: {
       type: [String, Number],
       default: ''
     },
@@ -23,14 +30,27 @@ export default {
       default: false
     }
   },
+  computed: {
+    isCheck () {
+      if (typeof this.value === 'boolean') return this.value
+      const arr = this.$parent.value
+      const isInclude = arr.indexOf(this.value)
+      return isInclude > -1
+    }
+  },
   methods: {
     checkbox () {
       if (this.disabled) return
-      this.$emit('input', !this.value)
+      if (typeof this.value === 'boolean') {
+        this.$emit('input', !this.value)
+      } else {
+        const arr = this.$parent.value
+        const index = arr.indexOf(this.value)
+        this.isCheck ? arr.splice(index, 1) : arr.push(this.value)
+      }
     }
   }
 }
-
 </script>
 
 <style lang="scss" scoped>

@@ -20,7 +20,7 @@
 <!--
 *
 * 建议min和val一样！
-* value 绑定的value
+* value/v-model 绑定的值
 * max：最大值
 * min：最小值
 * step：步进值(支持整数和小数,因步骤计算失误会造成精度损失！)

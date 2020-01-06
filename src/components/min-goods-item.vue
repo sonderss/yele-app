@@ -1,29 +1,58 @@
 <template>
   <view style="background: #fff;">
     <view class="min-goods-item min-border-bottom p-tb-20 p-lr-30">
-      <image class="min-goods-icon" src="http://fuss10.elemecdn.com/d/b9/bcab0e8ad97758e65ae5a62b2664ejpeg.jpeg?imageView2/1/w/114/h/114"/>
+      <image class="min-goods-icon" :src="icon"/>
       <view class="min-goods-content">
         <view class="min-goods-name">{{name}}</view>
-        <view class="min-goods-price">￥999</view>
+        <view class="min-goods-price">￥{{price}}</view>
       </view>
       <view class="min-stepper-weap">
-        <min-stepper v-model="value"/>
+        <min-stepper v-model="count" @change="changeCount"/>
       </view>
     </view>
   </view>
 </template>
 
+<!--
+*
+* icon 图标链接
+* name 名称
+* price 价格
+* icon 图标链接
+* value/v-model 商品数量
+*
+*  -->
 <script>
 export default {
   props: {
+    icon: {
+      type: String,
+      default: ''
+    },
     name: {
       type: String,
-      default: '无商品'
+      default: ''
+    },
+    price: {
+      type: [String, Number],
+      default: 0
+    },
+    value: {
+      type: Number,
+      default: 0
     }
   },
   data () {
     return {
-      value: 0
+      count: 0
+    }
+  },
+  created () {
+    this.count = this.value
+  },
+  methods: {
+    changeCount (value) {
+      this.$emit('input', value)
     }
   }
 }

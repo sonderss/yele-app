@@ -4,6 +4,13 @@
 </view>
 </template>
 
+<!--
+*
+* value 选中项的索引值
+*
+* @change：切换菜单时触发
+*
+*  -->
 <script>
 export default {
   props: {

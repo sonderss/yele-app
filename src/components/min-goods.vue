@@ -1,15 +1,25 @@
 <template>
   <view class="min-goods">
-    <view class="min-title p-lr-30">商品分类一</view>
+    <view class="min-title p-lr-30">{{title}}</view>
     <view class="min-goods-container">
       <slot></slot>
     </view>
   </view>
 </template>
 
+<!--
+*
+* title 商品分类标题
+*
+*  -->
 <script>
 export default {
-
+  props: {
+    title: {
+      type: String,
+      default: ''
+    }
+  }
 }
 </script>
 

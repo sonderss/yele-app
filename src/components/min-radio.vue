@@ -1,22 +1,36 @@
 <template>
   <view class="min-checkbox">
-    <view class="icon" :class="{'active': value}" @click="checkbox">
+    <view class="icon" :class="{'active': String(value) === String(label)}" @click="change">
       <img v-show="value" src="/static/images/tick.png" alt="tick">
     </view>
-    <view class="text p-left-20">{{label}}</view>
+    <view class="text p-left-20">{{ title }}</view>
   </view>
 </template>
 
+<!--
+*
+* value/v-model 绑定值
+* title 标题
+* label 匹配的value
+* disabled 是否禁用
+*
+* @change：绑定值变化时触发的事件
+*
+*  -->
 <script>
 export default {
   props: {
     value: {
-      type: [String, Number, Boolean],
-      default: false
+      type: [String, Number],
+      required: true
+    },
+    title: {
+      type: [String, Number],
+      default: ''
     },
     label: {
       type: [String, Number],
-      default: ''
+      required: true
     },
     disabled: {
       type: Boolean,
@@ -24,9 +38,10 @@ export default {
     }
   },
   methods: {
-    checkbox () {
+    change () {
       if (this.disabled) return
-      this.$emit('input', !this.value)
+      this.$emit('input', this.label)
+      this.$emit('change', this.label)
     }
   }
 }

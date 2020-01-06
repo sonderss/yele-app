@@ -17,8 +17,9 @@
     </min-cell>
   </view> -->
 
-  <view class="wrap p-lr-20 p-top-30">
-    <min-checkbox v-model="checkbox" label="选项一"></min-checkbox>
+  <view>
+    <min-popup :show="checkbox" @close="checkbox = false"/>
+    <button @click="checkbox = !checkbox">显示</button>
   </view>
 </template>
 
@@ -28,10 +29,13 @@ export default {
   data () {
     return {
       activeKey: 0,
-      checkbox: false
+      checkbox: true,
+      count: 0,
+      checkboxList: []
     }
   },
   mounted () {
+    console.log(this.$cache)
   },
   methods: {
     changeSidebar (value) {

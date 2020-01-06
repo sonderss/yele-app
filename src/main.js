@@ -25,8 +25,10 @@ import MinSearchItem from '@/components/min-sidebar-item'
 import MinGoods from '@/components/min-goods'
 import MinGoodsItem from '@/components/min-goods-item'
 import MinCard from '@/components/min-card'
+import MinCheckboxGroup from '@/components/min-checkbox-group'
 import MinCheckbox from '@/components/min-checkbox'
 import MinRadio from '@/components/min-radio'
+import MinPopup from '@/components/min-popup'
 
 Vue.component('min-avatar', MinAvatar)
 Vue.component('min-btn', MinBtn)
@@ -43,8 +45,10 @@ Vue.component('min-sidebar-item', MinSearchItem)
 Vue.component('min-goods', MinGoods)
 Vue.component('min-goods-item', MinGoodsItem)
 Vue.component('min-card', MinCard)
+Vue.component('min-checkbox-group', MinCheckboxGroup)
 Vue.component('min-checkbox', MinCheckbox)
 Vue.component('min-radio', MinRadio)
+Vue.component('min-popup', MinPopup)
 
 Vue.config.productionTip = false
 App.mpType = 'app'
