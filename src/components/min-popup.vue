@@ -1,5 +1,5 @@
 <template>
-  <view class="min-popup" v-show="show" :class="[isShow ? 'min-show' : 'min-hide']">
+  <view class="min-popup" v-if="show" :class="[isShow ? 'min-show' : 'min-hide']">
     <view class="min-overlay" @click="close"></view>
     <view class="min-content">
       <slot/>

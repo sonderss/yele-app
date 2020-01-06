@@ -11,9 +11,9 @@
             <view class="f22 m-top-20">SINMBA  |  服务员</view>
           </view>
         </view>
-        <view>
+        <view class="min-flex min-flex-main-center">
           <view class="f22">切换门店</view>
-          <view></view>
+          <view class="right_arrow"></view>
         </view>
       </view>
       <view style="height: 70rpx;"></view>
@@ -150,5 +150,14 @@ export default {
   background: #030313;
   width: 100vw;
   min-height: 100vh;
+}
+.right_arrow{
+  width: 23rpx;
+  height: 23rpx;
+  background-image: url('../../static/images/right-white-arrow.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  float: right;
+  margin-left: 5rpx
 }
 </style>
