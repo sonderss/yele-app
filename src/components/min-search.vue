@@ -2,7 +2,7 @@
   <view>
     <view class="min-search min-flex">
       <image class="search-icon" src="/static/images/search.png"></image>
-      <input class="search min-flex-1" type="text" :placeholder="placeholder"
+      <input class="search min-flex-1"  type="text" :placeholder="placeholder"
         @input="handleInput"
         :value="value"
       >

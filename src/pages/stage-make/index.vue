@@ -16,15 +16,21 @@
         </min-cell >
 
         <min-cell class="top-view" v-for="(item,index) in list" :key='index'>
-            <view class="top-title">营销信息</view>
+             <min-cell-item title='营销信息'></min-cell-item>
             <view class="min-border-bottom color-view"></view>
-            <view class="min-flex min-flex-main-start btm-view">
+            <min-cell-item
+              v-for="(item,index) in list" :key='index'
+              :img='item.headUrl'
+              :title='`${item.name} | ${item.position}`'
+              :label='item.phone'
+            ></min-cell-item>
+            <!-- <view class="min-flex min-flex-main-start btm-view">
               <min-avatar size="sm" :url="item.headUrl"></min-avatar>
               <view class="m-left-20">
                 <view class="m-top">{{item.name}}  |  {{item.position}}</view>
                  <view class="f2"> {{item.phone}}</view>
               </view>
-            </view>
+            </view> -->
         </min-cell>
         <view class="btn">
           <min-btn :long='true'>下一步</min-btn>
@@ -87,26 +93,6 @@ export default {
       line-height:33rpx;
     }
   }
-
-}
-.btm-view{
-  margin: 30rpx 20rpx 14rpx 20rpx;
-  padding-bottom: 14rpx
-}
-.m-top{
-  font-size:28rpx;
-  font-family:PingFang SC;
-  font-weight:400;
-  color:rgba(51,51,51,1);
-  line-height:33rpx;
-}
-.f2{
-  font-size:24rpx;
-  font-family:PingFang SC;
-  font-weight:400;
-  color:rgba(102,102,102,1);
-  line-height:33rpx;
-  margin-top: 10rpx
 }
 .btn{
   width: 100%;
