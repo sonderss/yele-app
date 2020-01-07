@@ -1,28 +1,22 @@
 <template>
     <view class="reservation-date p-lr-30 p-tb-20">
 
-          <view class="top-view-start bg-white radius-6 p-lr-16 min-flex min-flex-main-start" >
-                <view :class="isChecked ? 'checkbox-active':'checkbox'" @click="changeCheckbox"></view>
-                <text class="title-desc">自带客</text>
-          </view>
+      <view class="top-view-start bg-white radius-6 p-lr-16 min-flex min-flex-main-start" >
+            <view :class="isChecked ? 'checkbox-active':'checkbox'" @click="changeCheckbox"></view>
+            <text class="title-desc">自带客</text>
+      </view>
 
       <min-cell class="main-view" :card="false">
         <min-cell-item title='营销带客'></min-cell-item>
-        <view class="min-search" >
-              <view   class="search-close-box min-flex min-flex-main-start">
-                <image v-if="!value" class="search-icon img-size" src="/static/images/search.png"></image>
-              </view>
-              <input class="my-search" v-model="value" maxlength="11" type="text" placeholder="请输入营销姓名/手机号搜索" />
+        <view class="" >
+          <min-search placeholder="请输入营销姓名/手机号搜索" bgColor="#f7f7f7"></min-search>
         </view>
-        <view class="top-view min-flex min-flex-main-start" :class="index == list.length-1 ? '' : 'min-border-bottom' " v-for="(item,index) in list" :key='index'>
-          <view class="min-flex min-flex-main-start">
-            <min-avatar size="sm" :url="item.headUrl"></min-avatar>
-            <view class="m-left-20  min-flex  min-flex-dir-top min-flex-main-around">
-                <view class="m-top">{{item.name}}  |  {{item.position}}</view>
-                <view class="f2">{{item.phone}}</view>
-            </view>
-          </view>
-        </view>
+        <min-cell-item
+           v-for="(item,index) in list" :key='index'
+          :img='item.headUrl'
+          :title='`${item.name} | ${item.position}`'
+          :label='item.phone'
+          ></min-cell-item>
       </min-cell>
       <view class="btn">
         <min-btn :long='true' @click="toAddUserInfo">下一步</min-btn>
@@ -102,45 +96,6 @@ export default {
     width: 30rpx;
     height: 30rpx;
   }
-}
-.top-view{
-  // width: 690rpx;
-  // margin: 20rpx auto;
-  height: 140rpx;
-
-  // background: #f00;
-  .info-view{
-    // margin-left: 20rpx;
-    padding-top: 20rpx;
-    .sec-view{
-      padding-top: 20rpx;
-      padding-bottom: 30rpx;
-    }
-    .user-name{
-      font-size:28rpx;
-      font-family:PingFang SC;
-      font-weight:400;
-      color:rgba(51,51,51,1);
-      line-height:33rpx;
-    }
-  }
-
-}
-.m-top{
-  font-size:28rpx;
-  font-family:PingFang SC;
-  font-weight:400;
-  color:rgba(51,51,51,1);
-  line-height:33rpx;
-}
-.f2{
-  font-size:24rpx;
-  font-family:PingFang SC;
-  font-weight:400;
-  color:rgba(102,102,102,1);
-  line-height:33rpx;
-  margin-top: 10rpx;
-  letter-spacing:1rpx
 }
 .btn{
   width: 100%;
