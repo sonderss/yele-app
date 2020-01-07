@@ -16,7 +16,7 @@
               price="2380.00"
               icon="/static/images/goods.png"
               size="罐装*250ml*规格9/瓶"
-              value="3"
+              :value="3"
             >
             </min-goods-item>
           </view>
@@ -30,7 +30,7 @@
         </view>
       </view>
       <view class="reason-wrap m-top-20 p-lr-20 p-tb-20">
-        <view class="p-bottom-30 min-border-bottom">申请原因</view>
+        <view class="p-bottom-30">申请原因</view>
         <textarea
           class="reason"
           placeholder="请输入申请原因"
@@ -38,27 +38,25 @@
         />
       </view>
     </view>
-    <min-btn shape="flat">提交申请</min-btn>
+    <view class="btn-wrap">
+      <min-btn shape="flat">提交申请</min-btn>
+    </view>
   </view>
 </template>
 
 <script>
 export default {
+  name: 'apply-open'
 }
 
 </script>
 
 <style lang="scss">
 .apply-open{
+  padding-bottom: 100rpx;
   .platform-info{
     border-radius:10px;
     background:#ffe4e4;
-    view{
-      margin-bottom: 10rpx;
-      &:last-child{
-        margin: 0;
-      }
-    }
     .emp{
       color: #FF0000;
       font-weight: bold;
@@ -73,22 +71,24 @@ export default {
   .client-info{
     background: #fff;
     border-radius:10rpx;
-    .item{
-      margin-bottom: 10rpx;
-      &:last-child{
-        margin: 0;
-      }
-    }
   }
   .reason-wrap{
     background: #fff;
     border-radius:10rpx;
     .reason{
+      width: 100%;
       height: 200rpx;
       background:#f7f7f7;
       padding: 20rpx;
       border-radius:10rpx;
+      box-sizing: border-box;
     }
+  }
+  .btn-wrap{
+    width: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
   }
 }
 </style>

@@ -6,6 +6,7 @@
       'min-btn-shape-' + shape,
       'min-btn-type-' + type,
       'min-btn-size-' + size,
+      border ? 'min-btn-border': '',
       hairline && !long ? 'min-btn-hairline' : '',
       disabled ? 'min-btn-disabled' : ''
     ]"
@@ -45,6 +46,10 @@ export default {
       default: 'sm'
     },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    border: {
       type: Boolean,
       default: false
     }
@@ -114,6 +119,9 @@ export default {
   &-inline{
     display: inline-flex;
     vertical-align: middle;
+  }
+  &-border{
+    border: 1rpx solid #E7E7E7 !important;
   }
   &-long {
     margin: 0;

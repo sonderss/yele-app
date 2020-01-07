@@ -48,6 +48,7 @@ import back from '@/static/images/back.png'
 import MinAvatar from '@/components/min-avatar'
 import YeleGrid from '@/components/page/yele-grid'
 export default {
+  name: 'index',
   components: {
     MinAvatar,
     YeleGrid

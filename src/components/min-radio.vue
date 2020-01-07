@@ -64,15 +64,15 @@ export default {
   justify-content: flex-start;
   align-items: center;
   .icon{
-    width: 34rpx;
-    height: 34rpx;
+    width: 40rpx;
+    height: 40rpx;
     border-radius: 50%;
     padding: 5rpx;
     box-sizing: border-box;
   }
   .img-icon{
-    width: 44rpx;
-    height: 44rpx;
+    width: 64rpx;
+    height: 64rpx;
   }
   .text{
     font-size: 28rpx;

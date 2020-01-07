@@ -16,6 +16,7 @@
 
 <script>
 export default {
+  name: 'open-success',
   data () {
     return {
 
@@ -44,12 +45,6 @@ export default {
     background: #FFF;
     border-radius: 10rpx;
     margin-top: 105rpx;
-    view{
-      margin-bottom: 10rpx;
-      &:last-child{
-        margin: 0;
-      }
-    }
     text{
       color: #FF0000;
     }

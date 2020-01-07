@@ -1,6 +1,24 @@
 {
 	"pages": [
     {
+      "path": "pages/page",
+      "style": {
+        "navigationBarTitleText": "路由页面"
+      }
+    },
+    {
+      "path": "pages/platform-detail/index",
+      "style": {
+        "navigationBarTitleText": "台详情"
+      }
+    },
+    {
+      "path": "pages/platform-history/index",
+      "style": {
+        "navigationBarTitleText": "台位历史"
+      }
+    },
+    {
       "path": "pages/confirm-order/index",
       "style": {
         "navigationBarTitleText": "确认订单"
@@ -81,7 +99,7 @@
             {
               "text": "申请记录",
               "fontSize": "28rpx",
-              "width": "130rpx"
+              "width": "200rpx"
             }
           ]
         }

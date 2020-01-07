@@ -1,37 +1,37 @@
 <template>
-    <view class="reservation-date p-lr-30 p-tb-20">
-        <min-cell class="top-view-start min-flex min-flex-main-start ">
-          <view class="min-flex min-flex-main-start">
-              <min-checkbox title="自来客"></min-checkbox>
-          </view>
-        </min-cell>
-        <min-cell class="main-view">
-          <min-cell-item title='营销带客'></min-cell-item>
-          <view class="min-search min-flex">
-               <input class="search min-flex-1" v-model="value" maxlength="11" type="text" placeholder="请输入营销姓名/手机号搜索" />
-                <view   class="search-close-box min-flex">
-                 <image v-if="!value" class="search-icon img-size" src="/static/images/search.png"></image>
-                </view>
-          </view>
-
-          <view class="top-view min-flex min-flex-main-start" :class="index == list.length-1 ? '' : 'min-border-bottom' " v-for="(item,index) in list" :key='index'>
-            <view class="min-flex min-flex-main-start">
-              <min-avatar size="sm" :url="item.headUrl"></min-avatar>
-              <view class="m-left-20  min-flex  min-flex-dir-top min-flex-main-around">
-                 <view class="m-top">{{item.name}}  |  {{item.position}}</view>
-                 <view class="f2">{{item.phone}}</view>
-              </view>
-            </view>
-          </view>
-        </min-cell>
-        <view class="btn">
-          <min-btn :long='true'>下一步</min-btn>
+  <view class="start-stage p-lr-30 p-tb-20">
+    <min-cell class="top-view-start min-flex min-flex-main-start ">
+      <view class="min-flex min-flex-main-start">
+        <min-checkbox title="自来客"></min-checkbox>
+      </view>
+    </min-cell>
+    <min-cell class="main-view">
+      <min-cell-item title='营销带客'></min-cell-item>
+      <view class="min-search min-flex">
+        <input class="search min-flex-1" v-model="value" maxlength="11" type="text" placeholder="请输入营销姓名/手机号搜索" />
+        <view   class="search-close-box min-flex">
+          <image v-if="!value" class="search-icon img-size" src="/static/images/search.png"></image>
         </view>
+      </view>
+      <view class="top-view min-flex min-flex-main-start" :class="index == list.length-1 ? '' : 'min-border-bottom' " v-for="(item,index) in list" :key='index'>
+        <view class="min-flex min-flex-main-start">
+          <min-avatar size="sm" :url="item.headUrl"></min-avatar>
+          <view class="m-left-20  min-flex  min-flex-dir-top min-flex-main-around">
+            <view class="m-top">{{item.name}}  |  {{item.position}}</view>
+            <view class="f2">{{item.phone}}</view>
+          </view>
+        </view>
+      </view>
+    </min-cell>
+    <view class="btn">
+      <min-btn :long='true'>下一步</min-btn>
     </view>
+  </view>
 </template>
 
 <script>
 export default {
+  name: 'start-stage',
   data () {
     return {
       value: '',

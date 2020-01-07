@@ -27,7 +27,7 @@
 import MinBtn from '@/components/min-btn'
 import MinCommon from '@/utils/min-common'
 export default {
-  name: 'Login',
+  name: 'login',
   components: {
     MinBtn
   },

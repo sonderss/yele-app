@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: 'SwitchStores',
+  name: 'switch-stores',
   data () {
     return {
       list: [{

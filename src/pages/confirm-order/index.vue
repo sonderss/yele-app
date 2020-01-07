@@ -46,13 +46,13 @@
 
 <script>
 export default {
+  name: 'confirm-order',
   data () {
     return {
       payType: '1'
     }
   }
 }
-
 </script>
 
 <style lang="scss" scoped>
@@ -61,12 +61,6 @@ export default {
   .platform-info{
     border-radius:10px;
     background:#ffe4e4;
-    view{
-      margin-bottom: 10rpx;
-      &:last-child{
-        margin: 0;
-      }
-    }
     .emp{
       color: #FF0000;
       font-weight: bold;

@@ -10,6 +10,7 @@
 
 <script>
 export default {
+  name: 'submit-success',
   data () {
     return {
 

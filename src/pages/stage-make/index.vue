@@ -1,39 +1,37 @@
 <template>
-<view class='reservation-date p-lr-30 p-tb-20'>
-
-        <min-cell  class="top-view" :shadow='false'>
-            <view class="top-title">客户信息</view>
-            <view class="min-border-bottom color-view"></view>
-            <view class="info-view">
-              <view class=".min-flex">
-                 <text class="user-name">客户姓名: {{name}}</text>
-              </view>
-              <view class=".min-flex sec-view">
-                <text class="user-name">联系电话: {{phone}}</text>
-              </view>
-            </view>
-
-        </min-cell >
-
-        <min-cell class="top-view" v-for="(item,index) in list" :key='index'>
-            <view class="top-title">营销信息</view>
-            <view class="min-border-bottom color-view"></view>
-            <view class="min-flex min-flex-main-start btm-view">
-              <min-avatar size="sm" :url="item.headUrl"></min-avatar>
-              <view class="m-left-20">
-                <view class="m-top">{{item.name}}  |  {{item.position}}</view>
-                 <view class="f2"> {{item.phone}}</view>
-              </view>
-            </view>
-        </min-cell>
-        <view class="btn">
-          <min-btn :long='true'>下一步</min-btn>
+<view class='stage-make p-lr-30 p-tb-20'>
+  <min-cell  class="top-view" :shadow='false'>
+    <view class="top-title">客户信息</view>
+    <view class="min-border-bottom color-view"></view>
+    <view class="info-view">
+      <view class=".min-flex">
+        <text class="user-name">客户姓名: {{name}}</text>
+      </view>
+      <view class=".min-flex sec-view">
+        <text class="user-name">联系电话: {{phone}}</text>
+      </view>
+    </view>
+  </min-cell >
+  <min-cell class="top-view" v-for="(item,index) in list" :key='index'>
+      <view class="top-title">营销信息</view>
+      <view class="min-border-bottom color-view"></view>
+      <view class="min-flex min-flex-main-start btm-view">
+        <min-avatar size="sm" :url="item.headUrl"></min-avatar>
+        <view class="m-left-20">
+          <view class="m-top">{{item.name}}  |  {{item.position}}</view>
+            <view class="f2"> {{item.phone}}</view>
         </view>
+      </view>
+  </min-cell>
+  <view class="btn">
+    <min-btn :long='true'>下一步</min-btn>
+  </view>
 </view>
 </template>
 
 <script>
 export default {
+  name: 'stage-make',
   data () {
     return {
       name: '林平之',

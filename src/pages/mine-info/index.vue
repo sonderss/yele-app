@@ -31,7 +31,8 @@
           :border="false" arrow
         ></min-cell-item>
       </min-cell>
-      <min-cell class="m-top-20">
+      <view class="m-top-20"></view>
+      <min-cell>
         <min-cell-item
           title="实名认证" tail="去认证"
           :border="true" arrow
@@ -51,6 +52,7 @@
 
 <script>
 export default {
+  name: 'mine-info',
   mounted () {
   }
 }

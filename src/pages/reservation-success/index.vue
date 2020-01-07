@@ -17,6 +17,7 @@
 
 <script>
 export default {
+  name: 'reserve-success',
   data () {
     return {
 
@@ -52,14 +53,14 @@ export default {
     background: #FFF;
     border-radius: 10rpx;
     margin-top: 40rpx;
+    text{
+      color: #FF0000;
+    }
     view{
       margin-bottom: 10rpx;
       &:last-child{
         margin: 0;
       }
-    }
-    text{
-      color: #FF0000;
     }
   }
   .btns{
