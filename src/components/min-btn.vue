@@ -108,6 +108,9 @@ export default {
   &-shape-circle {
     border-radius: 1000rpx;
   }
+  &-shape-flat {
+    border-radius: 0rpx;
+  }
   &-inline{
     display: inline-flex;
     vertical-align: middle;

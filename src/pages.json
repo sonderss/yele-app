@@ -1,6 +1,18 @@
 {
 	"pages": [
     {
+      "path": "pages/confirm-order/index",
+      "style": {
+        "navigationBarTitleText": "确认订单"
+      }
+    },
+    {
+      "path": "pages/apply-open/index",
+      "style": {
+        "navigationBarTitleText": "申请开台"
+      }
+    },
+    {
       "path": "pages/reservation-date/index",
       "style": {
         "navigationBarTitleText": "预约日期"
