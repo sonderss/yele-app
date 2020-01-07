@@ -76,7 +76,7 @@ export default {
     width: 410rpx;
   }
   .tail{
-    padding-right: 18rpx;
+    padding-right: 14rpx;
     &-gray {
       color: #666;
     }

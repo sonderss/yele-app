@@ -8,6 +8,12 @@
 
 <script>
 export default {
+  props: {
+    shadow: {
+      type: Boolean,
+      default: true
+    }
+  }
 }
 
 </script>
