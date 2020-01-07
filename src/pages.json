@@ -25,6 +25,18 @@
       }
     },
     {
+      "path": "pages/stage-make/index",
+      "style": {
+        "navigationBarTitleText": "预约开台"
+      }
+    },
+    {
+      "path": "pages/start-stage/index",
+      "style": {
+        "navigationBarTitleText": "开台"
+      }
+    },
+    {
       "path": "pages/submit-success/index",
       "style": {
         "navigationBarTitleText": "提交成功"
