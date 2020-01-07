@@ -4,11 +4,11 @@
         <min-cell  class="top-view" :shadow='false'>
             <view class="top-title">客户信息</view>
             <view class="min-border-bottom color-view"></view>
-            <view class="info-view">
-              <view class=".min-flex">
+            <view class="info-view min-flex min-flex-dir-top min-flex-align-top">
+              <view class="min-flex">
                  <text class="user-name">客户姓名: {{name}}</text>
               </view>
-              <view class=".min-flex sec-view">
+              <view class="min-flex sec-view">
                 <text class="user-name">联系电话: {{phone}}</text>
               </view>
             </view>
@@ -34,6 +34,7 @@
 
 <script>
 export default {
+  name: 'state-make',
   data () {
     return {
       name: '林平之',

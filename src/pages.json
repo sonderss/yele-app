@@ -1,6 +1,26 @@
 {
 	"pages": [
     {
+      "path": "pages/start-stage/index",
+      "style": {
+        "navigationBarTitleText": "开台",
+        "app-plus": {
+          "bounce":"none",
+          "titleColor":"#f00"
+        }
+      }
+    },
+    {
+      "path": "pages/stage-make/index",
+      "style": {
+        "navigationBarTitleText": "预约开台",
+        "app-plus": {
+          "softinputMode": "adjustResize",
+          "bounce":"none"
+        }
+      }
+    },
+    {
       "path": "pages/reservation-date/index",
       "style": {
         "navigationBarTitleText": "预约日期"
@@ -13,15 +33,13 @@
       }
     },
     {
-      "path": "pages/stage-make/index",
+      "path": "pages/add-userinfo/index",
       "style": {
-        "navigationBarTitleText": "预约开台"
-      }
-    },
-    {
-      "path": "pages/start-stage/index",
-      "style": {
-        "navigationBarTitleText": "开台"
+        "navigationBarTitleText": "填写客户信息",
+        "app-plus": {
+          "softinputMode": "adjustPan",
+          "bounce":"none"
+        }
       }
     },
     {
