@@ -3,7 +3,7 @@
     <view class="p-lr-30">
       <view class="inp p-left-30 p-tb-35 min-flex min-flex-main-between min-border-bottom">
         <view class="min-flex min-flex-main-start">
-          <input type="number"  maxlength="11" placeholder="请输入手机号码">
+          <input type="number" maxlength="11" placeholder="请输入手机号码">
         </view>
         <view class="theme-text f26 p-lr-30" @click="countDown" v-if="code === 0">获取验证码</view>
         <view v-else class="theme-text">{{code}} s</view>
@@ -20,6 +20,7 @@
 <script>
 
 export default {
+  name: 'bind-mobile',
   data () {
     return {
       code: 0

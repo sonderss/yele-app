@@ -3,10 +3,10 @@
     <image class="icon" src="/static/images/success.png" alt="success" />
     <view class="title">预定成功</view>
     <view class="tips">记得提醒客户准时到店哦</view>
-    <view class="card p-tb-30 p-lr-30">
-      <view class="f28">预定台号：<text>T3547</text></view>
-      <view class="f28">客户姓名：可乐加冰</view>
-      <view class="f28">联系电话：15016584603</view>
+    <view class="card f28 p-tb-30 p-lr-30">
+      <view>预定台号：<text>T3547</text></view>
+      <view>客户姓名：可乐加冰</view>
+      <view>联系电话：15016584603</view>
     </view>
     <view class="btns">
       <min-btn>继续订台</min-btn>
@@ -17,6 +17,7 @@
 
 <script>
 export default {
+  name: 'reserve-success',
   data () {
     return {
 
@@ -52,14 +53,14 @@ export default {
     background: #FFF;
     border-radius: 10rpx;
     margin-top: 40rpx;
+    text{
+      color: #FF0000;
+    }
     view{
       margin-bottom: 10rpx;
       &:last-child{
         margin: 0;
       }
-    }
-    text{
-      color: #FF0000;
     }
   }
   .btns{

@@ -1,12 +1,16 @@
 <template>
   <view style="background: #fff;">
-    <view class="min-goods-item min-border-bottom p-tb-20 p-lr-30">
+    <view class="min-goods-item">
       <image class="min-goods-icon" :src="icon"/>
       <view class="min-goods-content">
         <view class="min-goods-name">{{name}}</view>
+        <view class="min-goods-size" v-show="size">
+          {{size}}
+          <view class="count" v-if="!stepper">x {{count}}</view>
+        </view>
         <view class="min-goods-price">￥{{price}}</view>
       </view>
-      <view class="min-stepper-weap">
+      <view class="min-stepper-weap" v-if="stepper">
         <min-stepper v-model="count" @change="changeCount"/>
       </view>
     </view>
@@ -37,9 +41,17 @@ export default {
       type: [String, Number],
       default: 0
     },
+    size: {
+      type: String,
+      default: ''
+    },
     value: {
       type: Number,
       default: 0
+    },
+    stepper: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -64,8 +76,8 @@ export default {
   display: flex;
   position: relative;
   .min-goods-icon{
-    flex-basis: 80rpx;
-    height: 80rpx;
+    flex-basis: 140rpx;
+    height: 140rpx;
   }
   .min-goods-content{
     flex-grow: 1;
@@ -80,6 +92,15 @@ export default {
     .min-goods-price{
       font-size: 24rpx;
       color: #FF0000;
+    }
+    .min-goods-size{
+      color: #666;
+      font-size: 24rpx;
+      .count{
+        color: #666;
+        font-size: 24rpx;
+        float: right;
+      }
     }
   }
   .min-stepper-weap{

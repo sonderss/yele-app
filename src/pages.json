@@ -1,23 +1,33 @@
 {
 	"pages": [
     {
-      "path": "pages/start-stage/index",
+      "path": "pages/page",
       "style": {
-        "navigationBarTitleText": "开台",
-        "app-plus": {
-          "bounce":"none",
-          "titleColor":"#f00"
-        }
+        "navigationBarTitleText": "路由页面"
       }
     },
     {
-      "path": "pages/stage-make/index",
+      "path": "pages/platform-detail/index",
       "style": {
-        "navigationBarTitleText": "预约开台",
-        "app-plus": {
-          "softinputMode": "adjustResize",
-          "bounce":"none"
-        }
+        "navigationBarTitleText": "台详情"
+      }
+    },
+    {
+      "path": "pages/platform-history/index",
+      "style": {
+        "navigationBarTitleText": "台位历史"
+      }
+    },
+    {
+      "path": "pages/confirm-order/index",
+      "style": {
+        "navigationBarTitleText": "确认订单"
+      }
+    },
+    {
+      "path": "pages/apply-open/index",
+      "style": {
+        "navigationBarTitleText": "申请开台"
       }
     },
     {
@@ -33,13 +43,15 @@
       }
     },
     {
-      "path": "pages/add-userinfo/index",
+      "path": "pages/stage-make/index",
       "style": {
-        "navigationBarTitleText": "填写客户信息",
-        "app-plus": {
-          "softinputMode": "adjustPan",
-          "bounce":"none"
-        }
+        "navigationBarTitleText": "预约开台"
+      }
+    },
+    {
+      "path": "pages/start-stage/index",
+      "style": {
+        "navigationBarTitleText": "开台"
       }
     },
     {
@@ -87,7 +99,7 @@
             {
               "text": "申请记录",
               "fontSize": "28rpx",
-              "width": "130rpx"
+              "width": "200rpx"
             }
           ]
         }

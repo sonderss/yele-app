@@ -1,6 +1,7 @@
 <template>
   <view class="switch-stores m-lr-30 p-top-20">
-    <min-search placeholder="请输入门店名称搜索" class="m-bottom-20"/>
+    <min-search placeholder="请输入门店名称搜索" v-model="value"/>
+    <view class="m-bottom-20"></view>
     <min-cell>
       <min-cell-item
         v-for="(item, index) in list" :key="index"
@@ -21,6 +22,7 @@ export default {
   navigate: ['navigateTo', 'switchTab'],
   data () {
     return {
+      value: 111,
       list: [{
         img: 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg',
         title: 'SIMBA',

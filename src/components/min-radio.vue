@@ -1,9 +1,10 @@
 <template>
-  <view class="min-checkbox">
-    <view class="icon" :class="{'active': String(value) === String(label)}" @click="change">
-      <img v-show="value" src="/static/images/tick.png" alt="tick">
-    </view>
-    <view class="text p-left-20">{{ title }}</view>
+  <view class="min-checkbox" @click="change">
+    <img class="icon" v-if="isMatch" src="/static/images/radio.png" alt="radio">
+    <img class="icon" v-else src="/static/images/not-radio.png" alt="radio">
+    <image class="img-icon p-left-10" v-if="icon" :src="icon"/>
+    <view class="text p-left-10">{{ title }}</view>
+    <slot></slot>
   </view>
 </template>
 
@@ -32,9 +33,18 @@ export default {
       type: [String, Number],
       required: true
     },
+    icon: {
+      type: String,
+      default: ''
+    },
     disabled: {
       type: Boolean,
       default: false
+    }
+  },
+  computed: {
+    isMatch () {
+      return String(this.value) === String(this.label)
     }
   },
   methods: {
@@ -50,27 +60,21 @@ export default {
 
 <style lang="scss" scoped>
 .min-checkbox{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   .icon{
     width: 40rpx;
     height: 40rpx;
-    display: inline-block;
-    vertical-align: middle;
     border-radius: 50%;
     padding: 5rpx;
     box-sizing: border-box;
-    border: 1px solid #CACAD0;
-    img{
-      width: 100%;
-      height: 100%;
-    }
-    &.active{
-      background: #FF2C00;
-      border: none;
-    }
+  }
+  .img-icon{
+    width: 64rpx;
+    height: 64rpx;
   }
   .text{
-    display: inline-block;
-    vertical-align: middle;
     font-size: 28rpx;
     color:#333;
   }

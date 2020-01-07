@@ -11,6 +11,7 @@
 <script>
 
 export default {
+  name: 'modify-mobile',
   data () {
     return {
       code: 0
