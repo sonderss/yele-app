@@ -13,7 +13,7 @@
     </view>
   </min-cell>
   <view class="mid-view-border"></view>
-  <min-cell class="top-view" v-for="(item,index) in list" :key='index'>
+  <min-cell class="top-view">
     <min-cell-item title='营销信息'></min-cell-item>
     <view class="min-border-bottom color-view"></view>
     <min-cell-item
@@ -38,7 +38,6 @@ export default {
       phone: 15836666666,
       list: [
         { headUrl: 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg', name: '林平之', position: '营销', phone: '15866666666' }
-
       ]
     }
   }
