@@ -3,16 +3,16 @@
   <min-cell  class="top-view" :shadow='false'>
     <view class="top-title">客户信息</view>
     <view class="min-border-bottom color-view"></view>
-    <view class="info-view min-flex min-flex-dir-top min-flex-align-top">
-      <view class="min-flex sec-view">
+    <view class="m-left-20 p-top-20 min-flex min-flex-dir-top min-flex-align-top">
+      <view class="min-flex m-bottom-10">
           <text class="user-name">客户姓名: {{name}}</text>
       </view>
-      <view class="min-flex sec-view-btm">
+      <view class="min-flex m-bottom-30">
         <text class="user-name">联系电话: {{phone}}</text>
       </view>
     </view>
   </min-cell>
-  <view class="mid-view-border"></view>
+  <view class="m-bottom-20"></view>
   <min-cell class="top-view">
     <min-cell-item title='营销信息'></min-cell-item>
     <view class="min-border-bottom color-view"></view>
@@ -51,9 +51,6 @@ export default {
     min-height: 100vh;
     overflow: hidden;
   }
-  .mid-view-border{
-    margin-bottom: 20rpx;
-  }
   .top-view{
     width: 690rpx;
     margin: 20rpx auto;
@@ -70,24 +67,13 @@ export default {
     .color-view{
       background: #E7E7E7;
       margin: 0 20rpx;
-      //  margin-bottom: 29rpx
     }
-    .info-view{
-      margin-left: 20rpx;
-      padding-top: 20rpx;
-      .sec-view{
-        margin-bottom: 10rpx
-      }
-      .sec-view-btm{
-        margin-bottom: 30rpx
-      }
-      .user-name{
-        font-size:28rpx;
-        font-family:PingFang SC;
-        font-weight:400;
-        color:rgba(51,51,51,1);
-        line-height:33rpx;
-      }
+    .user-name{
+      font-size:28rpx;
+      font-family:PingFang SC;
+      font-weight:400;
+      color:rgba(51,51,51,1);
+      line-height:33rpx;
     }
   }
   .btn{

@@ -5,7 +5,7 @@
       <radio value="-1" color="#FE0000" class="radio" />
       <text class="text">自带客</text>
     </view>
-    <min-cell class="main-view">
+    <min-cell class="m-top-20">
       <view class="title p-tb-30">营销带客</view>
       <min-search placeholder="请输入营销姓名/手机号搜索" bgColor="#f7f7f7"></min-search>
       <min-cell-item
@@ -64,9 +64,6 @@ export default {
       display: inline-block;
       vertical-align: middle;
     }
-  }
-  .main-view{
-    margin-top: 20rpx;
   }
   .btn{
     width: 100%;
