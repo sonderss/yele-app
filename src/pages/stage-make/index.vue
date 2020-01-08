@@ -4,10 +4,10 @@
     <view class="top-title">客户信息</view>
     <view class="min-border-bottom color-view"></view>
     <view class="info-view min-flex min-flex-dir-top min-flex-align-top">
-      <view class="min-flex">
+      <view class="min-flex sec-view">
           <text class="user-name">客户姓名: {{name}}</text>
       </view>
-      <view class="min-flex sec-view">
+      <view class="min-flex sec-view-btm">
         <text class="user-name">联系电话: {{phone}}</text>
       </view>
     </view>
@@ -76,8 +76,10 @@ export default {
     margin-left: 20rpx;
     padding-top: 20rpx;
     .sec-view{
-      padding-top: 20rpx;
-      padding-bottom: 30rpx;
+      margin-bottom: 10rpx
+    }
+    .sec-view-btm{
+       margin-bottom: 30rpx
     }
     .user-name{
       font-size:28rpx;
