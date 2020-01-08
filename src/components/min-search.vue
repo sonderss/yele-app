@@ -1,6 +1,6 @@
 <template>
   <view>
-    <view class="min-search min-flex">
+    <view class="min-search min-flex" :style="{'background': bgColor}">
       <image class="search-icon" src="/static/images/search.png"></image>
       <input class="search min-flex-1"  type="text" :placeholder="placeholder"
         @input="handleInput"
@@ -23,6 +23,10 @@ export default {
     value: {
       type: [String, Number],
       default: ''
+    },
+    bgColor: {
+      type: String,
+      default: '#fff'
     }
   },
   data () {
@@ -44,7 +48,6 @@ export default {
 .min-search {
   position: relative;
   padding: 0 30rpx;
-  background: #FFFFFF;
   height: 88rpx;
   font-size: 28rpx;
   border-radius: 4px;
