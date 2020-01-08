@@ -9,12 +9,14 @@
     <view class="" >
       <min-search placeholder="请输入营销姓名/手机号搜索" bgColor="#f7f7f7"></min-search>
     </view>
-    <min-cell-item
-      v-for="(item,index) in list" :key='index'
-      :img='item.headUrl'
-      :title='`${item.name} | ${item.position}`'
-      :label='item.phone'
-    ></min-cell-item>
+      <min-cell-item
+        v-for="(item,index) in list"
+        :key='index'
+        :img='item.headUrl'
+        :title='`${item.name} | ${item.position}`'
+        :label='item.phone'
+      >
+      </min-cell-item>
   </min-cell>
   <view class="btn">
     <min-btn :long='true' @click="toAddUserInfo">下一步</min-btn>
@@ -100,15 +102,15 @@ export default {
   left: 0;
 }
 .checkbox-active{
-  width: 44rpx;
-  height: 44rpx;
+  width: 40rpx;
+  height: 40rpx;
   background-image: url('../../static/images/checkbox44.png');
   background-repeat: no-repeat;
   background-size: cover;
 }
 .checkbox{
-   width: 44rpx;
-  height: 44rpx;
+   width: 40rpx;
+  height: 40rpx;
   border: 1rpx solid #ccc;
   border-radius: 50%;
 }
