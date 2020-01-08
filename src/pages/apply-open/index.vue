@@ -15,7 +15,7 @@
               name="2020年元旦百威兄弟套餐12瓶"
               price="2380.00"
               icon="/static/images/goods.png"
-              size="罐装*250ml*规格9/瓶"
+              specification="罐装*250ml*规格9/瓶"
               :value="3"
             >
             </min-goods-item>
@@ -24,7 +24,7 @@
       </view>
       <view class="client-info m-top-20 p-lr-20 p-tb-30">
         <view class="p-bottom-30 min-border-bottom">客户信息</view>
-        <view class="list p-top-30">
+        <view class="card p-top-30">
           <view class="item">客户姓名：可乐</view>
           <view class="item">联系电话：15016584603</view>
         </view>
@@ -71,6 +71,14 @@ export default {
   .client-info{
     background: #fff;
     border-radius:10rpx;
+    .card{
+      &>view{
+        margin-bottom: 10rpx;
+        &:last-child{
+          margin: 0;
+        }
+      }
+    }
   }
   .reason-wrap{
     background: #fff;

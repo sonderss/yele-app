@@ -1,5 +1,10 @@
 <template>
   <view class="switch-stores m-lr-30 p-top-20">
+    <view class="add-stores">
+      <view class="add-icon"/>
+      <view class="text">申请加入其他门店</view>
+    </view>
+    <view class="m-top-20"></view>
     <min-cell>
       <min-cell-item
         v-for="(item, index) in list" :key="index"
@@ -46,5 +51,48 @@ export default {
 <style lang="scss" scoped>
 page {
   background-color: #F7F7F7;
+}
+.switch-stores{
+
+  .add-stores{
+    background: #fff;
+    border-radius: 10rpx;
+    padding: 30rpx 20rpx;
+    .add-icon{
+      display: inline-block;
+      vertical-align: middle;
+      height: 0;
+      padding: 20rpx 10rpx;
+      background:rgba(255,50,7,1);
+      border-radius:2px;
+      position: relative;
+      border-radius: 100%;
+      &::before{
+        content: "";
+        display: inline-block;
+        width: 20rpx;
+        height: 4rpx;
+        background:#fff;
+        vertical-align: top;
+        margin-top: -2rpx;
+      }
+      &::after{
+        content: "";
+        display: inline-block;
+        width: 4rpx;
+        height: 20rpx;
+        background:#fff;
+        vertical-align: top;
+        position: absolute;
+        top: 11rpx;
+        left: 18rpx;
+      }
+    }
+    .text{
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 20rpx;
+    }
+  }
 }
 </style>
