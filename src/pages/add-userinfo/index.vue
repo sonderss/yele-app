@@ -20,10 +20,7 @@
       <min-cell-item :border='false' title="联系电话" ></min-cell-item>
       <input class="p-left-10" maxlength="11" type="text" placeholder="请输入联系电话"/>
     </view>
-    <view class="min-flex  min-flex-main-between ">
-      <min-cell-item :border='false' title="是否当天生日" ></min-cell-item>
-      <switch  checked style="transform: scale(0.7,0.7)" color="#6CD56C"/>
-    </view>
+     <min-switch desc='是否当天生日' @change='getStatus'></min-switch>
   </min-cell>
   <view class="m-tb-20"></view>
   <min-cell :card='false' class="desc-view">
@@ -41,7 +38,12 @@
 
 <script>
 export default {
-  name: 'add-userinfo'
+  name: 'add-userinfo',
+  methods: {
+    getStatus (e) {
+      // console.log(e)
+    }
+  }
 }
 </script>
 

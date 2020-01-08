@@ -64,6 +64,12 @@ export default {
           }
         },
         {
+          path: 'pages/order-make/index',
+          style: {
+            navigationBarTitleText: '预约'
+          }
+        },
+        {
           path: 'pages/submit-success/index',
           style: {
             navigationBarTitleText: '提交成功'
