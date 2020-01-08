@@ -1,8 +1,9 @@
 <template>
   <view class="min-checkbox">
-    <view class="icon" :class="{'active': isCheck}" @click="checkbox">
+    <icon type="success" size="20" color="#FE0000"/>
+    <!-- <view class="icon" :class="{'active': isCheck}" @click="checkbox">
       <img v-show="value" src="/static/images/tick.png" alt="tick">
-    </view>
+    </view> -->
     <view class="text p-left-20">{{title}}</view>
   </view>
 </template>
@@ -17,6 +18,10 @@
 <script>
 export default {
   props: {
+    checks: {
+      type: Array,
+      default: () => []
+    },
     value: {
       type: [String, Number, Boolean],
       default: false
@@ -33,7 +38,7 @@ export default {
   computed: {
     isCheck () {
       if (typeof this.value === 'boolean') return this.value
-      const arr = this.$parent.value
+      const arr = this.checks
       const isInclude = arr.indexOf(this.value)
       return isInclude > -1
     }
@@ -44,7 +49,7 @@ export default {
       if (typeof this.value === 'boolean') {
         this.$emit('input', !this.value)
       } else {
-        const arr = this.$parent.value
+        const arr = this.checks
         const index = arr.indexOf(this.value)
         this.isCheck ? arr.splice(index, 1) : arr.push(this.value)
       }
@@ -56,14 +61,15 @@ export default {
 <style lang="scss" scoped>
 .min-checkbox{
   .icon{
-    width: 40rpx;
+    /* width: 40rpx;
     height: 40rpx;
     display: inline-block;
     vertical-align: middle;
     border-radius: 50%;
     padding: 5rpx;
     box-sizing: border-box;
-    border: 1px solid #CACAD0;
+    border: 1px solid #CACAD0; */
+    transform: scale(.83);
     img{
       width: 100%;
       height: 100%;

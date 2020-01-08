@@ -3,10 +3,10 @@
     :class="[border ? 'min-border-bottom' : '']"
   >
     <view class="min-flex">
+      <slot name="icon"></slot>
       <view v-if="img">
         <min-avatar :size="imgSize" :url="img"></min-avatar>
       </view>
-      <slot name="icon"></slot>
       <view class="m-left-20">
         <view class="f28">{{title}}</view>
         <view class="label m-top-10 f24 assist-text min-ellipsis">{{label}}</view>
