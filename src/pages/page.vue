@@ -1,11 +1,5 @@
 <template>
   <view>
-    <min-checkbox-group v-model="value">
-      <min-checkbox value="1"/>
-      <min-checkbox value="2"/>
-      <min-checkbox value="3"/>
-    </min-checkbox-group>
-    {{value}}
     <button v-for="(item, index) in pages" :key="index" @click="link(item.path)">{{item.style.navigationBarTitleText || '未设标题'}}</button>
   </view>
 </template>
