@@ -111,8 +111,9 @@ export default {
     justify-content: space-between;
     position: fixed;
     left: 0;
-    bottom: 10rpx;
-    padding: 0 30rpx;
+    bottom: 0;
+    background: #f7f7f7;
+    padding: 10rpx 30rpx;
   }
 }
 </style>
