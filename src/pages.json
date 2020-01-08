@@ -45,37 +45,25 @@
     {
       "path": "pages/stage-make/index",
       "style": {
-        "navigationBarTitleText": "预约开台",
-        "app-plus":{
-          "bounce":"none"
-        }
+        "navigationBarTitleText": "预约开台"
       }
     },
     {
       "path": "pages/add-userinfo/index",
       "style": {
-        "navigationBarTitleText": "填写客户信息",
-        "app-plus":{
-           "bounce":"none"
-        }
+        "navigationBarTitleText": "填写客户信息"
       }
     },
     {
       "path": "pages/order-make/index",
       "style": {
-        "navigationBarTitleText": "预约",
-        "app-plus":{
-           "bounce":"none"
-        }
+        "navigationBarTitleText": "预约"
       }
     },
     {
       "path": "pages/start-stage/index",
       "style": {
-        "navigationBarTitleText": "开台",
-        "app-plus":{
-          "bounce":"none"
-        }
+        "navigationBarTitleText": "开台"
       }
     },
     {

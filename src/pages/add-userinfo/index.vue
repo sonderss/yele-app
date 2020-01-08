@@ -20,7 +20,7 @@
       <min-cell-item :border='false' title="联系电话" ></min-cell-item>
       <input class="p-left-10" maxlength="11" type="text" placeholder="请输入联系电话"/>
     </view>
-     <min-switch desc='是否当天生日' @change='getStatus'></min-switch>
+     <min-switch desc='是否当天生日' v-model="isShengri"></min-switch>
   </min-cell>
   <view class="m-tb-20"></view>
   <min-cell :card='false' class="desc-view">
@@ -39,9 +39,9 @@
 <script>
 export default {
   name: 'add-userinfo',
-  methods: {
-    getStatus (e) {
-      // console.log(e)
+  data () {
+    return {
+      isShengri: false
     }
   }
 }

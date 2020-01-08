@@ -1,0 +1,58 @@
+<template>
+<view class="min-desc-input ">
+      <view class="min-view-item min-flex min-flex-main-between f28 min-border-bottom" >
+      <text class="desc-width">*{{desc}}</text>
+      <input class="oinput" type="text" :placeholder="placeholder" :value="value" :disabled="disabled"/>
+</view>
+  </view>
+</template>
+
+<script>
+export default {
+  props: {
+    desc: {
+      type: String,
+      default: ''
+    },
+    placeholder: {
+      type: String,
+      default: '请输入信息'
+    },
+    value: {
+      type: String,
+      default: ''
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.min-desc-input{
+  background: #fff;
+  flex: 1;
+  .min-view-item{
+    height: 98rpx;
+    .oinput{
+      text-align: right;
+      line-height: 98rpx;
+    }
+    .ophone{
+      padding-right: 34rpx
+    }
+    .right-arrow{
+        width:24rpx;
+        height:24rpx;
+        padding-top: 5rpx
+    }
+    .desc-width{
+      width:200rpx
+    }
+  }
+}
+
+</style>
