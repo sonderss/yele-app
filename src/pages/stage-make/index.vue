@@ -1,5 +1,5 @@
 <template>
-<view class='reservation-date p-lr-30 p-tb-20'>
+<view class='stage-make p-lr-30 p-tb-20'>
   <min-cell  class="top-view" :shadow='false'>
     <view class="top-title">客户信息</view>
     <view class="min-border-bottom color-view"></view>
@@ -45,54 +45,57 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-.main-view{
-  width: 100vw;
-  min-height: 100vh;
-  overflow: hidden;
-}
-.mid-view-border{
-  margin-bottom: 20rpx;
-}
-.top-view{
-  width: 690rpx;
-  margin: 20rpx auto;
-  .top-title{
-    font-size:30rpx;
-    font-family:PingFang SC;
-    font-weight:400;
-    color:rgba(51,51,51,1);
-    line-height:33rpx;
-    padding-top: 29rpx;
-    padding-bottom: 29rpx;
-    padding-left: 20rpx;
+.stage-make{
+  .main-view{
+    width: 100vw;
+    min-height: 100vh;
+    overflow: hidden;
   }
-  .color-view{
-     background: #E7E7E7;
-     margin: 0 20rpx;
-    //  margin-bottom: 29rpx
+  .mid-view-border{
+    margin-bottom: 20rpx;
   }
-  .info-view{
-    margin-left: 20rpx;
-    padding-top: 20rpx;
-    .sec-view{
-      margin-bottom: 10rpx
-    }
-    .sec-view-btm{
-       margin-bottom: 30rpx
-    }
-    .user-name{
-      font-size:28rpx;
+  .top-view{
+    width: 690rpx;
+    margin: 20rpx auto;
+    .top-title{
+      font-size:30rpx;
       font-family:PingFang SC;
       font-weight:400;
       color:rgba(51,51,51,1);
       line-height:33rpx;
+      padding-top: 29rpx;
+      padding-bottom: 29rpx;
+      padding-left: 20rpx;
+    }
+    .color-view{
+      background: #E7E7E7;
+      margin: 0 20rpx;
+      //  margin-bottom: 29rpx
+    }
+    .info-view{
+      margin-left: 20rpx;
+      padding-top: 20rpx;
+      .sec-view{
+        margin-bottom: 10rpx
+      }
+      .sec-view-btm{
+        margin-bottom: 30rpx
+      }
+      .user-name{
+        font-size:28rpx;
+        font-family:PingFang SC;
+        font-weight:400;
+        color:rgba(51,51,51,1);
+        line-height:33rpx;
+      }
     }
   }
+  .btn{
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0
+  }
 }
-.btn{
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  left: 0
-}
+
 </style>
