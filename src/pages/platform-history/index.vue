@@ -47,6 +47,14 @@ export default {
   .card{
     background: #fff;
     border-radius: 10rpx;
+    .main{
+      &>view{
+        margin-bottom: 10rpx;
+        &:last-child{
+          margin: 0;
+        }
+      }
+    }
     .footer{
       display: flex;
       justify-content: space-between;

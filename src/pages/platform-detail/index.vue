@@ -4,22 +4,27 @@
       <view class="p-tb-30 min-border-bottom">基本信息</view>
       <view class="main p-tb-20">
         <view class="status">空闲中</view>
-        <view><view class="justify">台 号</view>：<view class="emp">K112</view></view>
-        <view><view class="justify">分 组</view>：卡座</view>
-        <view><view class="justify">低 消</view>：￥500</view>
-        <view><view class="justify">座 位</view>：4座</view>
-        <view><view class="justify">开台条件</view>：6成低消（￥600）</view>
-      </view>
-    </view>
-    <view class="card p-lr-20">
-      <view class="p-tb-30 min-border-bottom">基本信息</view>
-      <view class="main p-tb-20">
-        <view class="status">空闲中</view>
-        <view><view class="justify">台号</view>：<view class="emp">K112</view></view>
-        <view><view class="justify">分组</view>：卡座</view>
-        <view><view class="justify">低消</view>：￥500</view>
-        <view><view class="justify">座位</view>：4座</view>
-        <view><view class="justify">开台条件</view>：6成低消（￥600）</view>
+        <view class="justify-wrap">
+          <view class="justify">台 号</view>
+          <view>
+            ：<view class="emp">K112</view></view>
+          </view>
+        <view class="justify-wrap">
+          <view class="justify">分 组</view>
+          <view>：卡座</view>
+        </view>
+        <view class="justify-wrap">
+          <view class="justify">低 消</view>
+          <view>：￥500</view>
+        </view>
+        <view class="justify-wrap">
+          <view class="justify">座 位</view>
+          <view>：4座</view>
+        </view>
+        <view class="justify-wrap">
+          <view class="justify">开台条件</view>
+          <view>：6成低消（￥600）</view>
+        </view>
       </view>
     </view>
     <view class="btns">
@@ -53,17 +58,23 @@ export default {
           margin: 0;
         }
       }
-      .justify{
-        display: inline-block;
-        width: 130rpx;
-        height: 40rpx;
-        text-align: justify;
-        text-align-last: justify;
-        &:after {
-          content: '';
-          height:0;
-          width: 100%;
+      .justify-wrap{
+        &>view{
           display: inline-block;
+          vertical-align: top;
+        }
+        .justify{
+          display: inline-block;
+          width: 130rpx;
+          height: 40rpx;
+          text-align: justify;
+          text-align-last: justify;
+          &:after {
+            content: '';
+            height:0;
+            width: 100%;
+            display: inline-block;
+          }
         }
       }
       .emp{

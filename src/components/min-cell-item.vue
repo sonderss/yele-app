@@ -8,8 +8,8 @@
       </view>
       <slot name="icon"></slot>
       <view class="m-left-20">
-        <view class="f30">{{title}}</view>
-        <view class="label f24 assist-text min-ellipsis">{{label}}</view>
+        <view class="f28">{{title}}</view>
+        <view class="label m-top-10 f24 assist-text min-ellipsis">{{label}}</view>
       </view>
     </view>
     <view class="min-flex flex-end">
