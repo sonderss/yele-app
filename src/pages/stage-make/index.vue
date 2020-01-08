@@ -1,40 +1,31 @@
 <template>
 <view class='reservation-date p-lr-30 p-tb-20'>
-
-        <min-cell  class="top-view" :shadow='false'>
-            <view class="top-title">客户信息</view>
-            <view class="min-border-bottom color-view"></view>
-            <view class="info-view min-flex min-flex-dir-top min-flex-align-top">
-              <view class="min-flex">
-                 <text class="user-name">客户姓名: {{name}}</text>
-              </view>
-              <view class="min-flex sec-view">
-                <text class="user-name">联系电话: {{phone}}</text>
-              </view>
-            </view>
-
-        </min-cell >
-
-        <min-cell class="top-view" v-for="(item,index) in list" :key='index'>
-             <min-cell-item title='营销信息'></min-cell-item>
-            <view class="min-border-bottom color-view"></view>
-            <min-cell-item
-              v-for="(item,index) in list" :key='index'
-              :img='item.headUrl'
-              :title='`${item.name} | ${item.position}`'
-              :label='item.phone'
-            ></min-cell-item>
-            <!-- <view class="min-flex min-flex-main-start btm-view">
-              <min-avatar size="sm" :url="item.headUrl"></min-avatar>
-              <view class="m-left-20">
-                <view class="m-top">{{item.name}}  |  {{item.position}}</view>
-                 <view class="f2"> {{item.phone}}</view>
-              </view>
-            </view> -->
-        </min-cell>
-        <view class="btn">
-          <min-btn :long='true'>下一步</min-btn>
-        </view>
+  <min-cell  class="top-view" :shadow='false'>
+    <view class="top-title">客户信息</view>
+    <view class="min-border-bottom color-view"></view>
+    <view class="info-view min-flex min-flex-dir-top min-flex-align-top">
+      <view class="min-flex sec-view">
+          <text class="user-name">客户姓名: {{name}}</text>
+      </view>
+      <view class="min-flex sec-view-btm">
+        <text class="user-name">联系电话: {{phone}}</text>
+      </view>
+    </view>
+  </min-cell>
+  <view class="mid-view-border"></view>
+  <min-cell class="top-view" v-for="(item,index) in list" :key='index'>
+    <min-cell-item title='营销信息'></min-cell-item>
+    <view class="min-border-bottom color-view"></view>
+    <min-cell-item
+      v-for="(item,index) in list" :key='index'
+      :img='item.headUrl'
+      :title='`${item.name} | ${item.position}`'
+      :label='item.phone'
+    ></min-cell-item>
+  </min-cell>
+  <view class="btn">
+    <min-btn :long='true'>下一步</min-btn>
+  </view>
 </view>
 </template>
 
@@ -60,6 +51,9 @@ export default {
   min-height: 100vh;
   overflow: hidden;
 }
+.mid-view-border{
+  margin-bottom: 20rpx;
+}
 .top-view{
   width: 690rpx;
   margin: 20rpx auto;
@@ -82,8 +76,10 @@ export default {
     margin-left: 20rpx;
     padding-top: 20rpx;
     .sec-view{
-      padding-top: 20rpx;
-      padding-bottom: 30rpx;
+      margin-bottom: 10rpx
+    }
+    .sec-view-btm{
+       margin-bottom: 30rpx
     }
     .user-name{
       font-size:28rpx;

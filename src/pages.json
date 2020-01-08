@@ -45,13 +45,28 @@
     {
       "path": "pages/stage-make/index",
       "style": {
-        "navigationBarTitleText": "预约开台"
+        "navigationBarTitleText": "预约开台",
+        "app-plus":{
+          "bounce":"none"
+        }
+      }
+    },
+    {
+      "path": "pages/add-userinfo/index",
+      "style": {
+        "navigationBarTitleText": "填写客户信息",
+        "app-plus":{
+           "bounce":"none"
+        }
       }
     },
     {
       "path": "pages/start-stage/index",
       "style": {
-        "navigationBarTitleText": "开台"
+        "navigationBarTitleText": "开台",
+        "app-plus":{
+          "bounce":"none"
+        }
       }
     },
     {

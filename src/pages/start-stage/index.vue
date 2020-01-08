@@ -1,27 +1,25 @@
 <template>
-    <view class="reservation-date p-lr-30 p-tb-20">
-
-      <view class="top-view-start bg-white radius-6 p-lr-16 min-flex min-flex-main-start" >
-            <view :class="isChecked ? 'checkbox-active':'checkbox'" @click="changeCheckbox"></view>
-            <text class="title-desc">自带客</text>
-      </view>
-
-      <min-cell class="main-view" :card="false">
-        <min-cell-item title='营销带客'></min-cell-item>
-        <view class="" >
-          <min-search placeholder="请输入营销姓名/手机号搜索" bgColor="#f7f7f7"></min-search>
-        </view>
-        <min-cell-item
-           v-for="(item,index) in list" :key='index'
-          :img='item.headUrl'
-          :title='`${item.name} | ${item.position}`'
-          :label='item.phone'
-          ></min-cell-item>
-      </min-cell>
-      <view class="btn">
-        <min-btn :long='true' @click="toAddUserInfo">下一步</min-btn>
-      </view>
+<view class="reservation-date p-lr-30 p-tb-20">
+  <view class="top-view-start bg-white radius-6 p-lr-16 min-flex min-flex-main-start" >
+    <view :class="isChecked ? 'checkbox-active':'checkbox'" @click="changeCheckbox"></view>
+    <text class="title-desc">自带客</text>
+  </view>
+  <min-cell class="main-view" :card="false">
+    <min-cell-item title='营销带客'></min-cell-item>
+    <view class="" >
+      <min-search placeholder="请输入营销姓名/手机号搜索" bgColor="#f7f7f7"></min-search>
     </view>
+    <min-cell-item
+      v-for="(item,index) in list" :key='index'
+      :img='item.headUrl'
+      :title='`${item.name} | ${item.position}`'
+      :label='item.phone'
+    ></min-cell-item>
+  </min-cell>
+  <view class="btn">
+    <min-btn :long='true' @click="toAddUserInfo">下一步</min-btn>
+  </view>
+</view>
 </template>
 
 <script>
@@ -35,7 +33,6 @@ export default {
         { headUrl: 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg', name: '林平之', position: '营销', phone: '15866666666' },
         { headUrl: 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg', name: '任我行', position: '营销', phone: '15866666666' },
         { headUrl: 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg', name: '令狐冲', position: '营销', phone: '15866666666' }
-
       ]
     }
   },
@@ -61,7 +58,6 @@ export default {
   margin-bottom: 20rpx
 }
 .main-view{
-  // height: 600rpx;
   margin-top: 20rpx
 }
 .min-search {
@@ -115,7 +111,6 @@ export default {
   height: 44rpx;
   border: 1rpx solid #ccc;
   border-radius: 50%;
-
 }
 .title-desc{
   padding-left: 20rpx
