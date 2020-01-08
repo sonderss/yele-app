@@ -1,5 +1,11 @@
 <template>
   <view>
+    <min-checkbox-group v-model="value">
+      <min-checkbox value="1"/>
+      <min-checkbox value="2"/>
+      <min-checkbox value="3"/>
+    </min-checkbox-group>
+    {{value}}
     <button v-for="(item, index) in pages" :key="index" @click="link(item.path)">{{item.style.navigationBarTitleText || '未设标题'}}</button>
   </view>
 </template>
@@ -8,7 +14,20 @@
 export default {
   data () {
     return {
+      value: ['1'],
       pages: [
+        {
+          path: 'pages/components-doc/index',
+          style: {
+            navigationBarTitleText: '组件使用说明'
+          }
+        },
+        {
+          path: 'pages/platform-detail/index',
+          style: {
+            navigationBarTitleText: '点单中'
+          }
+        },
         {
           path: 'pages/platform-detail/index',
           style: {
@@ -48,19 +67,28 @@ export default {
         {
           path: 'pages/stage-make/index',
           style: {
-            navigationBarTitleText: '预约开台'
-          }
-        },
-        {
-          path: 'pages/start-stage/index',
-          style: {
-            navigationBarTitleText: '开台'
+            navigationBarTitleText: '预约开台',
+            'app-plus': {
+              bounce: 'none'
+            }
           }
         },
         {
           path: 'pages/add-userinfo/index',
           style: {
-            navigationBarTitleText: '填写客户信息'
+            navigationBarTitleText: '填写客户信息',
+            'app-plus': {
+              bounce: 'none'
+            }
+          }
+        },
+        {
+          path: 'pages/start-stage/index',
+          style: {
+            navigationBarTitleText: '开台',
+            'app-plus': {
+              bounce: 'none'
+            }
           }
         },
         {
@@ -114,7 +142,7 @@ export default {
                 {
                   text: '申请记录',
                   fontSize: '28rpx',
-                  width: '130rpx'
+                  width: '200rpx'
                 }
               ]
             }

@@ -1,11 +1,11 @@
 <template>
   <view style="background: #fff;">
     <view class="min-goods-item">
-      <image class="min-goods-icon" :src="icon"/>
+      <image :class="[`min-goods-icon-${iconSize}`]" :src="icon"/>
       <view class="min-goods-content">
         <view class="min-goods-name">{{name}}</view>
-        <view class="min-goods-size" v-show="size">
-          {{size}}
+        <view class="min-goods-size" v-show="specification">
+          {{specification}}
           <view class="count" v-if="!stepper">x {{count}}</view>
         </view>
         <view class="min-goods-price">￥{{price}}</view>
@@ -24,6 +24,7 @@
 * price 价格
 * icon 图标链接
 * value/v-model 商品数量
+* iconSize 商品图标大小
 *
 *  -->
 <script>
@@ -41,9 +42,13 @@ export default {
       type: [String, Number],
       default: 0
     },
-    size: {
+    specification: {
       type: String,
       default: ''
+    },
+    iconSize: {
+      type: String,
+      default: 'medium'
     },
     value: {
       type: Number,
@@ -76,16 +81,27 @@ export default {
   display: flex;
   position: relative;
   .min-goods-icon{
-    flex-basis: 140rpx;
-    height: 140rpx;
+    &-large {
+      height: 180rpx;
+      flex: 0 0 180rpx;
+    }
+    &-medium {
+      height: 140rpx;
+      flex: 0 0 140rpx;
+    }
+    &-small {
+      height: 100rpx;
+      flex: 0 0 100rpx;
+    }
   }
   .min-goods-content{
-    flex-grow: 1;
+    flex: 1;
     display: block;
     padding-left: 20rpx;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    box-sizing: border-box;
     .min-goods-name{
       font-size: 28rpx;
     }

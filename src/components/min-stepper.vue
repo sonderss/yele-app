@@ -6,7 +6,8 @@
         @tap="less"
         class="min-less"
         :animation="animationLessInner"
-      ></view>
+      >
+      </view>
     </view>
     <input
       class="min-value" type="number"
@@ -28,8 +29,6 @@
 *
 * @change：回调事件
 *
-:class="value > min ? 'min-less-inner-enter' : 'min-less-inner-leave'"
-:class="value > min ? 'min-less-enter' : 'min-less-leave'"
 *  -->
 <script>
 export default {
@@ -128,28 +127,27 @@ export default {
     transform: translateX(116rpx);
     .min-less{
       height: 0;
-      padding: 22rpx 12rpx;
-      background:rgba(153,153,153,1);
-      border-radius:2px;
+      padding: 20rpx 10rpx;
+      background:#fff;
       border-radius: 100%;
+      border: 1px solid #f7f7f7;
+      box-sizing: border-box;
       &::before{
         content: "";
         display: inline-block;
         width: 20rpx;
         height: 4rpx;
-        background:#fff;
+        background:#bfbebe;
         vertical-align: top;
         margin-top: -2rpx;
 
       }
     }
   }
-
   .min-add{
     height: 0;
-    padding: 22rpx 12rpx;
+    padding: 20rpx 10rpx;
     background:rgba(255,50,7,1);
-    border-radius:2px;
     position: relative;
     border-radius: 100%;
     &::before{
@@ -169,8 +167,8 @@ export default {
       background:#fff;
       vertical-align: top;
       position: absolute;
-      top: 13rpx;
-      left: 20rpx;
+      top: 11rpx;
+      left: 18rpx;
     }
   }
   .min-value{

@@ -48,6 +48,12 @@ export default {
     text{
       color: #FF0000;
     }
+    &>view{
+      margin-bottom: 10rpx;
+      &:last-child{
+        margin: 0;
+      }
+    }
   }
   .btns{
     display: flex;

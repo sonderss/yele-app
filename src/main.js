@@ -17,6 +17,7 @@ import MinCell from '@/components/min-cell'
 import MinCellItem from '@/components/min-cell-item'
 import MinSearch from '@/components/min-search'
 import MinModal from '@/components/min-modal'
+import MinMessage from '@/components/min-message'
 import MinActionShee from '@/components/min-action-sheet'
 import MinStepper from '@/components/min-stepper'
 import MinGoodsSubmit from '@/components/min-goods-submit'
@@ -38,6 +39,7 @@ Vue.component('min-cell', MinCell)
 Vue.component('min-cell-item', MinCellItem)
 Vue.component('min-search', MinSearch)
 Vue.component('min-modal', MinModal)
+Vue.component('min-message', MinMessage)
 Vue.component('min-action-sheet', MinActionShee)
 Vue.component('min-stepper', MinStepper)
 Vue.component('min-goods-submit', MinGoodsSubmit)

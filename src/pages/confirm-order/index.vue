@@ -11,11 +11,11 @@
         <view class="goods-list p-top-10">
           <view class="p-tb-20" v-for="index in 3" :key="index">
             <min-goods-item
-              name="2020年元旦百威兄弟套餐12瓶"
+              name="2020年元旦百威兄弟套餐12瓶2020"
               price="2380.00"
               icon="/static/images/goods.png"
-              size="罐装*250ml*规格9/瓶"
-              value="3"
+              specification="罐装*250ml*规格9/瓶"
+              :value="3"
             >
             </min-goods-item>
           </view>
