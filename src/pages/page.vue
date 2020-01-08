@@ -58,6 +58,12 @@ export default {
           }
         },
         {
+          path: 'pages/add-userinfo/index',
+          style: {
+            navigationBarTitleText: '填写客户信息'
+          }
+        },
+        {
           path: 'pages/submit-success/index',
           style: {
             navigationBarTitleText: '提交成功'
