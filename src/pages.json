@@ -7,6 +7,21 @@
       }
     },
     {
+      "path": "pages/platform-admin/index",
+      "style": {
+        "navigationBarTitleText": "桌台管理",
+        "titleNView": {
+          "buttons": [
+            {
+              "text": "",
+              "fontSize": "16px",
+              "width": "70px"
+            }
+          ]
+        }
+      }
+    },
+    {
       "path": "pages/platform-detail/index",
       "style": {
         "navigationBarTitleText": "台详情"

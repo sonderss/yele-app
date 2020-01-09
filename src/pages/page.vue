@@ -1,5 +1,6 @@
 <template>
   <view>
+    <min-checkbox-group/>
     <button v-for="(item, index) in pages" :key="index" @click="link(item.path)">{{item.style.navigationBarTitleText || '未设标题'}}</button>
   </view>
 </template>
@@ -11,15 +12,15 @@ export default {
       value: ['1'],
       pages: [
         {
-          path: 'pages/components-doc/index',
+          path: 'pages/page',
           style: {
-            navigationBarTitleText: '组件使用说明'
+            navigationBarTitleText: '路由页面'
           }
         },
         {
-          path: 'pages/platform-detail/index',
+          path: 'pages/platform-admin/index',
           style: {
-            navigationBarTitleText: '点单中'
+            navigationBarTitleText: '桌台管理'
           }
         },
         {
@@ -61,34 +62,25 @@ export default {
         {
           path: 'pages/stage-make/index',
           style: {
-            navigationBarTitleText: '预约开台',
-            'app-plus': {
-              bounce: 'none'
-            }
+            navigationBarTitleText: '预约开台'
           }
         },
         {
           path: 'pages/add-userinfo/index',
           style: {
-            navigationBarTitleText: '填写客户信息',
-            'app-plus': {
-              bounce: 'none'
-            }
-          }
-        },
-        {
-          path: 'pages/start-stage/index',
-          style: {
-            navigationBarTitleText: '开台',
-            'app-plus': {
-              bounce: 'none'
-            }
+            navigationBarTitleText: '填写客户信息'
           }
         },
         {
           path: 'pages/order-make/index',
           style: {
             navigationBarTitleText: '预约'
+          }
+        },
+        {
+          path: 'pages/start-stage/index',
+          style: {
+            navigationBarTitleText: '开台'
           }
         },
         {
@@ -183,6 +175,9 @@ export default {
         }
       ]
     }
+  },
+  mounted () {
+    this.$store.commit('user/setTest', 123)
   },
   methods: {
     link (path) {
