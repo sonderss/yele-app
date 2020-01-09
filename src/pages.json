@@ -15,7 +15,7 @@
     {
       "path":"pages/platform-admin/index",
       "style": {
-        "navigationBarTitleText": "组件使用说明"
+        "navigationBarTitleText": "桌台管理"
       }
     },
     {
