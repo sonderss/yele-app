@@ -7,18 +7,9 @@
       }
     },
     {
-      "path": "pages/platform-admin/index",
+      "path":"pages/components-doc/index",
       "style": {
-        "navigationBarTitleText": "桌台管理",
-        "titleNView": {
-          "buttons": [
-            {
-              "text": "",
-              "fontSize": "16px",
-              "width": "70px"
-            }
-          ]
-        }
+        "navigationBarTitleText": "组件使用说明"
       }
     },
     {
