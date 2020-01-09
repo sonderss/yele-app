@@ -7,7 +7,7 @@
       </view>
       <min-cell class="m-top-20">
         <view class="title p-tb-30">营销带客</view>
-        <min-search placeholder="请输入营销姓名/手机号搜索" bgcolor="#f7f7f7"></min-search>
+        <min-search v-model="value" placeholder="请输入营销姓名/手机号搜索" bgcolor="#f7f7f7"></min-search>
         <min-cell-item
           v-for="(item,index) in list"
           :key="index"

@@ -21,11 +21,11 @@ export default {
     },
     title: {
       type: String,
-      default: ''
+      default: '备注'
     },
     placeholder: {
       type: String,
-      default: ''
+      default: '请输入备注信息...'
     }
   },
   methods: {

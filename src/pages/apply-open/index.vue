@@ -29,7 +29,7 @@
           <view class="item">联系电话：15016584603</view>
         </view>
       </view>
-    <min-remarks title='备注' placeholder='请输入备注信息...' v-model='value'></min-remarks>
+    <min-remarks v-model='value'></min-remarks>
     </view>
     <view class="btn-wrap">
       <min-btn shape="flat">提交申请</min-btn>

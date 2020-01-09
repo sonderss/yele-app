@@ -50,7 +50,7 @@
       <min-switch desc="是否当天生日" v-model="isShengri" ></min-switch>
     </min-cell>
     <view class="m-tb-20"></view>
-    <min-remarks title='备注' placeholder='请输入备注信息...' v-model='value'></min-remarks>
+    <min-remarks  v-model='value'></min-remarks>
     <view class="empty-view"></view>
     <view class="btn">
       <min-btn :long="true" @click="submit">提交</min-btn>
@@ -160,6 +160,6 @@ export default {
   left: 0;
 }
 .empty-view {
-  height: 320rpx;
+  height: 240rpx;
 }
 </style>

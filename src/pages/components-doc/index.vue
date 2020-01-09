@@ -1,10 +1,6 @@
 <template>
   <view class="components-doc m-lr-30 p-top-20">
-      <!-- <web-view :src='src'></web-view>
-      <min-btn>查看showdoc组件文档</min-btn>
-      <text>密码：123456</text> -->
-      <!-- <min-modal ref='test'></min-modal> -->
-
+     <web-view :src='src'></web-view>
   </view>
 </template>
 
@@ -13,14 +9,20 @@ export default {
   name: 'components-doc',
   data () {
     return {
-      src: ''
+      src: 'http://showdoc.yeleonline.com/web/#/15',
+      count: 0
+
     }
   },
   mounted () {
-
+    // this.$refs.test.open({
+    //   content: '123456'
+    // })
   },
   methods: {
-
+    // test () {
+    //   console.log(123)
+    // }
   }
 }
 </script>

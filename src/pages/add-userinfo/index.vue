@@ -16,7 +16,7 @@
       <min-switch desc="是否当天生日" v-model="isShengri"></min-switch>
     </min-cell>
     <view class="m-tb-20"></view>
-    <min-remarks title='备注' placeholder='请输入备注信息...' v-model='value'></min-remarks>
+    <min-remarks v-model='value'></min-remarks>
     <view class="btn">
       <min-btn :long="true" @click="next">下一步</min-btn>
     </view>
