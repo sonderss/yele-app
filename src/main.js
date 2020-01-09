@@ -33,6 +33,7 @@ import MinRadio from '@/components/min-radio'
 import MinPopup from '@/components/min-popup'
 import MinSwitch from '@/components/min-switch'
 import MinDescInput from '@/components/min-desc-input'
+import MinRemarks from '@/components/min-remarks'
 
 Vue.component('min-avatar', MinAvatar)
 Vue.component('min-btn', MinBtn)
@@ -56,6 +57,7 @@ Vue.component('min-radio', MinRadio)
 Vue.component('min-popup', MinPopup)
 Vue.component('min-switch', MinSwitch)
 Vue.component('min-desc-input', MinDescInput)
+Vue.component('min-remarks', MinRemarks)
 
 Vue.config.productionTip = false
 App.mpType = 'app'

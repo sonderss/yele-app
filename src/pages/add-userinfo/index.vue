@@ -16,13 +16,7 @@
       <min-switch desc="是否当天生日" v-model="isShengri"></min-switch>
     </min-cell>
     <view class="m-tb-20"></view>
-    <min-cell :card="false" class="desc-view">
-      <view class="m-left-16 p-top-30 m-bottom-30">备注</view>
-      <view class="content-desc">
-        <textarea class="o-input p-lr-10 p-top-10" type="text" />
-      </view>
-      <view class="btm-view"></view>
-    </min-cell>
+    <min-remarks title='备注' placeholder='请输入备注信息...' v-model='value'></min-remarks>
     <view class="btn">
       <min-btn :long="true" @click="next">下一步</min-btn>
     </view>
@@ -36,7 +30,8 @@ export default {
     return {
       isShengri: false,
       isPhone: '',
-      isName: ''
+      isName: '',
+      value: ''
     }
   },
   watch: {
@@ -65,29 +60,6 @@ export default {
   }
   .oinput1 {
     text-align: right;
-  }
-  .desc-view {
-    height: 320rpx;
-    padding-bottom: 20rpx;
-    .btm-view {
-      height: 20rpx;
-      background: #fff;
-    }
-    .content-desc {
-      width: 650rpx;
-      height: 200rpx;
-      background: rgba(247, 247, 247, 1);
-      border-radius: 10rpx;
-      margin: 0 auto;
-      .o-input {
-        overflow: hidden;
-        display: block;
-        width: 100%;
-        height: 100%;
-        line-height: 35rpx;
-        border: none;
-      }
-    }
   }
 }
 </style>

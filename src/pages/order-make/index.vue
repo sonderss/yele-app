@@ -47,20 +47,13 @@
         >{{i}}</view>
       </view>
       <view class="min-border-bottom"></view>
-      <min-switch desc="是否当天生日" v-model="isShengri"></min-switch>
+      <min-switch desc="是否当天生日" v-model="isShengri" ></min-switch>
     </min-cell>
-
     <view class="m-tb-20"></view>
-    <min-cell :card="false" class="desc-view">
-      <view class="m-left-16 p-top-30 m-bottom-30">备注</view>
-      <view class="content-desc">
-        <textarea class="o-input p-lr-10 p-top-10" type="text" />
-      </view>
-      <view class="btm-view"></view>
-    </min-cell>
+    <min-remarks title='备注' placeholder='请输入备注信息...' v-model='value'></min-remarks>
     <view class="empty-view"></view>
     <view class="btn">
-      <min-btn :long="true">提交</min-btn>
+      <min-btn :long="true" @click="submit">提交</min-btn>
     </view>
   </view>
 </template>
@@ -74,7 +67,8 @@ export default {
       nextCurrent: Number,
       isShengri: false,
       name: '',
-      phone: ''
+      phone: '',
+      value: ''
     }
   },
   methods: {
@@ -86,6 +80,10 @@ export default {
     chioceNext (n) {
       this.nextCurrent = n
       this.current = null
+    },
+    submit () {
+      // console.log(this.value)
+      // console.log(this.isShengri)
     }
   }
 }
@@ -152,32 +150,6 @@ export default {
     }
     .chioce-date-item-active:nth-child(5n) {
       margin: 0;
-    }
-  }
-}
-.test {
-  margin: 0;
-  padding: 0;
-}
-.desc-view {
-  height: 320rpx;
-  .btm-view {
-    height: 20rpx;
-    background: #fff;
-  }
-  .content-desc {
-    width: 650rpx;
-    height: 200rpx;
-    background: rgba(247, 247, 247, 1);
-    border-radius: 10rpx;
-    margin: 0 auto;
-    .o-input {
-      overflow: hidden;
-      display: block;
-      width: 100%;
-      height: 100%;
-      line-height: 35rpx;
-      border: none;
     }
   }
 }

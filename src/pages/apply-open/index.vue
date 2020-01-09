@@ -29,14 +29,7 @@
           <view class="item">联系电话：15016584603</view>
         </view>
       </view>
-      <view class="reason-wrap m-top-20 p-lr-20 p-tb-20">
-        <view class="p-bottom-30">申请原因</view>
-        <textarea
-          class="reason"
-          placeholder="请输入申请原因"
-          placeholder-style="font-size:28rpx"
-        />
-      </view>
+    <min-remarks title='备注' placeholder='请输入备注信息...' v-model='value'></min-remarks>
     </view>
     <view class="btn-wrap">
       <min-btn shape="flat">提交申请</min-btn>
@@ -46,7 +39,12 @@
 
 <script>
 export default {
-  name: 'apply-open'
+  name: 'apply-open',
+  data () {
+    return {
+      value: ''
+    }
+  }
 }
 
 </script>
@@ -78,18 +76,6 @@ export default {
           margin: 0;
         }
       }
-    }
-  }
-  .reason-wrap{
-    background: #fff;
-    border-radius:10rpx;
-    .reason{
-      width: 100%;
-      height: 200rpx;
-      background:#f7f7f7;
-      padding: 20rpx;
-      border-radius:10rpx;
-      box-sizing: border-box;
     }
   }
   .btn-wrap{
