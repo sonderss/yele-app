@@ -1,8 +1,14 @@
 <template>
-<view class="min-switch p-lr-30 p-tb-20 min-flex min-flex-main-between">
-  <text>{{desc}}</text>
-  <switch  :checked="value" @change='change' :disabled="disabled" :color="color" style="transform: scale(0.7,0.7)" />
-</view>
+  <view class="min-switch p-lr-30 p-tb-20 min-flex min-flex-main-between">
+    <text>{{desc}}</text>
+    <switch
+      :checked="value"
+      @change="change"
+      :disabled="disabled"
+      :color="color"
+      style="transform: scale(0.7,0.7)"
+    />
+  </view>
 </template>
 
 <script>
@@ -36,10 +42,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.min-switch{
+.min-switch {
   height: 98rpx;
   font-size: 28rpx;
   margin: 0;
-  padding: 0
+  padding: 0;
 }
 </style>
