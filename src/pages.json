@@ -13,6 +13,12 @@
       }
     },
     {
+      "path":"pages/platform-admin/index",
+      "style": {
+        "navigationBarTitleText": "组件使用说明"
+      }
+    },
+    {
       "path": "pages/platform-detail/index",
       "style": {
         "navigationBarTitleText": "台详情"
