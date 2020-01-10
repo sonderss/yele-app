@@ -6,11 +6,12 @@
       'min-btn-shape-' + shape,
       'min-btn-type-' + type,
       'min-btn-size-' + size,
+      'min-btn-hover-' + opacity,
       border ? 'min-btn-border': '',
       hairline && !long ? 'min-btn-hairline' : '',
       disabled ? 'min-btn-disabled' : ''
     ]"
-    hover-class="min-btn-hover"
+    :hover-class="opacity ? 'min-btn-hover' : 'min-btn-opacity-none' "
     @click="handleClick"
   >
     <slot></slot>
@@ -52,6 +53,10 @@ export default {
     border: {
       type: Boolean,
       default: false
+    },
+    opacity: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {
@@ -107,8 +112,15 @@ export default {
     border-radius: 4px;
     border: none;
   }
-  &-hover {
+  &-hover{
     opacity: 0.7;
+  }
+  &-opacity-none {
+    box-shadow: 0 2px #bebebe;
+    -webkit-transform: translateY(2px);
+    -ms-transform: translateY(2px);
+    -moz-tranform: translateY(2px);
+    transform: translateY(2px);
   }
   &-shape-circle {
     border-radius: 1000rpx;

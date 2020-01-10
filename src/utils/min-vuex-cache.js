@@ -14,7 +14,6 @@ function minVuexCache ({ key = 'minvuexcache', localStorage = [] }) {
     store.subscribe((mutation, state) => {
       let localData = {}
       Object.keys(state).forEach(item => {
-        console.log(localStorage)
         if (localStorage.includes(item)) {
           localData = Object.assign({}, localData, { [item]: state[item] })
         }

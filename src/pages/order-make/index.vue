@@ -20,11 +20,11 @@
       <min-desc-input desc="客户姓名" v-model="name" sign="*" placeholder="请输入姓名" value="刘青松"></min-desc-input>
       <min-desc-input desc="联系电话" v-model="phone" sign="*" placeholder="请输入联系电话"></min-desc-input>
       <view class="min-flex min-flex-main-between f28 min-border-bottom">
-        <min-desc-input sign="*" desc="预约时间" value placeholder="请选择预约日期" :disabled="true"></min-desc-input>
+        <min-desc-input sign="*" desc="预约时间" :value='appointmentDate' placeholder="请选择预约日期" :disabled="true"></min-desc-input>
         <img class="right-arrow p-left-10" src="../../static/images/arrow.png" />
       </view>
       <view class="min-flex min-flex-main-between f28">
-        <min-desc-input desc="预抵时间" sign="*" value placeholder="请选择到店日期" :disabled="true"></min-desc-input>
+        <min-desc-input desc="预抵时间" sign="*"  :value='shopDate' placeholder="请选择到店日期" :disabled="true"></min-desc-input>
         <img class="right-arrow p-left-10" src="../../static/images/downarrow24.png" />
       </view>
       <view class="chioce-date">
@@ -53,7 +53,7 @@
     <min-remarks  v-model='value'></min-remarks>
     <view class="empty-view"></view>
     <view class="btn">
-      <min-btn :long="true" @click="submit">提交</min-btn>
+      <min-btn :long="true" @click="submit" :opacity='false'>提交</min-btn>
     </view>
   </view>
 </template>
@@ -68,7 +68,14 @@ export default {
       isShengri: false,
       name: '',
       phone: '',
-      value: ''
+      value: '',
+      shopDate: '',
+      appointmentDate: ''
+    }
+  },
+  watch: {
+    name (a) {
+      console.log(a)
     }
   },
   methods: {
@@ -76,14 +83,17 @@ export default {
       // console.log(n)
       this.current = n
       this.nextCurrent = null
+      this.shopDate = this.date[n]
     },
     chioceNext (n) {
       this.nextCurrent = n
       this.current = null
+      this.shopDate = this.date[n]
     },
     submit () {
       // console.log(this.value)
       // console.log(this.isShengri)
+      this.$router.push(['navigateTo', 'pages/platform-history/index', '123'])
     }
   }
 }

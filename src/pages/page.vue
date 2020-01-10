@@ -12,7 +12,7 @@ export default {
       value: ['1'],
       pages: [
         {
-          path: 'pages/page',
+          path: 'pages/components-doc/index',
           style: {
             navigationBarTitleText: '路由页面'
           }
