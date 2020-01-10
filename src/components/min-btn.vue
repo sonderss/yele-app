@@ -6,7 +6,6 @@
       'min-btn-shape-' + shape,
       'min-btn-type-' + type,
       'min-btn-size-' + size,
-      'min-btn-hover-' + opacity,
       border ? 'min-btn-border': '',
       hairline && !long ? 'min-btn-hairline' : '',
       disabled ? 'min-btn-disabled' : ''
