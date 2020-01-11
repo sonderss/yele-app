@@ -66,59 +66,58 @@ export default {
 </script>
 <style lang="scss" scoped>
 .min-collapse{
+  .right-arrow{
+    width: 24rpx;
+    height: 24rpx;
+    padding-top: 5rpx;
+    transform: rotate(90deg);
+  }
+  .right-arrow-a{
+    transform:rotate(7deg);
+  }
+  .card{
+    background: #fff;
+    border: none;
+  }
+  .content{
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    .chioce-date-item {
+      width: 112rpx;
+      height: 58rpx;
+      border: 1rpx solid #e7e7e7;
+      border-radius: 10rpx;
+      font-size: 28rpx;
+      text-align: center;
+      line-height: 58rpx;
+      display: block;
+    }
+    .chioce-date-item:nth-child(5n) {
+      margin: 0;
+    }
+    .chioce-date-item-active{
+      width: 112rpx;
+      height: 58rpx;
+      background: rgba(255, 224, 1, 1);
+      border-radius: 10rpx;
+      font-size: 28rpx;
+      text-align: center;
+      line-height: 58rpx;
+    }
+    .chioce-date-item-active:nth-child(5n) {
+      margin: 0;
+    }
+  }
+  .show{
+    height: 0;
+  }
+  .animation {
+    transition-property: all;
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
+  }
+}
 
-}
-.right-arrow {
-  width: 24rpx;
-  height: 24rpx;
-  padding-top: 5rpx;
-  transform: rotate(90deg);
-}
-.right-arrow-a{
-  transform:rotate(7deg);
-}
-.card{
-  background: #fff;
-  border: none;
-}
-.content{
-  overflow: hidden;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-
-}
-.show{
-  height: 0;
-}
-.animation {
-  transition-property: all;
-  transition-duration: 0.5s;
-  transition-timing-function: ease;
-}
-.chioce-date-item {
-  width: 112rpx;
-  height: 58rpx;
-  border: 1rpx solid #e7e7e7;
-  border-radius: 10rpx;
-  font-size: 28rpx;
-  text-align: center;
-  line-height: 58rpx;
-  display: block;
-}
-.chioce-date-item:nth-child(5n) {
-    margin: 0;
-}
-.chioce-date-item-active{
-  width: 112rpx;
-  height: 58rpx;
-  background: rgba(255, 224, 1, 1);
-  border-radius: 10rpx;
-  font-size: 28rpx;
-  text-align: center;
-  line-height: 58rpx;
-}
-.chioce-date-item-active:nth-child(5n) {
-  margin: 0;
-}
 </style>
