@@ -37,7 +37,10 @@
 
 <script>
 export default {
-  name: 'platform-history'
+  name: 'platform-history',
+  mounted () {
+    // console.log(this.$route.params.abc)
+  }
 }
 
 </script>

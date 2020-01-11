@@ -36,6 +36,12 @@ export default {
           }
         },
         {
+          path: 'pages/order-make/test',
+          style: {
+            navigationBarTitleText: '测试页面'
+          }
+        },
+        {
           path: 'pages/confirm-order/index',
           style: {
             navigationBarTitleText: '确认订单'

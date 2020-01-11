@@ -19,6 +19,12 @@
       }
     },
     {
+      "path":"pages/order-make/test",
+      "style": {
+        "navigationBarTitleText": "测试页面"
+      }
+    },
+    {
       "path": "pages/platform-detail/index",
       "style": {
         "navigationBarTitleText": "台详情"

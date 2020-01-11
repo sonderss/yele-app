@@ -1,6 +1,6 @@
 <template>
   <view class="min-desc-input">
-    <view class="min-view-item min-flex min-flex-main-between f28 min-border-bottom">
+    <view :class="border ? 'min-view-item min-flex min-flex-main-between f28 min-border-bottom' :'min-view-item min-flex min-flex-main-between f28'">
       <text class="desc-width">{{sign}}{{desc}}</text>
       <input
         class="oinput"
@@ -41,6 +41,10 @@ export default {
     maxlength: {
       type: Number,
       default: 11
+    },
+    border: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {

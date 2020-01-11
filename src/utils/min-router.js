@@ -75,6 +75,7 @@ class MinRouter {
     }
 
     this._next(arg).then(res => {
+      console.log(res)
       switch (true) {
         case Check.isUndefined(res):
           this._push(arg)

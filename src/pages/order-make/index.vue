@@ -23,11 +23,11 @@
         <min-desc-input sign="*" desc="预约时间" :value='appointmentDate' placeholder="请选择预约日期" :disabled="true"></min-desc-input>
         <img class="right-arrow p-left-10" src="../../static/images/arrow.png" />
       </view>
-      <view class="min-flex min-flex-main-between f28">
-        <min-desc-input desc="预抵时间" sign="*"  :value='shopDate' placeholder="请选择到店日期" :disabled="true"></min-desc-input>
+      <!-- <view class="min-flex min-flex-main-between f28">
+        <min-desc-input desc="预抵时间" sign="*"  :border="false" :value='shopDate' placeholder="请选择到店日期" :disabled="true"></min-desc-input>
         <img class="right-arrow p-left-10" src="../../static/images/downarrow24.png" />
-      </view>
-      <view class="chioce-date">
+      </view> -->
+      <!-- <view class="chioce-date">
         <view
           class="m-bottom-20 m-right-20"
           :class="current === n ? 'chioce-date-item-active' : 'chioce-date-item'"
@@ -35,8 +35,9 @@
           :key="n"
           @click="chioce(n)"
         >{{i}}</view>
-      </view>
-      <text class="m-bottom-20" style="display:block">凌晨</text>
+      </view> -->
+       <min-collapse :list="date"  v-model="tsetvalue" ></min-collapse>
+      <!-- <text class="m-bottom-20" style="display:block">凌晨</text>
       <view class="chioce-date">
         <view
           class="m-bottom-20 m-right-20"
@@ -45,7 +46,7 @@
           :class="nextCurrent === n ? 'chioce-date-item-active' : 'chioce-date-item'"
           @click="chioceNext(n)"
         >{{i}}</view>
-      </view>
+      </view> -->
       <view class="min-border-bottom"></view>
       <min-switch desc="是否当天生日" v-model="isShengri" ></min-switch>
     </min-cell>
@@ -64,18 +65,14 @@ export default {
     return {
       date: ['8:00', '23:00', '9:00', '20:00', '20:00', '20:00', '20:00'],
       current: Number,
-      nextCurrent: Number,
+      // nextCurrent: Number,
       isShengri: false,
       name: '',
       phone: '',
       value: '',
       shopDate: '',
-      appointmentDate: ''
-    }
-  },
-  watch: {
-    name (a) {
-      console.log(a)
+      appointmentDate: '',
+      tsetvalue: ''
     }
   },
   methods: {
@@ -85,15 +82,27 @@ export default {
       this.nextCurrent = null
       this.shopDate = this.date[n]
     },
-    chioceNext (n) {
-      this.nextCurrent = n
-      this.current = null
-      this.shopDate = this.date[n]
-    },
+    // chioceNext (n) {
+    //   this.nextCurrent = n
+    //   this.current = null
+    //   this.shopDate = this.date[n]
+    // },
     submit () {
       // console.log(this.value)
       // console.log(this.isShengri)
-      this.$router.push(['navigateTo', 'pages/platform-history/index', '123'])
+      // const path = {
+      //   path: '/pages/platform-history/index',
+      //   type: 'navigateTo',
+      //   params: { abc: '123' }
+      // }
+      // console.log(this.$minRouter)
+      // this.$router.push(path)
+      // this.$minRouter.beforeEach((to, from, next) => {
+      //   // this.$router.push(path)
+      //   console.log(123)
+      //   next(true)
+      // })
+      console.log(this.tsetvalue)
     }
   }
 }
