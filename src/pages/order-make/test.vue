@@ -1,27 +1,16 @@
 <template>
-  <view>
-      <min-collapse :list="list" v-model="tsetvalue" :isNotitle="true"></min-collapse>
-  </view>
+<view class="min-collapse">
+  <min-collapse :list='data' desc='左侧文字' placeholder="描述"></min-collapse>
+</view>
 </template>
 <script>
 export default {
   data () {
     return {
-      list: ['8:00', '23:00', '9:00', '20:00', '20:00', '20:00', '20:00', '8:00', '23:00', '9:00', '20:00', '20:00', '8:00', '23:00', '9:00'],
-      tsetvalue: ''
+      data: 'qwewqewq'
     }
-  },
-  watch: {
-    tsetvalue (a) {
-      console.log(a)
-    }
-  },
-  mounted () {
-    // const num = this.list.length / 5
-    console.log(Math.round(this.list.length / 5) + 1)
   }
 }
 </script>
-<style lang="scss" scoped>
-
+<style>
 </style>

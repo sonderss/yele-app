@@ -28,7 +28,7 @@ export default {
   name: 'add-userinfo',
   data () {
     return {
-      isShengri: false,
+      isShengri: true,
       isPhone: '',
       isName: '',
       value: ''
