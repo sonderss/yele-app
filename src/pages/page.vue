@@ -36,12 +36,6 @@ export default {
           }
         },
         {
-          path: 'pages/order-make/test',
-          style: {
-            navigationBarTitleText: '测试页面'
-          }
-        },
-        {
           path: 'pages/confirm-order/index',
           style: {
             navigationBarTitleText: '确认订单'
@@ -63,6 +57,12 @@ export default {
           path: 'pages/reservation-success/index',
           style: {
             navigationBarTitleText: '订台成功'
+          }
+        },
+        {
+          path: 'pages/liquor-code/index',
+          style: {
+            navigationBarTitleText: '验证码取酒'
           }
         },
         {
@@ -111,6 +111,12 @@ export default {
           path: 'pages/verify-name/index',
           style: {
             navigationBarTitleText: '实名认证'
+          }
+        },
+        {
+          path: 'pages/select-customers/index',
+          style: {
+            navigationBarTitleText: '客户选择'
           }
         },
         {

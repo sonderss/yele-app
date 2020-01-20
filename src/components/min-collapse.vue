@@ -1,10 +1,10 @@
 <template>
 <view class="min-collapse">
   <view class="card" >
-      <view class="min-flex min-flex-main-between f28" @click="test" >
-        <min-desc-input :desc="desc" v-model="value" :sign="sign" :border="border"  :placeholder="placeholder" :disabled="disabled"></min-desc-input>
+      <view class="" @click="test" >
+        <min-desc-input :desc="desc" :value="value" :sign="sign" :border="border" :isRightRrrow="true" :animation="isShow" :placeholder="placeholder" :disabled="disabled"></min-desc-input>
         <!-- <image class="right-arrow p-left-10"  :src="isShow ? '../../static/images/downarrow24.png' : '../../static/images/arrow.png'" /> -->
-        <image class="right-arrow p-left-10"  :class="isShow ? 'animation' : 'right-arrow-a animation' "  src="../../static/images/arrow.png" />
+        <!-- <image class="right-arrow p-left-10"  :class="isShow ? 'animation' : 'right-arrow-a animation' "  src="../../static/images/arrow.png" /> -->
       </view>
       <view v-if="isArray">
         <view class="content"  :class="isShow ? 'animation': 'show animation' "  :style="{'height':isShow? `${list.length%5 == 0 ? list.length / 5 : Math.round(list.length/5) + 1}00`-50+'rpx' :'0'}">
@@ -27,8 +27,7 @@
 export default {
   props: {
     list: {
-      type: [Array, String, Number],
-      default: () => []
+      type: [Array, String, Number]
     },
     desc: {
       type: String,
@@ -72,6 +71,7 @@ export default {
       this.isShow = !this.isShow
     },
     chioce (n) {
+      console.log(n)
       this.current = n
       this.value = this.list[n]
       this.$emit('input', this.list[n])
@@ -151,6 +151,13 @@ export default {
     transition-duration: 0.5s;
     transition-timing-function: ease;
   }
+  .right-view{
+    width: 100%;
+    background: #f00;
+      display: flex;
+      justify-content:flex-end;
+      align-items: center;
+    }
 }
 
 </style>

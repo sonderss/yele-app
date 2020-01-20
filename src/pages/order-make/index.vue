@@ -17,12 +17,12 @@
     </min-cell>
     <view class="m-tb-20"></view>
     <min-cell class="mid-view" :card="false">
-      <min-desc-input desc="客户姓名" v-model="name" sign="*" placeholder="请输入姓名" value="刘青松"></min-desc-input>
+      <min-desc-input desc="客户姓名" v-model="name" sign="*" placeholder="请输入姓名" ></min-desc-input>
       <min-desc-input desc="联系电话" v-model="phone" sign="*" placeholder="请输入联系电话"></min-desc-input>
-      <view class="min-flex min-flex-main-between f28 min-border-bottom">
-        <min-desc-input sign="*" desc="预约时间" :value='appointmentDate' placeholder="请选择预约日期" :disabled="true"></min-desc-input>
-        <img class="right-arrow p-left-10" src="../../static/images/arrow.png" />
-      </view>
+      <!-- <view class="min-flex min-flex-main-between f28 min-border-bottom" > -->
+        <min-desc-input sign="*" desc="预约时间" :isRightRrrow="true"   placeholder="请选择预约日期" :disabled="true"></min-desc-input>
+        <!-- <img class="right-arrow p-left-10" src="../../static/images/arrow.png" /> -->
+      <!-- </view> -->
       <!-- <view class="min-flex min-flex-main-between f28">
         <min-desc-input desc="预抵时间" sign="*"  :border="false" :value='shopDate' placeholder="请选择到店日期" :disabled="true"></min-desc-input>
         <img class="right-arrow p-left-10" src="../../static/images/downarrow24.png" />
@@ -51,10 +51,10 @@
       <min-switch desc="是否当天生日" v-model="isShengri" ></min-switch>
     </min-cell>
     <view class="m-tb-20"></view>
-    <min-remarks  v-model='value'></min-remarks>
+    <min-remarks  v-model='value' @click="click" @blur="blur"></min-remarks>
     <view class="empty-view"></view>
-    <view class="btn">
-      <min-btn :long="true" @click="submit" :opacity='false'>提交</min-btn>
+    <view class="btn" v-if="table">
+      <min-btn :long="true" @click.stop="submit" :opacity='false' >提交</min-btn>
     </view>
   </view>
 </template>
@@ -71,9 +71,25 @@ export default {
       phone: '',
       value: '',
       shopDate: '',
-      appointmentDate: '',
-      tsetvalue: ''
+      tsetvalue: '',
+      windowHeight: '',
+      table: true
     }
+  },
+  onLoad () {
+    uni.getSystemInfo({
+      // eslint-disable-next-line no-irregular-whitespace
+      success: (res) => {
+        this.windowHeight = res.windowHeight
+      }
+    })
+    uni.onWindowResize((res) => {
+      if (res.size.windowHeight < this.windowHeight) {
+        this.table = false
+      } else {
+        this.table = true
+      }
+    })
   },
   methods: {
     chioce (n) {
@@ -102,7 +118,14 @@ export default {
       //   console.log(123)
       //   next(true)
       // })
-      console.log(this.tsetvalue)
+      // console.log(this.name, this.phone, this.tsetvalue)
+    },
+    click () {
+      this.table = false
+    },
+    blur () {
+      console.log(this.table)
+      this.table = true
     }
   }
 }
@@ -171,10 +194,11 @@ export default {
       margin: 0;
     }
   }
+  position: relative;
 }
 .btn {
   width: 100%;
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
 }
