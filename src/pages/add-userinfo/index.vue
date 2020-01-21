@@ -7,6 +7,7 @@
         img="http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg"
         title="林平之 | 营销"
         label="15833336666"
+        :border="false"
       ></min-cell-item>
     </min-cell>
     <view class="m-tb-20"></view>
@@ -33,6 +34,9 @@ export default {
       isName: '',
       value: ''
     }
+  },
+  mounted () {
+    // console.log(this.$route.params.name)
   },
   watch: {
     isPhone (a) {

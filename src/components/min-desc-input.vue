@@ -2,15 +2,20 @@
   <view class="min-desc-input">
     <view :class="border ? 'min-view-item min-flex min-flex-main-between f28 min-border-bottom' :'min-view-item min-flex min-flex-main-between f28'">
       <text class="desc-width">{{sign}}{{desc}}</text>
-      <input
-        class="oinput"
-        type="text"
-        :placeholder="placeholder"
-        :maxlength="maxlength"
-        @input="input"
-        v-model="value"
-        :disabled="disabled"
-      />
+      <view class="right-view">
+        <input
+          class="oinput"
+          type="text"
+          :placeholder="placeholder"
+          :maxlength="maxlength"
+          @input="input"
+          :value='value'
+          :disabled="disabled"
+        />
+        <!--  :class="animation ? 'animation' : 'right-arrow-a animation' " -->
+        <img class="right-arrow p-left-10" v-if="isRightRrrow"  :class="animation ? 'right-arrow-a animation' : 'animation' "  src="../static/images/arrow.png" />
+      </view>
+
     </view>
   </view>
 </template>
@@ -26,10 +31,6 @@ export default {
       type: String,
       default: '请输入信息'
     },
-    value: {
-      type: String,
-      default: ''
-    },
     disabled: {
       type: Boolean,
       default: false
@@ -42,9 +43,20 @@ export default {
       type: Number,
       default: 11
     },
+    value: {
+      type: String,
+      default: ''
+    },
     border: {
       type: Boolean,
       default: true
+    },
+    isRightRrrow: {
+      type: Boolean,
+      default: false
+    },
+    animation: {
+      type: Boolean
     }
   },
   methods: {
@@ -66,6 +78,8 @@ export default {
     .oinput {
       text-align: right;
       line-height: 98rpx;
+      height: 98rpx;
+      display: block;
     }
     .ophone {
       padding-right: 34rpx;
@@ -78,6 +92,19 @@ export default {
     .desc-width {
       width: 200rpx;
     }
+    .right-view{
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  }
+  .right-arrow-a{
+    transform:rotate(90deg);
+  }
+  .animation {
+    transition-property: all;
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
   }
 }
 </style>

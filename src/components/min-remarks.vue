@@ -7,6 +7,8 @@
           :placeholder="placeholder"
           placeholder-style="font-size:28rpx"
           @input='input'
+          @click="click"
+          @blur="blur"
         />
       </view>
   </view>
@@ -31,6 +33,12 @@ export default {
   methods: {
     input (e) {
       this.$emit('input', e.detail.value)
+    },
+    click () {
+      this.$emit('click')
+    },
+    blur () {
+      this.$emit('blur')
     }
   }
 }

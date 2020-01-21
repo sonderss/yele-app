@@ -49,9 +49,15 @@
       }
     },
     {
-      "path":"pages/order-make/test",
+      "path":"pages/select-customers/index",
       "style": {
-        "navigationBarTitleText": "测试页面"
+        "navigationBarTitleText": "客户选择"
+      }
+    },
+    {
+      "path":"pages/liquor-code/index",
+      "style": {
+        "navigationBarTitleText": "验证码取酒"
       }
     },
     {
