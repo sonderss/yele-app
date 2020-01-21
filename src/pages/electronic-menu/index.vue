@@ -7,18 +7,26 @@
         </min-sidebar>
       </scroll-view>
       <scroll-view class="goods-wrap" scroll-y @scroll="goodsScroll">
-        <min-goods class="goods-dom" :title="category.title" :key="i" v-for="(category, i) in goodsList">
-          <min-goods-item
-            :key="j" v-for="(goods, j) in category.goods"
-            :name="goods.name"
-            :price="goods.price"
-            :icon="goods.icon"
-            :specification="goods.specification"
-            :value="3"
-          />
+        <min-goods class="goods-dom p-lr-30" :title="category.title" :key="i" v-for="(category, i) in goodsList">
+          <view class="goods-item-wrap p-top-20" :key="j" v-for="(goods, j) in category.goods">
+            <min-goods-item
+              :name="goods.name"
+              :price="goods.price"
+              :icon="goods.icon"
+              v-model="count"
+              stepper
+            />
+          </view>
         </min-goods>
       </scroll-view>
     </view>
+    <min-goods-submit
+      totalAmount="999"
+      totalLabel="台位抵消：￥1000"
+      icon="/static/images/alipay-pay.png"
+      goodsCount="3"
+      buttonText="去下单(已开台)"
+    />
   </view>
 </template>
 
@@ -26,6 +34,7 @@
 export default {
   data() {
     return {
+      count: 0, // 已选商品数量
       category: 0,
       goodsList: [
         {
@@ -396,6 +405,7 @@ export default {
   .goods-wrap{
     flex: 1;
     height: 100%;
+    background: #fff;
   }
 }
 </style>

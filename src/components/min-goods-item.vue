@@ -7,6 +7,7 @@
         <view class="min-goods-name">{{name}}</view>
         <view class="min-goods-size" v-show="specification">
           {{specification}}
+          <view></view>
           <view class="count" v-if="!stepper">x {{count}}</view>
         </view>
         <view class="min-goods-price">￥{{price}}</view>
@@ -28,6 +29,7 @@
 * value/v-model 商品数量
 * iconSize 商品图标大小
 * produced 商品是否已出品
+* stepper 是否显示计步器
 *
 *  -->
 <script>

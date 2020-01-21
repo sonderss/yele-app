@@ -111,6 +111,8 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 0 20rpx;
+    box-sizing: border-box;
     .min-text{
       font-size: 32rpx;
     }
