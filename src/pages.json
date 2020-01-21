@@ -7,6 +7,36 @@
       }
     },
     {
+      "path":"pages/order-detail/index",
+      "style": {
+        "navigationBarTitleText": "订单详情"
+      }
+    },
+    {
+      "path":"pages/storing-liquor-detail/index",
+      "style": {
+        "navigationBarTitleText": "存酒详情"
+      }
+    },
+    {
+      "path":"pages/change-platform/index",
+      "style": {
+        "navigationBarTitleText": "转台"
+      }
+    },
+    {
+      "path":"pages/fetch-liquor/index",
+      "style": {
+        "navigationBarTitleText": "取酒"
+      }
+    },
+    {
+      "path":"pages/electronic-menu/index",
+      "style": {
+        "navigationBarTitleText": "电子菜单"
+      }
+    },
+    {
       "path":"pages/components-doc/index",
       "style": {
         "navigationBarTitleText": "组件使用说明"

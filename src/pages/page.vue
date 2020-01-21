@@ -1,20 +1,51 @@
 <template>
   <view>
-    <min-checkbox-group/>
     <button v-for="(item, index) in pages" :key="index" @click="link(item.path)">{{item.style.navigationBarTitleText || '未设标题'}}</button>
   </view>
 </template>
 
 <script>
+import MinSocket from '../utils/min-socket'
+
 export default {
   data () {
     return {
-      value: ['1'],
+      count: 0,
       pages: [
         {
           path: 'pages/components-doc/index',
           style: {
             navigationBarTitleText: '路由页面'
+          }
+        },
+        {
+          "path": "pages/order-detail/index",
+          "style": {
+            "navigationBarTitleText": "订单详情"
+          }
+        },
+        {
+          "path":"pages/storing-liquor-detail/index",
+          "style": {
+            "navigationBarTitleText": "存酒详情"
+          }
+        },
+        {
+          "path":"pages/change-platform/index",
+          "style": {
+            "navigationBarTitleText": "转台"
+          }
+        },
+        {
+          path: "pages/fetch-liquor/index",
+          style: {
+            navigationBarTitleText: "取酒"
+          }
+        },
+        {
+          path: "pages/electronic-menu/index",
+          style: {
+            navigationBarTitleText: "电子菜单"
           }
         },
         {
@@ -183,7 +214,20 @@ export default {
     }
   },
   mounted () {
-    this.$store.commit('user/setTest', 123)
+    const socket = new MinSocket()
+    socket.createSocket()
+    socket.socketOpen().then(res => {
+      // console.log(res)
+      socket.sendSocketMessage({
+        apiAuth: '123456',
+        clientType: 'store_app'
+      }).then(res => {
+        console.log('发送数据：', res)
+      })
+      socket.socketMonitor().then(res => {
+        console.log(res)
+      })
+    })
   },
   methods: {
     link (path) {
@@ -196,5 +240,5 @@ export default {
 
 </script>
 
-<style>
+<style lang="scss" scoped>
 </style>

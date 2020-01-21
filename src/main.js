@@ -35,6 +35,7 @@ import MinSwitch from '@/components/min-switch'
 import MinDescInput from '@/components/min-desc-input'
 import MinRemarks from '@/components/min-remarks'
 import minCollapse from '@/components/min-collapse'
+import MinSlider from '@/components/min-slider'
 
 Vue.component('min-avatar', MinAvatar)
 Vue.component('min-btn', MinBtn)
@@ -60,6 +61,7 @@ Vue.component('min-switch', MinSwitch)
 Vue.component('min-desc-input', MinDescInput)
 Vue.component('min-remarks', MinRemarks)
 Vue.component('min-collapse', minCollapse)
+Vue.component('min-slider', MinSlider)
 
 Vue.config.productionTip = false
 App.mpType = 'app'

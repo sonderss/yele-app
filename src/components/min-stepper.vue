@@ -1,7 +1,7 @@
 <template>
 <view style="display: inline-block;vertical-align: bottom;">
   <view class="min-sunui-stepper">
-    <view class="min-less-wrap" :animation="animationLess">
+    <view class="min-less-wrap" :class="{'isAnimation': isAnimation}" :animation="animationLess">
       <view
         @tap="less"
         class="min-less"
@@ -9,11 +9,12 @@
       >
       </view>
     </view>
-    <input
+    <!-- <input
       class="min-value" type="number"
-      :value="value > min ? stepperCacheNum : ''" @input="iptVal"
+      :value="(value > min || !isAnimation) ? stepperCacheNum : ''" @input="iptVal"
       :disabled="true"
-    />
+    /> -->
+    <view class="min-value">{{ (value > min || !isAnimation) ? stepperCacheNum : '' }}{{ unit }}</view>
     <view @tap="add" class="min-add"></view>
   </view>
 </view>
@@ -25,7 +26,8 @@
 * max：最大值
 * min：最小值
 * step：步进值(支持整数和小数,因步骤计算失误会造成精度损失！)
-*
+* isAnimation: 是否开启动画
+* unit：单位
 *
 * @change：回调事件
 *
@@ -55,8 +57,16 @@ export default {
       default: 999
     },
     step: {
-      type: Number,
+      type: [String, Number],
       default: 1
+    },
+    isAnimation: {
+      type: Boolean,
+      default: true
+    },
+    unit: {
+      type: String,
+      default: ''
     }
   },
   created () {
@@ -65,18 +75,20 @@ export default {
   },
   methods: {
     less () {
+      if (this.value === Number(this.min)) return
       this.stepperNum <= this.min ? this.stepperNum = this.min : this.stepperNum -= Math.ceil(this.step * 10) / 10
       this.stepperCacheNum = Number(this.stepperNum.toFixed(1))
       this.emit(this.stepperCacheNum)
       this.$emit('input', this.stepperCacheNum)
-      if (this.stepperCacheNum === this.min) this.lessAnimation()
+      if (this.stepperCacheNum === Number(this.min) && this.isAnimation) this.lessAnimation()
     },
     add () {
+      if (this.value === Number(this.max)) return
       this.stepperNum >= this.max ? this.stepperNum = this.max : this.stepperNum += Math.ceil(this.step * 10) / 10
       this.stepperCacheNum = Number(this.stepperNum.toFixed(1))
       this.emit(this.stepperCacheNum)
       this.$emit('input', this.stepperCacheNum)
-      if (this.stepperCacheNum === 1) this.addAnimation()
+      if (this.stepperCacheNum >= Number(this.step) && this.isAnimation) this.addAnimation()
     },
     emit (val) {
       if (Number(val.toFixed(1)) > this.max) {
@@ -88,9 +100,6 @@ export default {
         this.stepperCacheNum = this.min
       }
       this.$emit('change', val)
-    },
-    iptVal (e) {
-      this.$emit('input', e.target.value)
     },
     lessAnimation () {
       const animation = uni.createAnimation({
@@ -114,7 +123,19 @@ export default {
       animation.rotate(-180).step()
       this.animationLessInner = animation.export()
     }
-  }
+  },
+  watch: {
+    value(newn, oldn) {
+      this.stepperNum = this.value
+      this.stepperCacheNum = this.value
+      if (newn > oldn) {
+        if (this.stepperCacheNum >= Number(this.step) && this.isAnimation) this.addAnimation()
+      }
+      if (newn < oldn) {
+        if (this.stepperCacheNum === Number(this.min) && this.isAnimation) this.lessAnimation()
+      }
+    }
+  },
 }
 </script>
 
@@ -123,8 +144,10 @@ export default {
   display: flex;
   align-items: space-between;
   .min-less-wrap{
-    opacity: 0;
-    transform: translateX(116rpx);
+    &.isAnimation{
+      opacity: 0;
+      transform: translateX(116rpx);
+    }
     .min-less{
       height: 0;
       padding: 20rpx 10rpx;

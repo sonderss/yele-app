@@ -25,6 +25,7 @@ export default {
 
 <style lang="scss" scoped>
 .min-goods{
+  display: block;
   width: 100%;
   .min-title{
     background: #F7F7F7;
