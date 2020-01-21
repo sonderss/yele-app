@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import MinSocket from '../utils/min-socket'
 
 export default {
   data () {
@@ -214,20 +213,6 @@ export default {
     }
   },
   mounted () {
-    const socket = new MinSocket()
-    socket.createSocket()
-    socket.socketOpen().then(res => {
-      // console.log(res)
-      socket.sendSocketMessage({
-        apiAuth: '123456',
-        clientType: 'store_app'
-      }).then(res => {
-        console.log('发送数据：', res)
-      })
-      socket.socketMonitor().then(res => {
-        console.log(res)
-      })
-    })
   },
   methods: {
     link (path) {
