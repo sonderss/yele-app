@@ -18,39 +18,51 @@ export default {
           }
         },
         {
-          "path": "pages/order-detail/index",
-          "style": {
-            "navigationBarTitleText": "订单详情"
-          }
-        },
-        {
-          "path":"pages/storing-liquor-detail/index",
-          "style": {
-            "navigationBarTitleText": "存酒详情"
-          }
-        },
-        {
-          "path":"pages/change-platform/index",
-          "style": {
-            "navigationBarTitleText": "转台"
-          }
-        },
-        {
-          path: "pages/fetch-liquor/index",
+          path: 'pages/order-detail/index',
           style: {
-            navigationBarTitleText: "取酒"
+            navigationBarTitleText: '订单详情'
           }
         },
         {
-          path: "pages/electronic-menu/index",
+          path: 'pages/storing-liquor-detail/index',
           style: {
-            navigationBarTitleText: "电子菜单"
+            navigationBarTitleText: '存酒详情'
+          }
+        },
+        {
+          path: 'pages/change-platform/index',
+          style: {
+            navigationBarTitleText: '转台'
+          }
+        },
+        {
+          path: 'pages/fetch-liquor/index',
+          style: {
+            navigationBarTitleText: '取酒'
+          }
+        },
+        {
+          path: 'pages/electronic-menu/index',
+          style: {
+            navigationBarTitleText: '电子菜单'
           }
         },
         {
           path: 'pages/platform-admin/index',
           style: {
             navigationBarTitleText: '桌台管理'
+          }
+        },
+        {
+          path: 'pages/order-make/test',
+          style: {
+            navigationBarTitleText: '测试'
+          }
+        },
+        {
+          path: 'pages/order-list/index',
+          style: {
+            navigationBarTitleText: '订单列表'
           }
         },
         {

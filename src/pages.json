@@ -127,6 +127,18 @@
       }
     },
     {
+      "path": "pages/order-make/test",
+      "style": {
+        "navigationBarTitleText": "测试页面"
+      }
+    },
+    {
+      "path": "pages/order-list/index",
+      "style": {
+        "navigationBarTitleText": "订单列表"
+      }
+    },
+    {
       "path": "pages/start-stage/index",
       "style": {
         "navigationBarTitleText": "开台"

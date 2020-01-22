@@ -54,7 +54,7 @@
     <min-remarks  v-model='value' @click="click" @blur="blur"></min-remarks>
     <view class="empty-view"></view>
     <view class="btn" v-if="table">
-      <min-btn :long="true" @click.stop="submit" :opacity='false' >提交</min-btn>
+      <min-btn :long="true" @click="submit" :opacity='false' >提交</min-btn>
     </view>
   </view>
 </template>
@@ -73,7 +73,10 @@ export default {
       shopDate: '',
       tsetvalue: '',
       windowHeight: '',
-      table: true
+      table: true,
+      url: 'wss://api.store.dev.yeleonline.com:20021',
+      socketOpen: false,
+      socketMsgQueue: []
     }
   },
   onLoad () {
@@ -91,7 +94,56 @@ export default {
       }
     })
   },
+  onShow () {
+    // 连接
+    uni.connectSocket({
+      url: this.url
+    })
+    // 打开
+    uni.onSocketOpen((res) => {
+      console.log('WebSocket 已开启！')
+
+      this.socketOpen = true
+
+      this.sendSocketMessage()
+
+      // console.log(this.socketMsgQueue)
+      this.socketMsgQueue = []
+      uni.closeSocket()
+    })
+    // 连接失败
+    uni.onSocketError((res) => {
+      console.log('WebSocket连接打开失败，请检查！')
+    })
+    // 接收服务端信息
+    uni.onSocketMessage((res) => {
+      console.log('收到服务器内容：' + res.data)
+    })
+    // 监听socket关闭
+    uni.onSocketClose((res) => {
+      console.log('WebSocket 已关闭！')
+    })
+  },
+  mounted () {},
   methods: {
+    // 向服务端发送信息
+    sendSocketMessage (msg) {
+      console.log('正在发送')
+      var obj = { apiAuth: '123456', clientType: 'store_app' }
+      obj = JSON.stringify(obj)
+      console.log(obj)
+      if (this.socketOpen) {
+        uni.sendSocketMessage({
+          data: obj,
+          success: res => {
+            console.log(res)
+          }
+        })
+      } else {
+        // this.socketMsgQueue.push(msg)
+        console.log('发送失败')
+      }
+    },
     chioce (n) {
       // console.log(n)
       this.current = n

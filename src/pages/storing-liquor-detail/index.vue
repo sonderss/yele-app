@@ -54,11 +54,11 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       count: 0
     }
-  },
+  }
 }
 
 </script>
