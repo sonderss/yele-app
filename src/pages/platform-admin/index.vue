@@ -44,6 +44,7 @@ export default {
     currentWebview.setStyle({
       titleNView: titleObj
     })
+    console.log(111111)
     // #endif
   }
 }

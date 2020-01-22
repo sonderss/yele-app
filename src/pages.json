@@ -33,7 +33,10 @@
     {
       "path":"pages/electronic-menu/index",
       "style": {
-        "navigationBarTitleText": "电子菜单"
+        "navigationBarTitleText": "电子菜单",
+        "app-plus":{
+					"bounce":"none"
+				}
       }
     },
     {
@@ -45,7 +48,16 @@
     {
       "path":"pages/platform-admin/index",
       "style": {
-        "navigationBarTitleText": "桌台管理"
+        "navigationBarTitleText": "桌台管理",
+        "titleNView": {
+          "buttons": [
+            {
+              "text": "选择日期",
+              "fontSize": "14px",
+              "width": "70px"
+            }
+          ]
+        }
       }
     },
     {

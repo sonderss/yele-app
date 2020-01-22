@@ -353,7 +353,8 @@ export default {
   },
   methods: {
     goodsScroll(e) {
-      const scrollTop = e.detail.scrollTop + 10
+      if (e.detail.scrollTop < 0) return
+      const scrollTop = e.detail.scrollTop + 100
       const tops = this.minGoodsDom
       const nowTop = 0
       for (let i = 0; i < tops.length; i++) {
@@ -390,22 +391,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.goods-container{
-  display: flex;
-  position: relative;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 100rpx;
-  .sidebar-wrap{
-    flex: 0 0 160rpx;
-    height: 100%;
-  }
-  .goods-wrap{
-    flex: 1;
-    height: 100%;
-    background: #fff;
+.electronic-menu{
+  .goods-container{
+    overflow: hidden;
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 100rpx;
+    .sidebar-wrap{
+      flex: 0 0 160rpx;
+      height: 100%;
+      background: #fff;
+    }
+    .goods-wrap{
+      flex: 1;
+      height: 100%;
+      background: #fff;
+    }
   }
 }
 </style>

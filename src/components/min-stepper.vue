@@ -2,12 +2,7 @@
 <view style="display: inline-block;vertical-align: bottom;">
   <view class="min-sunui-stepper">
     <view class="min-less-wrap" :class="{'isAnimation': isAnimation}" :animation="animationLess">
-      <view
-        @tap="less"
-        class="min-less"
-        :animation="animationLessInner"
-      >
-      </view>
+      <image @click="less" :animation="animationLessInner"  class="min-less" src="/static/images/less.png"/>
     </view>
     <!-- <input
       class="min-value" type="number"
@@ -15,7 +10,7 @@
       :disabled="true"
     /> -->
     <view class="min-value">{{ (value > min || !isAnimation) ? stepperCacheNum : '' }}{{ unit }}</view>
-    <view @tap="add" class="min-add"></view>
+    <image @click="add" class="min-add" src="/static/images/add.png"/>
   </view>
 </view>
 </template>
@@ -83,6 +78,7 @@ export default {
       if (this.stepperCacheNum === Number(this.min) && this.isAnimation) this.lessAnimation()
     },
     add () {
+      console.log(1111)
       if (this.value === Number(this.max)) return
       this.stepperNum >= this.max ? this.stepperNum = this.max : this.stepperNum += Math.ceil(this.step * 10) / 10
       this.stepperCacheNum = Number(this.stepperNum.toFixed(1))
@@ -143,59 +139,33 @@ export default {
 .min-sunui-stepper {
   display: flex;
   align-items: space-between;
+  justify-content: 'top';
   .min-less-wrap{
     &.isAnimation{
       opacity: 0;
       transform: translateX(116rpx);
     }
     .min-less{
-      height: 0;
-      padding: 20rpx 10rpx;
-      background:#fff;
-      border-radius: 100%;
-      border: 1px solid #f7f7f7;
-      box-sizing: border-box;
-      &::before{
-        content: "";
-        display: inline-block;
-        width: 20rpx;
-        height: 4rpx;
-        background:#bfbebe;
-        vertical-align: top;
-        margin-top: -2rpx;
-
-      }
+      padding: 10rpx;
+      width: 40rpx;
+      height: 40rpx;
+      background: url('/static/images/less.png') no-repeat;
+      background-position: center center;
+    background-size: 40rpx 40rpx;
     }
   }
   .min-add{
-    height: 0;
-    padding: 20rpx 10rpx;
-    background:rgba(255,50,7,1);
-    position: relative;
-    border-radius: 100%;
-    &::before{
-      content: "";
-      display: inline-block;
-      width: 20rpx;
-      height: 4rpx;
-      background:#fff;
-      vertical-align: top;
-      margin-top: -2rpx;
-    }
-    &::after{
-      content: "";
-      display: inline-block;
-      width: 4rpx;
-      height: 20rpx;
-      background:#fff;
-      vertical-align: top;
-      position: absolute;
-      top: 11rpx;
-      left: 18rpx;
-    }
+    padding: 10rpx;
+    width: 40rpx;
+    height: 40rpx;
+    background: url('/static/images/add.png') no-repeat;
+    background-position: center center;
+    background-size: 40rpx 40rpx;
   }
   .min-value{
+    padding: 10rpx 0;
     width: 73rpx;
+    height: 40rpx;
     font-size: 26rpx;
     line-height: 44rpx;
     color: #333;
