@@ -24,7 +24,7 @@
       totalAmount="999"
       totalLabel="台位抵消：￥1000"
       icon="/static/images/alipay-pay.png"
-      goodsCount="3"
+      :goodsCount="3"
       buttonText="去下单(已开台)"
     />
   </view>
