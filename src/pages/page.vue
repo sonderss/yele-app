@@ -36,6 +36,18 @@ export default {
           }
         },
         {
+          path: 'pages/fetch-record/index',
+          style: {
+            navigationBarTitleText: '取酒记录'
+          }
+        },
+        {
+          path: 'pages/wine-record/index',
+          style: {
+            navigationBarTitleText: '存酒记录'
+          }
+        },
+        {
           path: 'pages/fetch-liquor/index',
           style: {
             navigationBarTitleText: '取酒'
