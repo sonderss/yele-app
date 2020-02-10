@@ -30,6 +30,18 @@ export default {
           }
         },
         {
+          path: 'pages/forfeiture-record/index',
+          style: {
+            navigationBarTitleText: '充公记录'
+          }
+        },
+        {
+          path: 'pages/confwine-details/index',
+          style: {
+            navigationBarTitleText: '充公酒详情'
+          }
+        },
+        {
           path: 'pages/change-platform/index',
           style: {
             navigationBarTitleText: '转台'
