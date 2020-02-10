@@ -24,7 +24,7 @@
       totalAmount="999"
       totalLabel="台位抵消：￥1000"
       icon="/static/images/alipay-pay.png"
-      goodsCount="3"
+      :goodsCount="3"
       buttonText="去下单(已开台)"
     />
   </view>
@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       count: 0, // 已选商品数量
       category: 0,
@@ -344,20 +344,21 @@ export default {
         }
       ],
       minGoodsDom: [],
-      minSidebarItem: []
+      minSidebarItem: [],
     }
   },
-  mounted () {
+  mounted() {
     this.goodsQuery()
     this.categoryQuery()
   },
   methods: {
-    goodsScroll (e) {
-      const scrollTop = e.detail.scrollTop + 10
+    goodsScroll(e) {
+      if (e.detail.scrollTop < 0) return
+      const scrollTop = e.detail.scrollTop + 100
       const tops = this.minGoodsDom
-      // const nowTop = 0
+      const nowTop = 0
       for (let i = 0; i < tops.length; i++) {
-        if (!tops[i + 1]) {
+        if (!tops[i+1]) {
           this.category = i
           return
         }
@@ -367,45 +368,48 @@ export default {
         }
       }
     },
-    goodsQuery () {
+    goodsQuery() {
       const query = uni.createSelectorQuery()
       query.selectAll('.goods-dom').boundingClientRect()
       query.exec(res => {
         this.minGoodsDom = res[0].map(item => item.top)
       })
     },
-    categoryQuery () {
+    categoryQuery() {
       const query = uni.createSelectorQuery()
       query.selectAll('.min-sidebar-item').boundingClientRect()
       query.exec(res => {
         this.minSidebarItem = res[0]
       })
     },
-    changeCategory (value) {
+    changeCategory(value) {
 
     }
-  }
+  },
 }
 
 </script>
 
 <style lang="scss" scoped>
-.goods-container{
-  display: flex;
-  position: relative;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 100rpx;
-  .sidebar-wrap{
-    flex: 0 0 160rpx;
-    height: 100%;
-  }
-  .goods-wrap{
-    flex: 1;
-    height: 100%;
-    background: #fff;
+.electronic-menu{
+  .goods-container{
+    overflow: hidden;
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 100rpx;
+    .sidebar-wrap{
+      flex: 0 0 160rpx;
+      height: 100%;
+      background: #fff;
+    }
+    .goods-wrap{
+      flex: 1;
+      height: 100%;
+      background: #fff;
+    }
   }
 }
 </style>
