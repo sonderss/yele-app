@@ -4,24 +4,51 @@
     <view class="platform-wrap p-top-20">
       <view class="title">卡座区</view>
       <view class="list">
-        <view class="item leisure" v-for="(item, index) in 6" :key="index">
+        <view :class="active1 == index ? 'item in-order': 'item leisure' " @click="chioce1(index)" v-for="(item, index) in 1" :key="index">
           <view class="name">K112</view>
-          <view class="status">已预约</view>
+          <view class="status">空闲</view>
           <view class="count">6座</view>
         </view>
       </view>
     </view>
-    <view class="btn-wrap">
-      <min-btn shape="flat">转台</min-btn>
+    <view class="platform-wrap p-top-20">
+      <view class="title">雅座区</view>
+      <view class="list">
+        <view :class="active2 == index ? 'item in-order': 'item leisure' "  @click="chioce2(index)" v-for="(item, index) in 6" :key="index">
+          <view class="name">K222</view>
+          <view class="status">空闲中</view>
+          <view class="count">6座</view>
+        </view>
+      </view>
     </view>
+    <view class="empty-view"></view>
+    <view class="btn-wrap">
+      <min-btn shape="flat" :opacity="false" @click="submit">转台</min-btn>
+    </view>
+    <min-modal ref='test'></min-modal>
   </view>
 </template>
 
 <script>
 export default {
-  data() {
+  data () {
     return {
-      search: ''
+      search: '',
+      active1: Number,
+      active2: Number
+    }
+  },
+  methods: {
+    chioce1 (index) {
+      this.active2 = Number
+      this.active1 = index
+    },
+    chioce2 (index) {
+      this.active1 = Number
+      this.active2 = index
+    },
+    submit () {
+
     }
   }
 }
@@ -89,6 +116,13 @@ export default {
         }
       }
     }
+  }
+  .active1{
+      background: #ff9c00
+  }
+  .empty-view{
+    width: 100%;
+    height: 120rpx;
   }
   .btn-wrap{
     width: 100%;
