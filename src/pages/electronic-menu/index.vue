@@ -2,11 +2,22 @@
   <view class="electronic-menu">
     <view class="goods-container">
       <scroll-view class="sidebar-wrap" scroll-y>
-        <min-sidebar v-model="category" @change="changeCategory">
-          <min-sidebar-item :title="item.title" label="已下1单" :name="index" :key="index" v-for="(item, index) in goodsList"/>
-        </min-sidebar>
+        <view class="category-sidebar">
+          <view
+            class="item"
+            :class="{'active': category === index}"
+            :key="index" v-for="(item, index) in goodsList"
+            @click="selectCategory(index)"
+          >
+            <view class="title">{{ item.title }}</view>
+            <view class="label">已下1单</view>
+          </view>
+        </view>
+        <!-- <min-sidebar v-model="category" @change="changeCategory">
+          <min-sidebar-item @click="selectCategory(index)" :title="item.title" label="已下1单" :name="index" :key="index" v-for="(item, index) in goodsList"/>
+        </min-sidebar> -->
       </scroll-view>
-      <scroll-view class="goods-wrap" scroll-y @scroll="goodsScroll">
+      <scroll-view class="goods-wrap" scroll-y @scroll="goodsScroll" :scroll-top="scrollTop">
         <min-goods class="goods-dom p-lr-30" :title="category.title" :key="i" v-for="(category, i) in goodsList">
           <view class="goods-item-wrap p-top-20" :key="j" v-for="(goods, j) in category.goods">
             <min-goods-item
@@ -343,8 +354,8 @@ export default {
           ]
         }
       ],
-      minGoodsDom: [],
-      minSidebarItem: [],
+      goodsCategoryDom: [],
+      scrollTop: 0
     }
   },
   mounted() {
@@ -355,7 +366,7 @@ export default {
     goodsScroll(e) {
       if (e.detail.scrollTop < 0) return
       const scrollTop = e.detail.scrollTop + 100
-      const tops = this.minGoodsDom
+      const tops = this.goodsCategoryDom
       const nowTop = 0
       for (let i = 0; i < tops.length; i++) {
         if (!tops[i+1]) {
@@ -372,18 +383,20 @@ export default {
       const query = uni.createSelectorQuery()
       query.selectAll('.goods-dom').boundingClientRect()
       query.exec(res => {
-        this.minGoodsDom = res[0].map(item => item.top)
+        this.goodsCategoryDom = res[0].map(item => item.top)
       })
     },
     categoryQuery() {
       const query = uni.createSelectorQuery()
-      query.selectAll('.min-sidebar-item').boundingClientRect()
+      query.selectAll('.item').boundingClientRect()
       query.exec(res => {
         this.minSidebarItem = res[0]
       })
     },
     changeCategory(value) {
-
+    },
+    selectCategory(index) {
+      this.scrollTop = this.goodsCategoryDom[index]
     }
   },
 }
@@ -404,6 +417,38 @@ export default {
       flex: 0 0 160rpx;
       height: 100%;
       background: #fff;
+      .category-sidebar{
+        width: 100%;
+        background: #fff;
+        .item{
+          display: block;
+          width: 160rpx;
+          padding: 35rpx 30rpx;
+          font-size: 28rpx;
+          color: #666;
+          text-align: center;
+          font-weight:500;
+          position: relative;
+          box-sizing: border-box;
+          &.active{
+            background:rgba(247,247,247,1);
+            &::after{
+              content: '';
+              width: 6rpx;
+              height: 50rpx;
+              background: #FF0000;
+              position: absolute;
+              left: 0;
+              top: 50%;
+              transform: translateY(-50%);
+            }
+          }
+          .label{
+            font-size: 18rpx;
+            color: #FF0000;
+          }
+        }
+      }
     }
     .goods-wrap{
       flex: 1;
