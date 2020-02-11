@@ -30,6 +30,12 @@ export default {
           }
         },
         {
+          path: 'pages/pickup-details/index',
+          style: {
+            navigationBarTitleText: '取酒详情'
+          }
+        },
+        {
           path: 'pages/forfeiture-record/index',
           style: {
             navigationBarTitleText: '充公记录'

@@ -31,6 +31,12 @@
       }
     },
     {
+      "path":"pages/pickup-details/index",
+      "style": {
+        "navigationBarTitleText": "取酒详情"
+      }
+    },
+    {
       "path":"pages/change-platform/index",
       "style": {
         "navigationBarTitleText": "转台"
