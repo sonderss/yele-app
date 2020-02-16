@@ -121,7 +121,7 @@ export default {
     }
   },
   watch: {
-    value(newn, oldn) {
+    value (newn, oldn) {
       this.stepperNum = this.value
       this.stepperCacheNum = this.value
       if (newn > oldn) {
@@ -131,7 +131,7 @@ export default {
         if (this.stepperCacheNum === Number(this.min) && this.isAnimation) this.lessAnimation()
       }
     }
-  },
+  }
 }
 </script>
 

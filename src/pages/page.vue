@@ -36,6 +36,12 @@ export default {
           }
         },
         {
+          path: 'pages/confiscated-wine/index',
+          style: {
+            navigationBarTitleText: '充公酒'
+          }
+        },
+        {
           path: 'pages/forfeiture-record/index',
           style: {
             navigationBarTitleText: '充公记录'
