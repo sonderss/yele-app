@@ -37,6 +37,7 @@ import MinRemarks from '@/components/min-remarks'
 import minCollapse from '@/components/min-collapse'
 import MinSlider from '@/components/min-slider'
 import MinOrderList from '@/components/min-order-list'
+import MinShowOrder from '@/components/min-show-order'
 Vue.component('min-avatar', MinAvatar)
 Vue.component('min-btn', MinBtn)
 Vue.component('min-cell', MinCell)
@@ -63,6 +64,7 @@ Vue.component('min-remarks', MinRemarks)
 Vue.component('min-collapse', minCollapse)
 Vue.component('min-slider', MinSlider)
 Vue.component('min-order-list', MinOrderList)
+Vue.component('min-show-order', MinShowOrder)
 Vue.config.productionTip = false
 App.mpType = 'app'
 

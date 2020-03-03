@@ -1,6 +1,6 @@
 <template>
   <view class="liquor-code  p-tb-20 p-lr-30">
-      <min-cell>
+      <!-- <min-cell>
           <view class="f30 p-tb-25">取酒客户信息</view>
           <view class="min-border-bottom" style="height:1rpx"></view>
           <view class="main min-flex min-flex-dir-top min-flex-align-top f28">
@@ -8,12 +8,13 @@
             <text class="m-bottom-10">联系电话：13563250000</text>
             <text class="m-bottom-10">当前台号：K1112</text>
           </view>
-      </min-cell>
+      </min-cell> -->
+      <min-show-order :list="list"></min-show-order>
       <view class="m-tb-20"></view>
       <min-cell>
           <view class="f30 p-tb-25">存酒客户信息</view>
           <view class="min-border-bottom" style="height:1rpx"></view>
-          <view class="main min-flex min-flex-dir-top min-flex-align-top f28">
+          <view class="main min-flex min-flex-dir-top min-flex-align-top f28 p-bottom-20">
             <text class="m-bottom-10 m-top-20">客户姓名：刘晓庆</text>
             <text class="m-bottom-10">联系电话：13563250000</text>
           </view>
@@ -36,7 +37,8 @@ export default {
     return {
       timerTxt: '发送取酒码',
       num: 8,
-      flag: true
+      flag: true,
+      list: { title: '取酒客户信息', content: [{ name: '客户姓名', value: '刘晓庆' }, { name: '联系电话', value: '13563250000' }] }
     }
   },
   methods: {

@@ -1,14 +1,95 @@
 <template>
-  <view>
-
+  <view class="main">
+      <scroll-view class="left-view">
+        <min-sidebar v-model="category" >
+              <min-sidebar-item :title="item.title" label="已下1单" :name="index" :key="index" v-for="(item, index) in goodsList"/>
+        </min-sidebar>
+      </scroll-view>
+      <view class="right-view">
+          <scroll-view>
+          </scroll-view>
+      </view>
   </view>
 </template>
 <script>
 export default {
   data () {
     return {
-      list: ['全部', '分类1', '分类2', '分类3', '分类4', '分类5', '分类6', '分类4', '分类5', '分类6', '分类4', '分类5', '分类6']
+      category: '',
+      goodsList: [
+        {
+          title: '商品分类1',
+          goods: [
+            {
+              name: '2020年元旦百威兄弟套餐12瓶',
+              price: '2380.00',
+              icon: '/static/images/goods.png',
+              specification: '罐装*250ml*规格9/瓶'
+            },
+            {
+              name: '2020年元旦百威兄弟套餐12瓶',
+              price: '2380.00',
+              icon: '/static/images/goods.png',
+              specification: '罐装*250ml*规格9/瓶'
+            },
+            {
+              name: '2020年元旦百威兄弟套餐12瓶',
+              price: '2380.00',
+              icon: '/static/images/goods.png',
+              specification: '罐装*250ml*规格9/瓶'
+            },
+            {
+              name: '2020年元旦百威兄弟套餐12瓶',
+              price: '2380.00',
+              icon: '/static/images/goods.png',
+              specification: '罐装*250ml*规格9/瓶'
+            },
+            {
+              name: '2020年元旦百威兄弟套餐12瓶',
+              price: '2380.00',
+              icon: '/static/images/goods.png',
+              specification: '罐装*250ml*规格9/瓶'
+            },
+            {
+              name: '2020年元旦百威兄弟套餐12瓶',
+              price: '2380.00',
+              icon: '/static/images/goods.png',
+              specification: '罐装*250ml*规格9/瓶'
+            },
+            {
+              name: '2020年元旦百威兄弟套餐12瓶',
+              price: '2380.00',
+              icon: '/static/images/goods.png',
+              specification: '罐装*250ml*规格9/瓶'
+            },
+            {
+              name: '2020年元旦百威兄弟套餐12瓶',
+              price: '2380.00',
+              icon: '/static/images/goods.png',
+              specification: '罐装*250ml*规格9/瓶'
+            },
+            {
+              name: '2020年元旦百威兄弟套餐12瓶',
+              price: '2380.00',
+              icon: '/static/images/goods.png',
+              specification: '罐装*250ml*规格9/瓶'
+            }
+          ]
+        }
+      ]
     }
   }
 }
 </script>
+<style lang="scss" scoped>
+.main{
+  display: flex;
+  .left-view{
+    width: 200rpx;
+  }
+  .right-view{
+    flex: 1;
+    background: #f00;
+  }
+}
+</style>

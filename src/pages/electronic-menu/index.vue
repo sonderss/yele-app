@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       count: 0, // 已选商品数量
       category: 0,
@@ -344,21 +344,21 @@ export default {
         }
       ],
       minGoodsDom: [],
-      minSidebarItem: [],
+      minSidebarItem: []
     }
   },
-  mounted() {
+  mounted () {
     this.goodsQuery()
     this.categoryQuery()
   },
   methods: {
-    goodsScroll(e) {
+    goodsScroll (e) {
       if (e.detail.scrollTop < 0) return
       const scrollTop = e.detail.scrollTop + 100
       const tops = this.minGoodsDom
       const nowTop = 0
       for (let i = 0; i < tops.length; i++) {
-        if (!tops[i+1]) {
+        if (!tops[i + 1]) {
           this.category = i
           return
         }
@@ -368,24 +368,24 @@ export default {
         }
       }
     },
-    goodsQuery() {
+    goodsQuery () {
       const query = uni.createSelectorQuery()
       query.selectAll('.goods-dom').boundingClientRect()
       query.exec(res => {
         this.minGoodsDom = res[0].map(item => item.top)
       })
     },
-    categoryQuery() {
+    categoryQuery () {
       const query = uni.createSelectorQuery()
       query.selectAll('.min-sidebar-item').boundingClientRect()
       query.exec(res => {
         this.minSidebarItem = res[0]
       })
     },
-    changeCategory(value) {
+    changeCategory (value) {
 
     }
-  },
+  }
 }
 
 </script>
