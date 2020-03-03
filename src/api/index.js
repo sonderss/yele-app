@@ -4,7 +4,7 @@ const minRequest = new MinRequest()
 
 // 设置默认配置
 minRequest.setConfig((config) => {
-  config.baseURL = 'https://www.baidu.com'
+  config.baseURL = 'http://api.app-store.dev.yeleonline.com/api/'
   return config
 })
 

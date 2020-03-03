@@ -30,9 +30,45 @@ export default {
           }
         },
         {
+          path: 'pages/pickup-details/index',
+          style: {
+            navigationBarTitleText: '取酒详情'
+          }
+        },
+        {
+          path: 'pages/confiscated-wine/index',
+          style: {
+            navigationBarTitleText: '充公酒'
+          }
+        },
+        {
+          path: 'pages/forfeiture-record/index',
+          style: {
+            navigationBarTitleText: '充公记录'
+          }
+        },
+        {
+          path: 'pages/confwine-details/index',
+          style: {
+            navigationBarTitleText: '充公酒详情'
+          }
+        },
+        {
           path: 'pages/change-platform/index',
           style: {
             navigationBarTitleText: '转台'
+          }
+        },
+        {
+          path: 'pages/fetch-record/index',
+          style: {
+            navigationBarTitleText: '取酒记录'
+          }
+        },
+        {
+          path: 'pages/wine-record/index',
+          style: {
+            navigationBarTitleText: '存酒记录'
           }
         },
         {

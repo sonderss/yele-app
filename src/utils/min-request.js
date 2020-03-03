@@ -56,7 +56,6 @@ class MinRequest {
     obj.timeOut = options.timeOut || this._config.timeOut
 
     obj = { ...obj, ...MinRequest._requestBefore(obj) }
-
     return new Promise((resolve, reject) => {
       obj.success = function (res) {
         clearTimeout(timer)
@@ -79,6 +78,8 @@ class MinRequest {
     options.url = url
     options.data = data
     options.method = 'GET'
+    // 这里是设置请求所需的token
+    options.header = { 'access-token': data.accesstoken }
     return this._request(options)
   }
 
