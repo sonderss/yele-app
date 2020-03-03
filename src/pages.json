@@ -31,6 +31,12 @@
       }
     },
     {
+      "path": "pages/order-record/index",
+      "style": {
+        "navigationBarTitleText": "订单记录"
+      }
+    },
+    {
       "path":"pages/confwine-details/index",
       "style": {
         "navigationBarTitleText": "充公酒详情"
@@ -124,6 +130,18 @@
       "path": "pages/platform-history/index",
       "style": {
         "navigationBarTitleText": "台位历史"
+      }
+    },
+    {
+      "path": "pages/presentation-records/index",
+      "style": {
+        "navigationBarTitleText": "赠送记录"
+      }
+    },
+    {
+      "path": "pages/appointment-record/index",
+      "style": {
+        "navigationBarTitleText": "预约记录"
       }
     },
     {

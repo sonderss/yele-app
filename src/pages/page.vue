@@ -60,6 +60,24 @@ export default {
           }
         },
         {
+          path: 'pages/presentation-records/index',
+          style: {
+            navigationBarTitleText: '赠送记录'
+          }
+        },
+        {
+          path: 'pages/appointment-record/index',
+          style: {
+            navigationBarTitleText: '预约记录'
+          }
+        },
+        {
+          path: 'pages/order-record/index',
+          style: {
+            navigationBarTitleText: '订单记录'
+          }
+        },
+        {
           path: 'pages/change-platform/index',
           style: {
             navigationBarTitleText: '转台'

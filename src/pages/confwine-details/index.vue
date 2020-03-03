@@ -15,10 +15,10 @@
       </view>
     </view>
     <view class="card p-lr-20 m-bottom-20">
-      <view class="top p-tb-30 min-border-bottom">
+      <view class="top p-tb-20 min-border-bottom">
         <view>其他信息</view>
       </view>
-      <view class="contxt">
+      <view class="contxt p-tb-20">
           <view class="item">客户姓名：刘大芒</view>
           <view class="item">联系电话：135 5352 0135</view>
           <view class="item">存酒数量：123</view>
