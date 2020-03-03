@@ -79,7 +79,6 @@ class MinRequest {
     options.data = data
     options.method = 'GET'
     // 这里是设置请求所需的token
-    options.header = { 'access-token': data.accesstoken }
     return this._request(options)
   }
 

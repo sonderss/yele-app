@@ -23,19 +23,15 @@
       </view>
       <view class="pay-wrap m-top-20 p-lr-20 p-tb-20">
         <view class="p-bottom-30 min-border-bottom">支付信息</view>
-        <view class="m-top-30">
-          <view class="pays">
-            <view class="pay">
-              <min-radio title="支付宝" icon="/static/images/alipay-pay.png" label="0" v-model="payType"/>
-            </view>
-            <view class="pay">
-              <min-radio title="现金" icon="/static/images/cash-pay.png" label="3" v-model="payType"/>
-            </view>
+        <view class="m-top-30 pays">
+          <view class="pay">
+            <min-radio title="支付宝" icon="/static/images/alipay-pay.png" label="0" v-model="payType"/>
           </view>
-          <view class="pays">
-            <view class="pay">
-              <min-radio title="微信" icon="/static/images/wx-pay.png" label="1" v-model="payType"/>
-            </view>
+          <view class="pay">
+            <min-radio title="现金" icon="/static/images/cash-pay.png" label="3" v-model="payType"/>
+          </view>
+          <view class="pay">
+            <min-radio title="微信" icon="/static/images/wx-pay.png" label="1" v-model="payType"/>
           </view>
         </view>
       </view>
@@ -57,7 +53,7 @@ export default {
 
 <style lang="scss" scoped>
 .confirm-order{
-  padding-bottom: 100rpx;
+  padding-bottom: 120rpx;
   .platform-info{
     border-radius:10px;
     background:#ffe4e4;
@@ -77,14 +73,12 @@ export default {
     background: #fff;
     border-radius:10rpx;
     .pays{
-      display: inline-block;
-      width: 50%;
-      vertical-align: top;
+      display: flex;
+      flex-wrap: column;
+      flex-wrap: wrap;
+      align-content: space-between;
       .pay{
-        margin-bottom: 20rpx;
-        &:last-child{
-          margin: 0;
-        }
+        width: 50%;
       }
     }
   }

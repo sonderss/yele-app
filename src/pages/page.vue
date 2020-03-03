@@ -18,6 +18,12 @@ export default {
           }
         },
         {
+          path:"pages/pay-order/index",
+          style: {
+            navigationBarTitleText: "支付订单"
+          }
+        },
+        {
           path: 'pages/order-detail/index',
           style: {
             navigationBarTitleText: '订单详情'
