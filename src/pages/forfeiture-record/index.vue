@@ -22,10 +22,14 @@
         <view class="item">伯世富VSOP*750ml*2010年/瓶*2</view>
         <view class="item">伯世富VSOP*750ml*2010年/瓶*2</view>
         <view class="item">伯世富VSOP*750ml*2010年/瓶*2</view>
+        <view class="item">伯世富VSOP*750ml*2010年/瓶*2</view>
+        <view class="item">伯世富VSOP*750ml*2010年/瓶*2</view>
+        <view class="item">伯世富VSOP*750ml*2010年/瓶*2</view>
+        <view class="item">伯世富VSOP*750ml*2010年/瓶*2</view>
       </view>
-       <view class="over-view" @click="showMore">
-            {{txt ? '展开更多' : '收起'}}<text :class="isMore ? ' f22 botm' : ' f22 botm1'"></text>
-        </view>
+      <view class="over-view" @click="showMore">
+          {{txt ? '展开更多' : '收起'}}<text :class="isMore ? ' f22 botm' : ' f22 botm1'"></text>
+      </view>
       <view class="timer min-top-border">2019-12-10  12:35:65</view>
     </view>
 
