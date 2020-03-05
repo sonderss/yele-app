@@ -10,7 +10,7 @@
 
 
 
-## Router使用方式
+## Router使用方式:
 
 在页面添加 `navigate`类型是 `Array` 对应值是：`['navigateTo', 'switchTab', 'reLaunch', 'redirectTo']`
 
