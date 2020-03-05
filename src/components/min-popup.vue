@@ -76,12 +76,13 @@ export default {
   }
   .min-content{
     width: 100%;
-    height: 400rpx;
+    height:800rpx;
     background: #fff;
     position: absolute;
     left: 0;
     bottom: 0;
     z-index: 300;
+    overflow: hidden;
   }
   @keyframes hide {
     0% {

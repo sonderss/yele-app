@@ -52,7 +52,7 @@ export default {
   padding: 0 10rpx;
   font-size: 20rpx;
   white-space: nowrap;
-  z-index: 10;
+  z-index: 9999;
   box-shadow: 0 0 0 1px #fff;
   box-sizing: border-box;
 }
