@@ -7,8 +7,8 @@
       </view>
       <view class="main p-tb-20 min-border-bottom">
         <view class="item">
-           <text class="">伯世富VSOP*750ml*2010年/瓶*2</text>
-            <text class="">￥66</text>
+           <text >伯世富VSOP*750ml*2010年/瓶*2</text>
+            <text >￥66</text>
         </view>
       </view>
       <view class="timer">
@@ -18,29 +18,29 @@
     </view>
     <view class="card p-lr-20 m-bottom-20">
       <view class="top p-tb-30 min-border-bottom">
-        <view>单号：125254478524774</view>
+        <view class="ordern">K1125</view>
         <view class="status end">已确认</view>
       </view>
       <view :class="isMore ? 'main p-top-20 ': 'main1 p-top-20 ' ">
         <view class="item">
-           <text class="">伯世富VSOP*750ml*2010年/瓶*2</text>
-            <text class="">￥66</text>
+           <text >伯世富VSOP*750ml*2010年/瓶*2</text>
+            <text>￥66</text>
         </view>
         <view class="item">
-           <text class="">伯世富VSOP*750ml*2010年/瓶*2</text>
-            <text class="">￥66</text>
+           <text>伯世富VSOP*750ml*2010年/瓶*2</text>
+            <text>￥66</text>
         </view>
         <view class="item">
-           <text class="">伯世富VSOP*750ml*2010年/瓶*2</text>
-            <text class="">￥66</text>
+           <text>伯世富VSOP*750ml*2010年/瓶*2</text>
+            <text>￥66</text>
         </view>
         <view class="item">
-           <text class="">伯世富VSOP*750ml*2010年/瓶*2</text>
-            <text class="">￥66</text>
+           <text >伯世富VSOP*750ml*2010年/瓶*2</text>
+            <text >￥66</text>
         </view>
         <view class="item">
-           <text class="">伯世富VSOP*750ml*2010年/瓶*2</text>
-            <text class="">￥66</text>
+           <text>伯世富VSOP*750ml*2010年/瓶*2</text>
+            <text>￥66</text>
         </view>
       </view>
       <view class="over-view min-border-bottom p-tb-20" @click="showMore">

@@ -37,7 +37,22 @@
 </template>
 
 <script>
+import uni from '../../api/a'
 export default {
+  mounted () {
+    // const option = {
+    //   url: '5e424f7f8c0c0?page=1&limit=20',
+    //   accesstoken: 'HPkSFqbVhWpCRxVRpOTkyEubusFxBEEd'
+    // }
+
+    // uni.uniapp(option).then(res => {
+    //   console.log(res)
+    // })
+    this.test()
+      .then(res => {
+        console.log(res)
+      })
+  },
   data () {
     return {
       isMore: false,
@@ -48,6 +63,19 @@ export default {
     showMore () {
       this.isMore = !this.isMore
       this.txt = !this.txt
+    },
+    test () {
+      const option = {
+        url: '5e424f7f8c0c0?page=1&limit=20',
+        accesstoken: 'HPkSFqbVhWpCRxVRpOTkyEubusFxBEEd'
+      }
+      return new Promise((resolve, reject) => {
+        uni.uniapp(option).then(res => {
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
     }
   }
 }

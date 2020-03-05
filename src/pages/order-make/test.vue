@@ -16,7 +16,7 @@ import api from '../../api/a'
 export default {
   mounted () {
     const option = {
-      url: '5e424cc4ded0a',
+      url: '5e424f7f8c0c0?page=1&limit=20',
       accesstoken: 'HPkSFqbVhWpCRxVRpOTkyEubusFxBEEd'
     }
     api.uniapp(option).then(res => {

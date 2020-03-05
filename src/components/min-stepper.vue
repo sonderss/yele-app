@@ -78,6 +78,10 @@ export default {
       if (this.stepperCacheNum === Number(this.min) && this.isAnimation) this.lessAnimation()
     },
     add () {
+<<<<<<< HEAD
+=======
+      // console.log(1111)
+>>>>>>> a9c321f321fb3e966765aaffaebef585888ca9e8
       if (this.value === Number(this.max)) return
       this.stepperNum >= this.max ? this.stepperNum = this.max : this.stepperNum += Math.ceil(this.step * 10) / 10
       this.stepperCacheNum = Number(this.stepperNum.toFixed(1))
@@ -163,7 +167,7 @@ export default {
   }
   .min-value{
     padding: 10rpx 0;
-    width: 73rpx;
+    width:39rpx;
     height: 40rpx;
     font-size: 26rpx;
     line-height: 44rpx;
