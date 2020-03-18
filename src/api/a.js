@@ -5,7 +5,7 @@ export default {
    * @description 描述信息
    */
   uniapp (data) {
-    return minRequest.get('/s', data)
+    return minRequest.get(data.url, data)
   },
   /**
    * @description post请求

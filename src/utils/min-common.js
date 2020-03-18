@@ -35,6 +35,38 @@ class MinCommon {
   }
 
   /**
+   * @description 判断是否是11位电话号码
+   */
+  static checkMobile (mobile) {
+    return (/^1[345789]\d{9}$/.test(mobile))
+  }
+
+  /**
+   * @description 时间格式化
+   * date: 时间对象
+   * fmt: 转换格式： yyyy-MM-dd hh:mm:ss 或 yyyy/MM/dd hh:mm:ss
+   */
+  static formatDate (date, fmt) {
+    if (/(y+)/.test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+    }
+    const o = {
+      'M+': date.getMonth() + 1,
+      'd+': date.getDate(),
+      'h+': date.getHours(),
+      'm+': date.getMinutes(),
+      's+': date.getSeconds()
+    }
+    for (const k in o) {
+      if (new RegExp(`(${k})`).test(fmt)) {
+        const str = o[k] + ''
+        fmt = fmt.replace(RegExp.$1, RegExp.$1.length === 1 ? str : ('00' + str).substr(str.length))
+      }
+    }
+    return fmt
+  }
+
+  /**
    * @param callback 回调函数
    * @param countdown 倒计时时间 默认 60s
    * @param interval 时间间隔 默认1000ms
@@ -75,6 +107,45 @@ class MinCommon {
       }
     }
   }
+
+  /**
+   * 数组去重
+  */
+  static arrSet (arr) {
+    return Array.from(new Set(arr))
+  }
+
+  /**
+   *  返回星期几
+   *
+  */
+  static getDay (num) {
+    switch (num) {
+      case 0:
+        return '星期日'
+      case 1:
+        return '星期一'
+
+      case 2:
+        return '星期二'
+
+      case 3:
+        return '星期三'
+
+      case 4:
+        return '星期四'
+
+      case 5:
+        return '星期五'
+
+      case 6:
+        return '星期六'
+    }
+  }
+}
+
+MinCommon.install = function (Vue) {
+  Vue.prototype.$minCommon = MinCommon
 }
 
 export default MinCommon

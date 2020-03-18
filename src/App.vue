@@ -1,10 +1,14 @@
 <script>
+import store from './store/index'
 export default {
   onLaunch: function () {
     // console.log('App Launch')
   },
-  onShow: function () {
+  onShow: () => {
     // console.log('App Show')
+    uni.onNetworkStatusChange(res => {
+      store.dispatch('status/setStatus', res.isConnected)
+    })
   },
   onHide: function () {
     // console.log('App Hide')

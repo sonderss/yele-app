@@ -1,5 +1,5 @@
 <template>
-  <view class="bg-white radius-6 p-lr-16"
+  <view class="bg-white radius-6 p-lr-20"
     :class="[card ? 'min-card' : '']"
   >
     <slot></slot>
