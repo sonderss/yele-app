@@ -2,7 +2,7 @@
   <view class="min-modal min-modal-flex" :class="{'min-modal-show': show}">
     <view class="min-modal-mask" @touchmove.stop="()=>{}" @click="handleMaskClick"></view>
     <view class="min-modal-main" :class="{'min-modal-main-show': show}">
-      <view class="min-modal-content">
+      <view :class="contentCenter ? 'min-modal-content-center':  'min-modal-content'">
         <view class="min-modal-title" v-if="title">{{title}}</view>
         <view class="min-modal-body" v-if="content">
            <view class="content" v-html="content"></view>
@@ -65,7 +65,8 @@ export default {
       actionMode: true,
       isClick: true,
       success: () => {},
-      timer: null
+      timer: null,
+      contentCenter: false
     }
   },
   methods: {
@@ -73,7 +74,7 @@ export default {
       title = '', content = '', modalID = 'modal',
       showCancel = true, cancelColor = '',
       cancelText = '取消', confirmColor = '#007aff',
-      confirmText = '确定', actions = [],
+      confirmText = '确定', actions = [], contentCenter = false,
       actionMode = true, maskClose = false, success = () => {}
     }) {
       clearTimeout(this.timer)
@@ -90,6 +91,7 @@ export default {
       this.actionMode = actionMode
       this.maskClose = maskClose
       this.success = success
+      this.contentCenter = contentCenter
     },
     handleHide () {
       this.show = false
@@ -104,6 +106,7 @@ export default {
         this.actions = []
         this.maskClose = false
         this.actionMode = true
+        this.contentCenter = false
         this.modalID = 'modal'
         this.isClick = true
         this.success = () => {}
@@ -202,6 +205,18 @@ export default {
   border: 0;
   background-clip: padding-box;
   /* text-align: center; */
+  height: 100%;
+  overflow: hidden;
+}
+/* 内容文本中心显示 */
+.min-modal-content-center {
+  border-radius: 6px;
+  padding-top: 30rpx;
+  position: relative;
+  background-color: #fff;
+  border: 0;
+  background-clip: padding-box;
+  text-align: center;
   height: 100%;
   overflow: hidden;
 }

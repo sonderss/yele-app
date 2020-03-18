@@ -33,7 +33,7 @@
 <script>
 export default {
   props: {
-    id: Number
+    idNum: Number
   },
   data () {
     return {
@@ -44,7 +44,7 @@ export default {
     goGetHistory () {
       this.$minRouter.push({
         name: 'platform-history',
-        params: { id: this.id }
+        params: { id: this.idNum }
       })
     }
   }

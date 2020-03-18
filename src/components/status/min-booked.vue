@@ -43,7 +43,7 @@
 <script>
 export default {
   props: {
-    id: {
+    idNum: {
       type: Number
     }
   },
@@ -52,14 +52,14 @@ export default {
     goGetHistory () {
       this.$minRouter.push({
         name: 'platform-history',
-        params: { id: this.id }
+        params: { id: this.idNum }
       })
     },
     // 预约
     book () {
       this.$minRouter.push({
         name: 'order-make',
-        params: { id: this.id }
+        params: { id: this.idNum }
       })
     },
     // 开台

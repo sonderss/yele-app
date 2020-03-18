@@ -180,7 +180,6 @@ export default {
           this.desks = res.desks
           this.mines = res.mines
           this.title = res.title
-          console.log(this.mines)
         })
         // eslint-disable-next-line handle-callback-err
         .catch(err => {

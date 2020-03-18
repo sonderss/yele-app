@@ -41,21 +41,19 @@ export default {
   mounted () {
   },
   onLoad () {
-    console.log(this.$parseURL().id)
     this.getData(this.$parseURL().id)
   },
   methods: {
     getData (id) {
       this.$minApi.getStationHistory({ desk_id: id })
         .then(res => {
-          console.log(res)
           this.list = res.list
           this.list.map(item => {
-            if (item.cancel_time !== 0) {
-              item.cancel_time = this.$minCommon.formatDate(new Date(item.cancel_time * 1000), 'yyyy-MM-dd hh:mm:ss')
+            if (item.opened_time !== 0) {
+              item.opened_time = this.$minCommon.formatDate(new Date(item.opened_time * 1000), 'yyyy-MM-dd hh:mm:ss')
             }
-            if (item.create_time !== 0) {
-              item.create_time = this.$minCommon.formatDate(new Date(item.create_time * 1000), 'yyyy-MM-dd hh:mm:ss')
+            if (item.closed_time !== 0) {
+              item.closed_time = this.$minCommon.formatDate(new Date(item.closed_time * 1000), 'yyyy-MM-dd hh:mm:ss')
             }
           })
         })

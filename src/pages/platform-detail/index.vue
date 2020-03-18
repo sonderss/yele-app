@@ -1,19 +1,19 @@
 <template>
   <view class="platform-detail p-top-20 p-lr-30">
     <!-- 空闲中组件 2 00-->
-    <min-idle :id="id"  v-if="status === 2"></min-idle>
+    <min-idle :idNum="id"  v-if="status === 2"></min-idle>
     <!-- 点单中 4 00-->
-    <min-order :id="id" v-if="status === 4"></min-order>
+    <min-order :idNum="id" v-if="status === 4"></min-order>
     <!-- 已预约 3 00 -->
-    <min-booked :id="id" v-if="status === 3"></min-booked>
+    <min-booked :idNum="id" v-if="status === 3"></min-booked>
     <!-- 待确认 5 00-->
-    <min-confirmed :id="id" v-if="status === 5"></min-confirmed>
+    <min-confirmed :idNum="id" v-if="status === 5"></min-confirmed>
     <!-- 已停用 1 00-->
-    <min-terminated :id="id" v-if=" status === 1"></min-terminated>
+    <min-terminated :idNum="id" v-if=" status === 1"></min-terminated>
     <!-- 已开台 6 00-->
-    <min-opened  :id="id" v-if=" status === 6"></min-opened>
+    <min-opened  :idNum="id" v-if=" status === 6"></min-opened>
     <!-- 清台中 7-->
-    <min-taichung :id="id"  v-if=" status === 7"></min-taichung>
+    <min-taichung :idNum="id"  v-if=" status === 7"></min-taichung>
   </view>
 </template>
 
@@ -30,19 +30,11 @@ export default {
   onLoad (option) {
     this.id = this.$parseURL().id
     this.status = this.$parseURL().status
-    console.log(this.id, this.status)
   },
   methods: {
     // 调用接口获取台详情数据数据
     getData () {
 
-    },
-    // 获取台位历史
-    goGetHistory () {
-      this.$minRouter.push({
-        name: 'platform-history',
-        params: { id: this.id }
-      })
     }
   }
 }
