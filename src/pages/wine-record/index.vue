@@ -41,7 +41,8 @@
 
 <script>
 export default {
-
+  name: 'wine-record',
+  navigate: ['navigateTo', 'switchTab']
 }
 </script>
 

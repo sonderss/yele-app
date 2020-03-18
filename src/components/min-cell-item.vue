@@ -1,6 +1,7 @@
 <template>
   <view class="cell-item min-flex min-flex-main-between bg-white p-tb-30"
     :class="[border ? 'min-border-bottom' : '']"
+    @click="event"
   >
     <view class="min-flex">
       <slot name="icon"></slot>
@@ -13,9 +14,10 @@
       </view>
     </view>
     <view class="min-flex flex-end">
-      <view class="f28 tail" v-if="tail" :class="[`tail-${tailType}`]">{{tail}}</view>
+      <view class="f28 tail" v-if="tail" :class="[ tail === '可预约' ? `tail-${tailType}` : '']">{{tail}}</view>
       <slot name="tail"></slot>
       <image v-if="arrow" class="arrow" src="/static/images/arrow.png"></image>
+      <image v-if="tail === '可预约' " class="arrow" src="/static/images/arrow.png"></image>
     </view>
   </view>
 </template>
@@ -64,6 +66,11 @@ export default {
   data () {
     return {
 
+    }
+  },
+  methods: {
+    event () {
+      this.$emit('eventParent')
     }
   }
 

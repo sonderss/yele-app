@@ -30,7 +30,8 @@
 <script>
 
 export default {
-
+  name: 'fetch-record',
+  navigate: ['navigateTo', 'switchTab']
 }
 </script>
 

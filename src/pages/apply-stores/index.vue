@@ -1,18 +1,26 @@
 <template>
   <view class="switch-stores m-lr-30 p-top-20">
-    <min-search placeholder="请输入门店名称搜索" v-model="value"/>
+    <min-search placeholder="请输入门店名称搜索" @search="search" v-model="params.store_name" />
     <view class="m-bottom-20"></view>
     <min-cell>
       <min-cell-item
-        v-for="(item, index) in list" :key="index"
-        :img="item.img"
-        :title="item.title"
-        :label="item.subtitle"
-        :border="list.length !== index + 1"
+        v-for="(item, index) in elseStoreList"
+        :key="index"
+        :img="item.head_img"
+        :title="item.store_name"
+        :label="item.address"
+        :border="elseStoreList.length !== index + 1"
       >
-        <min-btn size="xs" slot="tail">申请</min-btn>
+        <min-btn size="xs" slot="tail" @click="applyStores(item, index)">申请</min-btn>
       </min-cell-item>
     </min-cell>
+    <min-modal ref="showModal"></min-modal>
+
+    <min-404 v-if="elseStoreList.length === 0"></min-404>
+    <!-- <view class="nodata-wrap"  >
+      <image class="nodata" src="../../static/images/nodata.png" />
+      <view class="text">暂无</view>
+    </view>-->
   </view>
 </template>
 
@@ -22,29 +30,17 @@ export default {
   navigate: ['navigateTo', 'switchTab'],
   data () {
     return {
-      value: 111,
-      list: [{
-        img: 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg',
-        title: 'SIMBA',
-        subtitle: '广州市天河区元岗横路智汇parkB303室',
-        tail: '待审核'
-      }, {
-        img: 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg',
-        title: 'SIMBA',
-        subtitle: '广州市天河区元岗横路智汇parkB303室',
-        tail: '未通过'
-      }, {
-        img: 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg',
-        title: 'SIMBA',
-        subtitle: '广州市天河区元岗横路智汇parkB303室',
-        tail: '已通过'
-      }, {
-        img: 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg',
-        title: 'SIMBA',
-        subtitle: '广州市天河区元岗横路智汇parkB303室',
-        tail: '未通过'
-      }]
+      params: {
+        store_name: '',
+        page: 1,
+        limit: 10
+      },
+      elseStoreList: [],
+      total: -1
     }
+  },
+  mounted () {
+    this.getElseStoreList()
   },
   onNavigationBarButtonTap (e) {
     this.$minRouter.push({
@@ -52,12 +48,55 @@ export default {
       type: 'navigateTo',
       path: '/pages/apply-log/index'
     })
+  },
+  onReachBottom () {
+    // 下拉翻页
+    this.getElseStoreList()
+  },
+  onPullDownRefresh () {
+    // 上拉刷新
+    this.params.page = 1
+    this.getElseStoreList('shuaxin')
+    setTimeout(() => {
+      uni.stopPullDownRefresh() // 停止下拉刷新动画
+    }, 2000)
+  },
+  methods: {
+    getElseStoreList (shuaxin) {
+      if (this.total === this.elseStoreList.length) return // 没有更多数据了
+      this.$minApi.getElseStoreList().then(res => {
+        if (shuaxin) this.elseStoreList = []
+        this.elseStoreList = this.elseStoreList.concat(res.list)
+        this.total = res.list.total
+        this.params.page++
+      })
+    },
+    search () {
+      this.params.page = 1
+      this.total = -1
+      this.getElseStoreList('shuaxin')
+    },
+    // eslint-disable-next-line camelcase
+    applyStores ({ id, store_name }, index) {
+      this.$refs.showModal.handleShow({
+        title: '提示',
+        // eslint-disable-next-line camelcase
+        content: `是否确认申请成为${store_name}的外联`,
+        success: res => {
+          if (res.id !== 1) return
+          this.$minApi.applyStores({ store_id: id }).then(res => {
+            this.$showToast('申请成功')
+            this.elseStoreList.splice(index, 1)
+          })
+        }
+      })
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 page {
-  background-color: #F7F7F7;
+  background-color: #f7f7f7;
 }
 </style>

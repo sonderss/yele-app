@@ -1,73 +1,50 @@
 <template>
   <view class="platform-detail p-top-20 p-lr-30">
-    <view class="card p-lr-20 m-bottom-20">
-      <view class="p-tb-30 min-border-bottom">基本信息</view>
-      <view class="main p-tb-20">
-        <view class="status">空闲中</view>
-        <view>
-          台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：<text class="emp">K112</text>
-        </view>
-        <view>
-          分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：卡座
-        </view>
-        <view>
-          低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：￥500
-        </view>
-        <view>
-          座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：4座
-        </view>
-        <view>
-          开台条件：6成低消（￥600）
-        </view>
-      </view>
-    </view>
-    <view class="card p-lr-20 p-bottom-10 m-bottom-20">
-      <view class="p-tb-30 min-border-bottom">点单信息</view>
-      <view class="main p-tb-20">
-        <view>
-          当前状态：<text style="color: #FF0000;">不满足开台条件</text>
-        </view>
-        <view>开台订单：￥600（未支付）</view>
-        <view class="card-btns">
-          <min-btn size="xs">重新下单</min-btn>
-          <view class="m-left-20"></view>
-          <min-btn size="xs" type="white" border>申请开台</min-btn>
-          <view class="m-left-20"></view>
-          <min-btn size="xs" type="white" border class="m-left-20">查看订单</min-btn>
-        </view>
-      </view>
-    </view>
-    <view class="card p-lr-20 p-bottom-10 m-bottom-20">
-      <view class="p-tb-30 min-border-bottom">客户信息</view>
-      <view class="main p-tb-20">
-        <view>客户姓名：刘小青</view>
-        <view>联系电话：13563250000</view>
-        <view>
-          当天生日：是
-        </view>
-        <view>预抵时间：2020年02月15日 16:20:00</view>
-      </view>
-    </view>
-    <view class="card p-lr-20 p-bottom-10 m-bottom-20">
-      <view class="p-tb-30 min-border-bottom">客户信息</view>
-      <view class="main p-tb-20">
-        <view>营销人员：刘清清</view>
-        <view>预抵时间：2020年02月15日 16:20:00</view>
-      </view>
-    </view>
-    <view class="btns">
-      <min-btn>预约</min-btn>
-      <min-btn type="white">开台</min-btn>
-      <min-btn type="white">存酒</min-btn>
-      <min-btn type="white">停用</min-btn>
-      <min-btn type="white">历史</min-btn>
-    </view>
+    <!-- 空闲中组件 2 00-->
+    <min-idle :id="id"  v-if="status === 2"></min-idle>
+    <!-- 点单中 4 00-->
+    <min-order :id="id" v-if="status === 4"></min-order>
+    <!-- 已预约 3 00 -->
+    <min-booked :id="id" v-if="status === 3"></min-booked>
+    <!-- 待确认 5 00-->
+    <min-confirmed :id="id" v-if="status === 5"></min-confirmed>
+    <!-- 已停用 1 00-->
+    <min-terminated :id="id" v-if=" status === 1"></min-terminated>
+    <!-- 已开台 6 00-->
+    <min-opened  :id="id" v-if=" status === 6"></min-opened>
+    <!-- 清台中 7-->
+    <min-taichung :id="id"  v-if=" status === 7"></min-taichung>
   </view>
 </template>
 
 <script>
 export default {
-  name: 'platform-detail'
+  name: 'platform-detail',
+  navigate: ['navigateTo'],
+  data () {
+    return {
+      id: '',
+      status: Number
+    }
+  },
+  onLoad (option) {
+    this.id = this.$parseURL().id
+    this.status = this.$parseURL().status
+    console.log(this.id, this.status)
+  },
+  methods: {
+    // 调用接口获取台详情数据数据
+    getData () {
+
+    },
+    // 获取台位历史
+    goGetHistory () {
+      this.$minRouter.push({
+        name: 'platform-history',
+        params: { id: this.id }
+      })
+    }
+  }
 }
 
 </script>

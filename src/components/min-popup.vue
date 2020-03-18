@@ -1,7 +1,7 @@
 <template>
   <view class="min-popup" v-if="show" :class="[isShow ? 'min-show' : 'min-hide']">
     <view class="min-overlay" @click="close"></view>
-    <view class="min-content">
+    <view :class="size ?  'min-content-'+size : 'min-content'">
       <slot/>
     </view>
   </view>
@@ -11,13 +11,15 @@
 export default {
   props: {
     show: {
-      type: Boolean,
-      default: false
+      type: Boolean
+    },
+    size: {
+      type: String
     }
   },
   data () {
     return {
-      isShow: false
+      isShow: Boolean
     }
   },
   created () {
@@ -26,6 +28,9 @@ export default {
   watch: {
     show () {
       this.isShow = this.show
+      if (!this.show) {
+        this.close()
+      }
     }
   },
   methods: {
@@ -33,7 +38,7 @@ export default {
       this.isShow = false
       setTimeout(() => {
         this.$emit('close')
-      }, 500)
+      }, 200)
     }
   }
 }
@@ -77,6 +82,16 @@ export default {
   .min-content{
     width: 100%;
     height:800rpx;
+    background: #fff;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 300;
+    overflow: hidden;
+  }
+  .min-content-height{
+    width: 100%;
+    height:600rpx;
     background: #fff;
     position: absolute;
     left: 0;

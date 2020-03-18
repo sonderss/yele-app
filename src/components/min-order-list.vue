@@ -3,8 +3,8 @@
       <view class="main" v-for="(item,index) in list" :key="index">
           <view class="top-view min-flex">
             <view class="left-view min-flex min-flex-main-start">
-               <text class="f20 m-right-10 radius-b" :class="item.platform ? 'active-left-p' : 'active-left-m' ">{{item.platform? "平台" : "门店" }}</text>
-               <text class="f26">单号：{{item.oddnum}}</text>
+               <text v-if="isShowPlatform"  class="f20 m-right-10 radius-b" :class="item.platform ? 'active-left-p' : 'active-left-m' ">{{item.platform? "平台" : "门店" }}</text>
+               <text class="f26 m-left-20">单号：{{item.oddnum}}</text>
             </view>
             <text class="right-txt f28" :class="(item.status.num === 1 ||item.status.num === 2 || item.status.num === 6 ) ? 'red' : (item.status.num === 3 || item.status.num ===  4) ? 'green': 'blue' ">{{item.status.desc}}</text>
           </view>
@@ -59,6 +59,10 @@ export default {
     list: {
       type: Array,
       default: () => []
+    },
+    isShowPlatform: {
+      type: Boolean,
+      default: true
     }
   }
 }

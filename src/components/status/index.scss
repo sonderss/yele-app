@@ -1,0 +1,122 @@
+.platform-detail{
+  position: relative;
+  padding-bottom: 100rpx;
+  .card{
+    background: #fff;
+    border-radius: 10rpx;
+    .main{
+      position: relative;
+      &>view{
+        margin-bottom: 10rpx;
+        &:last-child{
+          margin: 0;
+        }
+      }
+      .emp{
+        display: inline-block;
+        font-weight: bold;
+        color: #FE0000;
+      }
+      .status{
+        position: absolute;
+        top: 20rpx;
+        right: 0;
+        color: #FE0000;
+      }
+      .reserved {
+        // 已预约
+        position: absolute;
+        top: 20rpx;
+        right: 0;
+        color: #0090ff;
+      }
+      .been-open {
+        // 已开台
+        background: #ff0000;
+      }
+      .be-confirm {
+        // 待确认
+        position: absolute;
+        top: 20rpx;
+        right: 0;
+        color: #39ba01;
+      }
+      .clearing{
+        // 清台中
+        background: #39ba01;
+      }
+      .in-order {
+        // 点单中
+        background: #ff9c00;
+      }
+      .leisure {
+        // 空闲中
+        background: #eeeeee;
+        & > view {
+          color: #666;
+        }
+      }
+      .disabled {
+        // 已停用
+        background: #eeeeee;
+        & > view {
+          color: #ccc;
+        }
+      }
+      .card-btns{
+        margin-top: 30rpx !important;
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+  }
+  .btns-confirmed{
+    width: 100vw;
+    // height: 220rpx;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background: #f7f7f7;
+    padding: 10rpx 30rpx;
+    .btn{
+      width: 216rpx;
+      height: 88rpx;
+    }
+  }
+  .btns1{
+    width: 100vw;
+    height: 210rpx;
+    position: fixed;
+    // flex-wrap: wrap;
+    left: 0;
+    bottom: 0;
+    background: #f7f7f7;
+    padding: 10rpx 30rpx;
+    margin-top: 10rpx;
+    .btn1{
+      width: 100rpx;
+      float: left;
+      margin-right: 39rpx;
+      margin-bottom: 10rpx;
+    }
+  }
+  .btns{
+    width: 100vw;
+    height: 220rpx;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    background: #f7f7f7;
+    padding: 10rpx 30rpx;
+    .btn{
+      width: 216rpx;
+      height: 88rpx;
+    }
+  }
+}

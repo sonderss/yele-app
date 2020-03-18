@@ -1,52 +1,30 @@
 <template>
-  <view class="order-make p-lr-30 p-tb-20">
+<view>
+  <view class="order-make p-lr-30 p-tb-20" v-if="isData">
     <min-cell class="top-view" :card="false">
       <view class="top-title-view min-flex min-flex-main-between">
-        <text class="f34 left-title">K112</text>
+        <text class="f34 left-title">{{deskInfo.desk_name}}</text>
         <view class="min-flex min-flex-align-center min-flex-main-center">
-          <min-avatar size="nm" url="../../static/images/headurl60.png"></min-avatar>
-          <text class="f28 p-left-20">SIMBA</text>
+          <!-- ../../static/images/headurl60.png -->
+          <min-avatar size="nm" v-if="storeInfo.head_img !== undefined" :url="storeInfo.head_img  ? storeInfo.head_img : '../../static/images/headurl60.png' "></min-avatar>
+          <text class="f28 p-left-20">{{storeInfo.store_name}}</text>
         </view>
       </view>
       <view class="min-border-bottom"></view>
       <view class="main-view min-flex min-flex-dir-top min-flex-align-top">
-        <view class="m-top-30 m-bottom-10">分&nbsp;&nbsp;&nbsp;&nbsp;组：卡座</view>
-        <view class="m-bottom-10">低&nbsp;&nbsp;&nbsp;&nbsp;消：￥200</view>
-        <view class="m-bottom-30">座&nbsp;&nbsp;&nbsp;&nbsp;位：4座</view>
+        <view class="m-top-30 m-bottom-10">分&nbsp;&nbsp;&nbsp;&nbsp;组：{{deskInfo.group_name}}</view>
+        <view class="m-bottom-10">低&nbsp;&nbsp;&nbsp;&nbsp;消：￥{{deskInfo.minim_charge}}</view>
+        <view class="m-bottom-30" >座&nbsp;&nbsp;&nbsp;&nbsp;位：{{txt}}</view>
       </view>
     </min-cell>
     <view class="m-tb-20"></view>
     <min-cell class="mid-view" :card="false">
-      <min-desc-input desc="客户姓名" v-model="name" sign="*" placeholder="请输入姓名" ></min-desc-input>
+      <min-desc-input desc="客户姓名" v-model="name1" sign="*" placeholder="请输入姓名" ></min-desc-input>
       <min-desc-input desc="联系电话" v-model="phone" sign="*" placeholder="请输入联系电话"></min-desc-input>
-      <!-- <view class="min-flex min-flex-main-between f28 min-border-bottom" > -->
-        <min-desc-input sign="*" desc="预约时间" :isRightRrrow="true"   placeholder="请选择预约日期" :disabled="true"></min-desc-input>
-        <!-- <img class="right-arrow p-left-10" src="../../static/images/arrow.png" /> -->
-      <!-- </view> -->
-      <!-- <view class="min-flex min-flex-main-between f28">
-        <min-desc-input desc="预抵时间" sign="*"  :border="false" :value='shopDate' placeholder="请选择到店日期" :disabled="true"></min-desc-input>
-        <img class="right-arrow p-left-10" src="../../static/images/downarrow24.png" />
-      </view> -->
-      <!-- <view class="chioce-date">
-        <view
-          class="m-bottom-20 m-right-20"
-          :class="current === n ? 'chioce-date-item-active' : 'chioce-date-item'"
-          v-for="(i,n) in date"
-          :key="n"
-          @click="chioce(n)"
-        >{{i}}</view>
-      </view> -->
-       <min-collapse :list="date"  v-model="tsetvalue" ></min-collapse>
-      <!-- <text class="m-bottom-20" style="display:block">凌晨</text>
-      <view class="chioce-date">
-        <view
-          class="m-bottom-20 m-right-20"
-          v-for="(i,n) in date"
-          :key="n"
-          :class="nextCurrent === n ? 'chioce-date-item-active' : 'chioce-date-item'"
-          @click="chioceNext(n)"
-        >{{i}}</view>
-      </view> -->
+
+        <view @click="goChioce"> <min-desc-input sign="*"  desc="预约时间" :isRightRrrow="true"  :value="dates"  placeholder="请选择预约日期" :disabled="true"></min-desc-input></view>
+      <!-- <min-desc-input desc="预抵时间" sign="*"  :border="false" :value='shopDate' :isRightRrrow="true" placeholder="请选择到店日期" :disabled="true"></min-desc-input> -->
+        <min-collapse :list="date"  v-model="tsetvalue" @chioce="chioce" :nightArr="nightArr" :isKua="storeSetting.is_store_across"></min-collapse>
       <view class="min-border-bottom"></view>
       <min-switch desc="是否当天生日" v-model="isShengri" ></min-switch>
     </min-cell>
@@ -56,18 +34,37 @@
     <view class="btn" v-if="table">
       <min-btn :long="true" @click="submit" :opacity='false' >提交</min-btn>
     </view>
+    <!-- <min-modal ref="test"></min-modal> -->
   </view>
+  <min-404 v-if="!isData"></min-404>
+</view>
 </template>
 
 <script>
+// 座位数量:0 - 未选,1 - 1座，2 - 2座，3 - 3座，4 - 4座，5 - 6座，6 - 8座，7 - 10座，8 - 12座，9 - 12座以上
+const nums = [
+  { txt: '未选' },
+  { txt: '1座' },
+  { txt: '2座' },
+  { txt: ' 3座' },
+  { txt: '4座' },
+  { txt: '6座' },
+  { txt: '8座' },
+  { txt: '10座' },
+  { txt: '12座' },
+  { txt: '12座以上' }
+]
 export default {
+  name: 'order-make',
+  navigate: ['navigateTo'],
   data () {
     return {
-      date: ['8:00', '23:00', '9:00', '20:00', '20:00', '20:00', '20:00'],
+      date: [],
+      nightArr: [],
       current: Number,
       // nextCurrent: Number,
       isShengri: false,
-      name: '',
+      name1: '',
       phone: '',
       value: '',
       shopDate: '',
@@ -76,101 +73,143 @@ export default {
       table: true,
       url: 'wss://api.store.dev.yeleonline.com:20021',
       socketOpen: false,
-      socketMsgQueue: []
+      socketMsgQueue: [],
+      id: '',
+      deskInfo: { desk_name: 'null', seats: 0, group_name: 'null', minim_charge: 'null' },
+      storeInfo: { head_img: '../../static/images/headurl60.png', store_name: 'null' },
+      bookingDate: {},
+      storeSetting: {},
+      nums,
+      dates: '',
+      isKua: Number,
+      isData: 123
+    }
+  },
+  computed: {
+    txt () {
+      const value = this.nums[this.deskInfo.seats].txt
+      return value
     }
   },
   onLoad () {
-    uni.getSystemInfo({
-      // eslint-disable-next-line no-irregular-whitespace
-      success: (res) => {
-        this.windowHeight = res.windowHeight
-      }
-    })
-    uni.onWindowResize((res) => {
-      if (res.size.windowHeight < this.windowHeight) {
-        this.table = false
-      } else {
-        this.table = true
-      }
-    })
+    this.id = this.$parseURL().id
   },
-  onShow () {
-    // 连接
-    uni.connectSocket({
-      url: this.url
-    })
-    // 打开
-    uni.onSocketOpen((res) => {
-      console.log('WebSocket 已开启！')
-
-      this.socketOpen = true
-
-      this.sendSocketMessage()
-
-      // console.log(this.socketMsgQueue)
-      this.socketMsgQueue = []
-      uni.closeSocket()
-    })
-    // 连接失败
-    uni.onSocketError((res) => {
-      console.log('WebSocket连接打开失败，请检查！')
-    })
-    // 接收服务端信息
-    uni.onSocketMessage((res) => {
-      console.log('收到服务器内容：' + res.data)
-    })
-    // 监听socket关闭
-    uni.onSocketClose((res) => {
-      console.log('WebSocket 已关闭！')
-    })
+  mounted () {
+    this.getData(this.id)
+      .then(res => {
+        console.log(res)
+        this.deskInfo = res.deskInfo
+        this.storeInfo = res.storeInfo
+        this.bookingDate = res.bookingDate
+        this.storeSetting = res.storeSetting
+        this.getDate(this.storeSetting.store_business_time.start, this.storeSetting.store_business_time.end)
+      })
   },
-  mounted () {},
   methods: {
-    // 向服务端发送信息
-    sendSocketMessage (msg) {
-      console.log('正在发送')
-      var obj = { apiAuth: '123456', clientType: 'store_app' }
-      obj = JSON.stringify(obj)
-      console.log(obj)
-      if (this.socketOpen) {
-        uni.sendSocketMessage({
-          data: obj,
-          success: res => {
-            console.log(res)
-          }
-        })
-      } else {
-        // this.socketMsgQueue.push(msg)
-        console.log('发送失败')
+    // 获取时间
+    getDate (start, end) {
+      const ia = 30 * 60 * 1000
+      var startime = '2020/3/18' + ' ' + start
+      var endTie = '2020/3/19' + ' ' + end
+      const endTiemeDate = new Date(endTie)
+      const startimeDate = new Date(startime)
+      var night = new Date('2020/3/18 24:00')
+      var tom = new Date('2020/3/19 00:00')
+      const nightLine = night.getTime()
+      const tommorw = tom.getTime()
+      // 开始的时间戳
+      start = startimeDate.getTime()
+      // 结束的时间戳
+      end = endTiemeDate.getTime()
+      const arr = []
+      for (let i = start; i < nightLine; i += ia) {
+        const eq = new Date(i)
+        const a = this.$minCommon.formatDate(eq, 'hh:mm')
+        arr.push(a)
       }
+      const brr = []
+      for (let i = tommorw; i <= end; i += ia) {
+        const eq = new Date(i)
+        const a = this.$minCommon.formatDate(eq, 'hh:mm')
+        brr.push(a)
+      }
+      this.date = arr
+      this.nightArr = brr
+      console.log(arr, brr)
+    },
+    getData (id) {
+      return new Promise((resolve, reject) => {
+        this.$minApi.getBookingPreview({ desk_id: id })
+          .then(res => {
+            this.isData = true
+            resolve(res)
+          })
+          .catch(err => {
+            console.log(err)
+            setTimeout(() => {
+              this.isData = false
+            }, 2000)
+          })
+      })
     },
     chioce (n) {
-      // console.log(n)
-      this.current = n
-      this.nextCurrent = null
-      this.shopDate = this.date[n]
+      this.isKua = n
     },
-    // chioceNext (n) {
-    //   this.nextCurrent = n
-    //   this.current = null
-    //   this.shopDate = this.date[n]
-    // },
+    // 提交
     submit () {
-      // console.log(this.value)
-      // console.log(this.isShengri)
-      // const path = {
-      //   path: '/pages/platform-history/index',
-      //   type: 'navigateTo',
-      //   params: { abc: '123' }
-      // }
-      // console.log(this.$minRouter)
-      // this.$router.push(path)
-      // this.$minRouter.beforeEach((to, from, next) => {
-      //   // this.$router.push(path)
-      //   console.log(123)
-      //   next(true)
-      // })
-      // console.log(this.name, this.phone, this.tsetvalue)
+      /**
+         * 桌子Id  客户姓名  客户手机号  预约日期（例 2020-01-01）  预抵时间 （例 20:00）  是否生日（1否，2：是）  备注  是否跨天
+         */
+      let dates = this.dates
+      const datesNum = this.dates.indexOf(' ')
+      dates = dates.slice(0, datesNum)
+      const data = {
+        desk_id: this.id,
+        client_name: this.name1,
+        client_mobile: this.phone,
+        business_date: dates,
+        arrival_time: this.tsetvalue,
+        is_birthday: this.is_birthday ? 1 : 2,
+        remark: this.value,
+        is_across: this.isKua
+      }
+      if (!data.client_name) {
+        uni.showToast({
+          title: '请输入姓名',
+          icon: 'none'
+        })
+      } else if (!this.$minCommon.checkMobile(data.client_mobile)) {
+        uni.showToast({
+          title: '请输入有效电话姓名',
+          icon: 'none'
+        })
+      } else if (!data.business_date) {
+        uni.showToast({
+          title: '请选择预定日期',
+          icon: 'none'
+        })
+      } else if (!data.arrival_time) {
+        uni.showToast({
+          title: '请选择预达时间',
+          icon: 'none'
+        })
+      } else {
+        this.addData(data).then(res => {
+          uni.navigateTo({
+            url: '../reservation-success/index?data=' + JSON.stringify(res)
+          })
+        })
+      }
+    },
+    // 提交
+    addData (data) {
+      return new Promise((resolve, reject) => {
+        this.$minApi.addBooked({ remark: data.remark, is_across: data.is_across, desk_id: data.desk_id, client_name: data.client_name, client_mobile: data.client_mobile, business_date: data.business_date, arrival_time: data.arrival_time, is_birthday: data.is_birthday })
+          .then(res => {
+            console.log(res)
+            resolve(res)
+          })
+      })
     },
     click () {
       this.table = false
@@ -178,6 +217,13 @@ export default {
     blur () {
       console.log(this.table)
       this.table = true
+    },
+    // 选择预约日期
+    goChioce () {
+      this.$minRouter.push({
+        name: 'reservation-date',
+        params: { data: this.bookingDate }
+      })
     }
   }
 }

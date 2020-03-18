@@ -2,16 +2,16 @@ export default {
   namespaced: true,
   cache: 'not',
   state: {
-    testData: '123'
+    userInfo: {}
   },
   mutations: {
-    setTest: (state, data) => {
-      state.testData = data
+    setUserInfo: (state, data) => {
+      state.userInfo = data
     }
   },
   actions: {
-    test ({ commit }, data) {
-      commit('setTest', data)
+    setUserInfo ({ commit }, data) {
+      commit('setUserInfo', data)
     }
   }
 }

@@ -79,6 +79,7 @@ export default {
   methods: {
     changeCount (value) {
       this.$emit('input', value)
+      this.$emit('change', value)
     }
   }
 }

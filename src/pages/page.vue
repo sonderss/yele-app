@@ -18,9 +18,9 @@ export default {
           }
         },
         {
-          path:"pages/pay-order/index",
+          path: 'pages/pay-order/index',
           style: {
-            navigationBarTitleText: "支付订单"
+            navigationBarTitleText: '支付订单'
           }
         },
         {
@@ -48,21 +48,75 @@ export default {
           }
         },
         {
+          path: 'pages/my-downline/index',
+          style: {
+            navigationBarTitleText: '我的下线'
+          }
+        },
+        {
+          path: 'pages/lnvitation-offline/index',
+          style: {
+            navigationBarTitleText: '邀请下线'
+          }
+        },
+        {
+          path: 'pages/invitation-record/index',
+          style: {
+            navigationBarTitleText: '邀请记录'
+          }
+        },
+        {
           path: 'pages/forfeiture-record/index',
           style: {
             navigationBarTitleText: '充公记录'
           }
         },
+        // {
+        //   path: 'pages/confwine-details/index',
+        //   style: {
+        //     navigationBarTitleText: '充公酒详情'
+        //   }
+        // },
         {
-          path: 'pages/confwine-details/index',
+          path: 'pages/placean-order/index',
           style: {
-            navigationBarTitleText: '充公酒详情'
+            navigationBarTitleText: '下单'
+          }
+        },
+        {
+          path: 'pages/order-entry/index',
+          style: {
+            navigationBarTitleText: '下单赠送入口'
+          }
+        },
+        {
+          path: 'pages/product-details/index',
+          style: {
+            navigationBarTitleText: '商品详情'
+          }
+        },
+        {
+          path: 'pages/package-details/index',
+          style: {
+            navigationBarTitleText: '套餐详情'
+          }
+        },
+        {
+          path: 'pages/packages-detail/index',
+          style: {
+            navigationBarTitleText: '套餐详情2级'
           }
         },
         {
           path: 'pages/presentation-records/index',
           style: {
             navigationBarTitleText: '赠送记录'
+          }
+        },
+        {
+          path: 'pages/give-away/index',
+          style: {
+            navigationBarTitleText: '赠送列表'
           }
         },
         {
@@ -75,6 +129,18 @@ export default {
           path: 'pages/order-record/index',
           style: {
             navigationBarTitleText: '订单记录'
+          }
+        },
+        {
+          path: 'pages/desk-bill/index',
+          style: {
+            navigationBarTitleText: '台位账单'
+          }
+        },
+        {
+          path: 'pages/bill-settlement/index',
+          style: {
+            navigationBarTitleText: '账单结算'
           }
         },
         {

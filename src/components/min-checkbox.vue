@@ -1,6 +1,9 @@
 <template>
   <view class="min-checkbox" @click="checkbox">
-    <icon type="success" size="20" color="#FE0000" v-if="isCheck"/>
+    <view class="view"  v-if="isCheck">
+      <icon type="success_no_circle" size="16" color="#000"/>
+    </view>
+
     <view class="icon" v-else></view>
     <view class="text p-left-20">{{title}}</view>
   </view>
@@ -90,6 +93,20 @@ export default {
     vertical-align: middle;
     font-size: 28rpx;
     color:#333;
+  }
+  .view{
+      width: 40rpx;
+    height: 40rpx;
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 50%;
+    background: #FFE001;
+   border-radius: 50%;
+    box-sizing: border-box;
+
+   display: flex;
+   justify-content: center;
+   align-items: center;
   }
 }
 </style>

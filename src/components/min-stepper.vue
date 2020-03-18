@@ -10,7 +10,7 @@
       :disabled="true"
     /> -->
     <view class="min-value">{{ (value > min || !isAnimation) ? stepperCacheNum : '' }}{{ unit }}</view>
-    <image @click="add" class="min-add" src="/static/images/add.png"/>
+    <image @click="add" class="min-add" :src="icon"/>
   </view>
 </view>
 </template>
@@ -62,6 +62,10 @@ export default {
     unit: {
       type: String,
       default: ''
+    },
+    icon: {
+      type: String,
+      default: '/static/images/add.png'
     }
   },
   created () {
@@ -78,10 +82,6 @@ export default {
       if (this.stepperCacheNum === Number(this.min) && this.isAnimation) this.lessAnimation()
     },
     add () {
-<<<<<<< HEAD
-=======
-      // console.log(1111)
->>>>>>> a9c321f321fb3e966765aaffaebef585888ca9e8
       if (this.value === Number(this.max)) return
       this.stepperNum >= this.max ? this.stepperNum = this.max : this.stepperNum += Math.ceil(this.step * 10) / 10
       this.stepperCacheNum = Number(this.stepperNum.toFixed(1))
@@ -161,8 +161,8 @@ export default {
     padding: 10rpx;
     width: 40rpx;
     height: 40rpx;
-    background: url('/static/images/add.png') no-repeat;
-    background-position: center center;
+    // background: url('/static/images/add.png') no-repeat;
+    // background-position: center center;
     background-size: 40rpx 40rpx;
   }
   .min-value{

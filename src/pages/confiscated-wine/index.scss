@@ -1,0 +1,345 @@
+uni-page-body {
+  overflow: hidden;
+  height: 100%;
+}
+
+.list_box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  font-size: 28rpx;
+  overflow: hidden;
+
+  .left {
+    width: 160rpx;
+    background-color: #fff;
+    line-height: 80rpx;
+    box-sizing: border-box;
+    font-size: 32rpx;
+
+    .item {
+      position: relative;
+      text-align: center;
+      height: 96rpx;
+      line-height: 96rpx;
+      color: #666666;
+
+      &.active {
+        color: #333333;
+        background-color: #f7f7f7;
+        font-weight: bold;
+
+        &::after {
+          content: '';
+          width: 6rpx;
+          height: 50rpx;
+          background: #030313;
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+      }
+    }
+  }
+
+  .main {
+    padding-left: 20rpx;
+    width: 0;
+    flex-grow: 1;
+    box-sizing: border-box;
+    margin-right: 30rpx;
+
+    .title {
+      line-height: 64rpx;
+      font-size: 24rpx;
+      font-weight: bold;
+      color: #666;
+      background-color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 19;
+    }
+
+    .isSku {
+      width: 100rpx;
+      height: 48rpx;
+      background: #ffe001;
+      border-radius: 24rpx;
+      color: #333333;
+      text-align: center;
+      line-height: 48rpx;
+    }
+
+    .item {
+      width: 540rpx;
+      // margin-bottom: 20rpx;
+      padding-bottom: 0 0 5rpx;
+    }
+    .goods {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: center;
+      align-content: center;
+      margin-bottom: 20rpx;
+      background: #fff;
+      height: 200rpx;
+      width: 540rpx;
+      padding: 20rpx;
+      & > image {
+        width: 160rpx;
+        height: 160rpx;
+        margin-right: 16rpx;
+      }
+
+      .content-view {
+        flex: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: space-between;
+        color: #333333;
+
+        .right-view-title {
+          .t {
+            width: 100%;
+          }
+        }
+
+        .right-view-bottom {
+          height: 48rpx;
+          display: flex;
+          // position: relative;
+          justify-content: space-between;
+
+          .right-view-bottom-desc {
+            display: flex;
+          }
+
+          .steper {
+            // position: absolute;
+            // right:0;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+          }
+        }
+      }
+    }
+  }
+
+  // 已选商品的弹出层
+  .popview {
+    .top-view {
+      width: 100%;
+      height: 83rpx;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .clear {
+        color: #666;
+      }
+
+      .right-view {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%;
+
+        .icon-del {
+          width: 22rpx;
+          height: 22rpx;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          image {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+    }
+
+    .main-sel-view {
+      width: 100%;
+      height: 620rpx;
+      overflow: auto;
+
+      .item {
+        display: flex;
+        margin-bottom: 10rpx;
+        height: 140rpx;
+
+        & > image {
+          width: 140rpx;
+          height: 140rpx;
+          margin-right: 16rpx;
+        }
+
+        .content-view {
+          flex: 1;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: space-between;
+          color: #333333;
+          align-content: space-between;
+          margin-bottom: 120rpx;
+
+          .right-view-title {
+            .t {
+              width: 100%;
+            }
+          }
+
+          .right-view-bottom {
+            height: 48rpx;
+            display: flex;
+            // position: relative;
+            justify-content: space-between;
+
+            .right-view-bottom-desc {
+              display: flex;
+              align-items: center;
+            }
+
+            .steper {
+              // position: absolute;
+              // right:0;
+              display: flex;
+              justify-content: flex-end;
+              align-items: center;
+            }
+          }
+        }
+      }
+    }
+
+    .bottom-view-t {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+    }
+
+    .empty-view {
+      width: 100%;
+      height: 50rpx;
+    }
+  }
+
+  // 选择规格弹出
+  .skuTop {
+    width: 100%;
+    height: 180rpx;
+    margin: 30rpx 0;
+    display: flex;
+    padding: 0 30rpx;
+
+    .leftView {
+      flex: 1;
+      display: flex;
+
+      .img-view {
+        width: 180rpx;
+        height: 180rpx;
+        margin-right: 20rpx;
+
+        image {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .sku-view {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-content: flex-end;
+
+        .m {
+          color: #ff0000;
+
+          .money {
+            font-weight: bold;
+            color: #ff0000;
+          }
+        }
+      }
+    }
+
+    .rightView {
+      width: 34rpx;
+      height: 34rpx;
+
+      image {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  .sku-item {
+    margin: 0 30rpx;
+    padding: 30rpx 0;
+    padding-bottom: 10rpx;
+    height: 300rpx;
+    overflow: auto;
+
+    .item-view {
+      margin-top: 20rpx;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+
+      .item {
+        padding: 0 20rpx;
+        word-wrap: none;
+        height: 58rpx;
+        border: 1px solid rgba(51, 51, 51, 1);
+        border-radius: 10rpx;
+        margin-right: 20rpx;
+        margin-bottom: 20rpx;
+        text-align: center;
+        line-height: 58rpx;
+      }
+
+      .item-active {
+        padding: 0 20rpx;
+        word-wrap: none;
+        height: 58rpx;
+        border: 1px solid #fe432a;
+        border-radius: 10rpx;
+        margin-right: 20rpx;
+        margin-bottom: 20rpx;
+        text-align: center;
+        line-height: 58rpx;
+      }
+    }
+  }
+
+  .sku-item-num {
+    height: 200rpx;
+  }
+
+  .btn-sku {
+    width: 100%;
+    height: 98rpx;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background: #ffe001;
+    text-align: center;
+    line-height: 98rpx;
+    font-size: 32rpx;
+    color: #333;
+  }
+}

@@ -4,7 +4,9 @@
     <view class="min-modal-main" :class="{'min-modal-main-show': show}">
       <view class="min-modal-content">
         <view class="min-modal-title" v-if="title">{{title}}</view>
-        <view class="min-modal-body" v-if="content">{{content}}</view>
+        <view class="min-modal-body" v-if="content">
+           <view class="content" v-html="content"></view>
+        </view>
         <view class="min-modal-body" v-else><slot></slot></view>
         <view class="min-modal-actions min-modal-line-top" v-if="actions.length">
           <view :class="{'min-modal-flex': actionMode}">
@@ -199,7 +201,7 @@ export default {
   background-color: #fff;
   border: 0;
   background-clip: padding-box;
-  text-align: center;
+  /* text-align: center; */
   height: 100%;
   overflow: hidden;
 }
@@ -220,6 +222,7 @@ export default {
   height: 100%;
   line-height: 1.5;
   overflow: auto;
+  display: block;
 }
 .min-modal-item {
   position: relative;

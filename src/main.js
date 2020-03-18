@@ -38,6 +38,18 @@ import minCollapse from '@/components/min-collapse'
 import MinSlider from '@/components/min-slider'
 import MinOrderList from '@/components/min-order-list'
 import MinShowOrder from '@/components/min-show-order'
+import MinGoodsChioce from '@/components/min-goods-chioce'
+import MinDescribe from '@/components/min-describe'
+import MinNavTab from '@/components/min-navTab'
+import Min404 from '@/components/min-404'
+import MinPicker from '@/components/min-picker'
+import MinIdle from '@/components/status/min-idle'
+import MinOrder from '@/components/status/min-order'
+import MinBooked from '@/components/status/min-booked'
+import MinConfirmed from '@/components/status/min-confirmed'
+import MinTerminated from '@/components/status/min-terminated'
+import MinOpened from '@/components/status/min-opened'
+import MinTaichung from '@/components/status/min-taichung'
 Vue.component('min-avatar', MinAvatar)
 Vue.component('min-btn', MinBtn)
 Vue.component('min-cell', MinCell)
@@ -65,6 +77,18 @@ Vue.component('min-collapse', minCollapse)
 Vue.component('min-slider', MinSlider)
 Vue.component('min-order-list', MinOrderList)
 Vue.component('min-show-order', MinShowOrder)
+Vue.component('min-goods-chioce', MinGoodsChioce)
+Vue.component('min-describe', MinDescribe)
+Vue.component('min-navTab', MinNavTab)
+Vue.component('min-404', Min404)
+Vue.component('min-picker', MinPicker)
+Vue.component('min-idle', MinIdle)
+Vue.component('min-order', MinOrder)
+Vue.component('min-booked', MinBooked)
+Vue.component('min-confirmed', MinConfirmed)
+Vue.component('min-terminated', MinTerminated)
+Vue.component('min-opened', MinOpened)
+Vue.component('min-taichung', MinTaichung)
 Vue.config.productionTip = false
 App.mpType = 'app'
 
@@ -74,6 +98,31 @@ Vue.use(MinCache)
 Vue.use(MinCommon)
 
 Vue.prototype.$store = store
+
+Vue.directive('root', {
+  inserted: function (el, bind) {
+    if (!test(bind.value)) {
+      el.parentNode.removeChild(el)
+    }
+    function test (root) {
+      const data = store.state.user.userInfo.access
+      for (const i of data) {
+        if (i === root) {
+          return true
+        }
+      }
+      return false
+    }
+  }
+})
+Vue.prototype.$showToast = (title, icon = 'none', duration = 2000) => {
+  uni.showToast({
+    title,
+    icon,
+    duration
+  })
+}
+
 const app = new Vue({
   ...App,
   minRouter,

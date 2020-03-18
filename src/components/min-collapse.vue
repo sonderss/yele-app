@@ -7,8 +7,12 @@
         <!-- <image class="right-arrow p-left-10"  :class="isShow ? 'animation' : 'right-arrow-a animation' "  src="../../static/images/arrow.png" /> -->
       </view>
       <view v-if="isArray">
-        <view class="content"  :class="isShow ? 'animation': 'show animation' "  :style="{'height':isShow? `${list.length%5 == 0 ? list.length / 5 : Math.round(list.length/5) + 1}00`-50+'rpx' :'0'}">
+        <view class="content"  :class="isShow ? 'animation': 'show animation' "  :style="{'height':isShow? `${list.length%5 == 0 ? list.length / 5 : Math.round(list.length/5) + 1}00`-100+'rpx' :'0'}">
           <text  class="m-right-20" @click="chioce(index)" :class="current === index ? 'chioce-date-item-active' : 'chioce-date-item' " v-for="(item,index) in list" :key="index">{{item}}</text>
+        </view>
+         <view class="content night" style="margin-bottom:20rpx" v-if="isShow">凌晨</view>
+         <view class="content"  v-if="isKua === 2 || isKua === '2'" :class="isShow ? 'animation': 'show animation' "  :style="{'height':isShow? `${nightArr.length%5 == 0 ? nightArr.length / 5 : Math.round(nightArr.length/5) + 1}00`-100+'rpx' :'0'}">
+          <text  class="m-right-20" @click="chioce1(index)" :class="current1 === index ? 'chioce-date-item-active' : 'chioce-date-item' " v-for="(item,index) in nightArr" :key="index">{{item}}</text>
         </view>
       </view>
       <view v-if="!isArray">
@@ -16,10 +20,6 @@
           <text  class=" txt" >{{list}}</text>
         </view>
       </view>
-      <!-- <text class="m-bottom-20" style="display:block">凌晨</text>
-      <view class="content" :class="isShow ? 'animation': 'show animation' "  :style="{'height':isShow? `${list.length%5 == 0 ? list.length / 5 : Math.round(list.length/5) + 1}00rpx` :'0'}">
-        <text  class="m-right-20" @click="chioce(index)" :class="current === index ? 'chioce-date-item-active' : 'chioce-date-item' " v-for="(item,index) in data" :key="index">{{item}}</text>
-      </view> -->
   </view>
 </view>
 </template>
@@ -28,6 +28,13 @@ export default {
   props: {
     list: {
       type: [Array, String, Number]
+    },
+    nightArr: {
+      type: Array,
+      default: () => []
+    },
+    isKua: {
+      type: [Number, String]
     },
     desc: {
       type: String,
@@ -54,7 +61,8 @@ export default {
     return {
       isShow: true,
       current: Number,
-      value: ''
+      value: '',
+      current1: Number
       // data: ['8:00', '23:00', '9:00']
     }
   },
@@ -71,10 +79,18 @@ export default {
       this.isShow = !this.isShow
     },
     chioce (n) {
-      console.log(n)
       this.current = n
+      this.current1 = null
       this.value = this.list[n]
       this.$emit('input', this.list[n])
+      this.$emit('chioce', 0)
+    },
+    chioce1 (n) {
+      this.current1 = n
+      this.current = null
+      this.value = this.nightArr[n]
+      this.$emit('input', this.nightArr[n])
+      this.$emit('chioce', 1)
     }
   }
 }
@@ -99,6 +115,8 @@ export default {
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
+    height: auto;
+
     .chioce-date-item {
       width: 112rpx;
       height: 58rpx;
@@ -140,7 +158,7 @@ export default {
         -webkit-box-orient: vertical;
         overflow: hidden;
         // padding:0 20rpx;
-        padding-bottom: 20rpx;
+        // padding-bottom: 20rpx;
       }
   }
   .show{

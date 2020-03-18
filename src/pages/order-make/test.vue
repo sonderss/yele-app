@@ -12,16 +12,12 @@
   </view>
 </template>
 <script>
-import api from '../../api/a'
 export default {
   mounted () {
     const option = {
       url: '5e424f7f8c0c0?page=1&limit=20',
       accesstoken: 'HPkSFqbVhWpCRxVRpOTkyEubusFxBEEd'
     }
-    api.uniapp(option).then(res => {
-      console.log(res)
-    })
     // uni.request({
     //   url: 'http://api.app-store.dev.yeleonline.com/api/5e424cc4ded0a',
     //   header: {
@@ -31,6 +27,34 @@ export default {
     //     console.log(res)
     //   }
     // })
+    // 连接
+    uni.connectSocket({
+      url: this.url
+    })
+    // 打开
+    uni.onSocketOpen((res) => {
+      console.log('WebSocket 已开启！')
+
+      this.socketOpen = true
+
+      this.sendSocketMessage()
+
+      // console.log(this.socketMsgQueue)
+      this.socketMsgQueue = []
+      uni.closeSocket()
+    })
+    // 连接失败
+    uni.onSocketError((res) => {
+      console.log('WebSocket连接打开失败，请检查！')
+    })
+    // 接收服务端信息
+    uni.onSocketMessage((res) => {
+      console.log('收到服务器内容：' + res.data)
+    })
+    // 监听socket关闭
+    uni.onSocketClose((res) => {
+      console.log('WebSocket 已关闭！')
+    })
   },
   data () {
     return {

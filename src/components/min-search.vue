@@ -1,8 +1,8 @@
 <template>
   <view>
     <view class="min-search min-flex" :style="{'background': bgColor}">
-      <image class="search-icon" src="/static/images/search.png"></image>
-      <input class="search min-flex-1"  type="text" :placeholder="placeholder"
+      <image class="search-icon" @click="$emit('search')" src="/static/images/search.png"></image>
+      <input class="search min-flex-1" type="text" confirm-type="search" :placeholder="placeholder"
         @input="handleInput"
         :value="value"
       >

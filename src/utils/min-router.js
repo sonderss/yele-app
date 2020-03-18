@@ -7,7 +7,7 @@ class MinRouter {
     }
   }
 
-  _push ({ type, path, paramsStr }) {
+  _push ({ type, path, paramsStr }) { // 跳转页面
     return new Promise((resolve, reject) => {
       uni[type]({
         url: `/${path}?params=${paramsStr}`,
@@ -23,10 +23,10 @@ class MinRouter {
         const routers = getCurrentPages()
         let route
         if (routers.length > 0) {
-          const router = routers[routers.length - 1]
-          route = router.route
+          const router = routers[routers.length - 1] 
+          route = router.route// 获取上一个页面信息的路由
         }
-        this._beforeEach(args.path, route, resolve)
+        this._beforeEach(args.path, route, resolve) // 跳转页面拦截
       } else {
         resolve(args)
       }
@@ -75,7 +75,6 @@ class MinRouter {
     }
 
     this._next(arg).then(res => {
-      console.log(res)
       switch (true) {
         case Check.isUndefined(res):
           this._push(arg)
