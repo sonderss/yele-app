@@ -24,6 +24,26 @@ export default {
   getBookingPreview: (data) => minRequest.get('/5e1ed699a2e11', data),
   // 订台
   addBooked: (data) => minRequest.post('/5e1edf43a5e78', data),
+  // 获取桌台详情
+  getOrderDetail: data => minRequest.get('/5e1da82751805', data),
+  // 获取预约记录
+  getBookList: data => minRequest.get('/5e7334b369aae', data),
+  // 取消订台
+  cancelBooked: data => minRequest.post('/5e708fbae877f', data),
+  // 推迟到店
+  backBooked: data => minRequest.post('/5e71d3ee848e2', data),
+  // 启用
+  startUse: data => minRequest.get('/5e71c9488f983', data),
+  // 开台
+  startOrder: data => minRequest.post('/5e1ef9d780d5e', data),
+  // 停用
+  stopUse: data => minRequest.get('/5e1efa0402ded', data),
+  // 转台
+  changeOrder: data => minRequest.post('/5e73119ddb7eb', data),
+  // 清台
+  clearOrder: data => minRequest.get('/5e71d5877cf60', data),
+  // 销台
+  delOrder: data => minRequest.get('/5e71d58cd6f3c', data),
 
   /**
    * @description post请求

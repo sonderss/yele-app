@@ -3,7 +3,7 @@
       <view class="card p-lr-20 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">基本信息</view>
       <view class="main p-tb-20">
-        <view class="status">清台中</view>
+        <view class="status reserved">清台中</view>
         <view>
           台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：
           <text class="emp">K112</text>
@@ -43,14 +43,22 @@
         <view>预抵时间：2020年02月15日 16:20:00</view>
       </view>
     </view>
-     <view class="btns-confirmed">
-      <min-btn class="btn1" @click="book">预约</min-btn>
-      <min-btn type="white" class="btn1">销台</min-btn>
-      <min-btn type="white" class="btn1">账单</min-btn>
-      <min-btn type="white" class="btn1">订单</min-btn>
-      <min-btn type="white" class="btn1">存酒</min-btn>
-      <min-btn type="white" class="btn1" @click="goGetHistory">历史</min-btn>
+
+     <view class="btns">
+      <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book">预约</view>
+      <view :class="index === 1 ? 'btn active' : 'btn' " @click="saveWine">存酒</view>
+      <view  :class="index === 2 ? 'btn active' : 'btn' " >订单</view>
+      <view class="badge" @click="showToastTxt">
+          <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
+          <view class="toast anmatiin " v-if="toast">
+              <view class="bag_btn" >账单</view>
+              <view class="bag_btn" @click="del_order">销台</view>
+              <view class="bag_btn"  @click="goGetHistory">历史</view>
+             <view class="bag"></view>
+          </view>
+      </view>
     </view>
+    <min-modal ref="show"></min-modal>
   </view>
 </template>
 <script>
@@ -60,7 +68,9 @@ export default {
   },
   data () {
     return {
-      show: false
+      show: false,
+      index: Number,
+      toast: false
     }
   },
   methods: {
@@ -72,10 +82,48 @@ export default {
     },
     // 预约
     book () {
+      this.index = 0
       this.$minRouter.push({
         name: 'order-make',
         params: { id: this.idNum }
       })
+    },
+    // 存酒
+    saveWine () {
+      this.index = 1
+      // 跳转到选择客户页面（存酒）
+      this.$minRouter.push({
+        name: 'select-customers'
+      })
+    },
+    // 销台
+    del_order () {
+      this.$refs.show.handleShow({
+        title: '',
+        content: '是否销台',
+        contentCenter: true,
+        cancelText: '否',
+        confirmText: '是',
+        confirmColor: 'red',
+        cancelColor: '#0090ff',
+        success: (e) => {
+          if (e.id === 1) {
+            // 销台接口
+            this.$minApi.delOrder({
+              id: this.idNum
+            })
+              .then(res => {
+                if (res.length === 0) {
+                  this.$showToast('销台成功')
+                }
+              })
+          }
+        }
+      })
+    },
+    // 展示剩余按钮
+    showToastTxt () {
+      this.toast = !this.toast
     }
   }
 }

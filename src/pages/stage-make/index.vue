@@ -33,6 +33,7 @@
 <script>
 export default {
   name: 'state-make',
+  navigate: ['navigateTo'],
   data () {
     return {
       name: '林平之',

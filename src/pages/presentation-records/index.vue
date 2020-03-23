@@ -57,6 +57,8 @@
 
 <script>
 export default {
+  name: 'presentation-records',
+  navigate: ['navigateTo'],
   data () {
     return {
       isMore: false,

@@ -1,6 +1,6 @@
 <template>
   <view class="start-stage p-lr-30 p-tb-20">
-    <radio-group @change="radioChange">
+    <radio-group @change="radioChange" style="margin-bottom:100rpx">
       <view class="top-view-start p-tb-30 bg-white radius-6 p-lr-20">
         <radio value="-1" color="#FE0000" class="radio" />
         <text class="text">自来客</text>
@@ -19,10 +19,10 @@
           <radio slot="icon" :value="`${index}`" color="#FE0000" class="radio" />
         </min-cell-item>
       </min-cell>
-      <view class="btn">
-        <min-btn :long="true" @click="toAddUserInfo">下一步</min-btn>
-      </view>
     </radio-group>
+     <view class="btn">
+        <min-btn :opacity="false" :long="true" @click="toAddUserInfo">下一步</min-btn>
+      </view>
     <min-404 v-if="isNone" pTop="200rpx"></min-404>
   </view>
 </template>
@@ -34,10 +34,11 @@ export default {
   data () {
     return {
       value: '',
-      isChecked: false,
-      checks: [0, 1, 2],
       list: [],
-      isNone: false
+      isNone: false,
+      msg: {},
+      type: '',
+      seil: {}
     }
   },
   computed: {
@@ -62,6 +63,11 @@ export default {
       }
     }
   },
+  onLoad () {
+    // 拿到桌台ID以及状态
+    this.msg = this.$parseURL()
+    // console.log(this.msg)
+  },
   mounted () {
     this.getData()
   },
@@ -74,12 +80,21 @@ export default {
         })
     },
     toAddUserInfo () {
-      uni.navigateTo({
-        url: '../add-userinfo/index'
-      })
+      if (this.type !== '') {
+        this.$minRouter.push({
+          name: 'add-userinfo',
+          params: { msg: this.msg, type: this.type, seil: this.seil }
+        })
+      }
     },
     radioChange (e) {
-      console.log(e)
+      console.log(e.detail.value * 1)
+      if (e.detail.value * 1 >= 0) {
+        this.type = 1
+        this.seil = this.list[e.detail.value]
+      } else {
+        this.type = 0
+      }
     }
   }
 }
@@ -104,6 +119,7 @@ export default {
     position: fixed;
     bottom: 0;
     left: 0;
+
   }
 }
 </style>

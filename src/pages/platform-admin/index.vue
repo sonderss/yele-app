@@ -7,10 +7,10 @@
     <view class="platform-wrap" v-if="mines.length !== 0">
       <view class="title">我的台位</view>
       <view class="list">
-        <view class="item reserved" v-for="(item, index) in list.mines" :key="index"  @click="goDetail(item.id,item.desk_status)">
+        <view class="item" :class="statusArr[item.desk_status].class" v-for="(item, index) in list.mines" :key="index"  @click="goDetail(item.id,item.desk_status)">
           <view class="name">{{item.desk_name}}</view>
           <view class="status">{{statusArr[item.desk_status].name}}</view>
-          <view class="count">{{nums[item.seats].txt}}</view>
+          <view class="count">{{$minCommon.getSeats(item.seats)}}</view>
         </view>
       </view>
     </view>
@@ -27,7 +27,7 @@
             >
               <view class="name">{{item2.desk_name}}</view>
               <view class="status">{{statusArr[item2.desk_status].name}}</view>
-              <view class="count">{{nums[item2.seats].txt }}</view>
+              <view class="count">{{$minCommon.getSeats(item2.seats)}}</view>
             </view>
           </view>
         </view>
@@ -56,24 +56,11 @@ const statusArr = [
   { name: '清台中', class: 'clearing' }
 ]
 // 座位数量:0 - 未选,1 - 1座，2 - 2座，3 - 3座，4 - 4座，5 - 6座，6 - 8座，7 - 10座，8 - 12座，9 - 12座以上
-const nums = {
-  0: { txt: '未选' },
-  1: { txt: '1座' },
-  2: { txt: '2座' },
-  3: { txt: ' 3座' },
-  4: { txt: '4座' },
-  5: { txt: '6座' },
-  6: { txt: '8座' },
-  7: { txt: '10座' },
-  8: { txt: '12座' },
-  9: { txt: '12座以上' }
-}
 export default {
   name: 'platform-admin',
   navigate: ['navigateTo', 'switchTab'],
   data () {
     return {
-      nums,
       statusArr,
       list: [],
       mines: [],

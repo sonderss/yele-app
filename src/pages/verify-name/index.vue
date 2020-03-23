@@ -9,15 +9,16 @@
       <view class="p-lr-30">身份证号码</view>
       <view class="f26 assist-text p-lr-30 p-tb-30 min-border-bottom">未认证</view>
     </view>
-    <view class="btn-wrap">
-      <min-btn>去认证</min-btn>
+    <view class="btn-wrap m-lr-20">
+      <min-btn >去认证</min-btn>
     </view>
   </view>
 </template>
 
 <script>
 export default {
-  name: 'verify-name'
+  name: 'verify-name',
+  navigate: ['navigateTo']
 }
 </script>
 

@@ -10,7 +10,7 @@
             <text v-if="item.del">销台时间：{{item.del}}</text>
             <text>台位低消：￥{{item.lowPrice}}</text>
             <text class="p-bottom-30">消费金额：￥{{item.price}}</text>
-            <view class="btn-view min-border-top">
+            <view class="btn-view min-border-top" @click="save_wine">
                 <view class="btn f26">存酒</view>
             </view>
           </view>
@@ -22,6 +22,8 @@
 
 <script>
 export default {
+  name: 'select-customers',
+  navigate: ['navigateTo'],
   data () {
     return {
       list: [{
@@ -30,6 +32,13 @@ export default {
       {
         name: '刘晓庆', phone: '13563250000', num: 'K1112', startTime: '2019年12月05日 16:30:00', del: '2019年12月05日 16:30:00', lowPrice: '10000', price: '1056300'
       }]
+    }
+  },
+  methods: {
+    save_wine () {
+      this.$minRouter.push({
+        name: 'save-wine'
+      })
     }
   }
 }

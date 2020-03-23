@@ -5,7 +5,7 @@
         <view class="min-flex min-flex-main-start">
           <input type="number" maxlength="11" placeholder="请输入手机号码">
         </view>
-        <view class="theme-text f26 p-lr-30" @click="countDown" v-if="code === 0">获取验证码</view>
+        <view class="f26  btn" @click="countDown" v-if="code === 0">获取验证码</view>
         <view v-else class="theme-text">{{code}} s</view>
       </view>
     </view>
@@ -21,6 +21,7 @@
 
 export default {
   name: 'bind-mobile',
+  navigate: ['navigateTo'],
   data () {
     return {
       code: 0
@@ -38,16 +39,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+uni-page-body{background: #fff;height: 100%;width: 100%;}
 .bind-mobile {
-  background: #fff;
-  width: 100vw;
-  min-height: 100vh;
   .inp {
     font-size: 30rpx;
   }
   .icon {
     width: 40rpx;
     height: 40rpx;
+  }
+  .btn{
+    width:174rpx;
+    height:68rpx;
+    border:1rpx solid rgba(204,204,204,1);
+    border-radius:10rpx;
+    text-align: center;
+    line-height: 68rpx;
+  }
+  .theme-text{
+        width:174rpx;
+    height:68rpx;
+
+    border-radius:10rpx;
+    text-align: center;
+    line-height: 68rpx;
   }
 }
 </style>

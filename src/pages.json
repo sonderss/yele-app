@@ -296,6 +296,18 @@
       }
     },
     {
+      "path":"pages/save-wine/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"选择要存的酒",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
       "path":"pages/liquor-code/index",
       "style": {
         "app-plus":{
@@ -656,7 +668,13 @@
           "titleNView":{
             "titleText":"修改手机号码",
             "backgroundColor":"#030313",
-            "titleColor":"#FFE001"
+            "titleColor":"#FFE001",
+            "buttons":[
+              {
+                "text": "下一步",
+                "fontSize":"28rpx"
+              }
+            ]
           }
         }
       }

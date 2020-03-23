@@ -135,7 +135,7 @@ export default {
       }
       this.date = arr
       this.nightArr = brr
-      console.log(arr, brr)
+      // console.log(arr, brr)
     },
     getData (id) {
       return new Promise((resolve, reject) => {

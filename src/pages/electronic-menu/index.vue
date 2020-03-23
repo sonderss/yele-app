@@ -121,14 +121,14 @@
         <view class="btn-sku" @click="skuChioce">确定</view>
       </view>
     </min-popup>
-    <!-- <min-404  v-model="intNet" v-if="mainArray.length === 0" id='none'></min-404> -->
+    <min-404   v-if="mainArray.length === 0" id='none'></min-404>
   </view>
 
 </template>
 
 <script>
 export default {
-  name: 'confiscated-wine',
+  name: 'electronic-menu',
   navigate: ['navigateTo', 'switchTab'],
   data () {
     return {
@@ -208,8 +208,7 @@ export default {
       this.$minApi.getWineList()
         .then(res => {
           this.mainArray = res
-          // console.log(this.mainArray)
-
+          console.log(this.mainArray)
           this.$nextTick(() => {
             this.getElementTop()
             uni.hideLoading()

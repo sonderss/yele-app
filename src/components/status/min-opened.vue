@@ -3,7 +3,7 @@
     <view class="card p-lr-20 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">基本信息</view>
       <view class="main p-tb-20">
-        <view class="status">已开台</view>
+        <view class="status been-open">已开台</view>
         <view>
           台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：
           <text class="emp">K112</text>
@@ -42,17 +42,24 @@
         <view>预抵时间：2020年02月15日 16:20:00</view>
       </view>
     </view>
-    <view class="btns1">
-      <min-btn class="btn1" @click="book">预约</min-btn>
-      <min-btn type="white" class="btn1">转台</min-btn>
-      <min-btn type="white" class="btn1">取酒</min-btn>
-      <min-btn type="white" class="btn1">下单</min-btn>
-      <min-btn type="white" class="btn1">清台</min-btn>
-      <min-btn type="white" class="btn1">账单</min-btn>
-      <min-btn type="white" class="btn1">订单</min-btn>
-      <min-btn type="white" class="btn1">存酒</min-btn>
-      <min-btn type="white" class="btn1" @click="goGetHistory">历史</min-btn>
+
+    <view class="btns">
+      <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book">预约</view>
+      <view :class="index === 1 ? 'btn active' : 'btn' "  @click="changeOrder">转台</view>
+      <view  :class="index === 2 ? 'btn active' : 'btn' " >下单</view>
+      <view class="badge" @click="showToastTxt">
+          <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
+          <view class="toast anmatiin " v-if="toast">
+              <view class="bag_btn" >存酒</view>
+              <view class="bag_btn" >账单</view>
+              <view class="bag_btn" >订单</view>
+              <view class="bag_btn" @click="clear_order">清台</view>
+              <view class="bag_btn"  @click="goGetHistory">历史</view>
+             <view class="bag"></view>
+          </view>
+      </view>
     </view>
+    <min-modal ref="show"></min-modal>
   </view>
 </template>
 <script>
@@ -62,7 +69,9 @@ export default {
   },
   data () {
     return {
-      show: false
+      show: false,
+      index: Number,
+      toast: false
     }
   },
   methods: {
@@ -77,6 +86,50 @@ export default {
       this.$minRouter.push({
         name: 'order-make',
         params: { id: this.idNum }
+      })
+    },
+    // 展示剩余按钮
+    showToastTxt () {
+      this.toast = !this.toast
+    },
+    // 转台
+    changeOrder () {
+      this.$minRouter.push({
+        name: 'change-platform',
+        params: { old_id: this.idNum }
+      })
+    },
+    // 清台
+    clear_order () {
+      this.$refs.show.handleShow({
+        title: '',
+        content: '是否确认账单已清，并开始清台',
+        contentCenter: true,
+        cancelText: '否',
+        confirmText: '是',
+        confirmColor: 'red',
+        cancelColor: '#0090ff',
+        success: (e) => {
+          if (e.id === 1) {
+            this.$minApi.clearOrder({
+              id: this.idNum
+            })
+              .then(res => {
+                console.log(res)
+                if (res.length === 0) {
+                  this.$showToast('清台成功')
+                  setTimeout(() => {
+                    this.$minRouter.push({
+                      name: 'platform-admin'
+                    })
+                  }, 2000)
+                }
+              })
+              .catch(err => {
+                console.log(err)
+              })
+          }
+        }
       })
     }
   }

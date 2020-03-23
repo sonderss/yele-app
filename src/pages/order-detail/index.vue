@@ -18,7 +18,7 @@
           >
           </min-goods-item>
         </view>
-        <view class="p-tb-20" v-for="index in 3" :key="index">
+        <view class="p-tb-20" v-for="index in 3" :key="index" @click="goodsDeatil(index)">
           <min-goods-item
             name="2020年元旦百威兄弟套餐12瓶"
             price="2380.00"
@@ -83,7 +83,16 @@
 
 <script>
 export default {
-
+  name: 'order-detail',
+  navigate: ['navigateTo'],
+  methods: {
+    goodsDeatil (index) {
+      // 跳到商品详情页
+      this.$minRouter.push({
+        name: 'product-details'
+      })
+    }
+  }
 }
 
 </script>

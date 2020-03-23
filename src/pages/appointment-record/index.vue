@@ -1,30 +1,33 @@
 <template>
 <view class="appointment-record">
     <view class="top-view">
-      <view class="top-v">
-        <text>定台时间</text>
-        <image class="arro"  src='../../static/images/downarrow24.png' />
+      <view class="top-v" @click="change1">
+        <text :class="num === 0 ? 'status end' : 'status' ">定台时间</text>
+        <image :class="animation ? 'arro animation right-arrow-a ':  'arro animation'"  src='../../static/images/downarrow24.png' />
       </view>
-      <view class="top-v">
-        <text class="status end">消费金额</text>
-        <image class="arro arrw"  src='../../static/images/downarrow24.png' />
+      <view class="top-v" @click="change">
+        <text :class="num === 1 ? 'status end' : 'status' ">消费金额</text>
+        <image :class="animation1 ? 'arro  animation right-arrow-a'  :  'arro  animation'"  src='../../static/images/downarrow24.png' />
       </view>
     </view>
-    <view class="main p-tb-20 m-tb-20 m-lr-30 p-lr-20">
-      <view class="item">客户姓名：刘小青</view>
+    <view class="main p-tb-20 m-tb-20 m-lr-30 p-lr-20"
+    v-for="(item,index) in list"
+    :key="index"
+    >
+      <view class="item">客户姓名：{{item.client_name}}</view>
       <view class="item phone">
-        <text>联系电话：135 5352 0135</text>
+        <text>联系电话：{{item.client_mobile}}</text>
         <view class="image-view">
-          <image src='../../static/images/phone.png'/>
+          <image src='../../static/images/phone.png' @click="makePhone(item.client_mobile)"/>
         </view>
       </view>
-      <view class="item">预约时间：2019-12-19 17:00:00</view>
-      <view class="item">预抵时间：2019-12-20 17:00:00</view>
-      <view class="item">台位状态：<text class="status confirmed">预约中</text></view>
-      <view class="item">消费金额：￥12463.00</view>
+      <view class="item">预约时间：{{item.create_time}}</view>
+      <view class="item">预抵时间：{{item.arrival_time}}</view>
+      <view class="item">台位状态：<text class="status confirmed">{{status[item.status] }}</text></view>
+      <view class="item">消费金额：￥{{item.bill_price}}</view>
       <view class="btm-view min-border-top m-top-20">
-        <view class="o">查看订单</view>
-        <view class="o">查看账单</view>
+        <view class="o" @click="queryOrder">查看订单</view>
+        <view class="o" @click="queryDist">查看账单</view>
       </view>
     </view>
 
@@ -32,7 +35,78 @@
 </template>
 
 <script>
-export default {}
+// 1：'已预约',2：'已过期',3：'已开台',4：'已取消',5：'已销台'
+const status = ['未知', '已预约', '已过期', '已开台', '已取消', '已销台']
+export default {
+  name: 'appointment-record',
+  navigate: ['navigateTo'],
+  data () {
+    return {
+      list: [],
+      status,
+      num: 0,
+      animation: false,
+      animation1: false
+    }
+  },
+  mounted () {
+    const data = { order: 'time', sort: 'asc', page: 1, limit: 30 }
+    this.getData(data)
+  },
+  methods: {
+    getData (data) {
+      this.$minApi.getBookList(data)
+        .then(res => {
+          // console.log(res)
+          this.list = res.list
+          this.list.map(item => {
+            item.arrival_time = this.$minCommon.formatDate(new Date(item.arrival_time * 1000), 'yyyy-MM-dd hh:mm:ss')
+            item.create_time = this.$minCommon.formatDate(new Date(item.create_time * 1000), 'yyyy-MM-dd hh:mm:ss')
+          })
+        })
+    },
+    change () {
+      this.num = 1
+      this.animation1 = !this.animation1
+      if (this.animation1) {
+        const data = { order: 'price', sort: 'desc', page: 1, limit: 30 }
+        this.getData(data)
+      } else {
+        const data = { order: 'price', sort: 'asc', page: 1, limit: 30 }
+        this.getData(data)
+      }
+    },
+    change1 () {
+      this.num = 0
+      this.animation = !this.animation
+      // desc：倒序，asc：顺序（默认）
+      if (this.animation) {
+        const data = { order: 'time', sort: 'desc', page: 1, limit: 30 }
+        this.getData(data)
+      } else {
+        const data = { order: 'time', sort: 'asc', page: 1, limit: 30 }
+        this.getData(data)
+      }
+    },
+    makePhone (phone) {
+      uni.makePhoneCall({
+        phoneNumber: phone
+      })
+    },
+    // 查看订单
+    queryOrder () {
+      this.$minRouter.push({
+        name: 'order-list'
+      })
+    },
+    // 查看账单
+    queryDist () {
+      this.$minRouter.push({
+        name: 'desk-bill'
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -110,6 +184,13 @@ export default {}
         color: #666666
       }
     }
-
+.right-arrow-a{
+    transform:rotate(180deg);
+  }
+.animation {
+  transition-property: all;
+  transition-duration: 0.5s;
+  transition-timing-function: ease;
+}
 // p-tb-20 p-lr-30
 </style>

@@ -72,6 +72,8 @@
 
 <script>
 export default {
+  name: 'desk-bill',
+  navigate: ['navigateTo'],
   data () {
     return {
       title: ['门店订单', '平台订单'],

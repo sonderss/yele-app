@@ -22,10 +22,8 @@
       </view>
     </view>
     <view class="btns-confirmed">
-      <min-btn class="btn">启用</min-btn>
-
+      <min-btn class="btn" @click="start_use">启用</min-btn>
       <min-btn type="white" class="btn">存酒</min-btn>
-
       <min-btn type="white" @click="goGetHistory" class="btn">历史</min-btn>
     </view>
   </view>
@@ -46,6 +44,15 @@ export default {
         name: 'platform-history',
         params: { id: this.idNum }
       })
+    },
+    start_use () {
+      this.$minApi.startUse({ id: this.idNum })
+        .then(res => {
+          console.log(res)
+          if (res.length === 0) {
+            this.$showToast('启用成功')
+          }
+        })
     }
   }
 }

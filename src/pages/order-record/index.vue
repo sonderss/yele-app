@@ -1,6 +1,6 @@
 <template>
   <view class="min-order-list  p-tb-20 p-lr-30">
-      <view class="main" v-for="(item,index) in list" :key="index">
+      <view class="main" v-for="(item,index) in list" :key="index" @click="goDetail(index)">
           <view class="top-view min-flex">
             <view class="left-view min-flex min-flex-main-start">
                <text class="f30 ordern">{{item.oddnum}}</text>
@@ -50,6 +50,8 @@
 <script>
 // 1 待支付 2 待补差价 6 出品中（#FF0000）  ||  3 待确认  4  待出品 （#39BA01）  ||  7 已完成  5  已出品 （#0090FF）
 export default {
+  name: 'order-record',
+  navigate: ['navigateTo'],
   data () {
     return {
       isSetMeal: false,
@@ -62,11 +64,13 @@ export default {
       }]
     }
   },
-  props: {
-    // list: {
-    //   type: Array,
-    //   default: () => []
-    // }
+  methods: {
+    goDetail (index) {
+      // 这里跳转订单详情
+      this.$minRouter.push({
+        name: 'order-detail'
+      })
+    }
   }
 }
 </script>

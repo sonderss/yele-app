@@ -21,6 +21,7 @@
 <script>
 export default {
   name: 'drawing-way',
+  navigate: ['navigateTo'],
   data () {
     return {}
   },

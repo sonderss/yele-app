@@ -150,6 +150,12 @@ export default {
           }
         },
         {
+          path: 'pages/save-wine/index',
+          style: {
+            navigationBarTitleText: '选择要存的酒'
+          }
+        },
+        {
           path: 'pages/fetch-record/index',
           style: {
             navigationBarTitleText: '取酒记录'

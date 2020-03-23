@@ -63,16 +63,24 @@ export default {
         text: '充公酒',
         name: 'confiscated-wine'
       }, {
+        url: '../electronic-menu/index.vue',
         img: '/static/images/index/menu.png',
-        text: '菜单'
+        text: '菜单',
+        name: 'electronic-menu'
       }],
       grid2: [{
+        url: '../order-record/index.vue',
+        name: 'order-record',
         img: '/static/images/index/order.png',
         text: '下单记录'
       }, {
+        url: '../appointment-record/index.vue',
+        name: 'appointment-record',
         img: '/static/images/index/station.png',
         text: '订台记录'
       }, {
+        url: '../presentation-records/index.vue',
+        name: 'presentation-records',
         img: '/static/images/index/gift.png',
         text: '赠送记录'
       }, {
@@ -98,6 +106,8 @@ export default {
         img: '/static/images/index/chart.png',
         text: '数据统计'
       }, {
+        url: '../mine-info/index',
+        name: 'mine-info',
         img: '/static/images/index/people.png',
         text: '个人资料'
       }]

@@ -43,6 +43,8 @@
 
 <script>
 export default {
+  name: 'product-details',
+  navigate: ['navigateTo'],
   data () {
     return {
       item: [

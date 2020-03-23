@@ -47,12 +47,19 @@
         <view>预抵时间：2020年02月15日 16:20:00</view>
       </view>
     </view>
-    <view class="btns-confirmed">
-      <min-btn @click="book">预约</min-btn>
-      <min-btn type="white">下单</min-btn>
-      <min-btn type="white">存酒</min-btn>
-      <min-btn type="white">销台</min-btn>
-      <min-btn type="white" @click="goGetHistory">历史</min-btn>
+
+    <view class="btns">
+      <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book">预约</view>
+      <view :class="index === 1 ? 'btn active' : 'btn' " >下单</view>
+      <view  :class="index === 2 ? 'btn active' : 'btn' ">存酒</view>
+      <view class="badge" @click="showToastTxt">
+          <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
+          <view class="toast anmatiin " v-if="toast">
+              <view class="bag_btn" >销台</view>
+              <view class="bag_btn"  @click="goGetHistory">历史</view>
+             <view class="bag"></view>
+          </view>
+      </view>
     </view>
   </view>
 </template>
@@ -63,7 +70,8 @@ export default {
   },
   data () {
     return {
-      show: false
+      show: false,
+      toast: false
     }
   },
   methods: {
@@ -79,6 +87,10 @@ export default {
         name: 'order-make',
         params: { id: this.idNum }
       })
+    },
+    // 展示剩余按钮
+    showToastTxt () {
+      this.toast = !this.toast
     }
   }
 }

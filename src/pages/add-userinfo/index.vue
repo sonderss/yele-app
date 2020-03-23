@@ -4,9 +4,9 @@
       <view class="f30 p-tb-30">营销信息</view>
       <view class="min-border-bottom" style="height:1rpx"></view>
       <min-cell-item
-        img="http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg"
-        title="林平之 | 营销"
-        label="15833336666"
+        :img="data.seil.head_img ? data.seil.head_img : 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg' "
+        :title="data.seil.sales_name + ' | '+  data.seil.position_name"
+        :label="data.seil.mobile"
         :border="false"
       ></min-cell-item>
     </min-cell>
@@ -27,16 +27,23 @@
 <script>
 export default {
   name: 'add-userinfo',
+  navigate: ['navigateTo'],
   data () {
     return {
       isShengri: true,
       isPhone: '',
       isName: '',
-      value: ''
+      value: '',
+      data: {}
     }
+  },
+  onLoad () {
+    console.log(this.$parseURL())
+    this.data = this.$parseURL()
   },
   mounted () {
     // console.log(this.$route.params.name)
+
   },
   watch: {
     isPhone (a) {
@@ -49,6 +56,21 @@ export default {
   methods: {
     next () {
       // console.log('电话：', this.isPhone)
+      this.$minApi.startOrder({
+        desk_id: this.data.msg.desk_id,
+        desk_status: this.data.msg.status
+      }).then(res => {
+        console.log(res)
+        if (res.length === 0) {
+          this.$showToast('开台成功')
+          // 跳转下单
+          setTimeout(() => {
+            this.$minRouter.push({
+              name: 'placean-order'
+            })
+          }, 2000)
+        }
+      })
     }
   }
 }

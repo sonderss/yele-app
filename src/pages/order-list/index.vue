@@ -8,6 +8,8 @@
 </template>
 <script>
 export default {
+  name: 'order-list',
+  navigate: ['navigateTo'],
   data () {
     return {
       list: [{

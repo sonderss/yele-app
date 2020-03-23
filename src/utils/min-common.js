@@ -142,6 +142,40 @@ class MinCommon {
         return '星期六'
     }
   }
+
+  /**
+   *  返回座位数
+   *
+   */
+  static getSeats (num) {
+    // 座位数量:0 - 未选,1 - 1座，2 - 2座，3 - 3座，4 - 4座，5 - 6座，6 - 8座，7 - 10座，8 - 12座，9 - 12座以上
+    switch (num) {
+      case 1:
+        return '1座'
+
+      case 2:
+        return '2座'
+
+      case 3:
+        return '3座'
+
+      case 4:
+        return '4座'
+
+      case 5:
+        return '6座'
+
+      case 6:
+        return '8座'
+      case 7:
+        return '10座'
+      case 8:
+        return '12座'
+      case 9: {
+        return '12座以上'
+      }
+    }
+  }
 }
 
 MinCommon.install = function (Vue) {
