@@ -65,7 +65,6 @@ export default {
       list: [],
       mines: [],
       show: false,
-      time: '',
       date: '',
       title: [],
       num: 0,
@@ -177,7 +176,7 @@ export default {
     goDetail (id, status) {
       this.$minRouter.push({
         name: 'platform-detail',
-        params: { id: id, status: status }
+        params: { id: id, status: status, date: this.date }
       })
     },
     // 日期选择器关闭
@@ -190,13 +189,13 @@ export default {
     },
     // 日期选择器确认
     sure (e) {
-      this.time = e.b + '月' + e.c + '日'
+      this.date = e.b + '月' + e.c + '日'
       // #ifdef APP-PLUS
       const pages = getCurrentPages()
       const page = pages[pages.length - 1]
       const currentWebview = page.$getAppWebview()
       const titleObj = currentWebview.getStyle().titleNView
-      titleObj.buttons[0].text = this.time
+      titleObj.buttons[0].text = this.date
       currentWebview.setStyle({
         titleNView: titleObj
       })

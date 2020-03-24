@@ -17,31 +17,31 @@
      <view class="card p-lr-20 p-bottom-10 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">客户信息</view>
       <view class="main p-tb-20">
-        <view>客户姓名：{{data.clientInfo.client_name}}</view>
-        <view>联系电话：{{data.clientInfo.client_mobile}}</view>
-        <view>当天生日：{{data.clientInfo.is_birthday  === 0 ? '否' : '是'}}</view>
-        <view>预抵时间：{{$minCommon.formatDate(new Date(data.clientInfo.arrival_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
-        <view style="display:flex;justify-content: space-between;" v-if="data.clientInfo.remark">
+        <view>客户姓名：{{data.bookingInfo.client_name}}</view>
+        <view>联系电话：{{data.bookingInfo.client_mobile}}</view>
+        <view>当天生日：{{data.bookingInfo.is_birthday  === 0 ? '否' : '是'}}</view>
+        <view>预抵时间：{{$minCommon.formatDate(new Date(data.bookingInfo.arrival_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
+        <view style="display:flex;justify-content: space-between;" v-if="data.bookingInfo.remark">
           <view style="width:130rpx">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注 :</view>
-          <view style="margin-left:18rpx;flex:1">{{data.clientInfo.remark}}</view>
+          <view style="margin-left:18rpx;flex:1">{{data.bookingInfo.remark}}</view>
         </view>
 
       </view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">操作信息</view>
-      <view class="main p-tb-20" v-for="(item,index) in data.operationList" :key="index">
-        <view>营销人员：{{item.operator_name}}</view>
-        <view>预约时间：{{$minCommon.formatDate(new Date(item.operated_time*1000),'yyyy-MM-dd hh:mm:ss')}}</view>
+      <view class="main p-tb-20">
+        <view>营销人员：{{data.bookingInfo.user_name}}</view>
+        <view>预约时间：{{$minCommon.formatDate(new Date(data.bookingInfo.create_time*1000),'yyyy-MM-dd hh:mm:ss')}}</view>
       </view>
     </view>
     <view class="btns">
       <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book">预约</view>
       <view :class="index === 1 ? 'btn active' : 'btn' " @click="startOrder">开台</view>
       <view  :class="index === 2 ? 'btn active' : 'btn' " @click="saveWine">存酒</view>
-      <view class="badge" @click="showToastTxt">
-          <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
-          <view class="toast anmatiin " v-if="toast">
+      <view class="badge" @click="showToastTxt"  id='testDom'>
+          <text class="more" style="color: #CCCCCC;" >&#xe61c;</text>
+          <view class="toast anmatiin "   v-if="toast">
               <view class="bag_btn" @click="backBook">推迟到店</view>
               <view class="bag_btn" @click="cancel">取消订台</view>
               <view class="bag_btn"  @click="goGetHistory">历史</view>
@@ -73,7 +73,10 @@ export default {
     }
   },
   mounted () {
-
+    // 监听关闭事件
+    this.$nextTick(() => {
+      document.querySelector('body').addEventListener('click', this.handleBodyClick)
+    })
   },
   methods: {
     // 历史
@@ -95,13 +98,14 @@ export default {
     startOrder () {
       this.index = 1
       this.$minRouter.push({
-        name: 'state-make'
+        name: 'stage-make',
+        params: { id: this.data.bookingInfo.booking_id }
       })
     },
     // 推迟到店
     backBook () {
       this.$refs.show.handleShow({
-        title: '确定将用户的预抵时间推迟30分钟',
+        title: `确定将用户的预抵时间推迟${this.data.storeSetting.booking_delay_setting.delay_time}分钟`,
         content: '',
         contentCenter: true,
         cancelText: '点错了',
@@ -110,12 +114,15 @@ export default {
         cancelColor: '#0090ff',
         success: (e) => {
           if (e.id === 1) {
-            this.$minApi.backBooked({ booking_id: this.data.clientInfo.booking_id })
+            this.$minApi.backBooked({ booking_id: this.data.bookingInfo.booking_id })
               .then(res => {
                 console.log(res)
                 if (res.length === 0) {
-                  this.$showToast('推迟成功')
+                  this.$showToast('预抵时间推迟成功')
                 }
+              })
+              .catch(err => {
+                console.log(err)
               })
           }
         }
@@ -133,7 +140,7 @@ export default {
         cancelColor: '#0090ff',
         success: (e) => {
           if (e.id === 1) {
-            this.$minApi.cancelBooked({ booking_id: this.data.clientInfo.booking_id })
+            this.$minApi.cancelBooked({ booking_id: this.data.bookingInfo.booking_id })
               .then(res => {
                 console.log(res)
                 if (res.length === 0) {
@@ -162,7 +169,21 @@ export default {
     // 展示剩余按钮
     showToastTxt () {
       this.toast = !this.toast
+    },
+    // 关闭剩余按钮显示
+    handleBodyClick (e) {
+      const targetDom = document.getElementById('testDom')
+      if (targetDom) {
+        const flag = targetDom.contains(e.target)
+        if (!flag) {
+          this.toast = false
+        }
+      }
     }
+  },
+  beforeDestroy () {
+    // 事件销毁
+    document.querySelector('body').removeEventListener('click', this.handleBodyClick)
   }
 }
 </script>

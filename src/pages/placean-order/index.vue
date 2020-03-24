@@ -37,7 +37,9 @@
       :totalAmount='totalAmountE'
       totalLabel='台位低消：2000'
       :goodsCount="countNums"
-      buttonText='提交'>
+      buttonText='去下单'
+      :buttonLabel="buttonLabel"
+      >
     </min-goods-submit>
   </view>
   <!-- 已选商品 -->
@@ -78,7 +80,14 @@
         </view>
         <!-- <view class="empty-view"></view> -->
         <view class="bottom-view-t">
-          <min-goods-submit style="position:fixed" leftText="已选"  :totalAmount='totalAmountE' :goodsCount="countNums" buttonText='提交'></min-goods-submit>
+          <min-goods-submit
+          style="position:fixed"
+          leftText="已选"
+          :totalAmount='totalAmountE'
+          :goodsCount="countNums"
+          buttonText='去下单'
+          buttonLabel='已开台'
+          ></min-goods-submit>
         </view>
     </view>
   </min-popup>
@@ -138,6 +147,7 @@ export default {
       mainArray: [],
       topArr: [],
       leftIndex: 0,
+      buttonLabel: '(已开台)', // 已开台
       scrollInto: '',
       isDel: true, //  所需删除的已选列表中对应项
       selNum: [],

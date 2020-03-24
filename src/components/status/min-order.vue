@@ -52,7 +52,7 @@
       <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book">预约</view>
       <view :class="index === 1 ? 'btn active' : 'btn' " >下单</view>
       <view  :class="index === 2 ? 'btn active' : 'btn' ">存酒</view>
-      <view class="badge" @click="showToastTxt">
+      <view class="badge" @click="showToastTxt"  id='testDom'>
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
           <view class="toast anmatiin " v-if="toast">
               <view class="bag_btn" >销台</view>
@@ -74,6 +74,12 @@ export default {
       toast: false
     }
   },
+  mounted () {
+    // 监听关闭事件
+    this.$nextTick(() => {
+      document.querySelector('body').addEventListener('click', this.handleBodyClick)
+    })
+  },
   methods: {
     goGetHistory () {
       this.$minRouter.push({
@@ -91,7 +97,21 @@ export default {
     // 展示剩余按钮
     showToastTxt () {
       this.toast = !this.toast
+    },
+    // 关闭剩余按钮显示
+    handleBodyClick (e) {
+      const targetDom = document.getElementById('testDom')
+      if (targetDom) {
+        const flag = targetDom.contains(e.target)
+        if (!flag) {
+          this.toast = false
+        }
+      }
     }
+  },
+  beforeDestroy () {
+    // 事件销毁
+    document.querySelector('body').removeEventListener('click', this.handleBodyClick)
   }
 }
 </script>

@@ -5,7 +5,7 @@
     <!-- 点单中 4 00-->
     <min-order :idNum="id" v-if="status === 4"></min-order>
     <!-- 已预约 3 00 -->
-    <min-booked :idNum="id" :status="3" v-if="status === 3" :data="data"></min-booked>
+    <min-booked :idNum="id"  v-if="status === 3" :data="data"></min-booked>
     <!-- 待确认 5 00-->
     <min-confirmed :idNum="id" v-if="status === 5"></min-confirmed>
     <!-- 已停用 1 00-->
@@ -25,6 +25,7 @@ export default {
     return {
       id: '',
       status: Number,
+      date: '',
       data: {
         baseInfo: { desk_name: '' },
         clientInfo: { client_name: '' }
@@ -34,18 +35,21 @@ export default {
   onLoad (option) {
     this.id = this.$parseURL().id
     // 暂时使用获取到的详情状态数据
-    this.status = this.$parseURL().status
+    // this.status = this.$parseURL().status
+
+    this.date = this.$parseURL().date
     this.getData()
   },
   methods: {
     // 调用接口获取台详情数据数据
     getData () {
-      const date = this.$minCommon.formatDate(new Date(), 'yyyy-MM-dd')
-      this.$minApi.getOrderDetail({ desk_id: this.id, date })
+      // const date = this.$minCommon.formatDate(new Date(), 'yyyy-MM-dd')
+      this.$minApi.getOrderDetail({ desk_id: this.id, date: this.date })
         .then(res => {
-          console.log(res)
           this.data = res
-          // this.status = res.baseInfo.status
+          this.status = res.baseInfo.status
+          console.log(this.data)
+          console.log('详情状态', this.status)
         })
     }
   }

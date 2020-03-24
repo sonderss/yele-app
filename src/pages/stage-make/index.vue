@@ -5,10 +5,10 @@
       <view class="min-border-bottom color-view"></view>
       <view class="m-left-20 p-top-20 min-flex min-flex-dir-top min-flex-align-top">
         <view class="min-flex m-bottom-10">
-          <text class="user-name">客户姓名: {{name}}</text>
+          <text class="user-name">客户姓名: {{data.client_name}}</text>
         </view>
         <view class="min-flex m-bottom-30">
-          <text class="user-name">联系电话: {{phone}}</text>
+          <text class="user-name">联系电话: {{data.client_mobile}}</text>
         </view>
       </view>
     </min-cell>
@@ -17,36 +17,59 @@
       <min-cell-item title="营销信息"></min-cell-item>
       <view class="min-border-bottom color-view"></view>
       <min-cell-item
-        v-for="(item,index) in list"
-        :key="index"
-        :img="item.headUrl"
-        :title="`${item.name} | ${item.position}`"
-        :label="item.phone"
+        :img="data.head_img"
+        :title="`${data.user_name}  | ${data.position_name}`"
+        :label="data.mobile"
       ></min-cell-item>
     </min-cell>
     <view class="btn">
-      <min-btn :long="true">下一步</min-btn>
+      <min-btn :long="true" @click="postBookedOpen">下一步</min-btn>
     </view>
   </view>
 </template>
 
 <script>
 export default {
-  name: 'state-make',
+  name: 'stage-make',
   navigate: ['navigateTo'],
+  onLoad () {
+    // console.log(this.$parseURL())
+    this.id = this.$parseURL().id
+    this.$minApi.getBookedDetail({ booking_id: this.id }).then(res => {
+      console.log(res)
+      this.data = res
+    })
+  },
   data () {
     return {
       name: '林平之',
       phone: 15836666666,
-      list: [
-        {
-          headUrl:
-            'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg',
-          name: '林平之',
-          position: '营销',
-          phone: '15866666666'
-        }
-      ]
+      data: {},
+      id: ''
+    }
+  },
+  methods: {
+    postBookedOpen () {
+      this.$minApi.startOrder({
+        desk_id: this.id,
+        desk_status: 3, // 已预约
+        type: 1, // 营销客
+        sales_uid: this.data.sales_uid,
+        client_name: this.data.client_name,
+        client_mobile: this.data.client_mobile
+      })
+        .then(res => {
+          console.log(res)
+          if (res.length === 0) {
+            this.$showToast('开台成功')
+            // 跳转下单
+            setTimeout(() => {
+              this.$minRouter.push({
+                name: 'placean-order'
+              })
+            }, 2000)
+          }
+        })
     }
   }
 }

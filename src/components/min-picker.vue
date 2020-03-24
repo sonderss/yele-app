@@ -35,6 +35,7 @@ export default {
       dayLength: 30,
       value: [0, 0, 0],
       visible: false,
+      flag: false,
       indicatorStyle: `height: ${Math.round(uni.getSystemInfoSync().screenWidth / (750 / 100))}rpx;`
     }
   },
@@ -49,6 +50,7 @@ export default {
   },
   methods: {
     bindChange: function (e) {
+      this.flag = true
       const val = e.detail.value
       this.year = this.years[val[0]]
       this.month = this.months[val[1]]
@@ -88,6 +90,11 @@ export default {
     },
     // 确认
     sure () {
+      if (!this.flag) {
+        this.$emit('cancel', false)
+        this.$emit('sure', { a: this.years[0], b: this.months[0], c: this.days[0] })
+        return
+      }
       this.$emit('cancel', false)
       this.$emit('sure', { a: this.year, b: this.month, c: this.day })
     }

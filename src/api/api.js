@@ -44,7 +44,8 @@ export default {
   clearOrder: data => minRequest.get('/5e71d5877cf60', data),
   // 销台
   delOrder: data => minRequest.get('/5e71d58cd6f3c', data),
-
+  // 获取预约详情
+  getBookedDetail: data => minRequest.get('/5e7985d26f15e', data),
   /**
    * @description post请求
    */
