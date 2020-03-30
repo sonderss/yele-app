@@ -55,12 +55,13 @@
       <view class="badge" @click="showToastTxt">
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
           <view class="toast anmatiin " v-if="toast">
-              <view class="bag_btn" >销台</view>
+              <view class="bag_btn" @click="del_order">销台</view>
               <view class="bag_btn"  @click="goGetHistory">历史</view>
              <view class="bag"></view>
           </view>
       </view>
     </view>
+     <min-modal ref="show"></min-modal>
 </view>
 </template>
 <script>
@@ -80,6 +81,31 @@ export default {
       this.$minRouter.push({
         name: 'platform-history',
         params: { id: this.idNum }
+      })
+    },
+    // 销台
+    del_order () {
+      this.$refs.show.handleShow({
+        title: '',
+        content: '是否销台',
+        contentCenter: true,
+        cancelText: '否',
+        confirmText: '是',
+        confirmColor: 'red',
+        cancelColor: '#0090ff',
+        success: (e) => {
+          if (e.id === 1) {
+            // 销台接口
+            this.$minApi.delOrder({
+              id: this.idNum
+            })
+              .then(res => {
+                if (res.length === 0) {
+                  this.$showToast('销台成功')
+                }
+              })
+          }
+        }
       })
     },
     // 预约

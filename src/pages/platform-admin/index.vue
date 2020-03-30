@@ -68,14 +68,16 @@ export default {
       date: '',
       title: [],
       num: 0,
-      status: 999
+      status: 999,
+      testArrabc: []
     }
   },
   onLoad () {
     const month = new Date().getMonth() + 1
     const day = new Date().getDate()
-    const year = new Date().getFullYear()
-    this.date = year + '-' + month + '-' + day
+    // const year = new Date().getFullYear()
+    // this.date = year + '-' + month + '-' + day
+    this.date = this.$minCommon.formatDate(new Date(), 'yyyy-MM-dd')
     // #ifdef APP-PLUS
     const pages = getCurrentPages()
     const page = pages[pages.length - 1]
@@ -89,6 +91,7 @@ export default {
   },
   mounted () {
     this.getData(this.date)
+    // this.getData('2020-3-18')
   },
   onNavigationBarButtonTap () {
     this.show = !this.show
@@ -142,11 +145,30 @@ export default {
           })
         })
         arr = brr
+        console.log(arr)
+        arr = this.testArr(arr)
       }
       return arr
     }
   },
   methods: {
+    testArr (arr) {
+      const p = []
+      arr.forEach((item, index) => {
+        if (p.length === 0) {
+          p.push(item)
+        } else {
+          p.forEach((item2, index2) => {
+            if (item2.id && item2.id !== item.id) {
+              p.push(item)
+            } else if (item2.id && item2.id === item.id) {
+              item2.desk_lists = item2.desk_lists.concat(item.desk_lists)
+            }
+          })
+        }
+      })
+      return p
+    },
     // 导航选中事件
     chioceItem (status) {
       // 已预约 status 3
@@ -190,6 +212,7 @@ export default {
     // 日期选择器确认
     sure (e) {
       this.date = e.b + '月' + e.c + '日'
+      console.log(this.date)
       // #ifdef APP-PLUS
       const pages = getCurrentPages()
       const page = pages[pages.length - 1]

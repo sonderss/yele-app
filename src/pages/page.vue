@@ -186,6 +186,12 @@ export default {
           }
         },
         {
+          path: 'pages/myincome/index',
+          style: {
+            navigationBarTitleText: '我的收入'
+          }
+        },
+        {
           path: 'pages/order-make/test',
           style: {
             navigationBarTitleText: '测试'

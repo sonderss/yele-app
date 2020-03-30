@@ -31,7 +31,7 @@
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">操作信息</view>
       <view class="main p-tb-20">
-        <view>营销人员：{{data.bookingInfo.user_name}}</view>
+        <view>营销人员：{{data.bookingInfo.sales_name}}</view>
         <view>预约时间：{{$minCommon.formatDate(new Date(data.bookingInfo.create_time*1000),'yyyy-MM-dd hh:mm:ss')}}</view>
       </view>
     </view>
@@ -99,7 +99,7 @@ export default {
       this.index = 1
       this.$minRouter.push({
         name: 'stage-make',
-        params: { id: this.data.bookingInfo.booking_id }
+        params: { booking_id: this.data.bookingInfo.booking_id, id: this.idNum }
       })
     },
     // 推迟到店

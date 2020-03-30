@@ -34,8 +34,9 @@ export default {
   navigate: ['navigateTo'],
   onLoad () {
     // console.log(this.$parseURL())
+    this.booking_id = this.$parseURL().booking_id
     this.id = this.$parseURL().id
-    this.$minApi.getBookedDetail({ booking_id: this.id }).then(res => {
+    this.$minApi.getBookedDetail({ booking_id: this.booking_id }).then(res => {
       console.log(res)
       this.data = res
     })
@@ -45,6 +46,7 @@ export default {
       name: '林平之',
       phone: 15836666666,
       data: {},
+      booking_id: '',
       id: ''
     }
   },

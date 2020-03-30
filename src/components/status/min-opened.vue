@@ -51,7 +51,7 @@
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
           <view class="toast anmatiin " v-if="toast">
               <view class="bag_btn" >存酒</view>
-              <view class="bag_btn" >账单</view>
+              <view class="bag_btn" @click="bill">账单</view>
               <view class="bag_btn" >订单</view>
               <view class="bag_btn" @click="clear_order">清台</view>
               <view class="bag_btn"  @click="goGetHistory">历史</view>
@@ -103,6 +103,13 @@ export default {
       this.$minRouter.push({
         name: 'change-platform',
         params: { old_id: this.idNum }
+      })
+    },
+    // 账单
+    bill () {
+      // 这里需要传开台记录id 台位ID
+      this.$minRouter.push({
+        name: 'desk-bill'
       })
     },
     // 清台

@@ -14,18 +14,24 @@
           title="名字" tail="阿容"
           :border="true" arrow
         ></min-cell-item>
+        <picker @change="bindPickerChange" :value="index" :range="sex">
         <min-cell-item
-          title="性别" tail="女"
+          title="性别"  :tail="sex[index]"
           :border="true" arrow
         ></min-cell-item>
-        <min-cell-item
-          title="民族" tail="汉"
-          :border="true" arrow
-        ></min-cell-item>
-        <min-cell-item
-          title="出生日期" tail="1999/1/1"
-          :border="true" arrow
-        ></min-cell-item>
+        </picker>
+        <picker @change="bindPickerChange1" :value="index1" :range="minzu">
+          <min-cell-item
+            title="民族" :tail="minzu[index1]"
+            :border="true" arrow
+          ></min-cell-item>
+        </picker>
+        <picker mode="date"  @change="bindPickerChange2" >
+          <min-cell-item
+            title="出生日期" :tail="date"
+            :border="true" arrow
+          ></min-cell-item>
+        </picker>
         <min-cell-item
           title="电话号码" :tail="$minCommon.hideTel('15016584603')"
           :border="false" arrow
@@ -57,9 +63,30 @@
 export default {
   name: 'mine-info',
   navigate: ['navigateTo'],
+  data () {
+    return {
+      minzu: ['汉族', '壮族', '满族', '回族', '苗族', '维吾尔族', '土家族', '彝族', '蒙古族', '藏族', '布依族', '侗族', '瑶族', '朝鲜族', '白族', '哈尼族',
+        '哈萨克族', '黎族', '傣族', '畲族', '傈僳族', '仡佬族', '东乡族', '高山族', '拉祜族', '水族', '佤族', '纳西族', '羌族', '土族', '仫佬族', '锡伯族',
+        '柯尔克孜族', '达斡尔族', '景颇族', '毛南族', '撒拉族', '布朗族', '塔吉克族', '阿昌族', '普米族', '鄂温克族', '怒族', '京族', '基诺族', '德昂族', '保安族',
+        '俄罗斯族', '裕固族', '乌孜别克族', '门巴族', '鄂伦春族', '独龙族', '塔塔尔族', '赫哲族', '珞巴族'],
+      sex: ['不限', '男', '女'],
+      index: 1,
+      index1: 0,
+      date: '2020/3/20'
+    }
+  },
   mounted () {
   },
   methods: {
+    bindPickerChange1 (e) {
+      this.index1 = e.target.value
+    },
+    bindPickerChange: function (e) {
+      this.index = e.target.value
+    },
+    bindPickerChange2: function (e) {
+      this.date = e.target.value.replace(/-/g, '/')
+    },
     setPhone () {
       this.$minRouter.push({
         name: 'modify-mobile'

@@ -3,15 +3,15 @@
      <min-cell :card="false">
           <view class="f30 p-tb-25 top-view">
              <text>账单汇总</text>
-             <text class="top-view status">未结清</text>
+             <text :class=" data.pay_status === 0 ? 'top-view status'  : 'top-view  status-al' ">{{data.pay_status === 0 ? "未结清":"已结清"}}</text>
           </view>
           <view class="min-border-bottom" style="height:1rpx"></view>
           <view class=" min-flex min-flex-dir-top min-flex-align-top f28 p-bottom-10">
-            <text class="m-bottom-10 m-top-20  f28">订单金额：￥56463.00</text>
-            <text class="m-bottom-10  f28">优惠合计：￥56463.00</text>
-            <text class="m-bottom-10  f28">应付金额：￥159332.00</text>
-            <text class="m-bottom-10  f28">已付金额：￥159332.00</text>
-            <text class="m-bottom-10  f28">待付金额：￥159332.00</text>
+            <text class="m-bottom-10 m-top-20  f28">订单金额：￥{{data.bill_price}}</text>
+            <text class="m-bottom-10  f28">优惠合计：￥{{data.discount_price}}</text>
+            <text class="m-bottom-10  f28">应付金额：￥{{data.receivable_price}}</text>
+            <text class="m-bottom-10  f28">已付金额：￥{{data.pay_price}}</text>
+            <text class="m-bottom-10  f28">待付金额：￥{{data.unpay_price}}</text>
           </view>
       </min-cell>
       <view class="mid-view p-lr-20">
@@ -77,13 +77,23 @@ export default {
   data () {
     return {
       title: ['门店订单', '平台订单'],
-      menuIndex: 0
+      menuIndex: 0,
+      data: {}
     }
   },
   methods: {
     changeMenu (n) {
       this.menuIndex = n
     }
+  },
+  onLoad () {
+    this.$minApi.billAllin({
+      opening_id: 4,
+      desk_id: 12
+    }).then(res => {
+      this.data = res
+      console.log(this.data)
+    })
   }
 }
 </script>
@@ -94,6 +104,9 @@ export default {
   justify-content: space-between;
   &.status{
     color: #FF0000;
+  }
+  &.status-al{
+    color: #666666;
   }
 }
 .mid-view{

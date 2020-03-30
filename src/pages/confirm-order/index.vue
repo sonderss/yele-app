@@ -43,6 +43,7 @@
 <script>
 export default {
   name: 'confirm-order',
+  navigate: ['navigateTo'],
   data () {
     return {
       payType: '1'

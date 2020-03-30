@@ -53,8 +53,8 @@ export default {
       this.flag = true
       const val = e.detail.value
       this.year = this.years[val[0]]
-      this.month = this.months[val[1]]
-      this.day = this.days[val[2]]
+      this.month = this.months[val[1]] < 10 ? '0' + this.months[val[1]] : this.months[val[1]]
+      this.day = this.days[val[2]] < 10 ? '0' + this.days[val[2]] : this.days[val[2]]
       // })
     },
     // 获得年份
@@ -90,6 +90,16 @@ export default {
     },
     // 确认
     sure () {
+      for (const [index, val] of this.months.entries()) {
+        if (val < 10) {
+          this.months[index] = '0' + val
+        }
+      }
+      for (const [index, val] of this.days.entries()) {
+        if (val < 10) {
+          this.days[index] = '0' + val
+        }
+      }
       if (!this.flag) {
         this.$emit('cancel', false)
         this.$emit('sure', { a: this.years[0], b: this.months[0], c: this.days[0] })

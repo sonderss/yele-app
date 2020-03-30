@@ -46,6 +46,8 @@ export default {
   delOrder: data => minRequest.get('/5e71d58cd6f3c', data),
   // 获取预约详情
   getBookedDetail: data => minRequest.get('/5e7985d26f15e', data),
+  // 账单汇总
+  billAllin: data => minRequest.get('/5e79c3d01c709', data),
   /**
    * @description post请求
    */

@@ -241,6 +241,25 @@
       }
     },
     {
+      "path":"pages/myincome/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"我的收入",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001",
+            "buttons":[
+              {
+                "text": "全部门店\ue6b2",
+                "fontSize":"28rpx",
+                "fontSrc":"/static/font/iconfont.ttf"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
       "path":"pages/electronic-menu/index",
       "style": {
         "app-plus": {
@@ -656,7 +675,13 @@
           "titleNView":{
             "titleText":"绑定手机号码",
             "backgroundColor":"#030313",
-            "titleColor":"#FFE001"
+            "titleColor":"#FFE001",
+            "buttons":[
+              {
+                  "text": "完成",
+                  "fontSize":"28rpx"
+              }
+            ]
           }
         }
       }

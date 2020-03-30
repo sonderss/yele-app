@@ -51,7 +51,7 @@
       <view class="badge" @click="showToastTxt"  id='testDom'>
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
           <view class="toast anmatiin " v-if="toast">
-              <view class="bag_btn" >账单</view>
+              <view class="bag_btn" @click="bill">账单</view>
               <view class="bag_btn" @click="del_order">销台</view>
               <view class="bag_btn"  @click="goGetHistory">历史</view>
              <view class="bag"></view>
@@ -125,6 +125,13 @@ export default {
               })
           }
         }
+      })
+    },
+    // 账单
+    bill () {
+      // 这里需要传开台记录id 台位ID
+      this.$minRouter.push({
+        name: 'desk-bill'
       })
     },
     // 展示剩余按钮

@@ -40,6 +40,7 @@
 <script>
 export default {
   name: 'apply-open',
+  navigate: ['navigateTo'],
   data () {
     return {
       value: ''

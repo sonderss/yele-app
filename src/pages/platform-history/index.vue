@@ -19,9 +19,9 @@
             已结清
         </view>
         <view class="btns">
-          <min-btn size="xs" type="white" border>查看订单</min-btn>
+          <min-btn size="xs" type="white" border @click="viewOrder">查看订单</min-btn>
           <view style='width:20rpx'></view>
-          <min-btn size="xs" type="white" border class="m-left-20">查看账单</min-btn>
+          <min-btn size="xs" type="white" border class="m-left-20" @click="viewBill">查看账单</min-btn>
         </view>
       </view>
     </view>
@@ -57,6 +57,18 @@ export default {
             }
           })
         })
+    },
+    // 查看订单
+    viewOrder () {
+      this.$minRouter.push({
+        name: 'order-list'
+      })
+    },
+    // 查看账单
+    viewBill () {
+      this.$minRouter.push({
+        name: 'desk-bill'
+      })
     }
   }
 }

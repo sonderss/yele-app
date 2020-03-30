@@ -44,7 +44,7 @@ export default {
   // 空闲中
   props: {
     idNum: Number,
-    status: Number,
+    date: String,
     data: {
       type: Object,
       default: () => {}
@@ -106,7 +106,8 @@ export default {
                   this.$showToast('停用成功')
                   setTimeout(() => {
                     this.$minRouter.push({
-                      name: 'platform-admin'
+                      name: 'platform-detail',
+                      params: { id: this.idNum, date: this.date }
                     })
                   }, 2000)
                 }

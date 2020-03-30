@@ -6,12 +6,12 @@
         <view class="status">点单中</view>
         <view>
           台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：
-          <text class="emp">K112</text>
+          <text class="emp">{{data.baseInfo.desk_name}}</text>
         </view>
-        <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：卡座</view>
-        <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：￥500</view>
-        <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：4座</view>
-        <view>开台条件：6成低消（￥600）</view>
+        <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{data.baseInfo.group_name}}</view>
+        <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：{{data.baseInfo.is_minim_charge === 1 ? '￥'+data.baseInfo.minim_charge : '否'}}</view>
+        <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(data.baseInfo.seats) }}</view>
+        <view>开台条件：{{data.baseInfo.enable_minimum_consume === 0 ? '否' : data.baseInfo.minimum_consume_percent+'成低消'+ (data.baseInfo.finally_minimum_price)}}</view>
       </view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
@@ -23,11 +23,11 @@
         </view>
         <view>开台订单：￥600（未支付）</view>
         <view class="card-btns">
-          <min-btn size="xs">重新下单</min-btn>
+          <min-btn size="xs" @click="reorder">重新下单</min-btn>
           <view class="m-left-20"></view>
-          <min-btn size="xs" type="white" border>申请开台</min-btn>
+          <min-btn size="xs" type="white" border @click="applicationopening">申请开台</min-btn>
           <view class="m-left-20"></view>
-          <min-btn size="xs" type="white" border class="m-left-20">查看订单</min-btn>
+          <min-btn size="xs" type="white" border class="m-left-20" @click="checkorder">查看订单</min-btn>
         </view>
       </view>
     </view>
@@ -55,18 +55,23 @@
       <view class="badge" @click="showToastTxt"  id='testDom'>
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
           <view class="toast anmatiin " v-if="toast">
-              <view class="bag_btn" >销台</view>
+              <view class="bag_btn" @click="del_order" >销台</view>
               <view class="bag_btn"  @click="goGetHistory">历史</view>
              <view class="bag"></view>
           </view>
       </view>
     </view>
+     <min-modal ref="show"></min-modal>
   </view>
 </template>
 <script>
 export default {
   props: {
-    idNum: Number
+    idNum: Number,
+    data: {
+      type: Object,
+      default: () => {}
+    }
   },
   data () {
     return {
@@ -87,11 +92,55 @@ export default {
         params: { id: this.idNum }
       })
     },
+    // 销台
+    del_order () {
+      this.$refs.show.handleShow({
+        title: '',
+        content: '是否销台',
+        contentCenter: true,
+        cancelText: '否',
+        confirmText: '是',
+        confirmColor: 'red',
+        cancelColor: '#0090ff',
+        success: (e) => {
+          if (e.id === 1) {
+            // 销台接口
+            this.$minApi.delOrder({
+              opening_id: '', // 开台记录id
+              desk_id: this.idNum
+            })
+              .then(res => {
+                if (res.length === 0) {
+                  this.$showToast('销台成功')
+                }
+              })
+          }
+        }
+      })
+    },
     // 预约
     book () {
       this.$minRouter.push({
         name: 'order-make',
         params: { id: this.idNum }
+      })
+    },
+    // 重新下单
+    reorder () {
+      this.$minRouter.push({
+        name: 'placean-order'
+      })
+    },
+    // 申请开台
+    applicationopening () {
+      this.$minRouter.push({
+        name: 'apply-open'
+      })
+    },
+    // 查看订单
+    checkorder () {
+      this.$minRouter.push({
+        name: 'confirm-order'
       })
     },
     // 展示剩余按钮
