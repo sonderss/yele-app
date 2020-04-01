@@ -100,8 +100,10 @@ export default {
         text: '充公记录'
       }],
       grid3: [{
+        name: 'my-income',
         img: '/static/images/index/wallet.png',
-        text: '我的钱包'
+        text: '我的钱包',
+        url: 'my-income'
       }, {
         img: '/static/images/index/chart.png',
         text: '数据统计'

@@ -6,8 +6,9 @@
         :key="index"
         :title="item.title"
         :tail="item.is_booked === 0 ? '可预约' : item.sales_name"
+        :tailcolor="item.is_booked === 0 ? true : false"
+        tailType='red'
         :border="true"
-        tailType ='red'
         @eventParent="backBook(index)"
       ></min-cell-item>
     </min-cell>

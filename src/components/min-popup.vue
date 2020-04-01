@@ -38,7 +38,7 @@ export default {
       this.isShow = false
       setTimeout(() => {
         this.$emit('close')
-      }, 200)
+      }, 400)
     }
   }
 }
@@ -88,6 +88,8 @@ export default {
     bottom: 0;
     z-index: 300;
     overflow: hidden;
+  border-radius: 20rpx 20rpx  0  0;
+
   }
   .min-content-height{
     width: 100%;

@@ -2,17 +2,22 @@
   <view class="drawing-way m-lr-30 p-top-20">
     <min-cell class="m-top-20">
       <min-cell-item
-        title="实名认证" tail="点击修改"
+      img="/static/images/drawing-way/alipay.png"
+        title="支付宝"
+        label='未绑定'
+        tail="点击绑定"
+        :tailcolor="true"
+        tailType='red'
         :border="true" arrow
       >
-        <image class="icon" slot="icon" src="/static/images/drawing-way/wx.png"/>
       </min-cell-item>
       <min-cell-item
-        title="提现方式" tail="未绑定"
+      img="/static/images/drawing-way/wx.png"
+        title="微信"
+        label="3******24254@qq.com"
         :border="true" arrow
         tailType="red"
       >
-        <image class="icon" slot="icon" src="/static/images/drawing-way/alipay.png"/>
       </min-cell-item>
     </min-cell>
   </view>

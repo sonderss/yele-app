@@ -186,9 +186,39 @@ export default {
           }
         },
         {
-          path: 'pages/myincome/index',
+          path: 'pages/my-income/index',
           style: {
             navigationBarTitleText: '我的收入'
+          }
+        },
+        {
+          path: 'pages/my-income/withdrawaldetails',
+          style: {
+            navigationBarTitleText: '提现详情'
+          }
+        },
+        {
+          path: 'pages/withdrawal-success/index',
+          style: {
+            navigationBarTitleText: '提现成功'
+          }
+        },
+        {
+          path: 'pages/width-draw/index',
+          style: {
+            navigationBarTitleText: '提现'
+          }
+        },
+        {
+          path: 'pages/commission-details/index',
+          style: {
+            navigationBarTitleText: '提成明细'
+          }
+        },
+        {
+          path: 'pages/commission-details/commission',
+          style: {
+            navigationBarTitleText: '提成详情'
           }
         },
         {

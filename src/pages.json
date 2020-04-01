@@ -241,7 +241,67 @@
       }
     },
     {
-      "path":"pages/myincome/index",
+      "path":"pages/my-income/withdrawaldetails",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"提现详情",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
+      "path":"pages/width-draw/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"提现",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
+      "path":"pages/withdrawal-success/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"提现成功",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
+      "path":"pages/commission-details/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"提成明细",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
+      "path":"pages/commission-details/commission",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"提成详情",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
+      "path":"pages/my-income/index",
       "style": {
         "app-plus":{
           "titleNView":{
@@ -266,9 +326,9 @@
           "titleNView": {
             "autoBackButton":"true",
             "titleColor":"#FFE001",
-              "buttons": [ 
+              "buttons": [
               {
-                  "text": ""  
+                  "text": ""
                   }
               ],
               "searchInput": {
