@@ -56,7 +56,7 @@ export default {
 }
 </script>
 
-<style>
+<style  lang="scss" scoped>
 .t-tr {
   width: 100%;
   display: flex;

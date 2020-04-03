@@ -10,7 +10,9 @@
 <script>
 export default {
   props: {
-    align: String
+    align: {
+      type: String
+    }
   },
   data () {
     return {
@@ -57,7 +59,7 @@ export default {
 }
 </script>
 
-<style>
+<style  lang="scss" scoped>
 .t-td {
   flex: 1;
   display: flex;

@@ -5,19 +5,19 @@
         <view class="main p-tb-20">
           <view class="status">空闲中</view>
           <view>
-            台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：<text class="emp">{{data.baseInfo.desk_name}}</text>
+            台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：<text class="emp">{{list.baseInfo.desk_name}}</text>
           </view>
           <view>
-            分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{data.baseInfo.group_name}}
+            分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.baseInfo.group_name}}
           </view>
           <view>
-            低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：{{data.baseInfo.is_minim_charge === 1 ? '￥'+ data.baseInfo.minim_charge :'否' }}
+            低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：{{list.baseInfo.is_minim_charge === 1 ? '￥'+ list.baseInfo.minim_charge :'否' }}
           </view>
           <view>
-            座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(data.baseInfo.seats)}}
+            座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.baseInfo.seats)}}
           </view>
           <view>
-            开台条件：{{data.baseInfo.enable_minimum_consume === 1 ? data.baseInfo.minimum_consume_percent+'成低消'+ (data.baseInfo.finally_minimum_price) : '否'}}
+            开台条件：{{list.baseInfo.enable_minimum_consume === 1 ? list.baseInfo.minimum_consume_percent+'成低消'+ (list.baseInfo.finally_minimum_price) : '否'}}
           </view>
         </view>
     </view>
@@ -45,7 +45,7 @@ export default {
   props: {
     idNum: Number,
     date: String,
-    data: {
+    list: {
       type: Object,
       default: () => {}
     }
@@ -83,7 +83,7 @@ export default {
       // console.log(this.idNum)
       this.$minRouter.push({
         name: 'start-stage',
-        params: { desk_id: this.idNum, status: this.data.baseInfo.status }
+        params: { desk_id: this.idNum, status: this.list.baseInfo.status }
       })
     },
     // 停用

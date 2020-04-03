@@ -55,12 +55,8 @@
 </template>
 
 <script>
-// import uniIcons from '../uni-icons/uni-icons.vue'
 export default {
   name: 'UniSteps',
-  components: {
-    // uniIcons
-  },
   props: {
     direction: {
       // 排列方向 row column
@@ -94,9 +90,7 @@ export default {
     },
     options: {
       type: Array,
-      default () {
-        return []
-      }
+      default: () => []
     } // 数据
   },
   data () {
@@ -118,51 +112,43 @@ export default {
 
 <style lang="scss" scoped>
 .uni-steps {
-  /* #ifndef APP-NVUE */
   display: flex;
   width: 100%;
-  /* #endif */
-  /* #ifdef APP-NVUE */
   flex: 1;
-  /* #endif */
   flex-direction: column;
 }
 
 .uni-steps__row {
-  /* #ifndef APP-NVUE */
   display: flex;
-  /* #endif */
   flex-direction: column;
 }
 
 .uni-steps__column {
-  /* #ifndef APP-NVUE */
   display: flex;
-  /* #endif */
   flex-direction: row-reverse;
   position: relative;
 }
 
 .uni-steps__row-text-container {
-  /* #ifndef APP-NVUE */
+
   display: flex;
-  /* #endif */
+
   flex-direction: row;
 }
 
 .uni-steps__column-text-container {
-  /* #ifndef APP-NVUE */
+
   display: flex;
-  /* #endif */
+
   flex-direction: column;
   flex: 1;
   margin-left:100rpx ;
 }
 
 .uni-steps__row-text {
-  /* #ifndef APP-NVUE */
+
   display: inline-flex;
-  /* #endif */
+
   flex: 1;
   flex-direction: column;
 }
@@ -173,9 +159,9 @@ export default {
   // border-bottom-style: solid;
   // border-bottom-width: 1px;
   // border-bottom-color: $uni-border-color;
-  /* #ifndef APP-NVUE */
+
   display: flex;
-  /* #endif */
+
   flex-direction: column;
 }
 
@@ -205,16 +191,16 @@ export default {
 }
 
 .uni-steps__row-container {
-  /* #ifndef APP-NVUE */
+
   display: flex;
-  /* #endif */
+
   flex-direction: row;
 }
 
 .uni-steps__column-container {
-  /* #ifndef APP-NVUE */
+
   display: inline-flex;
-  /* #endif */
+
   width: 30px;
   flex-direction: column;
   position: absolute;
@@ -223,9 +209,9 @@ export default {
 }
 
 .uni-steps__row-line-item {
-  /* #ifndef APP-NVUE */
+
   display: inline-flex;
-  /* #endif */
+
   flex-direction: row;
   flex: 1;
   height: 14px;
@@ -235,9 +221,9 @@ export default {
 }
 
 .uni-steps__column-line-item {
-  /* #ifndef APP-NVUE */
+
   display: flex;
-  /* #endif */
+
   flex-direction: column;
   flex: 1;
   align-items: center;

@@ -8,7 +8,7 @@ import MinCache from './utils/min-cache'
 import MinCommon from './utils/min-common'
 import './style/index.scss'
 import './static/font/iconfont.css'
-import './static/font/iconfont.ttf'
+// import './static/font/iconfont.ttf'
 import store from './store/index'
 
 // 常用的组件注册全局(编译器问题，只能在main.js全局注册)
@@ -53,6 +53,10 @@ import MinOpened from '@/components/status/min-opened'
 import MinTaichung from '@/components/status/min-taichung'
 import MinDrawer from '@/components/min-drawer'
 import MinSteps from '@/components/min-steps'
+import tTable from '@/components/t-table/t-table.vue'
+import tTh from '@/components/t-table/t-th.vue'
+import tTr from '@/components/t-table/t-tr.vue'
+import tTd from '@/components/t-table/t-td.vue'
 Vue.component('min-avatar', MinAvatar)
 Vue.component('min-btn', MinBtn)
 Vue.component('min-cell', MinCell)
@@ -94,6 +98,11 @@ Vue.component('min-opened', MinOpened)
 Vue.component('min-taichung', MinTaichung)
 Vue.component('min-drawer', MinDrawer)
 Vue.component('min-steps', MinSteps)
+Vue.component('t-th', tTh)
+Vue.component('t-table', tTable)
+Vue.component('t-tr', tTr)
+Vue.component('t-td', tTd)
+
 Vue.config.productionTip = false
 App.mpType = 'app'
 

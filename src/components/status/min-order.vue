@@ -6,12 +6,12 @@
         <view class="status">点单中</view>
         <view>
           台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：
-          <text class="emp">{{data.baseInfo.desk_name}}</text>
+          <text class="emp">{{list.baseInfo.desk_name}}</text>
         </view>
-        <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{data.baseInfo.group_name}}</view>
-        <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：{{data.baseInfo.is_minim_charge === 1 ? '￥'+data.baseInfo.minim_charge : '否'}}</view>
-        <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(data.baseInfo.seats) }}</view>
-        <view>开台条件：{{data.baseInfo.enable_minimum_consume === 0 ? '否' : data.baseInfo.minimum_consume_percent+'成低消'+ (data.baseInfo.finally_minimum_price)}}</view>
+        <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.baseInfo.group_name}}</view>
+        <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：{{list.baseInfo.is_minim_charge === 1 ? '￥'+list.baseInfo.minim_charge : '否'}}</view>
+        <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.baseInfo.seats) }}</view>
+        <view>开台条件：{{list.baseInfo.enable_minimum_consume === 0 ? '否' : list.baseInfo.minimum_consume_percent+'成低消'+ (list.baseInfo.finally_minimum_price)}}</view>
       </view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
@@ -68,7 +68,7 @@
 export default {
   props: {
     idNum: Number,
-    data: {
+    list: {
       type: Object,
       default: () => {}
     }

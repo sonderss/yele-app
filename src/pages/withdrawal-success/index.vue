@@ -4,10 +4,7 @@
       <view style="width:180rpx;color:#666666;margin-right:40rpx">当前状态</view>
       <min-steps
         direction="column"
-        :options="[
-        {title:'发起提现',desc:'2020-03-29 18:06:46'},
-        {title:'系统处理',desc:'2020-03-29 18:06:46'},
-        {title:'到账成功',desc:''}]"
+        :options="option"
         :active="active"
       ></min-steps>
     </view>
@@ -23,17 +20,30 @@
           </view>
         </view>
     </view>
-    <view class="btn">完成</view>
+    <view class="btn" @click="success">完成</view>
   </view>
 </template>
 <script>
 export default {
+  name: 'withdrawal-success',
+  navigate: ['navigateTo'],
   data () {
     return {
-      active: 1
+      active: 1,
+      option: [
+        { title: '发起提现', desc: '2020-03-29 18:06:46' },
+        { title: '系统处理', desc: '2020-03-29 18:06:46' },
+        { title: '到账成功', desc: '' }
+      ]
     }
   },
-  methods: {}
+  methods: {
+    success () {
+      this.$minRouter.push({
+        name: 'my-income'
+      })
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>

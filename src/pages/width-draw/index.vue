@@ -20,7 +20,7 @@
 
      </view>
   <text class="warn">输入金额超出可提现金额</text>
-     <view class="submit">提现</view>
+     <view class="submit" @click="submit">提现</view>
   </view>
 </template>
 <script>
@@ -31,6 +31,12 @@ export default {
     toChioce () {
       this.$minRouter.push({
         name: 'drawing-way'
+      })
+    },
+    // 体现
+    submit () {
+      this.$minRouter.push({
+        name: 'withdrawal-success'
       })
     }
   }
@@ -81,9 +87,6 @@ export default {
       .icon{
         font-size:57rpx;
         color:rgba(51,51,51,1);
-      }
-      .allin{
-
       }
     }
   }

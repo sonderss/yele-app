@@ -51,8 +51,11 @@
             },
             "ios" : {},
             /* ios打包配置 */
-            "sdkConfigs" : {}
-        }
+            "sdkConfigs" : {
+                "ad" : {}
+            }
+        },
+        "compilerVersion" : 3
     },
     /* SDK配置 */
     "quickapp" : {},

@@ -35,35 +35,41 @@
            <text class="right-txt f26">已选 <text class="num1">0</text> 份</text>
         </view>
         <view class="content p-bottom-30">
-          <min-describe  class="i" v-for="(item,index) in 3" :key=index :leftIcon='true' leftTxt='冰红茶*25' :step='true'></min-describe>
+          <min-describe  class="i" v-for="(item,index) in 3" :key=index :leftIcon='true' leftTxt='冰红茶*25' :step='type === 3 ? false: true'></min-describe>
         </view>
     </view>
-    <view class="introduction ">
+    <view class="introduction">
         <view class="title min-border-bottom m-bottom-30 p-lr-20">
            <text class="left-txt">饮料3选2（不可重复选）</text>
            <text class="right-txt f26">已选 <text class="num">2</text> 份</text>
         </view>
         <view class="content p-bottom-30">
-          <min-describe  class="i" v-for="(item,index) in 3" :key=index :leftIcon='true' leftTxt='冰红茶*25' :step='true'></min-describe>
+          <min-describe  class="i" v-for="(item,index) in 3" :key=index :leftIcon='true' leftTxt='冰红茶*25' :step='type === 3 ? false: true'></min-describe>
         </view>
     </view>
+    <view class="empty_view"></view>
     <view class="btn">确定</view>
 </view>
 </template>
 
 <script>
 export default {
+  name: 'packages-detail',
+  navigate: ['navigateTo'],
   data () {
     return {
-      items: [
-
-      ],
+      items: [],
       autoplay: true,
       interval: 2000,
       duration: 500,
       num: 0,
-      num1: 2
+      num1: 2,
+      type: Number
     }
+  },
+  onLoad () {
+    this.type = this.$parseURL().type
+    console.log(this.type)
   }
 }
 </script>
@@ -138,5 +144,9 @@ export default {
     line-height:98rpx;
     text-align: center;
   }
+}
+.empty_view{
+  width: 100%;
+  height: 100rpx;
 }
 </style>

@@ -97,6 +97,18 @@
       }
     },
     {
+      "path": "pages/placean-order/index_copy",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"下单",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
       "path": "pages/order-entry/index",
       "style": {
         "app-plus":{
@@ -241,11 +253,85 @@
       }
     },
     {
-      "path":"pages/my-income/withdrawaldetails",
+      "path":"pages/withdrawals-record/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"提现记录",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
+      "path":"pages/withdrawals-d/index",
       "style": {
         "app-plus":{
           "titleNView":{
             "titleText":"提现详情",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
+      "path":"pages/salary-breakdown/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"工资明细",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001",
+            "buttons":[
+              {
+                "text": "全部门店\ue6b2",
+                "fontSize":"28rpx",
+                "fontSrc":"/static/font/iconfont.ttf"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path":"pages/release-record/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"发放记录",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001",
+            "buttons":[
+              {
+                "text": "全部门店\ue6b2",
+                "fontSize":"28rpx",
+                "fontSrc":"/static/font/iconfont.ttf"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path":"pages/release-details/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"发放详情",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
+      "path":"pages/salary-details/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"工资详情",
             "backgroundColor":"#030313",
             "titleColor":"#FFE001"
           }
@@ -283,13 +369,20 @@
           "titleNView":{
             "titleText":"提成明细",
             "backgroundColor":"#030313",
-            "titleColor":"#FFE001"
+            "titleColor":"#FFE001",
+            "buttons":[
+              {
+                "text": "全部门店\ue6b2",
+                "fontSize":"28rpx",
+                "fontSrc":"/static/font/iconfont.ttf"
+              }
+            ]
           }
         }
       }
     },
     {
-      "path":"pages/commission-details/commission",
+      "path":"pages/commission-deils/index",
       "style": {
         "app-plus":{
           "titleNView":{
@@ -335,7 +428,6 @@
                   "backgroundColor": "#816E0F",
                   "borderRadius": "6px",
                   "placeholder": "请输入搜索内容"
-                 //  "disabled": true disable时点击输入框不置焦，可以跳到新页面搜索
               }
           }
       }

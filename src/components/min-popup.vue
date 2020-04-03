@@ -1,7 +1,7 @@
 <template>
   <view class="min-popup" v-if="show" :class="[isShow ? 'min-show' : 'min-hide']">
     <view class="min-overlay" @click="close"></view>
-    <view :class="size ?  'min-content-'+size : 'min-content'">
+    <view :class="size ?  'min-content-'+size : 'min-content'" :style="{height:heightSize+'rpx'}">
       <slot/>
     </view>
   </view>
@@ -14,6 +14,9 @@ export default {
       type: Boolean
     },
     size: {
+      type: String
+    },
+    heightSize: {
       type: String
     }
   },
@@ -88,8 +91,7 @@ export default {
     bottom: 0;
     z-index: 300;
     overflow: hidden;
-  border-radius: 20rpx 20rpx  0  0;
-
+    border-radius: 20rpx 20rpx  0  0;
   }
   .min-content-height{
     width: 100%;

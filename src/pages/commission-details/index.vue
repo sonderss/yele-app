@@ -18,6 +18,7 @@
         v-for="index in 5"
         :key="index"
         class="cell-item min-flex min-flex-main-between p-tb-30 p-lr-20 min-border-bottom"
+        @click.stop="toDeatil(index)"
       >
         <view class="min-flex">
           <view class style="width:300rpx">
@@ -26,7 +27,7 @@
           </view>
         </view>
         <view class="min-flex flex-end min-flex-dir-top">
-          <view :class=" index <= 3 ? 'ablack' : 'ared'">{{index <= 3 ? '-220' : '+110'}}</view>
+          <view :class=" index <= 3 ? 'ablack' : 'ared'">-220</view>
           <view class="bom">业绩2500.00</view>
         </view>
       </view>
@@ -62,6 +63,17 @@
          <view class="btn" @click="sure">确认</view>
       </view>
     </min-popup>
+    <min-drawer :visible="showdrawer" mode="right" @close="closedrawer">
+        <view class="top_view_drawer">
+            <view class="f30" style="font-weight:500;">全部门店</view>
+            <view class="f24 iconfont" style="color:#000" @click="closedrawer">&#xe608;</view>
+        </view>
+        <view class="main_drawer">
+          <view  class="li" v-for="(idnex) in 5" :key="idnex">
+            <min-cell-item title="SIMBA" :border="idnex === 5?false :true" :title_right="idnex === 1 ? '当前门店' : '' " img="../../static/images/headurl60.png" label="可提现金额：￥2005"></min-cell-item>
+          </view>
+        </view>
+    </min-drawer>
   </view>
 </template>
 <script>
@@ -70,6 +82,7 @@ export default {
   navigate: ['navigateTo'],
   data () {
     return {
+      showdrawer: false,
       show: false,
       date: '2020-10-2',
       index: 0,
@@ -86,6 +99,9 @@ export default {
       endTime1: '2020年1月2日',
       num: Number
     }
+  },
+  onNavigationBarButtonTap () {
+    this.showdrawer = !this.showdrawer
   },
   mounted () {
     const time = new Date()
@@ -174,6 +190,19 @@ export default {
     // 取消
     cancel () {
       this.show = false
+    },
+    toDeatil (index) {
+      // this.$minRouter.push({
+      //   name: 'commission-deils',
+      //   type: 'navigateTo',
+      //   params: {}
+      // })
+      uni.navigateTo({
+        url: '../commission-deils/index'
+      })
+    },
+    closedrawer () {
+      this.showdrawer = false
     }
   }
 }
@@ -308,4 +337,19 @@ export default {
       font-size:36rpx;
     }
   }
+// 抽屉
+.top_view_drawer{
+  padding: 30rpx;
+  background: #ffe001;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.main_drawer{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20rpx;
+  padding-top: 0;
+}
 </style>

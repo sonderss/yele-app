@@ -6,24 +6,24 @@
         <view class="reserved">已预约</view>
         <view>
           台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：
-          <text class="emp">{{data.baseInfo.desk_name}}</text>
+          <text class="emp">{{list.baseInfo.desk_name}}</text>
         </view>
-        <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{data.baseInfo.group_name}}</view>
-        <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：{{data.baseInfo.is_minim_charge === 1 ? '￥'+data.baseInfo.minim_charge : '否'}}</view>
-        <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(data.baseInfo.seats) }}</view>
-        <view >开台条件： {{data.baseInfo.enable_minimum_consume === 0 ? '否' : data.baseInfo.minimum_consume_percent+'成低消'+ (data.baseInfo.finally_minimum_price)}}</view>
+        <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.baseInfo.group_name}}</view>
+        <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：{{list.baseInfo.is_minim_charge === 1 ? '￥'+list.baseInfo.minim_charge : '否'}}</view>
+        <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.baseInfo.seats) }}</view>
+        <view >开台条件： {{list.baseInfo.enable_minimum_consume === 0 ? '否' : list.baseInfo.minimum_consume_percent+'成低消'+ (list.baseInfo.finally_minimum_price)}}</view>
       </view>
     </view>
      <view class="card p-lr-20 p-bottom-10 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">客户信息</view>
       <view class="main p-tb-20">
-        <view>客户姓名：{{data.bookingInfo.client_name}}</view>
-        <view>联系电话：{{data.bookingInfo.client_mobile}}</view>
-        <view>当天生日：{{data.bookingInfo.is_birthday  === 0 ? '否' : '是'}}</view>
-        <view>预抵时间：{{$minCommon.formatDate(new Date(data.bookingInfo.arrival_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
-        <view style="display:flex;justify-content: space-between;" v-if="data.bookingInfo.remark">
+        <view>客户姓名：{{list.bookingInfo.client_name}}</view>
+        <view>联系电话：{{list.bookingInfo.client_mobile}}</view>
+        <view>当天生日：{{list.bookingInfo.is_birthday  === 0 ? '否' : '是'}}</view>
+        <view>预抵时间：{{$minCommon.formatDate(new Date(list.bookingInfo.arrival_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
+        <view style="display:flex;justify-content: space-between;" v-if="list.bookingInfo.remark">
           <view style="width:130rpx">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注 :</view>
-          <view style="margin-left:18rpx;flex:1">{{data.bookingInfo.remark}}</view>
+          <view style="margin-left:18rpx;flex:1">{{list.bookingInfo.remark}}</view>
         </view>
 
       </view>
@@ -31,8 +31,8 @@
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">操作信息</view>
       <view class="main p-tb-20">
-        <view>营销人员：{{data.bookingInfo.sales_name}}</view>
-        <view>预约时间：{{$minCommon.formatDate(new Date(data.bookingInfo.create_time*1000),'yyyy-MM-dd hh:mm:ss')}}</view>
+        <view>营销人员：{{list.bookingInfo.sales_name}}</view>
+        <view>预约时间：{{$minCommon.formatDate(new Date(list.bookingInfo.create_time*1000),'yyyy-MM-dd hh:mm:ss')}}</view>
       </view>
     </view>
     <view class="btns">
@@ -61,7 +61,7 @@ export default {
     status: {
       type: Number
     },
-    data: {
+    list: {
       type: Object,
       default: () => {}
     }
@@ -99,13 +99,13 @@ export default {
       this.index = 1
       this.$minRouter.push({
         name: 'stage-make',
-        params: { booking_id: this.data.bookingInfo.booking_id, id: this.idNum }
+        params: { booking_id: this.list.bookingInfo.booking_id, id: this.idNum }
       })
     },
     // 推迟到店
     backBook () {
       this.$refs.show.handleShow({
-        title: `确定将用户的预抵时间推迟${this.data.storeSetting.booking_delay_setting.delay_time}分钟`,
+        title: `确定将用户的预抵时间推迟${this.list.storeSetting.booking_delay_setting.delay_time}分钟`,
         content: '',
         contentCenter: true,
         cancelText: '点错了',
@@ -114,7 +114,7 @@ export default {
         cancelColor: '#0090ff',
         success: (e) => {
           if (e.id === 1) {
-            this.$minApi.backBooked({ booking_id: this.data.bookingInfo.booking_id })
+            this.$minApi.backBooked({ booking_id: this.list.bookingInfo.booking_id })
               .then(res => {
                 console.log(res)
                 if (res.length === 0) {
@@ -140,7 +140,7 @@ export default {
         cancelColor: '#0090ff',
         success: (e) => {
           if (e.id === 1) {
-            this.$minApi.cancelBooked({ booking_id: this.data.bookingInfo.booking_id })
+            this.$minApi.cancelBooked({ booking_id: this.list.bookingInfo.booking_id })
               .then(res => {
                 console.log(res)
                 if (res.length === 0) {

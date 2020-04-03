@@ -1,19 +1,19 @@
 <template>
   <view class="platform-detail p-top-20 p-lr-30">
     <!-- 空闲中组件 2 00-->
-    <min-idle :idNum="id" :date="date" :status="2" v-if="status === 2" :data="data"></min-idle>
+    <min-idle :idNum="id" :date="date" :status="2" v-if="status === 2" :list="list"></min-idle>
     <!-- 点单中 4 00-->
-    <min-order :idNum="id" v-if="status === 4" :data="data"></min-order>
+    <min-order :idNum="id" v-if="status === 4" :list="list"></min-order>
     <!-- 已预约 3 00 -->
-    <min-booked :idNum="id"  v-if="status === 3" :data="data"></min-booked>
+    <min-booked :idNum="id"  v-if="status === 3" :list="list"></min-booked>
     <!-- 待确认 5 00-->
-    <min-confirmed :idNum="id"  v-if="status === 5" :data="data"></min-confirmed>
+    <min-confirmed :idNum="id"  v-if="status === 5" :list="list"></min-confirmed>
     <!-- 已停用 1 00-->
-    <min-terminated :idNum="id" :date="date" v-if=" status === 1" :data="data"></min-terminated>
+    <min-terminated :idNum="id" :date="date" v-if=" status === 1" :list="list"></min-terminated>
     <!-- 已开台 6 00-->
-    <min-opened  :idNum="id" v-if=" status === 6" :data="data" ></min-opened>
+    <min-opened  :idNum="id" v-if=" status === 6" :list="list" ></min-opened>
     <!-- 清台中 7-->
-    <min-taichung :idNum="id"  v-if=" status === 7" :data="data"></min-taichung>
+    <min-taichung :idNum="id"  v-if=" status === 7" :list="list"></min-taichung>
   </view>
 </template>
 
@@ -26,7 +26,7 @@ export default {
       id: '',
       status: Number,
       date: '',
-      data: {
+      list: {
         baseInfo: { desk_name: '' },
         clientInfo: { client_name: '' }
       }
@@ -46,8 +46,8 @@ export default {
       // const date = this.$minCommon.formatDate(new Date(), 'yyyy-MM-dd')
       this.$minApi.getOrderDetail({ desk_id: this.id, date: this.date })
         .then(res => {
-          this.data = res
-          console.log(this.data)
+          this.list = res
+          console.log(this.list)
           this.status = res.baseInfo.status
         })
     }

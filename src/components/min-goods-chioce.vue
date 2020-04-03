@@ -5,7 +5,7 @@
           <!-- @click="goodsAdd(index,index2)" -->
           <view class="image-view-com">
             <view class="badge" v-if="badge">{{badgeTxt}}</view>
-            <image :src="image" mode="" ></image>
+            <image :src="imageSrc === 'error' ? '/static/images/produced.png' : image" mode=""  @error='imgerr'></image>
           </view>
           <view class="content-view">
             <view class="right-view-title" >
@@ -17,7 +17,7 @@
                 <text class="f20 t">￥<text  style="color:#FF0000;font-size:30">{{price}}</text></text>
               </view>
               <view class="steper">
-                <min-stepper  v-if="step" v-model="count" :min='0' @change="changeChioce"></min-stepper>
+                <min-stepper  v-if="step" v-model="count"  @change="changeChioce"></min-stepper>
                 <!-- <view class="isSku f24" v-if="step" @click="selSku(index,index2)">选规格</view> -->
               </view>
             </view>
@@ -46,11 +46,11 @@ export default {
       default: '暂无商品描述'
     },
     price: {
-      type: Number,
+      type: [Number, String],
       default: 0
     },
     value: {
-      type: Number,
+      type: [Number, String],
       default: 0
     },
     isSku: {
@@ -81,7 +81,8 @@ export default {
   },
   data () {
     return {
-      count: 0
+      count: 0,
+      imageSrc: String
     }
   },
   computed: {},
@@ -89,7 +90,10 @@ export default {
     changeChioce (e) {
       this.count = e
       this.$emit('input', e)
-      this.$emit('change', e)
+      this.$emit('changes', e)
+    },
+    imgerr (e) {
+      this.imageSrc = e.type
     }
   }
 }

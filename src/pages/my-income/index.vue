@@ -25,15 +25,15 @@
         <image class="m-bottom-10" src="../../static/images/ticheng.png" />
         <text>提成明细</text>
       </view>
-       <view class="btn">
+       <view class="btn" @click="salary">
         <image class="m-bottom-10" src="../../static/images/gongzi.png" />
         <text>工资明细</text>
       </view>
-       <view class="btn">
+       <view class="btn" @click="releaserecord">
         <image class="m-bottom-10" src="../../static/images/zhichu.png" />
         <text>发放记录</text>
       </view>
-       <view class="btn">
+      <view class="btn" @click="withdrawalsrecord">
         <image class="m-bottom-10" src="../../static/images/tixian.png" />
         <text>提现记录</text>
       </view>
@@ -66,11 +66,11 @@
     </view>
     <view class="desc">暂不支付在APP直接查看方案详细信息</view>
     <min-drawer :visible="show" mode="right" @close="close">
-        <view class="top_view_pop">
+        <view class="top_view_drawer">
             <view class="f30" style="font-weight:500;">全部门店</view>
              <view class="f24 iconfont" style="color:#000" @click="close">&#xe608;</view>
         </view>
-        <view class="main">
+        <view class="main_drawer">
           <view  class="li" v-for="(idnex) in 5" :key="idnex">
             <min-cell-item title="SIMBA" :border="idnex === 5?false :true" :title_right="idnex === 1 ? '当前门店' : '' " img="../../static/images/headurl60.png" label="可提现金额：￥2005"></min-cell-item>
           </view>
@@ -96,6 +96,24 @@ export default {
     commissiondetails () {
       this.$minRouter.push({
         name: 'commission-details'
+      })
+    },
+    // 工资明细
+    salary () {
+      this.$minRouter.push({
+        name: 'salary-breakdown'
+      })
+    },
+    // 提现记录
+    withdrawalsrecord () {
+      this.$minRouter.push({
+        name: 'withdrawals-record'
+      })
+    },
+    // 发放记录
+    releaserecord () {
+      this.$minRouter.push({
+        name: 'release-record'
       })
     },
     // 提现
@@ -284,14 +302,15 @@ export default {
     align-items: center;
   }
 }
-.top_view_pop{
+// 抽屉
+.top_view_drawer{
   padding: 30rpx;
   background: #ffe001;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.main{
+.main_drawer{
   display: flex;
   justify-content: center;
   flex-direction: column;

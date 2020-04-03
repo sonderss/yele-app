@@ -192,7 +192,25 @@ export default {
           }
         },
         {
-          path: 'pages/my-income/withdrawaldetails',
+          path: 'pages/salary-breakdown/index',
+          style: {
+            navigationBarTitleText: '工资明细'
+          }
+        },
+        {
+          path: 'pages/salary-details/index',
+          style: {
+            navigationBarTitleText: '工资详情'
+          }
+        },
+        {
+          path: 'pages/withdrawals-record/index',
+          style: {
+            navigationBarTitleText: '提现记录'
+          }
+        },
+        {
+          path: 'pages/withdrawals-d/index',
           style: {
             navigationBarTitleText: '提现详情'
           }
@@ -201,6 +219,18 @@ export default {
           path: 'pages/withdrawal-success/index',
           style: {
             navigationBarTitleText: '提现成功'
+          }
+        },
+        {
+          path: 'pages/release-record/index',
+          style: {
+            navigationBarTitleText: '发放记录'
+          }
+        },
+        {
+          path: 'pages/release-details/index',
+          style: {
+            navigationBarTitleText: '发放详情'
           }
         },
         {
@@ -216,7 +246,7 @@ export default {
           }
         },
         {
-          path: 'pages/commission-details/commission',
+          path: 'pages/commission-deils/index',
           style: {
             navigationBarTitleText: '提成详情'
           }

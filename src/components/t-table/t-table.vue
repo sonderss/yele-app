@@ -63,7 +63,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped  lang="scss">
 .t-table {
   width: 100%;
   border: 1px #d0dee5 solid;
@@ -72,17 +72,17 @@ export default {
   box-sizing: border-box;
 }
 
-.t-table >>> t-tr {
-  display: flex;
-}
+// .t-table  t-tr {
+//   display: flex;
+// }
 
-.t-table >>> t-tr:nth-child(2n) {
-  background: #f5f5f5;
-}
+// .t-table  t-tr:nth-child(2n) {
+//   background: #f5f5f5;
+// }
 
-/* #ifdef H5 */
-.t-table >>> .t-tr:nth-child(2n) {
-  background: #FFFDED;
-}
-/* #endif */
+// /* #ifdef H5 */
+// .t-table .t-tr:nth-child(2n) {
+//   background: #FFFDED;
+// }
+// /* #endif */
 </style>

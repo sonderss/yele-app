@@ -48,6 +48,12 @@ export default {
   getBookedDetail: data => minRequest.get('/5e7985d26f15e', data),
   // 账单汇总
   billAllin: data => minRequest.get('/5e79c3d01c709', data),
+  // 获取商品列表
+  getProductList: () => minRequest.get('/5e8595f31c800'),
+  // 获取商品详情 ?product_id=14
+  getProductDetail: data => minRequest.get('/5e8595057ddee', data),
+  // 获取服务详情 ?service_id=1
+  getServeDetail: data => minRequest.get('/5e85950939108', data),
   /**
    * @description post请求
    */
