@@ -1,30 +1,32 @@
 <template>
 <view class="list_box m-top-20">
   <view class="left">
-    <scroll-view scroll-y="true" :style="{ 'height':scrollHeight }">
-      <view class="item"
-        v-for="(item,index) in mainArray"
-        :key="index"
-        :class="{ 'active':index == leftIndex }"
-        :data-index="index"
-        @tap="leftTap"
-      >{{item.cate_name}}</view>
-    </scroll-view>
+    <view class="left_view">
+        <scroll-view scroll-y="true" :style="{ 'height':scrollHeight }">
+          <view class="item"
+            v-for="(item,index) in mainArray"
+            :key="index"
+            :class="{ 'active':index == leftIndex }"
+            :data-index="index"
+            @tap="leftTap"
+          >{{item.cate_name}}</view>
+        </scroll-view>
+    </view>
   </view>
   <view class="main">
-    <scroll-view  scroll-y="true" :style="{ 'height':scrollHeight }" @scroll="mainScroll" @scrolltolower='test' :scroll-into-view="scrollInto" scroll-with-animation="true">
+    <scroll-view  :scroll-y="true"  @scroll="mainScroll" :scroll-into-view="scrollInto" :scroll-with-animation="true">
       <view v-for="(item,index) in mainArray" :key="index" :id="'item-'+index">
-        <view v-for="(item2,index2) in item.product" :key="index2">
+        <view v-for="(item2,index2) in item.product" :key="index2" @click.stop="goDetails(index,index2)">
           <min-goods-chioce
             :image='item2.product_img'
             :discount='true'
-            :title="item.product_name"
-            badgeTxt='商品'
-            :badge='true'
-            @change='changeChioce(index,index2)'
-            desc='100ml/100'
+            :title="item2.product_name"
+            :badgeTxt="item2.type === 'combo' ? '套餐': '' "
+            :badge="item2.type === 'combo'? true : false "
+            @changes='changeChioce(index,index2)'
             v-model="item2.step"
-            :price='item2.money'>
+            :desc="item2.sku.length >=1 ?item2.sku[0].sku_full_name : '暂无商品描述' "
+            :price="item2.sku.length >=1 ?item2.sku[0].price : 'null' ">
           </min-goods-chioce>
         </view>
       </view>
@@ -58,20 +60,19 @@
         </view>
         <view class="main-sel-view p-lr-30 p-tb-30" >
             <view class="item" v-for="(item2,n) in selArr" :key="n" @longpress='longTatch(n)'>
-
-                <image :src="item2.img" mode="" />
+                <image :src="errImg ? '/static/images/goods.png': item2.product_img" mode="" @error="imageErro"/>
                 <view class="content-view">
                   <view class="right-view-title">
-                    <text class="f28 t" style="display:block">{{123}}</text>
-                    <text class="f26" style="color:#666666">规格：{{item2.sku}}</text>
+                    <text class="f28 t" style="display:block">{{item2.product_name}}</text>
+                    <text class="f26" style="color:#666666">规格：{{item2.sku.sku_full_name}}</text>
                   </view>
                   <view class="right-view-bottom">
                     <view class="right-view-bottom-desc" >
-                      <text class="f20 t">提成：￥<text  style="color:#FF0000;font-size:30">{{item2.money}}</text></text>
+                      <text class="f20 t">￥<text  style="color:#FF0000;font-size:30">{{item2.sku.price}}</text></text>
                     </view>
                     <view class="steper">
 
-                      <min-stepper v-if="isDel"  v-model="item2.step"  :min='0' @change="alDel($event,n)"></min-stepper>
+                      <min-stepper v-if="isDel" :isAnimation='false' v-model="item2.step"  :min='0' @change="alDel($event,n)"></min-stepper>
                       <view v-if="!isDel" @click="delItem(n)">删除</view>
                     </view>
                   </view>
@@ -91,48 +92,43 @@
         </view>
     </view>
   </min-popup>
-  <!-- 选择规格 -->
-  <min-popup :show="isSelSku" @close='closeSelectedSkuPop'>
-    <!--  -->
-    <view class="skuPop">
-      <view class="skuTop">
-         <view class="leftView">
-            <view class="img-view">
-              <image src='../../static/images/goods.png'/>
-            </view>
-            <!-- sku信息 -->
-            <view class="sku-view">
-               <text class="f22">进口洋酒-人头马</text>
-               <text class="f22 m-tb-20">已选：“750ml”</text>
-               <text class="f22 m">提成:￥<text class="money">2380.00</text></text>
-            </view>
-         </view>
-         <view class="rightView">
-           <image  src='../../static/images/wine-close.png'/>
-         </view>
-      </view>
-      <view class="min-border-bottom m-lr-30"></view>
-      <!-- 可选择规格项 -->
-      <view class="sku-item">
-          <view class="f26">规格</view>
-          <view class="item-view">
-              <view class="item">伯世富VSOP*750ml*2010年*/瓶</view>
-              <view class="item">人头马*2000年*/瓶</view>
-              <view class="item">人头马*2000年*/瓶</view>
 
+   <!-- 选择规格 -->
+    <min-popup :show="isSelSku" @close='closeSelectedSkuPop'>
+      <!--  -->
+      <view class="skuPop">
+        <view class="skuTop">
+          <view class="leftView">
+              <view class="img-view">
+                <image :src="skuObj.product_img" @error="imageErro"></image>
+              </view>
+              <!-- sku信息 -->
+              <view class="sku-view">
+                <text class="f22">{{skuObj.product_name}}</text>
+                <text class="f22 m-tb-20">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
+                <text class="f22 m">￥<text class="money">{{skuObj.sku[chioceIndex].price}}</text></text>
+              </view>
           </view>
+        </view>
+        <view class="min-border-bottom m-lr-30"></view>
+        <!-- 可选择规格项 -->
+        <view class="sku-item">
+            <view class="f26">规格</view>
+            <view class="item-view" >
+                <view :class="chioceIndex ===index ?   'item-active' : 'item' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
+            </view>
+        </view>
+        <view class="min-border-bottom m-lr-30"></view>
+        <!-- 数量 -->
+        <view class="sku-item sku-item-num">
+            <view class="f26">数量</view>
+            <view class="m-tb-30">
+                <min-stepper :isAnimation="false" :min='1' v-model="skuObj.step"></min-stepper>
+            </view>
+        </view>
+        <view class="btn-sku" @click="skuChioce">确定</view>
       </view>
-      <view class="min-border-bottom m-lr-30"></view>
-      <!-- 数量 -->
-      <view class="sku-item sku-item-num">
-          <view class="f26">数量</view>
-          <view class="m-tb-30">
-              <min-stepper  v-model="isSkuNum"></min-stepper>
-          </view>
-      </view>
-      <view class="btn-sku">确定</view>
-    </view>
-  </min-popup>
+    </min-popup>
 </view>
 </template>
 
@@ -147,10 +143,13 @@ export default {
       mainArray: [],
       topArr: [],
       leftIndex: 0,
+      chioceIndex: 0,
       buttonLabel: '(已开台)', // 已开台
       scrollInto: '',
+      skuObj: { sku: [{ sku_full_name: '' }] }, // 选择规格项
       isDel: true, //  所需删除的已选列表中对应项
       selNum: [],
+      errImg: false,
       isSkuNum: 0, // 选择规格弹出层的数量
       isSelSku: false, // 选择规格
       // indexDel: Number, // 所需删除的已选列表中的索引
@@ -166,19 +165,16 @@ export default {
         this.scrollHeight = `${res.windowHeight}px`
       }
     })
-  },
-  mounted () {
     this.getListData()
-    // console.log(this.leftArray, this.mainArray)
   },
   computed: {
     // 合计金额
     totalAmountE () {
       let sum = 0
       this.selArr.map(item => {
-        sum += item.step * item.money
+        sum += item.step * item.sku.price
       })
-      return sum
+      return sum.toFixed(2)
     },
     // 监听所选数量
     countNums () {
@@ -189,23 +185,23 @@ export default {
       return num
     }
   },
+  onShow () {
+    this.selArr = this.$store.state.goods.selected_products
+  },
   watch: {
     selArr: function (a, b) {
-      console.log(a, b)
     }
   },
   methods: {
     /* 获取列表数据 */
     getListData () {
-      // list: [
-      //       { img: '../../static/images/goods.png', sku: '100ml/瓶', step: 1, money: 100, isSku: true },
-      //       { img: '../../static/images/goods.png', sku: '100ml/瓶', step: 1, money: 200, badge: true, badgeTxt: '套餐' },
-      //       { img: '../../static/images/goods.png', sku: '100ml/瓶', step: 1, money: 300, discount: true },
-      //       { img: '../../static/images/goods.png', sku: '200ml/瓶', step: 1, money: 400 }
-      //     ]
       this.$minApi.getProductList()
         .then(res => {
           this.mainArray = res.list
+          for (const val of this.mainArray) {
+            val.step = 1
+          }
+          console.log('cjq')
           console.log(this.mainArray)
           this.$nextTick(() => {
             this.getElementTop()
@@ -228,7 +224,6 @@ export default {
           }).exec()
         })
       }
-
       /* 遍历数据，创建相应的 Promise 数组数据 */
       this.mainArray.forEach((item, index) => {
         p_arr.push(new_p(`#item-${index}`))
@@ -263,16 +258,8 @@ export default {
       const index = e.currentTarget.dataset.index
       this.scrollInto = `item-${index}`
       this.leftIndex = e.currentTarget.dataset.index
-      console.log(e.currentTarget.dataset.index)
     },
-    /** 监听底部 */
-    test (EventHandle) {
-      // console.log(EventHandle.target.direction)
-      if (EventHandle.target.direction === 'bottom') {
-        // console.log('到达底部')
-        // this.leftIndex = this.leftArray.length - 1
-      }
-    },
+
     /** 点击商品事件(进入详情) */
     goodsAdd (index, index2) {
       // this.addGoods(index, index2)
@@ -281,22 +268,31 @@ export default {
     selectedEvent () {
       this.selected = true
     },
-    /** 添加商品事件 */
-    addGoods (index, index2) {
-      const a = index + '' + index2
-      // // 判断选择项是否重复
-      if (!this.selNum.includes(a)) {
-        this.selNum.push(a)
-        this.selArr.push(this.mainArray[index].list[index2])
-        // this.totalAmountE()
-      } else {
-
+    // 图片错误
+    imageErro (e) {
+      if (e.type === 'error') {
+        this.skuObj.product_img = '../../static/images/goods.png'
+        this.errImg = true
       }
     },
+    /** 添加商品事件 */
+    // addGoods (index, index2) {
+    //   const a = index + '' + index2
+    //   // // 判断选择项是否重复
+    //   if (!this.selNum.includes(a)) {
+    //     this.selNum.push(a)
+    //     this.selArr.push(this.mainArray[index].list[index2])
+    //     console.log('selArr', this.selArr)
+    //     // this.totalAmountE()
+    //   } else {
+
+    //   }
+    // },
     /** 清空已选商品 */
     delAll () {
       this.selArr = []
       this.selNum = []
+      this.$store.dispatch('goods/setselected_products', [])
     },
     /** 关闭已选商品弹出层 */
     closeSelectedPop () {
@@ -327,22 +323,85 @@ export default {
     // 选择规格事件
     selSku (index, index2) {
       this.isSelSku = true
-      console.log(index, index2)
+      this.skuObj = this.mainArray[index].product[index2]
+      console.log('商品规格弹窗', this.skuObj)
     },
     changeChioce (index, index2) {
-      this.addGoods(index, index2)
+      // console.log(index, index2)
+      if (this.mainArray[index].product[index2].sku.length > 1) {
+        this.selSku(index, index2)
+        return
+      }
+      const obj = {}
+      if (this.mainArray[index].product[index2].sku.length > 0) {
+        // obj = this.mainArray[index].product[index2]
+        Object.assign(obj, this.mainArray[index].product[index2])
+        obj.sku = this.mainArray[index].product[index2].sku[0]
+      }
+      this.addGoods(obj)
+      return
+      // eslint-disable-next-line no-unreachable
+      if (this.mainArray[index].product[index2].sku.length === 0) {
+        // 说明是服务  暂时没有数据
+        console.log('服务商品')
+      }
+      console.log(this.selArr)
     },
-    tets (index, index2) {
-      // this.addGoods(index, index2)
+    // 选择规格
+    chioceO (index) {
+      this.chioceIndex = index
     },
-    yy (e) {
-      console.log(e)
+    // 已选商品统一列表方法
+    addGoods (obj) {
+      const result = this.selArr.some(item => {
+        if (item.sku.sku_id === obj.sku.sku_id) {
+          item.step = obj.step
+          return true
+        }
+      })
+      if (!result) {
+        this.selArr.push(obj)
+        this.$store.dispatch('goods/setselected_products', this.selArr)
+      }
+    },
+    // 选择规格确定
+    skuChioce () {
+      const obj = {}
+      Object.assign(obj, this.skuObj)
+      obj.sku = this.skuObj.sku[this.chioceIndex]
+      this.addGoods(obj)
+      this.closeSelectedSkuPop()
+      console.log(this.selArr)
+    },
+    // 商品详情
+    goDetails (index, index2) {
+      let type
+      if (this.mainArray[index].product[index2].type === 'combo') {
+        // 进入商品套餐详情
+        type = 6
+        this.$minRouter.push({
+          name: 'packages-detail',
+          params: { type }
+        })
+        return
+      }
+      if (this.mainArray[index].product[index2].type === 'product') {
+        //  代表商品详情
+        type = 4
+      } else if (this.mainArray[index].product[index2].type === 'service') {
+        //  代表服务商品详情
+        type = 5
+      }
+      this.$minRouter.push({
+        name: 'product-details',
+        params: { product_id: this.mainArray[index].product[index2].id, type, product_type: this.mainArray[index].product[index2].type }
+      })
     }
   }
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 uni-page-body{overflow: hidden;height: 100%;}
 .list_box{
   display: flex;
@@ -359,6 +418,13 @@ uni-page-body{overflow: hidden;height: 100%;}
     box-sizing: border-box;
     font-size: 32rpx;
 
+    overflow: hidden;
+   .left_view{
+     overflow: auto;
+     width: 100%;
+     height: 100%;
+    //  padding-top: 60rpx;
+   }
 .item{
   position: relative;
   text-align: center;
@@ -394,11 +460,12 @@ uni-page-body{overflow: hidden;height: 100%;}
 }
 .main{
 padding-left: 20rpx;
-width: 0;
+
 flex-grow: 1;
 box-sizing: border-box;
 margin-right: 30rpx;
 margin-bottom: 100rpx;
+
 .title{
   line-height: 64rpx;
   font-size: 24rpx;
@@ -610,18 +677,29 @@ margin-bottom: 100rpx;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    .item{
-       padding: 0 20rpx;
-      word-wrap: none;
-      height: 58rpx;
-      border:1px solid rgba(51,51,51,1);
-      // border:1px solid rgba(254,67,42,1);rgba(51,51,51,1)
-      border-radius:10rpx;
-      // margin-right: 20rpx;
-      margin-bottom:20rpx;
-      text-align: center;
-      line-height: 58rpx;
-    }
+    .item {
+        padding: 0 20rpx;
+        word-wrap: none;
+        height: 58rpx;
+        border: 1px solid rgba(51, 51, 51, 1);
+        border-radius: 10rpx;
+        margin-right: 20rpx;
+        margin-bottom: 20rpx;
+        text-align: center;
+        line-height: 58rpx;
+      }
+
+      .item-active {
+        padding: 0 20rpx;
+        word-wrap: none;
+        height: 58rpx;
+        border: 1px solid #fe432a;
+        border-radius: 10rpx;
+        margin-right: 20rpx;
+        margin-bottom: 20rpx;
+        text-align: center;
+        line-height: 58rpx;
+      }
   }
 }
 .sku-item-num{
@@ -640,7 +718,5 @@ margin-bottom: 100rpx;
   color: #333;
 }
 }
-/**<template>
-   <view>
-      <min-goods-chioce image='../../static/images/goods.png' :value="1" @input="tets" :badge="true" badgeTxt='优惠'></min-goods-chioce> */
+
 </style>

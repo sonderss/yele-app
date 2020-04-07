@@ -9,7 +9,7 @@
          <view class="left-txt" style="color:#666" v-if="leftTxtTwo">{{leftTxtB}}</view>
       </view>
     </view>
-    <view class="right-view">
+    <view class="right-view" @click="chinceSku">
         <min-stepper v-if="step"  v-model="count"  :min='0' icon='/static/images/yellow-add.png'></min-stepper>
         <text v-if="num">x {{num}}</text>
         <view v-if="sku" class="right-icon f30">{{sku}}<image src='../../static/images/right-black.png' /></view>
@@ -68,6 +68,11 @@ export default {
     return {
       count: 0
     }
+  },
+  methods: {
+    chinceSku () {
+      this.$emit('chincesku')
+    }
   }
 }
 </script>
@@ -117,7 +122,7 @@ export default {
         }
     }
     .right-icon{
-      image{width:20rpx;height: 22rpx;margin-left: 18rpx;}
+      image{width:20rpx;height: 22rpx;margin-left: 18rpx;color: #666666;}
     }
   }
 }

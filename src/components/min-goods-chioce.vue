@@ -14,7 +14,7 @@
             </view>
             <view class="right-view-bottom">
               <view class="right-view-bottom-desc" >
-                <text class="f20 t">￥<text  style="color:#FF0000;font-size:30">{{price}}</text></text>
+                <text v-if="price != 'null'" class="f20 t">￥<text  style="color:#FF0000;font-size:30">{{price}}</text></text>
               </view>
               <view class="steper">
                 <min-stepper  v-if="step" v-model="count"  @change="changeChioce"></min-stepper>

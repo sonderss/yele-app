@@ -50,7 +50,7 @@
 
     <view class="btns">
       <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book">预约</view>
-      <view :class="index === 1 ? 'btn active' : 'btn' " >下单</view>
+      <view :class="index === 1 ? 'btn active' : 'btn' " @click="goOrder">下单</view>
       <view  :class="index === 2 ? 'btn active' : 'btn' ">存酒</view>
       <view class="badge" @click="showToastTxt"  id='testDom'>
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
@@ -76,7 +76,8 @@ export default {
   data () {
     return {
       show: false,
-      toast: false
+      toast: false,
+      index: Number
     }
   },
   mounted () {
@@ -156,8 +157,15 @@ export default {
           this.toast = false
         }
       }
+    },
+    // 下单
+    goOrder () {
+      this.$minRouter.push({
+        name: 'placean-order'
+      })
     }
   },
+
   beforeDestroy () {
     // 事件销毁
     document.querySelector('body').removeEventListener('click', this.handleBodyClick)

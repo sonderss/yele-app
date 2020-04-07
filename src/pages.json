@@ -97,18 +97,6 @@
       }
     },
     {
-      "path": "pages/placean-order/index_copy",
-      "style": {
-        "app-plus":{
-          "titleNView":{
-            "titleText":"下单",
-            "backgroundColor":"#030313",
-            "titleColor":"#FFE001"
-          }
-        }
-      }
-    },
-    {
       "path": "pages/order-entry/index",
       "style": {
         "app-plus":{

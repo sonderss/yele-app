@@ -2,7 +2,7 @@
 <view style="display: inline-block;vertical-align: bottom;">
   <view class="min-sunui-stepper">
     <view class="min-less-wrap" :class="{'isAnimation': isAnimation}" :animation="animationLess">
-      <image @click="less" :animation="animationLessInner"  class="min-less" src="/static/images/less.png"/>
+      <image @click.stop="less" :animation="animationLessInner"  class="min-less" src="/static/images/less.png"/>
     </view>
     <!-- <input
       class="min-value" type="number"
@@ -10,7 +10,7 @@
       :disabled="true"
     /> -->
     <view class="min-value">{{ (value > min || !isAnimation) ? stepperCacheNum : '' }}{{ unit }}</view>
-    <image @click="add" class="min-add" :src="icon"/>
+    <image @click.stop="add" class="min-add" :src="icon"/>
   </view>
 </view>
 </template>
@@ -65,7 +65,7 @@ export default {
     },
     icon: {
       type: String,
-      default: '/static/images/add.png'
+      default: '/static/images/yellow-add.png'
     }
   },
   created () {
