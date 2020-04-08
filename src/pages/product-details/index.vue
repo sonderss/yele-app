@@ -23,7 +23,8 @@
           <text class="price">￥{{list.sku.length === 0 ? '暂无数据': list.sku[chioceIndex].price}}</text>
         </view>
         <!-- @change="alDel($event,n)" -->
-        <min-stepper  v-model="lastStep" @change="goodsChange"></min-stepper>
+        <min-stepper  v-if="selArr.length > 0"  v-model="selArr[indexL].step" @change="goodsChange"></min-stepper>
+        <min-stepper v-else v-model="lastStep"></min-stepper>
       </view>
       <!-- 电子菜单 -->
       <view class="botm-view" v-if="type === 1">
@@ -167,7 +168,7 @@ export default {
       selArr: [],
       errImg: false,
       indexL: 0,
-      lastStep: null,
+      lastStep: 0,
       flag: true
     }
   },
@@ -189,6 +190,14 @@ export default {
       return num
     }
   },
+  watch: {
+    lastStep: function (a) {
+      if (a > 0) {
+        console.log(this.selArr)
+        this.goodsChange()
+      }
+    }
+  },
   onLoad () {
     // type为1时  电子菜单商品详情
     this.product_id = this.$parseURL().product_id
@@ -196,6 +205,7 @@ export default {
     this.product_type = this.$parseURL().product_type
     if (this.$store.state.goods.selected_products.length > 0) {
       this.selArr = this.$store.state.goods.selected_products
+      console.log(this.selArr)
     } else {
       this.indexL = 0
     }
@@ -265,13 +275,13 @@ export default {
         this.selArr.push(obj)
         this.$store.dispatch('goods/setselected_products', this.selArr)
       }
-      this.selArr.map((item, index) => {
-        this.list.sku.map((item2, index2) => {
-          if (item.sku.sku_id === item2.sku_id) {
-            this.indexL = index
-          }
-        })
-      })
+      // this.selArr.map((item, index) => {
+      //   this.list.sku.map((item2, index2) => {
+      //     if (item.sku.sku_id === item2.sku_id) {
+      //       this.indexL = index
+      //     }
+      //   })
+      // })
     },
     // 已选商品删除事件
     aleradyGood (e, index) {
@@ -307,6 +317,14 @@ export default {
         this.addGoods(obj)
         console.log(this.selArr)
       }
+      this.selArr.map((item, index) => {
+        this.list.sku.map((item2, index2) => {
+          if (item.sku.sku_id === item2.sku_id) {
+            this.indexL = index
+            item2.step = item.step
+          }
+        })
+      })
     }
   }
 }

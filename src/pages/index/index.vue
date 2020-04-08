@@ -106,6 +106,8 @@ export default {
         url: 'my-income'
       }, {
         img: '/static/images/index/chart.png',
+        name: 'statistics-page',
+        url: 'statistics-page',
         text: '数据统计'
       }, {
         url: '../mine-info/index',

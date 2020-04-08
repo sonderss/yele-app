@@ -186,7 +186,9 @@ export default {
     }
   },
   onShow () {
-    this.selArr = this.$store.state.goods.selected_products
+    if (this.$store.state.goods.selected_products.length > 0 && this.$store.state.goods.selected_products[0].step) {
+      this.selArr = this.$store.state.goods.selected_products
+    }
   },
   watch: {
     selArr: function (a, b) {
@@ -201,7 +203,6 @@ export default {
           for (const val of this.mainArray) {
             val.step = 1
           }
-          console.log('cjq')
           console.log(this.mainArray)
           this.$nextTick(() => {
             this.getElementTop()

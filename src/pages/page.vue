@@ -42,6 +42,12 @@ export default {
           }
         },
         {
+          path: 'pages/statistics-page/index',
+          style: {
+            navigationBarTitleText: '数据统计'
+          }
+        },
+        {
           path: 'pages/confiscated-wine/index',
           style: {
             navigationBarTitleText: '充公酒'

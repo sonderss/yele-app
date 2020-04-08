@@ -21,6 +21,8 @@
 </template>
 <script>
 export default {
+  name: 'lnvitation-offline',
+  navigate: ['navigateTo'],
   data () {
     return {
       list: [

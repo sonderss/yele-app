@@ -37,6 +37,18 @@
       }
     },
     {
+      "path":"pages/statistics-page/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"数据统计",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
       "path": "pages/confiscated-wine/index",
       "style": {
         "app-plus":{

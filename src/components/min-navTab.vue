@@ -104,12 +104,12 @@ export default {
     }
     .click::before{
       content: '';
-      width:120rpx;
+      width:50%;
       height: 6rpx;
       background:#FFE001;
       position: absolute;
       bottom: 0;
-      left: 10%;
+      left: 25%;
     }
     .underlineBox {
       height: 6rpx;

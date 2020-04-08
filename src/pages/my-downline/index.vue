@@ -11,7 +11,7 @@
           </view>
           <view class="desc">累计获得分佣</view>
         </view>
-        <view class="btn">去邀请</view>
+        <view class="btn" @click="go">去邀请</view>
       </view>
     </view>
 
@@ -45,6 +45,13 @@ export default {
       type: 'navigateTo',
       path: '../invitation-record/index.vue'
     })
+  },
+  methods: {
+    go () {
+      this.$minRouter.push({
+        name: 'lnvitation-offline'
+      })
+    }
   }
 }
 </script>
