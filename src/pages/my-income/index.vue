@@ -145,7 +145,7 @@ export default {
     justify-content: center;
     align-items: center;
     .price {
-      width: 138rpx;
+      width: auto;
       height: 26rpx;
       font-size: 28rpx;
       font-family: PingFang SC;
