@@ -1,62 +1,85 @@
 <template>
-  <view class="storing-liquor-detail p-tb-20 p-lr-30">
-    <view class="card p-lr-20">
-      <view class="top p-tb-30 min-border-bottom">
-        <view>客户信息</view>
-        <view class="status">已生效</view>
+  <view class="storing-liquor-detail p-tb-20 p-lr-30" >
+    <view v-if="list.desk_name">
+      <view class="card p-lr-20">
+        <view class="top p-tb-30 min-border-bottom">
+          <view>客户信息</view>
+          <view :class="statusData[list.deposit_status?list.deposit_status:0].status">{{statusData[list.deposit_status?list.deposit_status:0].name}}</view>
+        </view>
+        <view class="main p-tb-30">
+          <view class="item">客户姓名：{{list.client_name}}</view>
+          <view class="item">联系电话：{{list.client_mobile}}</view>
+        </view>
       </view>
-      <view class="main p-tb-30">
-        <view class="item">客户姓名：刘小青</view>
-        <view class="item">联系电话：135 5352 0135</view>
-      </view>
-    </view>
-    <view class="goods-wrap m-top-20 p-lr-20">
-      <view class="p-tb-30 min-border-bottom">存酒信息</view>
-      <view class="goods-list p-t-10 p-bottom-20">
-        <view class="p-top-20" v-for="index in 3" :key="index">
-          <view style="background: #fff;">
-            <view class="goods-item">
-              <image class="goods-icon" src="/static/images/goods.png"/>
-              <view class="goods-content">
-                <view class="goods-name">2020年元旦百威兄弟套餐12瓶2020</view>
-                <view class="count-weap">
-                  <view class="slider">
-                    <min-slider v-model="count" max="100"/>
-                  </view>
-                  <view class="stepper">
-                    <min-stepper :isAnimation="false" v-model="count" max="100" unit="%"/>
-                  </view>
+      <view class="goods-wrap m-top-20 p-lr-20">
+        <view class="p-tb-30 min-border-bottom">存酒信息</view>
+        <view class="goods-list p-t-10 p-bottom-20">
+          <view class="p-top-20" v-for="(item,index) in list.detail" :key="index">
+            <view style="background: #fff;">
+              <view class="goods-item">
+                <image class="goods-icon" src="/static/images/goods.png"/>
+                <view class="goods-content">
+                  <view class="goods-name">{{item.sku_full_name}}</view>
+                  <!-- <view class="count-weap">
+                    <view class="slider">
+                      <min-slider v-model="item.retention_ratio" max="100"/>
+                    </view>
+                    <view class="stepper">
+                      <min-stepper :isAnimation="false" v-model="item.retention_ratio" max="100" unit="%"/>
+                    </view>
+                  </view> -->
+                  <view class="goods-price">剩余{{item.retention_ratio}}%</view>
                 </view>
-                <view class="goods-price">剩余50%</view>
               </view>
             </view>
           </view>
         </view>
       </view>
-    </view>
-    <view class="card p-lr-20 m-top-20">
-      <view class="top p-tb-30 min-border-bottom">其他信息</view>
-      <view class="main p-tb-30">
-        <view class="item">存酒单号：20115643465465</view>
-        <view class="item">存酒人员：刘清清</view>
-        <view class="item">存酒台号：T11025</view>
-        <view class="item">确认人员：刘清清</view>
-        <view class="item">存酒时间：2020年02月15日 16:20:00</view>
-        <view class="item">生效时间：2020年02月15日 16:20:00</view>
-        <view class="item">到期时间：2020年02月15日 16:20:00</view>
+      <view class="card p-lr-20 m-top-20">
+        <view class="top p-tb-30 min-border-bottom">其他信息</view>
+        <view class="main p-tb-30">
+          <view class="item">存酒单号：{{list.deposit_sn}}</view>
+          <view class="item">存酒人员：{{list.deposit_name}}</view>
+          <view class="item">存酒台号：{{list.desk_name}}</view>
+          <view class="item">确认人员：{{list.confirm_name}}</view>
+          <view class="item">存酒时间：{{list.create_time}}</view>
+          <view class="item">生效时间：{{list.confirm_time}}</view>
+          <view class="item">到期时间：{{list.expires_time}}</view>
+        </view>
       </view>
     </view>
-    <view class="btn-wrap">
-      <min-btn shape="flat">取酒</min-btn>
-    </view>
+    <min-404 v-else id="none"></min-404>
   </view>
 </template>
 
 <script>
+// 1待确认，2已存酒，3已过期，4已回仓，5已作废，6已取酒
+const statusData = [
+  {},
+  { name: '待确认', status: 'confirmed' },
+  { name: '已存酒', status: 'end' },
+  { name: '已过期', status: 'expired' },
+  { name: '已回仓', status: 'force' },
+  { name: '已作废', status: 'expired' },
+  { name: '已取酒', status: 'force' }
+]
 export default {
+  name: 'storing-liquor-detail',
+  navigate: ['navigateTo'],
+  onLoad () {
+    this.id = this.$parseURL().id
+    console.log(this.id)
+    this.$minApi.getWinestoragedetails({ id: this.id }).then(res => {
+      this.list = res
+      console.log(this.list)
+    })
+  },
   data () {
     return {
-      count: 0
+      statusData,
+      count: 0,
+      id: Number,
+      list: {}
     }
   }
 }
@@ -72,8 +95,20 @@ export default {
     .top{
       display: flex;
       justify-content: space-between;
-      .status{
+      .confirmed{
         color: #0090FF;
+      }
+       .confirmed {
+        color: #ff0101;
+      }
+     .end {
+        color: #39ba01;
+      }
+     .force {
+        color: #0090ff;
+      }
+     .expired {
+        color: #666666;
       }
     }
     .main{

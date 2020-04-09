@@ -71,6 +71,7 @@ export default {
         const index = arr.indexOf(this.value)
         index > 0 ? arr.splice(index, 1) : arr.push(this.value)
       }
+      console.log(this.value)
     }
   }
 }

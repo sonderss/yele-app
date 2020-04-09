@@ -83,7 +83,7 @@ export default {
   width: 100%;
   height: 75rpx;
   position: fixed;
-  top:44px;
+  top:0;
   left: 0;
   overflow: auto;
   z-index: 9999;

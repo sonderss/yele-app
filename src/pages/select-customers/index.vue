@@ -3,15 +3,15 @@
     <view  v-for="(item,index) in list" :key="index" class="m-bottom-20">
         <min-cell>
           <view class="main min-flex min-flex-dir-top min-flex-align-top f28">
-            <text class="m-top-20">客户姓名：{{item.name}}</text>
-            <text>联系电话：{{item.phone}}</text>
-            <text>当前台号：{{item.num}}</text>
-            <text>开台时间：{{item.startTime}}</text>
-            <text v-if="item.del">销台时间：{{item.del}}</text>
-            <text>台位低消：￥{{item.lowPrice}}</text>
-            <text class="p-bottom-30">消费金额：￥{{item.price}}</text>
-            <view class="btn-view min-border-top" @click="save_wine">
-                <view class="btn f26">存酒</view>
+            <text class="m-top-20">客户姓名：{{item.client_name}}</text>
+            <text>联系电话：{{item.client_mobile}}</text>
+            <text>当前台号：{{desk_name}}</text>
+            <text>开台时间：{{item.create_time}}</text>
+            <text v-if="item.close_time">销台时间：{{item.close_time}}</text>
+            <text>台位低消：￥{{item.minimum_consume}}</text>
+            <text class="p-bottom-30">消费金额：￥{{item.pay_price}}</text>
+            <view class="btn-view min-border-top" @click="save_wine(index)">
+                <view class="btn f26" >存酒</view>
             </view>
           </view>
         </min-cell>
@@ -26,18 +26,28 @@ export default {
   navigate: ['navigateTo'],
   data () {
     return {
-      list: [{
-        name: '刘晓庆', phone: '13563250000', num: '788', startTime: '2019年12月05日 16:30:00', lowPrice: '10000', price: '1056300'
-      },
-      {
-        name: '刘晓庆', phone: '13563250000', num: 'K1112', startTime: '2019年12月05日 16:30:00', del: '2019年12月05日 16:30:00', lowPrice: '10000', price: '1056300'
-      }]
+      list: [],
+      desk_name: ''
     }
   },
+  onLoad () {
+    this.id = this.$parseURL().desk_id
+    this.desk_name = this.$parseURL().desk_name
+    console.log(this.id)
+  },
+  mounted () {
+    // 桌台ID暂时为15测试
+    this.$minApi.getOrderHistory({ desk_id: 15 })
+      .then(res => {
+        console.log(res)
+        this.list = res
+      })
+  },
   methods: {
-    save_wine () {
+    save_wine (index) {
       this.$minRouter.push({
-        name: 'save-wine'
+        name: 'save-wine',
+        params: { open_id: this.list[index].id }
       })
     }
   }

@@ -51,7 +51,7 @@
     <view class="btns">
       <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book">预约</view>
       <view :class="index === 1 ? 'btn active' : 'btn' " @click="goOrder">下单</view>
-      <view  :class="index === 2 ? 'btn active' : 'btn' ">存酒</view>
+      <view  :class="index === 2 ? 'btn active' : 'btn' " @click="saveWine">存酒</view>
       <view class="badge" @click="showToastTxt"  id='testDom'>
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
           <view class="toast anmatiin " v-if="toast">
@@ -115,8 +115,20 @@ export default {
                   this.$showToast('销台成功')
                 }
               })
+              .catch(() => {
+                this.$showToast('缺少开台ID')
+              })
           }
         }
+      })
+    },
+    // 存酒
+    saveWine () {
+      this.index = 2
+      // 跳转到选择客户页面（存酒）
+      this.$minRouter.push({
+        name: 'select-customers',
+        params: { desk_id: this.idNum, desk_name: this.list.baseInfo.desk_name }
       })
     },
     // 预约

@@ -3,21 +3,23 @@
     <view class="goods-wrap m-top-20 p-lr-20">
       <view class="p-tb-30 min-border-bottom">来源于订单</view>
       <view class="goods-list p-t-10 p-bottom-20">
-        <view class="p-top-20" v-for="index in 3" :key="index">
+        <view class="p-top-20" v-for="(item,index) in list.from_order" :key="index">
           <view style="background: #fff;">
             <view class="goods-item">
-              <image class="goods-icon" src="/static/images/goods.png" />
+              <min-checkbox  v-model="item.flag"></min-checkbox>
+              <image class="goods-icon" :src="imgErro ? '/static/images/goods.png' :item.product_img" @error="imgError"/>
               <view class="goods-content">
-                <view class="goods-name">2020年元旦百威兄弟套餐12瓶2020</view>
+                <view class="goods-name">{{item.sku_full_name}}</view>
                 <view class="count-weap">
                   <view class="slider">
-                    <min-slider v-model="count" max="100" />
+                    <min-slider v-if="item.storage_type === 2"  v-model="item.num" :max="100" />
                   </view>
                   <view class="stepper">
-                    <min-stepper :isAnimation="false" v-model="count" max="100" unit="%" />
+                    <min-stepper v-if="item.storage_type === 2" :isAnimation="false" v-model="item.num" max="100" unit="%" />
+                    <view v-if="item.storage_type === 1">整瓶存</view>
                   </view>
                 </view>
-                <view class="goods-price">剩余50%</view>
+                <!-- <view class="goods-price">剩余50%</view> -->
               </view>
             </view>
           </view>
@@ -28,21 +30,22 @@
      <view class="goods-wrap m-top-20 p-lr-20">
       <view class="p-tb-30 min-border-bottom">来源于取酒</view>
       <view class="goods-list p-t-10 p-bottom-20">
-        <view class="p-top-20" v-for="index in 3" :key="index">
+        <view class="p-top-20" v-for="(item,index) in list.from_fetch" :key="index">
           <view style="background: #fff;">
             <view class="goods-item">
-              <image class="goods-icon" src="/static/images/goods.png" />
+              <image class="goods-icon" :src="imgErro ? '/static/images/goods.png' :item.product_img" @error="imgError" />
               <view class="goods-content">
-                <view class="goods-name">2020年元旦百威兄弟套餐12瓶2020</view>
+                <view class="goods-name">{{item.sku_full_name}}</view>
                 <view class="count-weap">
                   <view class="slider">
-                    <min-slider v-model="count" max="100" />
+                    <min-slider v-if="item.storage_type === 2" v-model="item.num" max="100" />
                   </view>
                   <view class="stepper">
-                    <min-stepper :isAnimation="false" v-model="count" max="100" unit="%" />
+                    <min-stepper v-if="item.storage_type === 2" :isAnimation="false" v-model="item.num" max="100" unit="%" />
+                    <view v-if="item.storage_type === 1">整瓶存</view>
                   </view>
                 </view>
-                <view class="goods-price">剩余50%</view>
+                <!-- <view class="goods-price">剩余50%</view> -->
               </view>
             </view>
           </view>
@@ -50,20 +53,85 @@
       </view>
     </view>
       <view class="client_desc p-lr-20 m-top-20">
-         <min-desc-input sign="*" desc="客户姓名"></min-desc-input>
-         <min-desc-input sign="*" :border="false" desc="联系方式"></min-desc-input>
-
+         <min-desc-input sign="*" desc="客户姓名" v-model="name"></min-desc-input>
+         <min-desc-input sign="*" :border="false" desc="联系方式" v-model="phone"></min-desc-input>
       </view>
-    <view class="btn">提交</view>
+    <view class="btn" @click="save">提交</view>
   </view>
 </template>
 <script>
 export default {
   name: 'save-wine',
   navigate: ['navigateTo'],
+  onLoad () {
+    this.$minApi.getSaveWineList({ opening_id: this.$parseURL().open_id })
+      .then(res => {
+        res.from_order.map(item => {
+          item.num = 100
+        })
+        res.from_fetch.map(item => {
+          item.num = 100
+        })
+        this.list = res
+        this.name = res.client_name
+        this.phone = res.client_mobile
+        console.log(this.list)
+      })
+  },
   data () {
     return {
-      count: 0
+      count: 100,
+      list: {},
+      imgErro: false,
+      name: '',
+      phone: ''
+    }
+  },
+  methods: {
+    imgError (e) {
+      if (e.type === 'error') {
+        this.imgErro = true
+      }
+    },
+    save () {
+      // saveWinePost
+      /**
+       * order_id 订单ID   opening_id apply_data  client_name:this.name,client_mobile:this.phone
+       * [{"sku_id":"27","ratio":"100"}]
+       */
+      const options = { apply_data: [] }
+      this.list.from_order.map((item, index) => {
+        if (item.flag) {
+          options.order_id = item.order_id
+          options.apply_data.push({ sku_id: item.sku_id, ratio: item.quantity })
+        }
+      })
+      this.list.from_fetch.map((item, index) => {
+        if (item.flag) {
+          options.order_id = item.order_id
+          options.apply_data.push(item.sku_id + item.quantity)
+        }
+      })
+
+      options.client_name = this.name
+      options.client_mobile = this.phone
+      options.opening_id = this.$parseURL().open_id
+      this.$minApi.saveWinePost({ client_name: this.name, client_mobile: this.phone, order_id: options.order_id, opening_id: options.opening_id, apply_data: JSON.stringify(options.apply_data) })
+        .then(res => {
+          console.log(res)
+          if (res.length === 0) {
+            uni.showToast({
+              title: '提交成功',
+              icon: 'none',
+              duration: 2000
+            })
+            setTimeout(() => {
+              this.$minRouter.push({
+                name: 'platform-admin'
+              })
+            }, 2000)
+          }
+        })
     }
   }
 }

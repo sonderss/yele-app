@@ -167,7 +167,7 @@ export default {
   }
   .min-value{
     padding: 10rpx 0;
-    width:39rpx;
+    width:50rpx;
     height: 40rpx;
     font-size: 26rpx;
     line-height: 44rpx;

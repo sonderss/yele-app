@@ -51,6 +51,7 @@ export default {
     }
   },
   mounted () {
+    console.log(this.list)
     // 监听关闭事件
     this.$nextTick(() => {
       document.querySelector('body').addEventListener('click', this.handleBodyClick)
@@ -121,7 +122,8 @@ export default {
       this.index = 2
       // 跳转到选择客户页面（存酒）
       this.$minRouter.push({
-        name: 'select-customers'
+        name: 'select-customers',
+        params: { desk_id: this.idNum, desk_name: this.list.baseInfo.desk_name }
       })
     },
     // 展示剩余按钮

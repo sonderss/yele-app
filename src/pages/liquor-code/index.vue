@@ -15,13 +15,13 @@
           <view class="f30 p-tb-25">存酒客户信息</view>
           <view class="min-border-bottom" style="height:1rpx"></view>
           <view class="main min-flex min-flex-dir-top min-flex-align-top f28 p-bottom-20">
-            <text class="m-bottom-10 m-top-20">客户姓名：刘晓庆</text>
-            <text class="m-bottom-10">联系电话：13563250000</text>
+            <text class="m-bottom-10 m-top-20">客户姓名：{{$parseURL().client_name}}</text>
+            <text class="m-bottom-10">联系电话：{{$parseURL().client_mobile}}</text>
           </view>
       </min-cell>
       <text class="desc f24 p-tb-20">我们将向存酒客户发送一条取酒码</text>
       <view class="code min-flex">
-         <input type="text" class="p-left-20" placeholder="输入验证码"/>
+         <input type="text" class="p-left-20" v-model="fetch_code" placeholder="输入验证码"/>
          <text class="f28 p-right-20" :class="flag ? 'timertxt' : 'codeing' " @click="sendCode">{{flag ? timerTxt : `${timerTxt} S` }}</text>
       </view>
       <view class="btn">
@@ -33,13 +33,19 @@
 
 <script>
 export default {
+  name: 'liquor-code',
+  navigate: ['navigateTo'],
   data () {
     return {
       timerTxt: '发送取酒码',
       num: 8,
+      fetch_code: '754421',
       flag: true,
       list: { title: '取酒客户信息', content: [{ name: '客户姓名', value: '刘晓庆' }, { name: '联系电话', value: '13563250000' }] }
     }
+  },
+  onLoad () {
+    console.log(this.$parseURL())
   },
   methods: {
     sendCode () {
@@ -58,13 +64,13 @@ export default {
         if (this.num <= 0) {
           this.timerTxt = '发送取酒码'
           this.flag = true
-          return
         }
-        console.log(123)
       }, this.num)
     },
     submit () {
-
+      // 取酒提交
+      console.log(this.fetch_code)
+      this.$minApi.getWinePost({ id: this.$parseURL().id, opening_id: this.$parseURL().opening_id, fetch_code: this.fetch_code })
     }
   }
 }

@@ -1,20 +1,20 @@
 <template>
   <view class="fetch-liquor p-tb-20 p-lr-30">
     <min-search v-model="search"/>
-    <view class="list p-top-20">
+    <view class="list p-top-20" v-for="(item,index) in list" :key="index">
       <view class="card p-lr-20">
         <view class="top p-tb-30 min-border-bottom">
-          <view class="order-num">单号：20190503153</view>
+          <view class="order-num">单号：{{item.deposit_sn}}</view>
           <view class="status">已生效</view>
         </view>
         <view class="main p-tb-30">
-          <view class="item">客户姓名：刘大芒</view>
-          <view class="item">联系电话：135 5352 0135</view>
-          <view class="item">存酒数量：123</view>
+          <view class="item">客户姓名：{{item.client_name}}</view>
+          <view class="item">联系电话：{{item.client_mobile}}</view>
+          <view class="item">存酒数量：{{item.product_count}}</view>
         </view>
         <view class="bottom p-tb-20 min-border-top">
-          <view class="date">2019-12-10 12:35:65</view>
-          <min-btn size="xs" type="white" border>取酒</min-btn>
+          <view class="date">{{item.create_time}}</view>
+          <min-btn size="xs" type="white" @click="toGetWine(index)" border>取酒</min-btn>
         </view>
       </view>
     </view>
@@ -23,9 +23,28 @@
 
 <script>
 export default {
-  data() {
+  name: 'fetch-liquor',
+  navigate: ['navigateTo'],
+  data () {
     return {
-      search: ''
+      search: '',
+      list: []
+    }
+  },
+  mounted () {
+    // 获取存酒记录
+    this.$minApi.getWinekeepingrecord()
+      .then(res => {
+        this.list = res
+        console.log(this.list)
+      })
+  },
+  methods: {
+    toGetWine (index) {
+      this.$minRouter.push({
+        name: 'liquor-code',
+        params: { client_name: this.list[index].client_name, client_mobile: this.list[index].client_mobile, id: this.list[index].id, opening_id: this.list[index].opening_id }
+      })
     }
   }
 }

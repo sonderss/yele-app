@@ -54,6 +54,18 @@ export default {
   getProductDetail: data => minRequest.get('/5e8595057ddee', data),
   // 获取服务详情 ?service_id=1
   getServeDetail: data => minRequest.get('/5e85950939108', data),
+  // 存酒记录 5e85b1140a67a
+  getWinekeepingrecord: () => minRequest.get('/5e85b1140a67a'),
+  // 存酒详情 5e85b92de7139?id=1
+  getWinestoragedetails: data => minRequest.get('/5e85b92de7139', data),
+  // 获取开台历史 5e1eae7d5198f?desk_id=1
+  getOrderHistory: data => minRequest.get('/5e8e84493a034', data),
+  // 可存酒商品列表 ?opening_id=20
+  getSaveWineList: data => minRequest.get('/5e84512c9a1a9', data),
+  // 存酒申请 5e8562fae4f8e
+  saveWinePost: data => minRequest.post('/5e8562fae4f8e', data),
+  // 取酒申请 5e86e83e75b5d
+  getWinePost: data => minRequest.post('/5e86e83e75b5d', data),
   /**
    * @description post请求
    */
