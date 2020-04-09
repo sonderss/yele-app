@@ -1,6 +1,7 @@
 <template>
   <view class="statistics-page p-lr-20 p-tb-30">
     <min-navTab ref="navTab" :tabTitle="tabTitle" @changeTab="changeTab"></min-navTab>
+
     <swiper style="height:100vh" :current="currentTab" @change="swiperTab">
       <swiper-item v-for="(listItem,listIndex) in list" :key="listIndex">
         <scroll-view
@@ -10,40 +11,9 @@
           scroll-with-animation
           :scroll-into-view="toView"
         >
-          <!-- 台位统计 -->
-          <view class="taiwei">
-            <view class="title_list" v-if="currentTab === 1">
-              <view
-                :class="index === indexActive ?  'item_active':  'item'"
-                v-for="(item,index) in itemList"
-                :key="index"
-                @click="change(index)"
-              >
-                <text class="f26">{{item.name}}</text>
-                <text class="f26">{{item.num}}</text>
-              </view>
-            </view>
-            <view class="top_view" v-if="currentTab === 1">
-              <view class="top">
-                <text>{{startTime1}}</text>
-                <text class="iconfont">&#xe6b2;</text>
-                <text class="iconfont">&#xe622;</text>
-                <text>{{endTime1}}</text>
-                <text class="iconfont">&#xe6b2;</text>
-              </view>
-              <view class="mid_view min-border-bottom">
-                <view class="title" v-for="(item,index) in mainTitle " :key="index">{{item}}</view>
-              </view>
-              <view class="bom_view m-top-30" v-for="(item,index) in mainItem" :key="index">
-                <view class="item">{{item.order}}</view>
-                <view class="item">{{item.num}}</view>
-                <view class="item">{{item.price}}</view>
-              </view>
-            </view>
-          </view>
-          <!-- 数据总览 -->
-          <view class="shuju">
-            <view class="top-view" v-if="currentTab === 0">
+         <!-- 数据总览 -->
+          <view class="shuju" v-if="currentTab === 0">
+            <view class="top-view" >
               <view class="t-view">
                 <text class="price f28">今日实收</text>
                 <view class="money">
@@ -69,7 +39,7 @@
                 </view>
               </view>
             </view>
-            <view class="top_view_main" v-if="currentTab === 0">
+            <view class="top_view_main">
               <view class="top">
                 <text>{{startTime1}}</text>
                 <text class="iconfont">&#xe6b2;</text>
@@ -98,6 +68,37 @@
               <canvas canvas-id="canvasPie" id="canvasPie" class="charts" @touchstart="touchPie"></canvas>
             </view>
           </view>
+          <!-- 台位统计 -->
+          <view class="taiwei" v-if="currentTab === 1">
+            <view class="title_list" >
+              <view
+                :class="index === indexActive ?  'item_active':  'item'"
+                v-for="(item,index) in itemList"
+                :key="index"
+                @click="change(index)"
+              >
+                <text class="f26">{{item.name}}</text>
+                <text class="f26">{{item.num}}</text>
+              </view>
+            </view>
+            <view class="top_view" >
+              <view class="top">
+                <text>{{startTime1}}</text>
+                <text class="iconfont">&#xe6b2;</text>
+                <text class="iconfont">&#xe622;</text>
+                <text>{{endTime1}}</text>
+                <text class="iconfont">&#xe6b2;</text>
+              </view>
+              <view class="mid_view min-border-bottom">
+                <view class="title" v-for="(item,index) in mainTitle " :key="index">{{item}}</view>
+              </view>
+              <view class="bom_view m-top-30" v-for="(item,index) in mainItem" :key="index">
+                <view class="item">{{item.order}}</view>
+                <view class="item">{{item.num}}</view>
+                <view class="item">{{item.price}}</view>
+              </view>
+            </view>
+          </view>
           <!-- 商品统计 -->
           <view class="shangpin"  v-if="currentTab === 2">
               <view class="top">
@@ -114,13 +115,17 @@
                 </view>
                  <canvas canvas-id="canvasPiegoods" id="canvasPiegoods" class="charts" @touchstart="touchPie1"></canvas>
               </view>
-               <view class="view_main p-lr-20 p-tb-20">
+              <view class="view_main p-lr-20 p-tb-20">
                 <view class="title_view">
                    <text class="f30">SKU销售排行榜</text>
                    <text class="f26">更多 >></text>
                 </view>
-                 <canvas canvas-id="canvasColumn" id="canvasColumn" class="charts" @touchstart="touchColumn2"></canvas>
+                <canvas canvas-id="canvasColumn" id="canvasColumn" class="chartss" @touchstart="touchColumn2"></canvas>
               </view>
+          </view>
+          <!-- 人员统计 -->
+          <view class="man"  v-if="currentTab === 3">
+
           </view>
         </scroll-view>
       </swiper-item>
@@ -130,8 +135,6 @@
 </template>
 
 <script>
-// import MinCharts from '../../components/ucharts/min-charts'
-// import dataList from '../../static/data.json'
 import uCharts from '../../components/ucharts/u-charts.min.js'
 var _self
 var canvaPie = null
@@ -169,7 +172,7 @@ export default {
         { order: 'K1221', num: '1231', price: '￥5000' },
         { order: 'K1221', num: '1231', price: '￥5000' }
       ],
-      list: [[], [], []],
+      list: [[], [], [], [], []],
       // 数据总览
       chartData: {
         series: [{
@@ -220,32 +223,42 @@ export default {
     _self = this
     this.cWidth = uni.upx2px(700)
     this.cHeight = uni.upx2px(450)
-    // 环形图
-    this.getServerData()
-    // 柱状
+    _self.$nextTick(() => {
+      // 初始化图表
+      _self.getServerData()
+    })
   },
-  updated () {
-    console.log(123)
-    _self = this
-    this.cWidth = uni.upx2px(700)
-    this.cHeight = uni.upx2px(450)
-    this.getServerData()
+  watch: {
+    currentTab (a) {
+      _self = this
+      _self.cWidth = uni.upx2px(700)
+      _self.cHeight = uni.upx2px(450)
+      _self.$nextTick(() => {
+        // 初始化图表
+        _self.getServerData()
+      })
+    }
   },
   methods: {
     getServerData () {
       const Pie = { series: [] }
-      let Colum = { series: [] }
+      let Colum = { }
       // 这里我后台返回的是数组，所以用等于，如果您后台返回的是单条数据，需要push进去
       if (this.currentTab === 0) {
         Pie.series = this.chartData.series
         // ID 数据 是否显示图例  粗细   （环形图表）
         _self.showPie('canvasPie', Pie, true, 25)
+      } else if (this.currentTab === 1) {
+        console.log('第二个页面')
       } else if (this.currentTab === 2) {
-        console.log('第三页')
         Pie.series = this.chartData1.series
         Colum = this.chartData2
         _self.showPie('canvasPiegoods', Pie, false, 40)
         _self.showColumn('canvasColumn', Colum)
+      } else if (this.currentTab === 3) {
+        Pie.series = this.chartData1.series
+        Colum = this.chartData2
+        _self.showPie('canvasPiegoods', Pie, false, 40)
       }
     },
     // 环形
@@ -350,14 +363,15 @@ export default {
       })
     },
     touchColumn2 (e) {
+      const textList = [{ text: '商品统计', color: null }, { text: '自定义1：值1000', color: null }]
       canvaColumn.showToolTip(e, {
-        format: function (item, category) {
-          if (typeof item.data === 'object') {
-            return category + ' ' + item.name + ':' + item.data.value
-          } else {
-            return category + ' ' + item.name + ':' + item.data
-          }
-        }
+        textList
+      })
+    },
+    touchColumn3 (e) {
+      const textList = [{ text: '商品统计', color: null }, { text: '自定义1：值1000', color: null }]
+      canvaColumn.showToolTip(e, {
+        textList
       })
     },
     changeTab (e) {
@@ -630,5 +644,22 @@ export default {
     }
   }
 }
+// 人员统计
+.man{
+  margin-top: 80rpx;
+  .view_main{
+    width: 100%;
+    height: 623rpx;
+    background: #fff;
+    margin-top: 20rpx;
+    .title_view{
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 50rpx;
+    }
+  }
+}
 .charts{width: 100%; height:500rpx;background-color: #FFFFFF;}
+#canvasPiegoods{width: 100%; height:500rpx;background-color: #FFFFFF;}
+#canvasColumn{width: 100%; height:500rpx;background-color: #FFFFFF;}
 </style>
