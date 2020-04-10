@@ -141,24 +141,22 @@ uni-page-body {
       display: flex;
       justify-content: space-between;
       align-items: center;
-
+      background-color: #fff;
+      line-height: 83rpx;
       .clear {
         color: #666;
       }
-
       .right-view {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 100%;
-
+        height: 83rpx;
         .icon-del {
           width: 22rpx;
           height: 22rpx;
           display: flex;
           justify-content: center;
           align-items: center;
-
           image {
             width: 100%;
             height: 100%;

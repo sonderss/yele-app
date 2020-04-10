@@ -282,14 +282,13 @@ export default {
     },
     /** 点击商品事件(进入详情) */
     goodsAdd (index, index2) {
-      console.log(this.mainArray[index].product[index2])
       let type = Number
-      if (this.mainArray[index].product[index2].type === 'combo') {
+      if (this.mainArray[index].product[index2].type === 'setmeal') {
         // 进入电子菜单套餐详情
         type = 3
         this.$minRouter.push({
-          name: 'packages-detail',
-          params: { type }
+          name: 'package-details',
+          params: { type, setmeal_id: this.mainArray[index].product[index2].id }
         })
         return
       }

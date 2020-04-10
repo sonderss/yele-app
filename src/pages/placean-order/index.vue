@@ -47,17 +47,17 @@
   <!-- 已选商品 -->
   <min-popup :show="selected" @close='closeSelectedPop'>
     <view class="popview">
-        <view class="p-lr-20">
-            <view class="top-view min-border-bottom">
-              <text>已选商品</text>
+
+            <view class="top-view min-border-bottom ">
+              <view>已选商品</view>
               <view class="right-view" @click="delAll">
                 <view class="icon-del m-right-10">
                   <image src='../../static/images/del.png'/>
                 </view>
-                <text class="f22 clear">清空</text>
+                <view class="f22 clear">清空</view>
               </view>
             </view>
-        </view>
+
         <view class="main-sel-view p-lr-30 p-tb-30" >
             <view class="item" v-for="(item2,n) in selArr" :key="n" @longpress='longTatch(n)'>
                 <image :src="errImg ? '/static/images/goods.png': item2.product_img" mode="" @error="imageErro"/>
@@ -548,6 +548,9 @@ margin-bottom: 100rpx;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    line-height: 83rpx;
+    background-color: #fff;
+    padding: 0 30rpx;
     .clear{
       color: #666
     }
@@ -555,7 +558,7 @@ margin-bottom: 100rpx;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 100%;
+      height: 83rpx;
       .icon-del{
         width: 22rpx;
         height: 22rpx;
@@ -563,6 +566,7 @@ margin-bottom: 100rpx;
         justify-content: center;
         align-items: center;
         image{
+          display: block;
           width: 100%;
           height: 100%;
         }

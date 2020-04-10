@@ -89,7 +89,7 @@ export default {
     position: absolute;
     left: 0;
     bottom: 0;
-    z-index: 300;
+    z-index: 9999;
     overflow: hidden;
     border-radius: 20rpx 20rpx  0  0;
   }

@@ -298,6 +298,7 @@
             "titleColor":"#FFE001",
             "buttons":[
               {
+                "width":"auto",
                 "text": "全部门店\ue6b2",
                 "fontSize":"28rpx",
                 "fontSrc":"/static/font/iconfont.ttf"
@@ -317,6 +318,7 @@
             "titleColor":"#FFE001",
             "buttons":[
               {
+                "width":"auto",
                 "text": "全部门店\ue6b2",
                 "fontSize":"28rpx",
                 "fontSrc":"/static/font/iconfont.ttf"
@@ -384,6 +386,7 @@
             "titleColor":"#FFE001",
             "buttons":[
               {
+                "width":"auto",
                 "text": "全部门店\ue6b2",
                 "fontSize":"28rpx",
                 "fontSrc":"/static/font/iconfont.ttf"
@@ -415,6 +418,7 @@
             "titleColor":"#FFE001",
             "buttons":[
               {
+                "width":"auto",
                 "text": "全部门店\ue6b2",
                 "fontSize":"28rpx",
                 "fontSrc":"/static/font/iconfont.ttf"
@@ -548,6 +552,7 @@
             "titleColor":"#FFE001",
             "buttons":[
               {
+                "width":"auto",
                 "text": "赠送限制",
                 "fontSize":"28rpx"
             }

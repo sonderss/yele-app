@@ -2,39 +2,40 @@
   <view class="product-details p-tb-20 p-lr-30">
     <swiper
       class="swiper"
-      :indicatorDots="true"
+      :indicatorDots="false"
       :circular="true"
       :autoplay="autoplay"
       :interval="interval"
       :duration="duration"
     >
-      <swiper-item v-for="(item,index) in item" :key="index">
+      <swiper-item v-for="(item,index) in list.setmeal_images" :key="index">
         <view class="swiper-item">
           <image :src="item" />
         </view>
       </swiper-item>
     </swiper>
     <view class="goods-item p-lr-20 m-bottom-20">
-      <view class="top-view f28 m-top-10 f28">伯世富VSOP*2支（4支冰红茶+4支水）</view>
+      <view class="top-view f28 m-top-10 f28">{{list.setmeal_name}}</view>
       <view class="botm-view">
         <view class="f22">
           ￥
-          <text class="price">6800</text>
+          <text class="price">{{list.setmeal_price}}</text>
         </view>
-        <min-stepper class v-model="count" :min="0"></min-stepper>
+        <!-- <min-stepper  class  v-model="count" ></min-stepper> -->
       </view>
     </view>
-    <min-describe sku="750ml*2010年/瓶" leftTxt="套餐组合"></min-describe>
+    <min-describe  @chincesku="toDeatil" :sku="list.setmeal_combination[0].combination_name" leftTxt="套餐组合"></min-describe>
     <view class="introduction m-top-20 p-lr-20">
         <view class="title min-border-bottom m-bottom-30">详细介绍</view>
         <view class="content p-bottom-30">
-            详细介绍详细介绍详细介绍详细介绍详细介绍详细介 详细介绍详细介绍详细介绍 详细介绍详细介绍详细介绍详细介绍 详细介绍详细介绍详
+            {{list.setmeal_info}}
         </view>
     </view>
 
     <min-goods-submit
+    v-if="type !== 3 "
       icon="../../static/images/cart.png"
-      goodsCount="2"
+      :goodsCount="0"
       totalLabel="台位低消：￥1000.00"
       buttonText="去下单"
     ></min-goods-submit>
@@ -43,6 +44,8 @@
 
 <script>
 export default {
+  name: 'package-details',
+  navigate: ['navigateTo'],
   data () {
     return {
       item: [
@@ -54,7 +57,29 @@ export default {
       autoplay: true,
       interval: 2000,
       duration: 500,
-      count: 0
+      count: 0,
+      type: Number,
+      list: {}
+    }
+  },
+  onLoad () {
+    this.type = this.$parseURL().type
+    if (this.type === 3) {
+      // 电子菜单 套餐商品详情
+      this.$minApi.getPackageDetails({ setmeal_id: this.$parseURL().setmeal_id })
+        .then(res => {
+          this.list = res.info
+          console.log(this.list)
+        })
+    }
+  },
+  methods: {
+    // 套餐2级
+    toDeatil () {
+      this.$minRouter.push({
+        name: 'packages-detail',
+        params: { type: this.type, list: this.list }
+      })
     }
   }
 }

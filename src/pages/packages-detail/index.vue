@@ -7,26 +7,24 @@
       :interval="2000"
       :duration="500"
     >
-      <swiper-item v-for="(item,index) in [ '../../static/images/bid-goods.png',
-        '../../static/images/bid-goods.png',
-        '../../static/images/bid-goods.png']" :key="index">
+      <swiper-item v-for="(item,index) in list.setmeal_images" :key="index">
         <view class="swiper-item">
           <image :src="item" />
         </view>
       </swiper-item>
     </swiper>
     <view class="goods-item p-lr-20 m-bottom-20">
-      <view class="top-view f28 m-top-10 f28">伯世富VSOP*2支（4支冰红茶+4支水）</view>
+      <view class="top-view f28 m-top-10 f28">{{list.setmeal_name}}</view>
       <view class="botm-view">
         <view class="f22 m-bottom-20">
-          ￥ <text class="price">6800</text>
+          ￥ <text class="price">{{list.setmeal_price}}</text>
         </view>
       </view>
     </view>
     <view class="introduction m-top-20 ">
         <view class="title min-border-bottom m-bottom-30 p-lr-20">必选商品</view>
         <view class="content p-bottom-30">
-          <min-describe  :leftIcon='true' leftTxt='百威兄弟终极套餐12瓶' num='2'></min-describe>
+          <min-describe  :leftIconValue="list.setmeal_logo" :leftIcon='true' leftTxt='百威兄弟终极套餐12瓶' num='2'></min-describe>
         </view>
     </view>
     <view class="introduction ">
@@ -64,12 +62,14 @@ export default {
       duration: 500,
       num: 0,
       num1: 2,
-      type: Number
+      type: Number,
+      list: {}
     }
   },
   onLoad () {
+    this.list = this.$parseURL().list
     this.type = this.$parseURL().type
-    console.log(this.type)
+    console.log(this.list, this.type)
   }
 }
 </script>
@@ -82,6 +82,10 @@ export default {
     .swiper-item {
       width: 100%;
       height: 100%;
+      image{
+        width: 100%;
+        height: 100%;
+      }
     }
   }
   .goods-item {

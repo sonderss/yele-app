@@ -12,7 +12,7 @@
         </scroll-view>
       </view>
 
-    <view class="main" v-if="mainArray.length === 0">
+    <view class="main" >
       <scroll-view  scroll-y="true" :style="{ 'height':scrollHeight }" @scroll="mainScroll" @scrolltolower='test' :scroll-into-view="scrollInto" scroll-with-animation="true">
         <view class="item" v-for="(item,index) in mainArray" :key="index"  :id="'item-'+index">
               <view class="goods" v-for="(item2,index2) in item.list" :key="index2" >
@@ -46,17 +46,15 @@
     <!-- 已选商品 -->
     <min-popup :show="selected" @close='closeSelectedPop'>
       <view class="popview">
-          <view class="p-lr-20">
-              <view class="top-view min-border-bottom">
-                <text>已选商品</text>
+              <view class="top-view min-border-bottom p-lr-30">
+                <view>已选商品</view>
                 <view class="right-view" @click="delAll">
                   <view class="icon-del m-right-10">
                     <image src='../../static/images/del.png'></image>
                   </view>
-                  <text class="f22 clear">清空</text>
+                  <view class="f22 clear">清空</view>
                 </view>
               </view>
-          </view>
           <view class="main-sel-view p-lr-30 p-tb-30" >
               <view class="item" v-for="(item2,n) in selArr" :key="n" @longpress='longTatch(n)'>
                   <image :src="imageSrc === 'error' ? '../../static/images/goods.png' : item2.product_img" @error='imgerr' ></image>
@@ -205,7 +203,7 @@ export default {
       this.$minApi.getWineList()
         .then(res => {
           this.mainArray = res
-          // console.log(this.mainArray)
+          console.log(this.mainArray)
           this.$nextTick(() => {
             this.getElementTop()
           })
@@ -343,7 +341,9 @@ export default {
     // 选择规格事件
     selSku (index, index2) {
       this.isSelSku = true
+      console.log(this.mainArray[index].list[index2])
       this.skuObj = this.mainArray[index].list[index2]
+      this.skuObj.step = 1
       this.skuIndex.index = index
       this.skuIndex.index2 = index2
       // console.log('选择规格项的商品索引', index)
@@ -429,11 +429,13 @@ export default {
       const total_commission = this.totalAmountE
       // const a = this.chioceItem
       // console.log(a)
+      this.selected = this.isSelSku = false
       this.$minApi.addWinePubList({ goods, total_commission })
         .then(res => {
           // console.log(res.msg)
           if (res.length === 0) {
             this.$showToast('提交成功！')
+
             this.selItemArr = []
             this.selArr = []
             this.selNum = []

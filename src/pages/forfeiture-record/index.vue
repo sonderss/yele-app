@@ -15,8 +15,8 @@
         >{{item2.product_name+item2.product_sku}}</view>
       </view>
       <view class="over-view" @click="showMore(index)" v-if="item.detail.length >3  ">
-        {{txt ? '展开更多' : '收起'}}
-        <text :class="isMore ? ' f22 botm' : ' f22 botm1'"></text>
+        {{item.isMore ? '展开更多' : '收起'}}
+        <text :class="item.isMore ? ' f22 botm1' : ' f22 botm'"></text>
       </view>
       <view class="timer min-top-border">{{item.friend_create_time}}</view>
     </view>
@@ -34,11 +34,12 @@ export default {
         this.list = res.list
         this.list.map(item => {
           if (item.detail.length > 3) {
-            item.isMore = true
+            this.$set(item, 'isMore', true)
           } else {
-            item.isMore = false
+            this.$set(item, 'isMore', false)
           }
         })
+        console.log(this.list)
       })
       // eslint-disable-next-line handle-callback-err
       .catch(err => {
@@ -76,8 +77,16 @@ export default {
   methods: {
     showMore (index2) {
       // this.isMore = !this.isMore
-      this.list[index2].isMore = !this.list[index2].isMore
-      this.txt = !this.txt
+      // console.log(index2)
+      // this.list[index2].isMore = !this.list[index2].isMore
+      if (this.list[index2].isMore) {
+        this.$set(this.list[index2], 'isMore', false)
+      } else {
+        this.$set(this.list[index2], 'isMore', true)
+      }
+
+      // console.log(this.list)
+      // this.txt = !this.txt
     },
     getWineList () {
       const option = {

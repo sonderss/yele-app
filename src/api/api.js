@@ -66,6 +66,8 @@ export default {
   saveWinePost: data => minRequest.post('/5e8562fae4f8e', data),
   // 取酒申请 5e86e83e75b5d
   getWinePost: data => minRequest.post('/5e86e83e75b5d', data),
+  // 获取套餐详情 5e8ee33b60dcb?setmeal_id=5
+  getPackageDetails: data => minRequest.get('/5e8ee33b60dcb', data),
   /**
    * @description post请求
    */

@@ -1,6 +1,6 @@
 <template>
 <view class="min-describe p-lr-20">
-    <view class="left-view">
+    <view class="left-view" @click="chinceSku">
       <view class="img-view" v-if="leftIcon">
         <image :src="leftIconValue ? leftIconValue : '../../static/images/goods.png'" />
       </view>
