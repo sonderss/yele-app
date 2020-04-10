@@ -12,7 +12,7 @@
           :scroll-into-view="toView"
         >
          <!-- 数据总览 -->
-          <view class="shuju" v-if="currentTab === 0">
+          <view class="shuju" v-if="listItem.currentTab === 0" >
             <view class="top-view" >
               <view class="t-view">
                 <text class="price f28">今日实收</text>
@@ -43,7 +43,7 @@
               <view class="top">
                 <text>{{startTime1}}</text>
                 <text class="iconfont">&#xe6b2;</text>
-                <text class="iconfont">&#xe622;</text>
+                <text class="iconfont">&#xe68c;</text>
                 <text>{{endTime1}}</text>
                 <text class="iconfont">&#xe6b2;</text>
               </view>
@@ -69,7 +69,7 @@
             </view>
           </view>
           <!-- 台位统计 -->
-          <view class="taiwei" v-if="currentTab === 1">
+          <view class="taiwei" v-if="listItem.currentTab === 1">
             <view class="title_list" >
               <view
                 :class="index === indexActive ?  'item_active':  'item'"
@@ -85,7 +85,7 @@
               <view class="top">
                 <text>{{startTime1}}</text>
                 <text class="iconfont">&#xe6b2;</text>
-                <text class="iconfont">&#xe622;</text>
+                <text class="iconfont">&#xe68c;</text>
                 <text>{{endTime1}}</text>
                 <text class="iconfont">&#xe6b2;</text>
               </view>
@@ -99,33 +99,53 @@
               </view>
             </view>
           </view>
-          <!-- 商品统计 -->
-          <view class="shangpin"  v-if="currentTab === 2">
+            <!-- 商品统计 -->
+          <view class="shangpin"  v-if="listItem.currentTab === 2">
               <view class="top">
                 <text>{{startTime1}}</text>
                 <text class="iconfont">&#xe6b2;</text>
-                <text class="iconfont">&#xe622;</text>
+                <text class="iconfont" style="font-weight:500">&#xe68c;</text>
                 <text>{{endTime1}}</text>
                 <text class="iconfont">&#xe6b2;</text>
               </view>
               <view class="view_main p-lr-20 p-tb-20">
-                <view class="title_view">
+                <view class="title_view" @click="toPrductsails(0)">
                    <text class="f30">商品销售排行榜</text>
                    <text class="f26">更多 >></text>
                 </view>
-                 <canvas canvas-id="canvasPiegoods" id="canvasPiegoods" class="charts" @touchstart="touchPie1"></canvas>
+                 <canvas  canvas-id="canvasPiegoods" id="canvasPiegoods" class="charts" @touchstart="touchPie1"></canvas>
               </view>
               <view class="view_main p-lr-20 p-tb-20">
-                <view class="title_view">
+                <view class="title_view"  @click="toPrductsails(1)">
                    <text class="f30">SKU销售排行榜</text>
                    <text class="f26">更多 >></text>
                 </view>
-                <canvas canvas-id="canvasColumn" id="canvasColumn" class="chartss" @touchstart="touchColumn2"></canvas>
+                <canvas  canvas-id="canvasColumn" id="canvasColumn" class="chartss" @touchstart="touchColumn2"></canvas>
               </view>
           </view>
           <!-- 人员统计 -->
-          <view class="man"  v-if="currentTab === 3">
-
+           <view class="man"  v-if="listItem.currentTab === 3">
+              <view class="top">
+                <text>{{startTime1}}</text>
+                <text class="iconfont">&#xe6b2;</text>
+                <text class="iconfont" style="font-weight:500">&#xe68c;</text>
+                <text>{{endTime1}}</text>
+                <text class="iconfont">&#xe6b2;</text>
+              </view>
+              <view class="view_main p-lr-20 p-tb-20">
+                <view class="title_view" @click="toPrductsails(2)">
+                   <text class="f30">订台人角色业绩分布</text>
+                   <text class="f26">更多 >></text>
+                </view>
+                 <canvas  canvas-id="canvasPieman" id="canvasPieman" class="charts" @touchstart="touchPieman1"></canvas>
+              </view>
+              <view class="view_main p-lr-20 p-tb-20">
+                <view class="title_view"  @click="toPrductsails(3)">
+                   <text class="f30">下单人角色业绩分布</text>
+                   <text class="f26">更多 >></text>
+                </view>
+                <canvas  canvas-id="canvasColuman" id="canvasColuman" class="charts" @touchstart="touchColuman2"></canvas>
+              </view>
           </view>
         </scroll-view>
       </swiper-item>
@@ -172,7 +192,7 @@ export default {
         { order: 'K1221', num: '1231', price: '￥5000' },
         { order: 'K1221', num: '1231', price: '￥5000' }
       ],
-      list: [[], [], [], [], []],
+      list: [{ currentTab: 0 }, { currentTab: 1 }, { currentTab: 2 }, { currentTab: 3 }],
       // 数据总览
       chartData: {
         series: [{
@@ -210,7 +230,15 @@ export default {
         categories: ['2012', '2013', '2014', '2015', '2016', '2017'],
         series: [{
           name: '成交量1',
-          data: [15, { value: 20, color: '#f04864' }, 45, 37, 43, 34]
+          data: [15, { value: 20, color: '#f04864' }, 45, 37, 43, 34, 50]
+        }]
+      },
+      // 人员统计柱状图
+      chartData3: {
+        categories: ['2012', '2013', '2014', '2015', '2016', '2017'],
+        series: [{
+          name: '成交量1',
+          data: [15, { value: 20, color: '#f04864' }, 45, 37, 43, 34, 100]
         }]
       },
       cWidth: '',
@@ -223,9 +251,9 @@ export default {
     _self = this
     this.cWidth = uni.upx2px(700)
     this.cHeight = uni.upx2px(450)
-    _self.$nextTick(() => {
+    this.$nextTick(() => {
       // 初始化图表
-      _self.getServerData()
+      this.getServerData()
     })
   },
   watch: {
@@ -233,9 +261,9 @@ export default {
       _self = this
       _self.cWidth = uni.upx2px(700)
       _self.cHeight = uni.upx2px(450)
-      _self.$nextTick(() => {
+      this.$nextTick(() => {
         // 初始化图表
-        _self.getServerData()
+        this.getServerData()
       })
     }
   },
@@ -249,7 +277,6 @@ export default {
         // ID 数据 是否显示图例  粗细   （环形图表）
         _self.showPie('canvasPie', Pie, true, 25)
       } else if (this.currentTab === 1) {
-        console.log('第二个页面')
       } else if (this.currentTab === 2) {
         Pie.series = this.chartData1.series
         Colum = this.chartData2
@@ -257,8 +284,9 @@ export default {
         _self.showColumn('canvasColumn', Colum)
       } else if (this.currentTab === 3) {
         Pie.series = this.chartData1.series
-        Colum = this.chartData2
-        _self.showPie('canvasPiegoods', Pie, false, 40)
+        Colum = this.chartData3
+        _self.showPie('canvasPieman', Pie, false, 40)
+        _self.showColumn('canvasColuman', Colum)
       }
     },
     // 环形
@@ -362,7 +390,20 @@ export default {
         textList
       })
     },
+    touchPieman1 (e) {
+      // 自定义点击展示数据
+      const textList = [{ text: '商品统计', color: null }, { text: '自定义1：值1000', color: null }, { text: '自定义2：值2', color: null }, { text: '自定义3：值3', color: null }]
+      canvaPie.showToolTip(e, {
+        textList
+      })
+    },
     touchColumn2 (e) {
+      const textList = [{ text: '商品统计', color: null }, { text: '自定义1：值1000', color: null }]
+      canvaColumn.showToolTip(e, {
+        textList
+      })
+    },
+    touchColuman2 (e) {
       const textList = [{ text: '商品统计', color: null }, { text: '自定义1：值1000', color: null }]
       canvaColumn.showToolTip(e, {
         textList
@@ -379,6 +420,13 @@ export default {
     },
     change (index) {
       this.indexActive = index
+    },
+    // 体砖单品销售排行
+    toPrductsails (type) {
+      this.$minRouter.push({
+        name: 'product-sales',
+        params: { type }
+      })
     },
     // swiper 滑动
     swiperTab: function (e) {

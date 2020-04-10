@@ -48,6 +48,14 @@ export default {
           }
         },
         {
+          path: 'pages/product-sales/index',
+          style: {
+
+            navigationBarTitleText: '单品销售排行'
+
+          }
+        },
+        {
           path: 'pages/confiscated-wine/index',
           style: {
             navigationBarTitleText: '充公酒'

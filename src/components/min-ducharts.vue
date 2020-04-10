@@ -1,67 +1,32 @@
 <template>
-  <view class="main">
-      <min-ducharts></min-ducharts>
+  <view class="min-ducharts">
+      <view class="shangpin"  >
+        <view class="view_main p-lr-20 p-tb-20">
+          <view class="title_view">
+              <text class="f30">商品销售排行榜</text>
+              <text class="f26">更多 >></text>
+          </view>
+            <canvas canvas-id="canvasPiegoods" id="canvasPiegoods" class="charts"></canvas>
+        </view>
+        <view class="view_main p-lr-20 p-tb-20">
+          <view class="title_view">
+              <text class="f30">SKU销售排行榜</text>
+              <text class="f26">更多 >></text>
+          </view>
+          <canvas canvas-id="canvasColumn" id="canvasColumn" class="chartss"></canvas>
+        </view>
+      </view>
   </view>
 </template>
 <script>
-import uCharts from '../../components/ucharts/u-charts.min.js'
+import uCharts from './ucharts/u-charts.min.js'
 var _self
 var canvaPie = null
+// eslint-disable-next-line no-unused-vars
 var canvaColumn = null
 export default {
-  mounted () {
-    const option = {
-      url: '5e424f7f8c0c0?page=1&limit=20',
-      accesstoken: 'HPkSFqbVhWpCRxVRpOTkyEubusFxBEEd'
-    }
-    // uni.request({
-    //   url: 'http://api.app-store.dev.yeleonline.com/api/5e424cc4ded0a',
-    //   header: {
-    //     'access-token': 'HPkSFqbVhWpCRxVRpOTkyEubusFxBEEd' // 自定义请求头信息
-    //   },
-    //   success: (res) => {
-    //     console.log(res)
-    //   }
-    // })
-    // 连接
-    uni.connectSocket({
-      url: option.url
-    })
-    // 打开
-    uni.onSocketOpen((res) => {
-      console.log('WebSocket 已开启！')
-
-      this.socketOpen = true
-
-      this.sendSocketMessage()
-
-      // console.log(this.socketMsgQueue)
-      this.socketMsgQueue = []
-      uni.closeSocket()
-    })
-    // 连接失败
-    uni.onSocketError((res) => {
-      console.log('WebSocket连接打开失败，请检查！')
-    })
-    // 接收服务端信息
-    uni.onSocketMessage((res) => {
-      console.log('收到服务器内容：' + res.data)
-    })
-    // 监听socket关闭
-    uni.onSocketClose((res) => {
-      console.log('WebSocket 已关闭！')
-    })
-    _self = this
-    this.cWidth = uni.upx2px(700)
-    this.cHeight = uni.upx2px(450)
-    _self.$nextTick(() => {
-      // 初始化图表
-      _self.getServerData()
-    })
-  },
   data () {
     return {
-      currentTab: 0,
       category: '',
       // 商品统计
       chartData1: {
@@ -91,7 +56,6 @@ export default {
       cHeight: '',
       pixelRatio: 1,
       serverData: ''
-
     }
   },
   methods: {
@@ -196,17 +160,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-// .main{
-//   display: flex;
-//   .left-view{
-//     width: 200rpx;
-//   }
-//   .right-view{
-//     flex: 1;
-//     background: #f00;
-//   }
-// }
-// 商品统计
 .shangpin{
   margin-top: 80rpx;
   .view_main{

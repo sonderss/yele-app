@@ -25,6 +25,18 @@
       }
     },
     {
+      "path":"pages/product-sales/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"单品销售排行",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
       "path":"pages/order-detail/index",
       "style": {
         "app-plus":{
