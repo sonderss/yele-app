@@ -28,7 +28,8 @@ export default {
   data () {
     return {
       search: '',
-      list: []
+      list: [],
+      clentInfo: {}
     }
   },
   mounted () {
@@ -38,12 +39,17 @@ export default {
         this.list = res
         console.log(this.list)
       })
+    this.clentInfo = {
+      name: this.$parseURL().name,
+      phone: this.$parseURL().phone
+    }
   },
   methods: {
+
     toGetWine (index) {
       this.$minRouter.push({
         name: 'liquor-code',
-        params: { client_name: this.list[index].client_name, client_mobile: this.list[index].client_mobile, id: this.list[index].id, opening_id: this.list[index].opening_id }
+        params: { info: this.clentInfo, client_name: this.list[index].client_name, client_mobile: this.list[index].client_mobile, id: this.list[index].id, opening_id: this.list[index].opening_id }
       })
     }
   }

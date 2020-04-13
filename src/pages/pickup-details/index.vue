@@ -5,34 +5,34 @@
         <view>取酒客户信息</view>
       </view>
       <view class="main p-tb-30">
-        <view class="item">客户姓名：刘小青</view>
-        <view class="item">联系电话：135 5352 0135</view>
-        <view class="item">取酒台号：<text class="item spectio">K112</text></view>
-        <view class="item">取酒单号：201910102356</view>
-        <view class="item">取酒人员：刘清清</view>
-        <view class="item">取酒时间：2019年10月10日  23:56:00</view>
-        <view class="item">确认人员：刘小清</view>
-        <view class="item">确认时间：2019年10月10日  23:56:00</view>
+        <view class="item">客户姓名：{{list.fetch_info.client_name}}</view>
+        <view class="item">联系电话：{{list.fetch_info.client_mobile}}</view>
+        <view class="item">取酒台号：<text class="item spectio">{{list.fetch_info.desk_name}}</text></view>
+        <view class="item">取酒单号：{{list.fetch_info.fetch_sn}}</view>
+        <view class="item">取酒人员：{{list.fetch_info.fetch_name}}</view>
+        <view class="item">取酒时间：{{$minCommon.formatDate(new Date(list.fetch_info.create_time*1000),'yyyy-MM-dd hh:mm:ss')}}</view>
+        <view class="item">确认人员：{{list.fetch_info.confirm_name}}</view>
+        <view class="item">确认时间：{{list.fetch_info.confirm_time != 0 ? $minCommon.formatDate(new Date(list.fetch_info.confirm_time*1000),'yyyy-MM-dd hh:mm:ss'):'0'}}</view>
       </view>
     </view>
     <view class="goods-wrap m-top-20 p-lr-20">
-      <view class="p-tb-30 min-border-bottom">存酒信息</view>
+      <view class="p-tb-30 min-border-bottom">取酒信息</view>
       <view class="goods-list p-t-10 p-bottom-20">
-        <view class="p-top-20" v-for="index in 3" :key="index">
+        <view class="p-top-20" v-for="(item,index) in list.fetch_product_info" :key="index">
           <view style="background: #fff;">
             <view class="goods-item">
-              <image class="goods-icon" src="/static/images/goods.png"/>
+              <image class="goods-icon" :src="item.sku_img"/>
               <view class="goods-content">
-                <view class="goods-name">2020年元旦百威兄弟套餐12瓶2020</view>
+                <view class="goods-name">{{item.sku_full_name}}</view>
                 <view class="count-weap">
-                  <view class="slider">
+                  <!-- <view class="slider">
                     <min-slider v-model="count" max="100"/>
                   </view>
                   <view class="stepper">
                     <min-stepper :isAnimation="false" v-model="count" max="100" unit="%"/>
-                  </view>
+                  </view> -->
                 </view>
-                <view class="goods-price">剩余50%</view>
+                <view class="goods-price">剩余{{item.retention_ratio}}%</view>
               </view>
             </view>
           </view>
@@ -42,29 +42,38 @@
     <view class="card p-lr-20 m-top-20">
       <view class="top p-tb-30 min-border-bottom">存酒信息</view>
       <view class="main p-tb-30">
-        <view class="item">客户姓名：令狐冲</view>
-        <view class="item">联系电话：15833331111</view>
-        <view class="item">存酒单号：2019324646574</view>
-        <view class="item">存酒人员：刘大芒</view>
-        <view class="item">存酒台号：K1112</view>
-        <view class="item">确认人员：刘大芒</view>
-        <view class="item">存酒时间：2019-12-19  17:00:00</view>
-        <view class="item">生效时间：2019-12-20  17:00:00</view>
-        <view class="item">到期时间：2019-12-20  17:00:00</view>
+        <view class="item">客户姓名：{{list.deposit_info.client_name}}</view>
+        <view class="item">联系电话：{{list.deposit_info.client_mobile}}</view>
+        <view class="item">存酒单号：{{list.deposit_info.deposit_sn}}</view>
+        <view class="item">存酒人员：{{list.deposit_info.deposit_name}}</view>
+        <view class="item">存酒台号：{{list.deposit_info.desk_name}}</view>
+        <view class="item">确认人员：{{list.deposit_info.confirm_name}}</view>
+        <view class="item">存酒时间：{{list.deposit_info.create_time}}</view>
+        <view class="item">生效时间：{{list.deposit_info.confirm_time}}</view>
+        <view class="item">到期时间：{{list.deposit_info.expires_time}}</view>
 
       </view>
     </view>
-    <view class="btn-wrap">
+    <!-- <view class="btn-wrap">
       <min-btn shape="flat" :opacity="false">取酒</min-btn>
-    </view>
+    </view> -->
   </view>
 </template>
 
 <script>
 export default {
+  name: 'pickup-details',
+  navigate: ['navigateTo'],
+  onLoad () {
+    this.$minApi.getWineDetail({ id: this.$parseURL().id }).then(res => {
+      this.list = res
+      console.log(this.list)
+    })
+  },
   data () {
     return {
-      count: 0
+      count: 0,
+      list: { fetch_info: { client_name: '' }, deposit_info: { client_name: '' } }
     }
   }
 }

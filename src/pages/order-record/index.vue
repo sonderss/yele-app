@@ -3,17 +3,17 @@
       <view class="main" v-for="(item,index) in list" :key="index" @click="goDetail(index)">
           <view class="top-view min-flex">
             <view class="left-view min-flex min-flex-main-start">
-               <text class="f30 ordern">{{item.oddnum}}</text>
+               <text class="f30 ordern">{{item.desk_name}}</text>
             </view>
-            <text class="right-txt f28" :class="(item.status.num === 1 ||item.status.num === 2 || item.status.num === 6 ) ? 'red' : (item.status.num === 3 || item.status.num ===  4) ? 'green': 'blue' ">{{item.status.desc}}</text>
+            <text class="right-txt f28" :class="status[item.order_status].class">{{status[item.order_status].desc}}</text>
           </view>
-          <view v-if="!item.isSetMeal">
+          <!-- <view v-if="!item.isSetMeal">
             <view class="mid-view min-border-top ">
                 <view class="left-view">
                   <view class="left-photo" v-for="(i,n) in item.pic" :key="n">
                     <image :src="i.img" />
                   </view>
-                  <!-- 当图片不超过1张时 -->
+
                   <view class="mid-desc">
                       <text class="f28 fcolor title">{{item.title}}</text>
                       <text class="tcolor f22 desc">{{item.desc}}</text>
@@ -24,45 +24,71 @@
                   <text class="tcolor f22 m-top-20">x {{item.num}}</text>
                 </view>
             </view>
-          </view>
-          <view v-if="item.isSetMeal">
-            <view class="mid-view min-border-top ">
-                <view class="left-view">
-                  <view class="left-photo m-right-20" v-for="(i,n) in item.pic" :key="n">
-                    <image :src="i.img" />
+          </view> -->
+          <view >
+            <view class="mid-view min-border-top "  >
+                <view class="left-view" >
+                  <view class="left-photo m-right-20" v-for="(i,n) in item.product" :key="n">
+                    <image :src="i.product_img.length>10? i.product_img :'/static/images/goods.png'" />
                   </view>
                 </view>
-                <view class="right-price">
-                  <text class="fcolor f28">￥ {{item.price}}</text>
+                 <!-- 当图片不超过1张时 -->
+                <view class="mid-desc" v-if="item.product.length ===1">
+                      <text class="f28 fcolor title">{{item.product_name}}</text>
+                      <text class="tcolor f22 desc">{{item.sku_full_name}}</text>
+                </view>
+                <view class="right-price" v-if="item.product.length ===1">
+                  <text class="fcolor f28 testF">￥ {{item.order_price}}</text>
+                  <text class="tcolor f22 m-top-20">x {{item.product[0].quantity}}</text>
+                </view>
+                <view class="right-price" v-if="item.product.length > 1">
+                  <text class="fcolor f28">￥ {{item.order_price}}</text>
                     <text class="allin f22 tcolor">查看全部 >></text>
                 </view>
             </view>
-            <text class="f20 origin sign" v-if="item.sign">{{item.sign}}</text>
+            <!-- <text class="f20 origin sign" >{{item.sign}}</text> -->
 
           </view>
            <view class="bottom-view min-border-top">
-              <text class="f24 tcolor">{{item.timer}}</text>
-              <text class="f28 fcolor">{{item.result}}</text>
+              <text class="f24 tcolor">{{$minCommon.formatDate(new Date(item.create_time*1000),'yyyy-MM-dd hh:mm:ss')}}</text>
+              <text class="f28 fcolor">{{item.pay_type === 0 ? '先付款' : '后付款'}}*{{item.pay_status === 0 ? '未支付':'已支付'}}</text>
           </view>
       </view>
   </view>
 </template>
 <script>
 // 1 待支付 2 待补差价 6 出品中（#FF0000）  ||  3 待确认  4  待出品 （#39BA01）  ||  7 已完成  5  已出品 （#0090FF）
+// 订单状态（0：待付款，1：待确认，2：待出品，3：出品中，4：已出品，5：已完成，-1：待补差价，-2：已取消，-3：已退单，-4：改价作废，-5：换货作废，-6：退货作废）
+const status = [
+  { desc: '待付款', class: 'red' },
+  { desc: '待确认', class: 'green' },
+  { desc: '待出品', class: 'origin' },
+  { desc: '出品中', class: 'blue' },
+  { desc: '已出品', class: 'blue' },
+  { desc: '已完成', class: 'green' },
+  { desc: '待补差价', class: 'red' },
+  { desc: '已取消', class: 'tcolor' },
+  { desc: '已退单', class: 'red' },
+  { desc: '改价作废', class: 'fcolor' },
+  { desc: '换货作废', class: 'tcolor' },
+  { desc: '退货作废', class: 'fcolor' }
+
+]
 export default {
   name: 'order-record',
   navigate: ['navigateTo'],
   data () {
     return {
+      status,
       isSetMeal: false,
-      list: [{
-        platform: true, isSetMeal: true, oddnum: 'K1125', status: { num: 2, desc: '已下单' }, pic: [{ img: '/static/images/goods.png' }, { img: '/static/images/goods.png' }], price: '666.00', timer: '2019-12-10  12:35:65', result: '未付清'
-      }, {
-        platform: false, isSetMeal: false, oddnum: 'K1125', status: { num: 3, desc: '待确认' }, pic: [{ img: '/static/images/goods.png' }], price: '666.00', timer: '2019-12-10  12:35:65', num: 5, title: '2020年元旦跨年夜百威兄弟 终极套餐12瓶', desc: 'VSOP*750ml*2010年*/瓶VSOP*750ml*2010年*/瓶', result: '未付清'
-      }, {
-        platform: true, isSetMeal: true, oddnum: 'K1125', status: { num: 5, desc: '已出品' }, pic: [{ img: '/static/images/goods.png' }, { img: '/static/images/goods.png' }, { img: '/static/images/goods.png' }], price: '666.00', timer: '2019-12-10  12:35:65', num: 5, title: '2020年元旦跨年夜百威兄弟 终极套餐12瓶', desc: 'VSOP*750ml*2010年*/瓶', result: '已付清'
-      }]
+      list: []
     }
+  },
+  mounted () {
+    this.$minApi.getOrderList().then(res => {
+      this.list = res.list
+      console.log(this.list)
+    })
   },
   methods: {
     goDetail (index) {

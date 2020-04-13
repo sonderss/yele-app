@@ -46,12 +46,19 @@ export default {
   },
   onLoad () {
     console.log(this.$parseURL())
+    // 这里是开台时的客户信息
+    this.list.content = [{ name: '客户姓名', value: this.$parseURL().info.name }, { name: '联系电话', value: this.$parseURL().info.phone }]
   },
   methods: {
     sendCode () {
       if (this.flag) {
         this.num = 8
       }
+      // this.$minApi.getVerificationCode({
+      //   mobile: this.$parseURL().client_mobile
+      // }).then(res => {
+
+      // })
       uni.showToast({
         icon: 'none',
         title: '验证码已发送',

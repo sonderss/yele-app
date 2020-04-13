@@ -68,6 +68,14 @@ export default {
   getWinePost: data => minRequest.post('/5e86e83e75b5d', data),
   // 获取套餐详情 5e8ee33b60dcb?setmeal_id=5
   getPackageDetails: data => minRequest.get('/5e8ee33b60dcb', data),
+  // 取酒记录
+  getWindeList: () => minRequest.get('/5e86f19546fa3'),
+  // 取酒记录详情
+  getWineDetail: (data) => minRequest.get('/5e86ff46c9c1d', data),
+  //  下单记录
+  getOrderList: () => minRequest.get('/5e87093063fea'),
+  // 获取下单商品列表
+  getOrderProduceList: () => minRequest.get('/5e842f516f7ac'),
   /**
    * @description post请求
    */

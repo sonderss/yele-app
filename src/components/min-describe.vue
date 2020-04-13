@@ -10,7 +10,7 @@
       </view>
     </view>
     <view class="right-view" @click="chinceSku">
-        <min-stepper v-if="step"  v-model="count"  :min='0' icon='/static/images/yellow-add.png'></min-stepper>
+        <min-stepper v-if="step"  v-model="count" @change="emitEvent" :min='0' icon='/static/images/yellow-add.png'></min-stepper>
         <text v-if="num">x {{num}}</text>
         <view v-if="sku" class="right-icon f30">{{sku}}<image src='../../static/images/right-black.png' /></view>
         <view class="txt-view1" v-if="leftTxtTwo">
@@ -72,6 +72,9 @@ export default {
   methods: {
     chinceSku () {
       this.$emit('chincesku')
+    },
+    emitEvent (n) {
+      this.$emit('changeCount', n)
     }
   }
 }

@@ -4,7 +4,7 @@
       <view class="top" @click="showPop">
         <text>{{startTime1}}</text>
         <text class="iconfont">&#xe6b2;</text>
-        <text class="iconfont">&#xe622;</text>
+        <text class="iconfont">&#xe68c;</text>
         <text>{{endTime1}}</text>
         <text class="iconfont">&#xe6b2;</text>
       </view>
@@ -18,7 +18,7 @@
         v-for="index in 5"
         :key="index"
         class="cell-item min-flex min-flex-main-between p-tb-30 p-lr-20 min-border-bottom"
-        @click.stop="toDeatil(index)"
+        @click="toDeatil"
       >
         <view class="min-flex">
           <view class style="width:300rpx">
@@ -191,14 +191,10 @@ export default {
     cancel () {
       this.show = false
     },
-    toDeatil (index) {
-      // this.$minRouter.push({
-      //   name: 'commission-deils',
-      //   type: 'navigateTo',
-      //   params: {}
-      // })
-      uni.navigateTo({
-        url: '../commission-deils/index'
+    toDeatil () {
+      this.$minRouter.push({
+        name: 'commission-deils',
+        params: {}
       })
     },
     closedrawer () {

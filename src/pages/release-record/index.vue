@@ -10,7 +10,7 @@
         v-for="index in 2"
         :key="index"
         class="cell-item min-flex min-flex-main-between p-tb-30 p-lr-20 min-border-bottom"
-        @click="toDeatil(index)"
+        @click="toDeatil"
       >
         <view class="min-flex">
           <view class style="width:300rpx">

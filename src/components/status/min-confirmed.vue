@@ -50,7 +50,7 @@
 
      <view class="btns">
       <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book">预约</view>
-      <view :class="index === 1 ? 'btn active' : 'btn' " >下单</view>
+      <view :class="index === 1 ? 'btn active' : 'btn' " @click="goOrder">下单</view>
       <view  :class="index === 2 ? 'btn active' : 'btn' ">存酒</view>
       <view class="badge" @click="showToastTxt">
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
@@ -106,6 +106,12 @@ export default {
               })
           }
         }
+      })
+    },
+    // 下单
+    goOrder () {
+      this.$minRouter.push({
+        name: 'order-entry'
       })
     },
     // 预约

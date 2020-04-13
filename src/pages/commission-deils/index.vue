@@ -42,24 +42,8 @@
           <text class="f28">订单号</text>
           <text class="f26">3546841324641345654</text>
       </view>
-      <view class="table">
-         <t-table border="2" border-color="#E7E7E7" >
-                <t-tr font-size="12"  align="center">
-
-                    <view style=" width:260rpx;"><t-th align="center" >商品</t-th></view>
-                    <t-th align="center">数量</t-th>
-                    <t-th align="center">金额</t-th>
-                    <t-th align="center">提成</t-th>
-                    <t-th align="center">提成比例</t-th>
-                </t-tr>
-                <t-tr font-size="12" color="#5d6f61" align="right"  v-for="item in tableList" :key="item.id">
-                     <view style=" width:260rpx;"><t-td align="center" >{{item.name}}</t-td></view>
-                    <t-td align="center">{{ item.num }}</t-td>
-                    <t-td align="center">{{ item.money }}</t-td>
-                    <t-td align="center">{{ item.bil }}</t-td>
-                    <t-td align="center">{{ item.tichneg }}</t-td>
-                </t-tr>
-            </t-table>
+      <view class="table_view">
+        <min-table></min-table>
       </view>
     </view>
 
@@ -170,10 +154,12 @@ export default {
     }
   }
 }
-.table{
+.table_view{
   width: 100%;
   margin: 20rpx 0;
   background: #fff;
+  height: auto;
+  display: block;
 }
 
 </style>

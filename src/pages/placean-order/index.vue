@@ -21,8 +21,8 @@
             :image='item2.product_img'
             :discount='true'
             :title="item2.product_name"
-            :badgeTxt="item2.type === 'combo' ? '套餐': '' "
-            :badge="item2.type === 'combo'? true : false "
+            :badgeTxt="item2.type === 'setmeal' ? '套餐': '' "
+            :badge="item2.type === 'setmeal'? true : false "
             @changes='changeChioce(index,index2)'
             v-model="item2.step"
             :desc="item2.sku.length >=1 ?item2.sku[0].sku_full_name : '暂无商品描述' "
@@ -33,6 +33,7 @@
       <view style="height:120rpx;"></view>
     </scroll-view>
   </view>
+  <!-- 底部按钮 -->
   <view class="bottom-view">
     <min-goods-submit leftText="已选"
       @leftClick='selectedEvent'
@@ -195,9 +196,9 @@ export default {
     }
   },
   methods: {
-    /* 获取列表数据 */
+    /* 获取列表数据 getProductList */
     getListData () {
-      this.$minApi.getProductList()
+      this.$minApi.getOrderProduceList()
         .then(res => {
           this.mainArray = res.list
           for (const val of this.mainArray) {
@@ -328,7 +329,22 @@ export default {
       console.log('商品规格弹窗', this.skuObj)
     },
     changeChioce (index, index2) {
-      // console.log(index, index2)
+      // 服务商品
+      if (this.mainArray[index].product[index2].type === 'service') {
+        // 直接放入已选商品
+        return
+      }
+      // 套餐
+      if (this.mainArray[index].product[index2].type === 'setmeal') {
+        // 进入套餐详情页
+        // 进入商品套餐详情
+        const type = 6
+        this.$minRouter.push({
+          name: 'package-details',
+          params: { type, setmeal_id: this.mainArray[index].product[index2].id }
+        })
+        return
+      }
       if (this.mainArray[index].product[index2].sku.length > 1) {
         this.selSku(index, index2)
         return
@@ -340,13 +356,6 @@ export default {
         obj.sku = this.mainArray[index].product[index2].sku[0]
       }
       this.addGoods(obj)
-      return
-      // eslint-disable-next-line no-unreachable
-      if (this.mainArray[index].product[index2].sku.length === 0) {
-        // 说明是服务  暂时没有数据
-        console.log('服务商品')
-      }
-      console.log(this.selArr)
     },
     // 选择规格
     chioceO (index) {
@@ -377,12 +386,12 @@ export default {
     // 商品详情
     goDetails (index, index2) {
       let type
-      if (this.mainArray[index].product[index2].type === 'combo') {
+      if (this.mainArray[index].product[index2].type === 'setmeal') {
         // 进入商品套餐详情
         type = 6
         this.$minRouter.push({
-          name: 'packages-detail',
-          params: { type }
+          name: 'package-details',
+          params: { type, setmeal_id: this.mainArray[index].product[index2].id }
         })
         return
       }

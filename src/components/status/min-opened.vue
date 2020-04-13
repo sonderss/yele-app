@@ -46,13 +46,14 @@
     <view class="btns">
       <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book">预约</view>
       <view :class="index === 1 ? 'btn active' : 'btn' "  @click="changeOrder">转台</view>
-      <view  :class="index === 2 ? 'btn active' : 'btn' " >下单</view>
+      <view  :class="index === 2 ? 'btn active' : 'btn' " @click="goOrder" >下单</view>
       <view class="badge" @click="showToastTxt"  id='testDom'>
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
           <view class="toast anmatiin " v-if="toast">
               <view class="bag_btn" >存酒</view>
               <view class="bag_btn" @click="bill">账单</view>
               <view class="bag_btn" >订单</view>
+               <view class="bag_btn" @click="getWine">取酒</view>
               <view class="bag_btn" @click="clear_order">清台</view>
               <view class="bag_btn"  @click="goGetHistory">历史</view>
              <view class="bag"></view>
@@ -110,6 +111,20 @@ export default {
       // 这里需要传开台记录id 台位ID
       this.$minRouter.push({
         name: 'desk-bill'
+      })
+    },
+    // 取酒
+    getWine () {
+      // 这里将客户信息传过去,暂时写死
+      this.$minRouter.push({
+        name: 'fetch-liquor',
+        params: { name: '刘小青', phone: '15811112222' }
+      })
+    },
+    // 下单
+    goOrder () {
+      this.$minRouter.push({
+        name: 'order-entry'
       })
     },
     // 清台

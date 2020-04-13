@@ -26,7 +26,8 @@
 <script>
 
 export default {
-
+  name: 'order-entry',
+  navigate: ['navigateTo'],
   data () {
     return {
       list: [{

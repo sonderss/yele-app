@@ -224,7 +224,6 @@ export default {
       /* Promise 对象数组 */
       // eslint-disable-next-line camelcase
       const p_arr = []
-      console.log(123)
       /* 新建 Promise 方法 */
       // eslint-disable-next-line camelcase
       const new_p = (selector) => {
@@ -235,7 +234,6 @@ export default {
           }).exec()
         })
       }
-      console.log(new_p)
       /* 遍历数据，创建相应的 Promise 数组数据 */
       this.mainArray.forEach((item, index) => {
         p_arr.push(new_p(`#item-${index}`))
