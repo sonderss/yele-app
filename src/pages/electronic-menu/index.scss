@@ -75,7 +75,10 @@ uni-page-body {
         height: 96rpx;
         line-height: 96rpx;
         color: #666666;
-
+        width: 160rpx;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         &.active {
           color: #333333;
           background-color: #f7f7f7;

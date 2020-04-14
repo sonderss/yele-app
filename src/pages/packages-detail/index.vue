@@ -27,13 +27,13 @@
           <min-describe  :leftIconValue="list.setmeal_logo" :leftIcon='true' leftTxt='百威兄弟终极套餐12瓶' :num="list.setmeal_combination[0].last_number+''"></min-describe>
         </view>
     </view> -->
-    <view class="introduction " v-for="(item,index) in list.setmeal_combination" :key="index">
+    <view class="introduction " v-for="(item,index) in list.combination" :key="index">
       <view class="title min-border-bottom m-bottom-30 p-lr-20" v-if="item.necessary === 1">必选商品</view>
         <view class="content p-bottom-30" v-if="item.necessary === 1">
           <min-describe  :leftIconValue="list.setmeal_logo"
           :leftIcon='true'
           leftTxt='百威兄弟终极套餐12瓶测试'
-          :num="list.setmeal_combination[0].last_number+''"
+          :num="list.combination[0].last_number+''"
         ></min-describe>
       </view>
 
@@ -43,7 +43,7 @@
         </view>
         <view class="content p-bottom-30">
           <min-describe  class="i"
-           v-for="(item2,index2) in item.setmeal_combination_detail"
+           v-for="(item2,index2) in item.combination_detail"
           :key="index2"
           :leftIcon='true'
           @changeCount="changeCount($event,index,index2)"
@@ -81,7 +81,7 @@ export default {
       num1: 2,
       num_prducts: 0,
       type: Number,
-      list: { setmeal_combination: [{ last_number: '', setmeal_combination_detail: [] }] }
+      list: { combination: [{ last_number: '', combination_detail: [] }] }
     }
   },
   onLoad () {
@@ -92,8 +92,8 @@ export default {
   mounted () {
     this.$minApi.getOriderPackageDetails({ setmeal_id: this.$parseURL().setmeal_id })
       .then(res => {
-        res.info.setmeal_combination.map(item => {
-          item.setmeal_combination_detail.map(item2 => {
+        res.info.combination.map(item => {
+          item.combination_detail.map(item2 => {
             item2.step = 0
           })
         })
@@ -104,8 +104,8 @@ export default {
   computed: {
     getCount () {
       let cou = 0
-      this.list.setmeal_combination.map(item => {
-        item.setmeal_combination_detail.map(item2 => {
+      this.list.combination.map(item => {
+        item.combination_detail.map(item2 => {
           cou += item2.step
         })
       })
@@ -116,7 +116,7 @@ export default {
     changeCount (n, index, index2) {
       // this.num_prducts = n
       console.log(n, index, index2)
-      this.list.setmeal_combination[index].setmeal_combination_detail[index2].step = n
+      this.list.combination[index].combination_detail[index2].step = n
     }
   }
 

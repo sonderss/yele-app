@@ -209,6 +209,7 @@ export default {
       this.$minApi.getOrderProduceList()
         .then(res => {
           this.mainArray = res.list
+          console.log(this.mainArray)
           for (const val of this.mainArray) {
             val.step = 1
           }

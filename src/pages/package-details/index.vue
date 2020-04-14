@@ -24,7 +24,7 @@
         <min-stepper   @change='changeChioce'  v-model="count" v-if="type !== 3"></min-stepper>
       </view>
     </view>
-    <min-describe  @chincesku="toDeatil" :sku="list.setmeal_combination[0].combination_name" leftTxt="套餐组合"></min-describe>
+    <min-describe  @chincesku="toDeatil" :sku="list.combination[0].combination_name" leftTxt="套餐组合"></min-describe>
     <view class="introduction m-top-20 p-lr-20">
         <view class="title min-border-bottom m-bottom-30">详细介绍</view>
         <view class="content p-bottom-30">
@@ -108,7 +108,7 @@ export default {
       duration: 500,
       count: 0,
       type: Number,
-      list: { setmeal_combination: [{ combination_name: '' }] },
+      list: { combination: [{ combination_name: '' }] },
       selAll: [],
       selNum: [],
       selected: false

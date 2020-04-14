@@ -146,63 +146,10 @@ export default {
       this.$minApi.getProductList()
         .then(res => {
           this.mainArray = res.list
-          for (const val of this.mainArray) {
-            if (!val.product) {
-              val.product = [{
-                id: 14,
-                product_name: '98K',
-                product_img: 'xx',
-                info: 'xxx',
-                cate_id: 1,
-                type: 'combo',
-                sku: [{
-                  sku_id: 12,
-                  sku: '2000年,1L',
-                  sku_full_name: '克x-2000年,1L',
-                  price: '6.66'
-                }]
-              }, {
-                id: 14,
-                product_name: '98K',
-                product_img: 'xx',
-                info: 'xxx',
-                cate_id: 1,
-                type: 'product',
-                sku: [{
-                  sku_id: 12,
-                  sku: '2000年,1L',
-                  sku_full_name: '克x-2000年,1L',
-                  price: '6.66'
-                }]
-              }, {
-                id: 14,
-                product_name: '98K',
-                product_img: 'xx',
-                info: 'xxx',
-                cate_id: 1,
-                type: 'product',
-                sku: [{
-                  sku_id: 12,
-                  sku: '2000年,1L',
-                  sku_full_name: '克x-2000年,1L',
-                  price: '6.66'
-                }]
-              }, {
-                id: 14,
-                product_name: '98K',
-                product_img: 'xx',
-                info: 'xxx',
-                cate_id: 1,
-                type: 'product',
-                sku: [{
-                  sku_id: 12,
-                  sku: '2000年,1L',
-                  sku_full_name: '克x-2000年,1L',
-                  price: '6.66'
-                }]
-              }]
-            }
-          }
+          console.log(this.mainArray)
+          this.mainArray.map(item => {
+            item.cate_name = '测试文本巴巴变'
+          })
           this.$nextTick(() => {
             this.getElementTop()
           })

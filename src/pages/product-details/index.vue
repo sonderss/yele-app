@@ -82,7 +82,7 @@
             </view>
         </view>
         <!-- 数量 -->
-        <view class="sku-item sku-item-num" v-if="type !== 1 || type!==2">
+        <view class="sku-item sku-item-num" v-if="type !== 1 && type!==2">
             <view class="f26">数量</view>
             <view class="m-tb-30">
                 <min-stepper :isAnimation="false" :min='1' v-model="skuObj.step"></min-stepper>
