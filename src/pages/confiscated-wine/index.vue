@@ -1,6 +1,6 @@
 <template>
 <view class="list_box" >
-      <view class="left">
+      <view class="left" v-if="mainArray.length !== 0">
         <scroll-view scroll-y="true"  :style="{ 'height':scrollHeight }">
           <view class="item"
             v-for="(item,index) in mainArray"
@@ -40,7 +40,7 @@
       </scroll-view>
     </view>
 
-    <view class="bottom-view" >
+    <view class="bottom-view" v-if="mainArray.length !== 0">
       <min-goods-submit leftText="已选" @leftClick='selectedEvent'  @submit='submit' :totalAmount='totalAmountE' :goodsCount="countNums" buttonText='提交'></min-goods-submit>
     </view>
     <!-- 已选商品 -->
@@ -118,7 +118,10 @@
         <view class="btn-sku" @click="skuChioce">确定</view>
       </view>
     </min-popup>
-    <min-404  v-model="intNet" v-if="mainArray.length === 0" id='none'></min-404>
+    <view class="data_bull" v-if="mainArray.length === 0">
+      <min-404  v-model="intNet"  id='none'></min-404>
+    </view>
+
   </view>
 
 </template>

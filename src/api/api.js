@@ -76,6 +76,12 @@ export default {
   getOrderList: () => minRequest.get('/5e87093063fea'),
   // 获取下单商品列表
   getOrderProduceList: () => minRequest.get('/5e842f516f7ac'),
+  // 获取下单商品详情
+  getOriderProductDetail: data => minRequest.get('/5e85946842267', data),
+  // 获取下单套餐详情 5e8ee2eb1a402?setmeal_id=5
+  getOriderPackageDetails: data => minRequest.get('/5e8ee2eb1a402', data),
+  // 获取下单服务详情 5e8594a8c2717?service_id=1
+  getOriderServeDetail: data => minRequest.get('/5e8594a8c2717', data),
   /**
    * @description post请求
    */

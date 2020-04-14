@@ -1,22 +1,24 @@
 <template>
-<view class="list_box m-top-20">
-  <view class="left">
-    <view class="left_view">
-        <scroll-view scroll-y="true" :style="{ 'height':scrollHeight }">
-          <view class="item"
-            v-for="(item,index) in mainArray"
-            :key="index"
-            :class="{ 'active':index == leftIndex }"
-            :data-index="index"
-            @tap="leftTap"
-          >{{item.cate_name}}</view>
-        </scroll-view>
-    </view>
+<view class="list_box " style="overflow:auto;">
+
+  <view class="left" v-if="mainArray.length !== 0">
+      <view class="left_view">
+          <scroll-view scroll-y="true"  :style="{ 'height':scrollHeight }">
+            <view class="item"
+              v-for="(item,index) in mainArray"
+              :key="index"
+              :class="{ 'active':index==leftIndex }"
+              :data-index="index"
+              @tap="leftTap(index)"
+            >{{item.cate_name}}</view>
+          </scroll-view>
+      </view>
   </view>
+
   <view class="main">
-    <scroll-view  :scroll-y="true"  @scroll="mainScroll" :scroll-into-view="scrollInto" :scroll-with-animation="true">
-      <view v-for="(item,index) in mainArray" :key="index" :id="'item-'+index">
-        <view v-for="(item2,index2) in item.product" :key="index2" @click.stop="goDetails(index,index2)">
+    <scroll-view enable-back-to-top  :style="{ 'height':scrollHeight }" scroll-y  @scroll="mainScroll" :scroll-into-view="scrollInto" :scroll-with-animation="true">
+      <view v-for="(item,index) in mainArray"  :key="index" :id="`item-${index}`" >
+        <view  v-for="(item2,index2) in item.product"  :key="index2" @click.stop="goDetails(index,index2)">
           <min-goods-chioce
             :image='item2.product_img'
             :discount='true'
@@ -30,11 +32,12 @@
           </min-goods-chioce>
         </view>
       </view>
+
       <view style="height:120rpx;"></view>
     </scroll-view>
   </view>
   <!-- 底部按钮 -->
-  <view class="bottom-view">
+  <view class="bottom-view" v-if="mainArray.length !== 0">
     <min-goods-submit leftText="已选"
       @leftClick='selectedEvent'
       :totalAmount='totalAmountE'
@@ -130,6 +133,9 @@
         <view class="btn-sku" @click="skuChioce">确定</view>
       </view>
     </min-popup>
+    <view class="data_bull" v-if="mainArray.length === 0">
+       <min-404  id='none'></min-404>
+    </view>
 </view>
 </template>
 
@@ -166,7 +172,9 @@ export default {
         this.scrollHeight = `${res.windowHeight}px`
       }
     })
-    this.getListData()
+    this.$nextTick(() => {
+      this.getListData()
+    })
   },
   computed: {
     // 合计金额
@@ -204,7 +212,6 @@ export default {
           for (const val of this.mainArray) {
             val.step = 1
           }
-          console.log(this.mainArray)
           this.$nextTick(() => {
             this.getElementTop()
           })
@@ -255,11 +262,11 @@ export default {
       this.leftIndex = (index < 0 ? 0 : index)
     },
     /* 左侧导航点击 */
-    leftTap (e) {
+    leftTap (index) {
       // console.log(e.currentTarget.dataset.index)
-      const index = e.currentTarget.dataset.index
+      // const index = e.currentTarget.dataset.index
       this.scrollInto = `item-${index}`
-      this.leftIndex = e.currentTarget.dataset.index
+      this.leftIndex = index
     },
 
     /** 点击商品事件(进入详情) */
@@ -411,70 +418,66 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-uni-page-body{overflow: hidden;height: 100%;}
+<style lang="scss" >
+
+uni-page-body{overflow: hidden;min-height: 100vh;width: 100%;}
 .list_box{
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: flex-start;
   align-content: flex-start;
   font-size: 28rpx;
-  .left{
-    width: 160rpx;
-    background-color: #fff;
-    line-height: 80rpx;
-    box-sizing: border-box;
-    font-size: 32rpx;
-
-    overflow: hidden;
-   .left_view{
-     overflow: auto;
-     width: 100%;
-     height: 100%;
-    //  padding-top: 60rpx;
-   }
-.item{
-  position: relative;
-  text-align: center;
-  height: 96rpx;
-  line-height: 96rpx;
-  color: #666666;
-  &:not(:first-child) {
-    margin-top: 1px;
-    &::after {
-      content: '';
-      display: block;
-      height: 0;
-      width: 620upx;
-      position: absolute;
-      top: -1px;
-      right: 0;
-      transform:scaleY(0.5);/* 1px像素 */
+  overflow: auto;
+  .left {
+      width: 160rpx;
+      background-color: #fff;
+      font-size: 32rpx;
+      position: fixed;
+      left: 0;
+      top: 0;
+      overflow: hidden;
+    .left_view{
+      overflow: auto;
+      width: 100%;
+      height: auto;
     }
-  }
-  &.active{
-    color: #333333;
-    background-color: #F7F7F7;
-    font-weight:bold;
-    // border-left: 6rpx solid #030313
-  }
-  // &.active::after{
-  //   display: block;
-  //   width: 6rpx;
-  //   height: 20rpx;
-  //   background: #000
-  // }
-}
-}
-.main{
-padding-left: 20rpx;
+      .item {
+        position: relative;
+        text-align: center;
+        height: 96rpx;
+        line-height: 96rpx;
+        color: #666666;
 
-flex-grow: 1;
-box-sizing: border-box;
-margin-right: 30rpx;
-margin-bottom: 100rpx;
+        &.active {
+          color: #333333;
+          background-color: #f7f7f7;
+          font-weight: bold;
+
+          &::after {
+            content: '';
+            width: 6rpx;
+            height: 50rpx;
+            background: #030313;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+          }
+        }
+      }
+  }
+.main{
+
+    padding-left: 20rpx;
+    flex-grow: 1;
+
+    position: fixed;
+    left: 165rpx;
+    top: 0;
+    bottom: 50rpx;
+    overflow: auto;
 
 .title{
   line-height: 64rpx;
@@ -485,68 +488,6 @@ margin-bottom: 100rpx;
   position: sticky;
   top: 0;
   z-index: 19;
-}
-.isSku{
-  width: 100rpx;
-  height: 48rpx;
-  background: #FFE001;
-  border-radius:24rpx;
-  color: #333333;
-  text-align: center;
-  line-height: 48rpx;
-}
-.item{
-  width: 540rpx;
-  margin-bottom: 20rpx;
-}
-
-.goods{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  align-content: center;
-  margin-bottom: 20rpx;
-  background: #fff;
-  height: 200rpx;
-  width: 540rpx;
-  padding: 20rpx;
-  &>image{
-    width: 160rpx;
-    height: 160rpx;
-    margin-right: 16rpx;
-  }
-  .content-view{
-    flex: 1;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: space-between;
-    color: #333333;
-    .right-view-title{
-      .t{
-        width: 100%
-      }
-    }
-    .right-view-bottom{
-        height: 48rpx;
-        display: flex;
-        // position: relative;
-        justify-content: space-between;
-        .right-view-bottom-desc{
-          display: flex
-        }
-        .steper{
-          // position: absolute;
-          // right:0;
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-        }
-    }
-  }
 }
 }
 // 已选商品的弹出层
@@ -730,6 +671,16 @@ margin-bottom: 100rpx;
   line-height: 98rpx;
   font-size: 32rpx;
   color: #333;
+}
+.data_bull{
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  top: 0;
+  left: 0;
 }
 }
 

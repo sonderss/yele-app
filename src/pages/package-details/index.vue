@@ -120,7 +120,7 @@ export default {
     this.selArr = this.$store.state.goods.selected_products
   },
   mounted () {
-    this.$minApi.getPackageDetails({ setmeal_id: this.$parseURL().setmeal_id })
+    this.$minApi.getOriderPackageDetails({ setmeal_id: this.$parseURL().setmeal_id })
       .then(res => {
         this.list = res.info
         console.log(this.list)

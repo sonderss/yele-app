@@ -96,6 +96,6 @@ export default {
   }
 }
 </script>
-<style lang="scsss" scoped>
+<style lang="scss" scoped>
 
 </style>

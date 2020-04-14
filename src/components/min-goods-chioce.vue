@@ -1,6 +1,6 @@
 <template>
   <view class="min-goods-chioce">
-      <view class="item">
+    <view class="item">
         <view class="goods"  >
           <!-- @click="goodsAdd(index,index2)" -->
           <view class="image-view-com">
@@ -23,7 +23,7 @@
             </view>
           </view>
         </view>
-      </view>
+    </view>
   </view>
 </template>
 <script>
@@ -99,20 +99,12 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
-// .isSku{
-//   width: 100rpx;
-//   height: 48rpx;
-//   background: #FFE001;
-//   border-radius:24rpx;
-//   color: #333333;
-//   text-align: center;
-//   line-height: 48rpx;
+.min-goods-chioce{
+// .item{
+//   width: 100%;
+//   margin-bottom: 20rpx;
+//   background: red;
 // }
-.item{
-  width: 100%;
-  margin-bottom: 20rpx;
-}
 
 .goods{
   display: flex;
@@ -124,13 +116,13 @@ export default {
   margin-bottom: 20rpx;
   background: #fff;
   height: 200rpx;
-
   padding: 20rpx;
+   position: relative;
   .image-view-com{
       width: 160rpx;
       height: 160rpx;
       margin-right: 16rpx;
-      position: relative;
+
       .badge{
         width:80rpx;
         height:40rpx;
@@ -197,4 +189,6 @@ export default {
     }
   }
 }
+}
+
 </style>

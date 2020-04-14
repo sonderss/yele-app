@@ -90,7 +90,7 @@ export default {
     this.type = this.$parseURL().type
   },
   mounted () {
-    this.$minApi.getPackageDetails({ setmeal_id: this.$parseURL().setmeal_id })
+    this.$minApi.getOriderPackageDetails({ setmeal_id: this.$parseURL().setmeal_id })
       .then(res => {
         res.info.setmeal_combination.map(item => {
           item.setmeal_combination_detail.map(item2 => {

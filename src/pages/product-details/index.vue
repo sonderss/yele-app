@@ -38,7 +38,7 @@
         <view class="f22">
           <text class="price">￥{{list.service_price}}</text>
         </view>
-        <min-stepper v-if=" type === 5"  v-model="count" ></min-stepper>
+        <min-stepper v-if=" type === 5" @change="goodsChange" v-model="count" ></min-stepper>
       </view>
     </view>
      <min-describe @chincesku="selSku" sku="750ml*2010年/瓶" leftTxt="规格" v-if="type===4"></min-describe>
@@ -202,6 +202,7 @@ export default {
     // type为1时  电子菜单商品详情
     this.product_id = this.$parseURL().product_id
     this.type = this.$parseURL().type
+    console.log('type', this.type)
     this.product_type = this.$parseURL().product_type
     if (this.$store.state.goods.selected_products.length > 0) {
       this.selArr = this.$store.state.goods.selected_products
@@ -212,7 +213,7 @@ export default {
   },
   mounted () {
     if (this.product_type === 'product') {
-      this.$minApi.getProductDetail({ product_id: this.product_id })
+      this.$minApi.getOriderProductDetail({ product_id: this.product_id })
         .then(res => {
           this.list = res.info
           this.list.step = 1
@@ -224,7 +225,7 @@ export default {
           this.noData = true
         })
     } else if (this.product_type === 'service') {
-      this.$minApi.getServeDetail({ service_id: this.product_id })
+      this.$minApi.getOriderServeDetail({ service_id: this.product_id })
         .then(res => {
           this.list = res.info
           this.list.step = 1

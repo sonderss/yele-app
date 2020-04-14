@@ -4,19 +4,19 @@
     <view class="top-view">
        <text  :class="menuIndex === index ? 'active' : 'm' " v-for="(item,index) in title" :key="index" @click="changeMenu(index)">{{item}}</text>
     </view>
-      <view class="left">
-        <view class="left_view">
-            <scroll-view scroll-y="true"  :style="{ 'height':scrollHeight }">
-              <view class="item"
-                v-for="(item,index) in mainArray"
-                :key="index"
-                :class="{ 'active':index==leftIndex }"
-                :data-index="index"
-                @tap="leftTap(index)"
-              >{{item.cate_name}}</view>
-            </scroll-view>
-        </view>
+    <view class="left" v-if="mainArray.length !== 0">
+      <view class="left_view">
+          <scroll-view scroll-y="true"  :style="{ 'height':scrollHeight }">
+            <view class="item"
+              v-for="(item,index) in mainArray"
+              :key="index"
+              :class="{ 'active':index==leftIndex }"
+              :data-index="index"
+              @tap="leftTap(index)"
+            >{{item.cate_name}}</view>
+          </scroll-view>
       </view>
+    </view>
 
     <view class="main">
       <scroll-view  scroll-y="true" :style="{ 'height':scrollHeight }" @scroll="mainScroll" @scrolltolower='test' :scroll-into-view="scrollInto" scroll-with-animation="true">
@@ -73,8 +73,9 @@
         <view class="btn-sku" @click="skuChioce">确定</view>
       </view>
     </min-popup>
-    <min-404  v-model="intNet" v-if="mainArray.length === 0" id='none'></min-404>
-
+      <view class="data_bull" v-if="mainArray.length === 0">
+         <min-404  class="data_bull" v-model="intNet"  id='none'></min-404>
+      </view>
 </view>
 </template>
 
