@@ -54,8 +54,9 @@
       </min-cell>
     </view>
     <view class="m-top-30 p-lr-30">
-      <min-btn type="white">退出登录</min-btn>
+      <min-btn type="white" @click="quit">退出登录</min-btn>
     </view>
+    <min-modal ref="show"></min-modal>
   </view>
 </template>
 
@@ -109,13 +110,30 @@ export default {
       this.$minRouter.push({
         name: 'drawing-way'
       })
+    },
+    quit () {
+      this.$refs.show.handleShow({
+        title: '确认退出？',
+        success: function (res) {
+          if (res.id === 1) {
+            uni.removeStorage({
+              key: 'minvuexcache',
+              success: function (res) {
+                console.log('success')
+              }
+            })
+            this.$minRouter.push({
+              name: 'login',
+              type: 'reLaunch'
+            })
+          }
+        }
+      })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.mine-info{
 
-}
 </style>

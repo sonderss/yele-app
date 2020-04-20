@@ -831,7 +831,8 @@
             "buttons":[
               {
                 "text": "申请记录",
-                "fontSize":"28rpx"
+                "fontSize":"28rpx",
+                "width":"auto"
             }
             ]
           }

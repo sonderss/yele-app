@@ -1,7 +1,8 @@
 <template>
   <view class="select-customers  p-tb-20 p-lr-30">
-    <view  v-for="(item,index) in list" :key="index" class="m-bottom-20">
-        <min-cell>
+    <view v-if="list.length >0">
+        <view  v-for="(item,index) in list" :key="index" class="m-bottom-20">
+        <min-cell >
           <view class="main min-flex min-flex-dir-top min-flex-align-top f28">
             <text class="m-top-20">客户姓名：{{item.client_name}}</text>
             <text>联系电话：{{item.client_mobile}}</text>
@@ -15,8 +16,10 @@
             </view>
           </view>
         </min-cell>
+      </view>
     </view>
 
+    <min-404 v-else></min-404>
   </view>
 </template>
 
@@ -37,9 +40,8 @@ export default {
   },
   mounted () {
     // 桌台ID暂时为15测试
-    this.$minApi.getOrderHistory({ desk_id: 15 })
+    this.$minApi.getOrderHistory({ desk_id: this.id })
       .then(res => {
-        console.log(res)
         this.list = res
       })
   },

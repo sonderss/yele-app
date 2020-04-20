@@ -47,8 +47,8 @@
           :key="index2"
           :leftIcon='true'
           @changeCount="changeCount($event,index,index2)"
-          :leftTxt='item2.comb_type === 1 ? item2.sku.sku_full_name : item2.service.service_name'
-          :leftIconValue='item2.comb_type === 1 ? item2.sku.sku_img : item2.service.main_img'
+          :leftTxt='item2.comb_type === 1 ? item2.product_name : item2.product_name'
+          :leftIconValue='item2.comb_type === 1 ? item2.product_img : item2.product_img'
           :step='type === 3 ? false: true'
           ></min-describe>
         </view>

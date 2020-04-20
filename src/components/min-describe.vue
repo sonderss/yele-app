@@ -2,7 +2,7 @@
 <view class="min-describe p-lr-20">
     <view class="left-view" @click="chinceSku">
       <view class="img-view" v-if="leftIcon">
-        <image :src="leftIconValue ? leftIconValue : '../../static/images/goods.png'" />
+        <image :src="imageErro ?  '../../static/images/goods.png' : leftIconValue " @error="imgerro"/>
       </view>
       <view :class=" leftTxtTwo ? 'txt-view': ''">
          <view class="left-txt" style="color:#333">{{leftTxt}}</view>
@@ -66,10 +66,16 @@ export default {
   },
   data () {
     return {
-      count: 0
+      count: 0,
+      imageErro: false
     }
   },
   methods: {
+    imgerro (e) {
+      if (e.type === 'error') {
+        this.imageErro = true
+      }
+    },
     chinceSku () {
       this.$emit('chincesku')
     },

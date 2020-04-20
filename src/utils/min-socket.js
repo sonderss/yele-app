@@ -11,7 +11,7 @@ class MinSocket {
     }
   }
 
-  createSocket() {
+  createSocket () {
     let obj = {}
     obj = this._config
     return new Promise((resolve, reject) => {
@@ -21,11 +21,11 @@ class MinSocket {
       obj.fail = (err) => {
         reject(err)
       }
-      uni.connectSocket({...obj})
+      uni.connectSocket({ ...obj })
     })
   }
 
-  socketOpen() {
+  socketOpen () {
     return new Promise((resolve) => {
       uni.onSocketOpen((res) => {
         resolve(res)
@@ -33,13 +33,13 @@ class MinSocket {
     })
   }
 
-  socketError() {
+  socketError () {
     uni.onSocketError((res) => {
-      console.log('WebSocket连接打开失败，请检查:', res);
-    });
+      console.log('WebSocket连接打开失败，请检查:', res)
+    })
   }
 
-  sendSocketMessage(data) {
+  sendSocketMessage (data) {
     return new Promise((resolve, reject) => {
       const obj = {
         data: JSON.stringify(data),
@@ -54,17 +54,17 @@ class MinSocket {
     })
   }
 
-  socketMonitor() {
+  socketMonitor () {
     return new Promise((resolve) => {
       uni.onSocketMessage((res) => {
         resolve(res.data)
-      });
+      })
     })
   }
 
-  socketClose() {
+  socketClose () {
     uni.onSocketClose((res) => {
-      console.log('WebSocket 已关闭！');
+      console.log('WebSocket 已关闭！')
     })
   }
 }

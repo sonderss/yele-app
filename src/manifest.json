@@ -10,7 +10,7 @@
         "compatible" : {
             "ignoreVersion" : true
         },
-        // "renderer": "native",
+         "renderer": "native",
         "usingComponents" : true,
         "splashscreen" : {
             "alwaysShowBeforeRender" : true,

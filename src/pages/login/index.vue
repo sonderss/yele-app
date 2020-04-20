@@ -30,6 +30,7 @@
 <script>
 export default {
   name: 'login',
+  navigate: ['navigateTo'],
   data () {
     return {
       countDown: 0,
@@ -57,7 +58,7 @@ export default {
           this.$store.dispatch('user/setUserInfo', res)
           this.$minRouter.push({
             name: 'index',
-            type: 'navigateTo',
+            type: 'reLaunch',
             path: '/pages/index/index'
           })
         }, 1000)
