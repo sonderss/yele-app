@@ -7,6 +7,8 @@
 <script>
 
 export default {
+  name: 'pages-page',
+  navigate: ['navigateTo'],
   data () {
     return {
       count: 0,

@@ -27,11 +27,11 @@
     </view>
 
     <view class="activity min-flex min-flex-main-between m-lr-30">
-      <view class="activity-item min-flex">
+      <view class="activity-item min-flex" >
         <image class="bimg" src="/static/images/index/back1.png"></image>
         <view class="word">敬请期待</view>
       </view>
-      <view class="activity-item min-flex">
+      <view class="activity-item min-flex" @click="goListPages">
         <image class="bimg" src="/static/images/index/back2.png"></image>
         <view class="word">敬请期待</view>
       </view>
@@ -62,12 +62,21 @@ export default {
         img: '/static/images/index/bar1.png',
         text: '充公酒',
         name: 'confiscated-wine'
-      }, {
-        url: '../electronic-menu/index.vue',
-        img: '/static/images/index/menu.png',
-        text: '菜单',
-        name: 'electronic-menu'
-      }],
+
+      }
+        // {
+      //   url: '../page.vue',
+      //   img: '/static/images/index/menu.png',
+      //   text: '列表页',
+      //   name: 'pages-page'
+      // }
+      // {
+      //   url: '../electronic-menu/index.vue',
+      //   img: '/static/images/index/menu.png',
+      //   text: '菜单',
+      //   name: 'electronic-menu'
+      // }
+      ],
       grid2: [{
         url: '../order-record/index.vue',
         name: 'order-record',
@@ -135,6 +144,11 @@ export default {
         name: 'platform-admin',
         type: 'navigateTo',
         path: '/pages/platform-admin/index'
+      })
+    },
+    goListPages () {
+      uni.navigateTo({
+        url: '../page'
       })
     }
   },

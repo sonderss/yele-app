@@ -145,28 +145,32 @@ export default {
           })
         })
         arr = brr
-        console.log(arr)
+        console.log(brr)
+
         arr = this.testArr(arr)
+        console.log(arr)
       }
       return arr
     }
   },
   methods: {
     testArr (arr) {
-      const p = []
+      let p = []
       arr.forEach((item, index) => {
-        if (p.length === 0) {
-          p.push(item)
-        } else {
+        if (p.length !== 0) {
           p.forEach((item2, index2) => {
-            if (item2.id && item2.id !== item.id) {
+            if (item2.id !== item.id) {
               p.push(item)
-            } else if (item2.id && item2.id === item.id) {
+            } else if (item2.id === item.id) {
               item2.desk_lists = item2.desk_lists.concat(item.desk_lists)
             }
           })
+        } else {
+          p.push(item)
         }
       })
+      p = this.$minCommon.arrSet(p)
+
       return p
     },
     // 导航选中事件

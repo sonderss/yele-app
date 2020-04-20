@@ -1,5 +1,18 @@
 {
 	"pages": [
+    
+    {
+      "path": "pages/login/index",
+      "style": {
+        "app-plus": {"titleNView": false}
+      }
+    },
+    {
+			"path": "pages/home/index",
+			"style": {
+				"navigationBarTitleText": "home"
+			}
+		},
     {
       "path": "pages/page",
       "style": {

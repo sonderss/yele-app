@@ -28,7 +28,7 @@
             @changes='changeChioce(index,index2)'
             v-model="item2.step"
             :desc="item2.sku.length >=1 ?item2.sku[0].sku_full_name : '暂无商品描述' "
-            :price="item2.sku.length >=1 ?item2.sku[0].price : 'null' ">
+            :price="item2.sku.length >=1 ?item2.sku[0].sku_price : item2.price ">
           </min-goods-chioce>
         </view>
       </view>

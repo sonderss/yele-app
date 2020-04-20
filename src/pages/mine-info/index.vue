@@ -3,15 +3,15 @@
     <view class="cell-wrap p-lr-30 p-tb-20">
       <min-cell>
         <min-cell-item
-          img="http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg"
-          title="SIMBA"
+          :img="userInfo.head_img? userInfo.head_img: 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg'"
+          :title="userInfo.store_name"
           tail="编辑头像"
           imgSize="sm"
           :border="true"
           arrow
         ></min-cell-item>
         <min-cell-item
-          title="名字" tail="阿容"
+          title="名字" :tail="userInfo.username"
           :border="true" arrow
         ></min-cell-item>
         <picker @change="bindPickerChange" :value="index" :range="sex">
@@ -33,7 +33,7 @@
           ></min-cell-item>
         </picker>
         <min-cell-item
-          title="电话号码" :tail="$minCommon.hideTel('15016584603')"
+          title="电话号码" :tail="$minCommon.hideTel(userInfo.mobile)"
           :border="false" arrow
           @eventParent="setPhone"
         ></min-cell-item>
@@ -72,10 +72,16 @@ export default {
       sex: ['不限', '男', '女'],
       index: 1,
       index1: 0,
-      date: '2020/3/20'
+      date: '2020/3/20',
+      userInfo: {}
     }
   },
+  onLoad () {
+    this.userInfo = this.$store.state.user.userInfo
+    console.log(this.userInfo)
+  },
   mounted () {
+
   },
   methods: {
     bindPickerChange1 (e) {
