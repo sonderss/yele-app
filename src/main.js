@@ -111,6 +111,7 @@ Vue.prototype.$store = store
 
 Vue.directive('root', {
   inserted: function (el, bind) {
+    console.log(bind)
     if (!test(bind.value)) {
       el.parentNode.removeChild(el)
     }

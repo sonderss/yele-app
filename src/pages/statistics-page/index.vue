@@ -66,6 +66,7 @@
               </view>
 
               <canvas canvas-id="canvasPie" id="canvasPie" class="charts" @touchstart="touchPie"></canvas>
+
             </view>
           </view>
           <!-- 台位统计 -->
@@ -162,13 +163,12 @@ var canvaColumn = null
 export default {
   name: 'statistics-page',
   navigate: ['navigateTo'],
-  components: {
-    // MinCharts
-  },
+  components: {},
   data () {
     return {
       // dataList,
       currentTab: 0,
+      currentTabArr: [0],
       arr: [],
       toView: '',
       tabTitle: ['数据总览', '台位统计', '商品统计', '人员统计'],
@@ -258,14 +258,26 @@ export default {
   },
   watch: {
     currentTab (a) {
-      _self = this
-      _self.cWidth = uni.upx2px(700)
-      _self.cHeight = uni.upx2px(450)
-      this.$nextTick(() => {
-        // 初始化图表
-        this.getServerData()
-      })
+      if (!test(_self.currentTabArr)) {
+        _self.currentTabArr.push(a)
+        _self = this
+        _self.cWidth = uni.upx2px(700)
+        _self.cHeight = uni.upx2px(450)
+        this.$nextTick(() => {
+          // 初始化图表
+          this.getServerData()
+        })
+      }
+      function test (data) {
+        if (data.includes(a)) {
+          return true
+        }
+        return false
+      }
     }
+  },
+  destroyed () {
+    console.log('销毁')
   },
   methods: {
     getServerData () {
@@ -344,6 +356,10 @@ export default {
         dataLabel: false
       })
       this.piearr = canvaPie.opts.series
+      // canvaPie.stopAnimation()
+      canvaPie.addEventListener('renderComplete', () => {
+        console.log('渲染完成')
+      })
     },
     // 柱状
     showColumn (canvasId, chartData) {
@@ -382,6 +398,10 @@ export default {
       canvaPie.showToolTip(e, {
         textList
       })
+    },
+    // 停止动画效果
+    stopAnimation () {
+
     },
     touchPie1 (e) {
       // 自定义点击展示数据

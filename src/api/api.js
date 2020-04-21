@@ -82,6 +82,15 @@ export default {
   getOriderPackageDetails: data => minRequest.get('/5e8ee2eb1a402', data),
   // 获取下单服务详情 5e8594a8c2717?service_id=1
   getOriderServeDetail: data => minRequest.get('/5e8594a8c2717', data),
+  // 赠送商品列表 5e96c98a65377?opening_id=23
+  getGiveAwayList: data => minRequest.get('/5e96c98a65377', data),
+  // 赠送商品详情 5e9805f6d81e4?sku_id=12
+  getGiveAwayProductDetail: data => minRequest.get('/5e9805f6d81e4', data),
+  // 赠送服务详情 5e98065f4d8c4?service_id=1
+  getGiveAwayServeDetail: data => minRequest.get('/5e98065f4d8c4', data),
+  // 赠送套餐详情 5e98065704a3f?setmeal_id=10
+  getGiveAwaySetmealDetail: data => minRequest.get('/5e98065704a3f', data),
+
   /**
    * @description post请求
    */

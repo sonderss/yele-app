@@ -12,7 +12,7 @@
       <view class="f22" v-if="totalLabel">{{totalLabel}}</view>
     </view>
     <view class="min-right" @click="$emit('submit')" >
-      <view class="min-text">{{buttonText}}</view>
+      <view class="min-text" >{{buttonText}}</view>
       <view class="min-label" v-if="buttonLabel">{{buttonLabel}}</view>
     </view>
   </view>

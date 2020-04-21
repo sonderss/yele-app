@@ -1,6 +1,6 @@
 <template>
   <view class="give-away">
-    <min-navTab ref="navTab" :tabTitle="tabTitle" @changeTab="changeTab"></min-navTab>
+    <min-navTab ref="navTab" :tabTitle="list" @changeTab="changeTab"></min-navTab>
 
     <swiper  style="height:100vh"  :current="currentTab" @change="swiperTab">
       <swiper-item v-for="(listItem,listIndex) in list" :key="listIndex">
@@ -12,24 +12,24 @@
           :scroll-into-view="toView"
         >
           <view :id="'top'+listIndex" style="width: 100%;height:20rpx;"></view>
-          <view class="main p-lr-30" v-if="listItem.length > 0" >
+          <view class="main p-lr-30" v-if="listItem.product.length > 0" >
             <view class="item">
-              <view class="goods" v-for="(item,index) in listItem" :key="index">
-                <image :src="item.img" mode />
+              <view class="goods" v-for="(item,index) in listItem.product" :key="index" @click.stop="toDetail(item)">
+                <image :src="item.product_img.length>10 ?  item.product_img : '../../static/images/goods.png' " mode  @error="imageErro()"/>
                 <view class="content-view">
                   <view class="right-view-title">
-                    <text class="f28 t" style="display:block">{{item.title}}</text>
-                    <text class="f26" style="color:#666666">可赠数量：{{item.give}}</text>
+                    <text class="f28 t" style="display:block">{{item.product_name}}</text>
+                    <text class="f26" style="color:#666666">可赠数量：{{item.commodity_count}}</text>
                   </view>
                   <view class="right-view-bottom">
                     <view class="right-view-bottom-desc">
                       <text class="f20 t">
                         提成：￥
-                        <text style="color:#FF0000;font-size:30">{{item.money}}</text>
+                        <text style="color:#FF0000;font-size:30">{{item.price}}</text>
                       </text>
                     </view>
                     <view class="steper">
-                      <min-stepper v-model="item.step" :min="0"></min-stepper>
+                      <min-stepper v-model="item.step" :min='0' @change="getStep(item)" :isAnimation="false" ></min-stepper>
                       <!-- <view class="isSku f24"  v-if="item2.sku.length > 1 "  @click="selSku(index,index2)">选规格</view> -->
                     </view>
                   </view>
@@ -37,14 +37,19 @@
               </view>
             </view>
           </view>
-          <view v-else class="none-view">
-             <image src='/static/images/none.png'/>
-          </view>
+          <min-404 v-else></min-404>
+
         </scroll-view>
       </swiper-item>
     </swiper>
 
-    <min-goods-submit style="position:fixed" totalLabel='赠送额度：￥1000.00' leftText="已选"  :totalAmount='totalAmountE' :goodsCount="countNums" buttonText='提交'></min-goods-submit>
+    <min-goods-submit style="position:fixed"
+    :totalLabel='totalLabel'
+     leftText="已选"
+     :totalAmount='moneySum'
+     :goodsCount="num"
+     buttonText='确定赠送'
+     ></min-goods-submit>
     <min-modal ref="test"></min-modal >
   </view>
 </template>
@@ -58,112 +63,113 @@ export default {
       toView: '', // 回到顶部id
       step: 0,
       totalAmountE: 0,
-      countNums: 2,
-      tabTitle: [
-        '选择一',
-        '选择二',
-        '选择三',
-        '选择四',
-        '选择五',
-        '选择六',
-        '选择七',
-        '选择八'
-      ], // 导航栏格式 --导航栏组件
+      countNums: 0,
+      totalLabel: '',
+      content: '',
+      tabTitle: [], // 导航栏格式 --导航栏组件
       currentTab: 0, // sweiper所在页
       pages: [1, 1, 1, 1], // 第几个swiper的第几页
-      list: [
-        [
-          {
-            title: '2020年元旦跨年夜百威兄弟套餐1瓶',
-            give: '2',
-            money: '2380',
-            img: '../../static/images/goods.png',
-            step: 0
-          },
-          {
-            title: '2020年元旦跨年夜百威兄弟套餐1瓶',
-            give: '：2',
-            money: '2380',
-            img: '../../static/images/goods.png',
-            step: 0
-          }
-        ],
-        [
-          {
-            title: '2020年元旦跨年夜百威兄弟套餐1瓶',
-            give: '2',
-            money: '2380',
-            img: '../../static/images/goods.png',
-            step: 0
-          }
-        ],
-        [],
-        [
-          {
-            title: '2020年元旦跨年夜百威兄弟套餐1瓶',
-            give: '2',
-            money: '2380',
-            img: '../../static/images/goods.png',
-            step: 0
-          },
-          {
-            title: '2020年元旦跨年夜百威兄弟套餐1瓶',
-            give: '2',
-            money: '2380',
-            img: '../../static/images/goods.png',
-            step: 0
-          }
-        ],
-        [
-          {
-            title: '2020年元旦跨年夜百威兄弟套餐1瓶',
-            give: '2',
-            money: '2380',
-            img: '../../static/images/goods.png',
-            step: 0
-          }
-        ],
-        [
-          {
-            title: '2020年元旦跨年夜百威兄弟套餐1瓶',
-            give: '2',
-            money: '2380',
-            img: '../../static/images/goods.png',
-            step: 0
-          }
-        ],
-        [
-          {
-            title: '2020年元旦跨年夜百威兄弟套餐1瓶',
-            give: '2',
-            money: '2380',
-            img: '../../static/images/goods.png',
-            step: 0
-          }
-        ],
-        [
-          {
-            title: '2020年元旦跨年夜百威兄弟套餐1瓶',
-            give: '2',
-            money: '2380',
-            img: '../../static/images/goods.png',
-            step: 0
-          }
-        ]
-      ] // 数据格式
+      list: [],
+      imgErrType: false,
+      selArr: []
     }
+  },
+  mounted () {
+  // ''
+    this.$minApi.getGiveAwayList({ opening_id: 23 }).then(res => {
+      // this.tabTitle = res.list
+      this.list = res.list
+      this.content = `
+          1. 当前台消费金额￥${res.consumption_amount}，根据赠送方案，可赠送的商品金额为￥${res.presentation_limit}。<br />
+          2. 当前用户的赠送额度为￥${res.personal_remaining_quota}，不能超过此额度。<br />
+      `
+      this.$store.dispatch('goods/setselected_giveAwayInfo', { consumption_amount: res.consumption_amount, presentation_limit: res.presentation_limit, personal_remaining_quota: res.personal_remaining_quota })
+      this.totalLabel = `赠送额度：${res.personal_remaining_quota}`
+      console.log(this.list)
+    })
   },
   onNavigationBarButtonTap (e) {
     this.$refs.test.handleShow({
       title: e.text,
-      content: '1. 当前台消费金额￥5420，根据赠送方案，可赠送的商品金额为￥3220。<br />2. 当前用户的赠送额度为￥5632，不能超过此额度。<br />3. 单次可赠送额度￥524125',
+      content: this.content,
       showCancel: false,
       success: (e) => {
         console.log(e) // 这里拿到的是modalID: "modal"，id: 1
       }
     })
   },
+  computed: {
+    num () {
+      let counts = 0
+      this.selArr.map(item => {
+        counts += item.step
+      })
+      return counts
+    },
+    moneySum () {
+      let sum = 0
+      this.selArr.map(item => {
+        sum += item.price * item.step
+      })
+      return sum
+    }
+  },
   methods: {
+    toDetail (item) {
+      console.log(item)
+      if (item.sku && item.sku.length !== 0) {
+        // 跳到赠送商品详情
+        uni.navigateTo({
+          url: '/pages/give-away/produdetail?product_id=' + item.sku[0].id + '&product_type=' + item.type
+        })
+      } else {
+        // 跳到赠送商品详情
+        uni.navigateTo({
+          url: '/pages/give-away/produdetail?product_id=' + item.id + '&product_type=' + item.type
+        })
+      }
+    },
+    // 点击增加按钮
+    getStep (e) {
+      console.log(e)
+      this.addGoods(e)
+    },
+    // 添加到购物车
+    addGoods (e) {
+      // 无可赠次数
+      if (e.commodity_count === 0) return this.$showToast('该商品无可送次数')
+      if (this.selArr.length === 0) {
+        this.selArr.push(e)
+        return
+      }
+      const result = this.selArr.some(item => {
+        if (item.sku.length === 0) {
+          if (item.id === e.id) {
+            //  item.step = obj.step
+            return true
+          }
+        }
+      })
+      if (!result) {
+        this.selArr.push(e)
+      }
+    },
+    // 判断已选商品重复
+    isflagAdd (obj) {
+      // eslint-disable-next-line no-unused-vars
+      for (let i = 0; i < this.selArr.length; i++) {
+        if (this.selArr[i].sku.length === 0) {
+          console.log(this.selArr[i].id, obj.id)
+          if (this.selArr[i].id === obj.id) {
+            console.log(123123213)
+            return false
+          } else if (this.selArr[i].id !== obj.id) {
+            console.log('sdsadsad')
+            return true
+          }
+        }
+      }
+    },
     changeTab (e) {
       this.currentTab = e
     },
@@ -204,6 +210,11 @@ export default {
           this.$forceUpdate() // 二维数组，开启强制渲染
         })
       }, 300)
+    },
+    imageErro (e) {
+      if (e.type === 'error') {
+        this.imgErrType = true
+      }
     }
   }
 }

@@ -30,7 +30,9 @@
   </view>
 </template>
 <script>
+import mixin from './mixin'
 export default {
+  mixins: [mixin],
   props: {
     idNum: Number,
     date: String,
@@ -45,12 +47,12 @@ export default {
     }
   },
   methods: {
-    goGetHistory () {
-      this.$minRouter.push({
-        name: 'platform-history',
-        params: { id: this.idNum }
-      })
-    },
+    // goGetHistory () {
+    //   this.$minRouter.push({
+    //     name: 'platform-history',
+    //     params: { id: this.idNum }
+    //   })
+    // },
     start_use () {
       this.$refs.show.handleShow({
         title: '确认启用？',

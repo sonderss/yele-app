@@ -7,7 +7,7 @@
           <text class="icon">￥</text>
           <text class="tr">8888.88</text>
         </view>
-        <text class="btn" @click="widthdraw">提现</text>
+        <text class="btn" @click="widthdraw"  >提现</text>
       </view>
       <view class="b-view">
         <view class="left-view">

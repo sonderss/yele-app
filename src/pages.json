@@ -575,6 +575,44 @@
       }
     },
     {
+      "path": "pages/give-away/produdetail",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"商品详情（赠送商品）",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001",
+            "buttons":[
+              {
+                "width":"auto",
+                "text": "赠送限制",
+                "fontSize":"28rpx"
+            }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/give-away/setmealdetail",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"套餐详情（赠送商品）",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001",
+            "buttons":[
+              {
+                "width":"auto",
+                "text": "赠送限制",
+                "fontSize":"28rpx"
+            }
+            ]
+          }
+        }
+      }
+    },
+    {
       "path": "pages/my-downline/index",
       "style": {
         "app-plus":{

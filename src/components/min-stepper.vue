@@ -125,14 +125,16 @@ export default {
   },
   watch: {
     value (newn, oldn) {
-      this.stepperNum = this.value
-      this.stepperCacheNum = this.value
-      if (newn > oldn) {
-        if (this.stepperCacheNum >= Number(this.step) && this.isAnimation) this.addAnimation()
-      }
-      if (newn < oldn) {
-        if (this.stepperCacheNum === Number(this.min) && this.isAnimation) this.lessAnimation()
-      }
+      this.$nextTick(() => {
+        this.stepperNum = this.value
+        this.stepperCacheNum = this.value
+        if (newn > oldn) {
+          if (this.stepperCacheNum >= Number(this.step) && this.isAnimation) this.addAnimation()
+        }
+        if (newn < oldn) {
+          if (this.stepperCacheNum === Number(this.min) && this.isAnimation) this.lessAnimation()
+        }
+      })
     }
   }
 }

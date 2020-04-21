@@ -62,7 +62,9 @@
   </view>
 </template>
 <script>
+import mixin from './mixin'
 export default {
+  mixins: [mixin],
   props: {
     idNum: Number
   },
@@ -80,12 +82,12 @@ export default {
     })
   },
   methods: {
-    goGetHistory () {
-      this.$minRouter.push({
-        name: 'platform-history',
-        params: { id: this.idNum }
-      })
-    },
+    // goGetHistory () {
+    //   this.$minRouter.push({
+    //     name: 'platform-history',
+    //     params: { id: this.idNum }
+    //   })
+    // },
     // 预约
     book () {
       this.index = 0

@@ -53,7 +53,9 @@
   </view>
 </template>
 <script>
+import mixin from './mixin'
 export default {
+  mixins: [mixin],
   props: {
     idNum: {
       type: Number
@@ -80,12 +82,12 @@ export default {
   },
   methods: {
     // 历史
-    goGetHistory () {
-      this.$minRouter.push({
-        name: 'platform-history',
-        params: { id: this.idNum }
-      })
-    },
+    // goGetHistory () {
+    //   this.$minRouter.push({
+    //     name: 'platform-history',
+    //     params: { id: this.idNum }
+    //   })
+    // },
     // 预约
     book () {
       this.index = 0

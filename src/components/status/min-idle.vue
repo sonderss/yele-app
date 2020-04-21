@@ -40,7 +40,9 @@
 </template>
 
 <script>
+import mixin from './mixin'
 export default {
+  mixins: [mixin],
   // 空闲中
   props: {
     idNum: Number,
@@ -64,12 +66,12 @@ export default {
     }
   },
   methods: {
-    goGetHistory () {
-      this.$minRouter.push({
-        name: 'platform-history',
-        params: { id: this.idNum }
-      })
-    },
+    // goGetHistory () {
+    //   this.$minRouter.push({
+    //     name: 'platform-history',
+    //     params: { id: this.idNum }
+    //   })
+    // },
     // 预约
     book () {
       this.index = 0
