@@ -594,6 +594,25 @@
       }
     },
     {
+      "path": "pages/give-away/giveawayorder",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"确认订单",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001",
+            "buttons":[
+              {
+                "width":"auto",
+                "text": "赠送限制",
+                "fontSize":"28rpx"
+            }
+            ]
+          }
+        }
+      }
+    },
+    {
       "path": "pages/give-away/setmealdetail",
       "style": {
         "app-plus":{

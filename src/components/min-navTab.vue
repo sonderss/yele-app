@@ -51,7 +51,7 @@ export default {
       // 获取设备宽度
       uni.getSystemInfo({
         success (e) {
-          console.log(that.tabTitle.length)
+          // console.log(that.tabTitle.length)
           if (that.tabTitle.length <= 5) {
             that.isWidth = e.windowWidth / that.tabTitle.length // 宽度除以导航标题个数=一个导航所占宽度
           } else {

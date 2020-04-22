@@ -3,7 +3,7 @@ function minVuexCache ({ key = 'minvuexcache', localStorage = [] }) {
     throw new Error('localStorage 必须是 Array 类型')
   }
   function setState (key, state) {
-    console.log(key)
+    // console.log(key)
     return uni.setStorageSync(key, state)
   }
 

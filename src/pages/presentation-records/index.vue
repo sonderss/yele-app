@@ -1,6 +1,6 @@
 <template>
   <view class="forfeiture-record p-tb-20 p-lr-30" >
-    <view class="card p-lr-20 m-bottom-20">
+    <!-- <view class="card p-lr-20 m-bottom-20">
       <view class="top p-tb-30 min-border-bottom">
         <view class="ordern">K1125</view>
         <view class="status confirmed">顾客：李大忙</view>
@@ -15,40 +15,24 @@
         <text>2019-12-10  12:35:65</text>
         <text class="bfont">合计：￥600.00</text>
       </view>
-    </view>
-    <view class="card p-lr-20 m-bottom-20">
+    </view> -->
+    <view class="card p-lr-20 m-bottom-20" v-for="(item,index) in list" :key="index">
       <view class="top p-tb-30 min-border-bottom">
-        <view class="ordern">K1125</view>
-        <view class="status end">已确认</view>
+        <view class="ordern">{{item.desk_name}}</view>
+        <view class="status end">{{item.client_name}}</view>
       </view>
-      <view :class="isMore ? 'main p-top-20 ': 'main1 p-top-20 ' ">
-        <view class="item">
-           <text >伯世富VSOP*750ml*2010年/瓶*2</text>
-            <text>￥66</text>
-        </view>
-        <view class="item">
-           <text>伯世富VSOP*750ml*2010年/瓶*2</text>
-            <text>￥66</text>
-        </view>
-        <view class="item">
-           <text>伯世富VSOP*750ml*2010年/瓶*2</text>
-            <text>￥66</text>
-        </view>
-        <view class="item">
-           <text >伯世富VSOP*750ml*2010年/瓶*2</text>
-            <text >￥66</text>
-        </view>
-        <view class="item">
-           <text>伯世富VSOP*750ml*2010年/瓶*2</text>
-            <text>￥66</text>
+      <view :class="item.isMore ? 'main1 p-top-20 ': 'main p-top-20 ' ">
+        <view class="item" v-for="(item2,index2) in item.product" :key="index2">
+           <text >{{item2.commodity_detail_name}}</text>
+            <text>￥{{item2.commodity_price}}</text>
         </view>
       </view>
-      <view class="over-view min-border-bottom p-tb-20" @click="showMore">
-          {{txt ? '展开更多' : '收起'}}<text :class="isMore ? ' f22 botm' : ' f22 botm1'"></text>
+      <view class="over-view min-border-bottom p-tb-20" @click="showMore(index)">
+          {{item.isMore ? '展开更多' : '收起'}}<text :class="item.isMore ? ' f22 botm1' : ' f22 botm'"></text>
       </view>
       <view class="timer ">
-        <text>2019-12-10  12:35:65</text>
-        <text class="bfont">合计：￥600.00</text>
+        <text>{{item.create_time}}</text>
+        <text class="bfont">合计：￥{{item.order_price}}</text>
       </view>
     </view>
 
@@ -62,13 +46,33 @@ export default {
   data () {
     return {
       isMore: false,
-      txt: true
+      txt: true,
+      list: []
     }
   },
+  mounted () {
+    this.getData()
+  },
   methods: {
-    showMore () {
-      this.isMore = !this.isMore
-      this.txt = !this.txt
+    getData () {
+      this.$minApi.giveAwayList().then(res => {
+        this.list = res
+        this.list.map(item => {
+          if (item.product.length > 3) {
+            this.$set(item, 'isMore', true)
+          } else {
+            this.$set(item, 'isMore', false)
+          }
+        })
+        console.log(this.list)
+      })
+    },
+    showMore (index2) {
+      if (this.list[index2].isMore) {
+        this.$set(this.list[index2], 'isMore', false)
+      } else {
+        this.$set(this.list[index2], 'isMore', true)
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <view style="background: #fff;">
     <view class="min-goods-item">
-      <image :class="[`min-goods-icon-${iconSize}`]" :src="icon"/>
+      <image :class="[`min-goods-icon-${iconSize}`]" :src="errorImage? errorImage: icon" @error="imageErro"/>
       <image class="min-goods-produced-icon" :class="[`min-goods-icon-${iconSize}`]" v-if="produced" src="/static/images/produced.png"/>
       <view class="min-goods-content" :class="{'min-produced': produced}">
         <view class="min-goods-name">{{name}}</view>
@@ -70,7 +70,8 @@ export default {
   },
   data () {
     return {
-      count: 0
+      count: 0,
+      errorImage: ''
     }
   },
   created () {
@@ -80,6 +81,12 @@ export default {
     changeCount (value) {
       this.$emit('input', value)
       this.$emit('change', value)
+    },
+    imageErro (e) {
+      if (e.type === 'error') {
+        console.log(123)
+        this.errorImage = '/static/images/produced.png'
+      }
     }
   }
 }
@@ -126,7 +133,7 @@ export default {
       text-overflow: ellipsis;
       display: -webkit-box;
       -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2; 
+      -webkit-line-clamp: 2;
       word-wrap:break-word;
       word-break:break-all;
     }

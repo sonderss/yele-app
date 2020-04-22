@@ -90,6 +90,14 @@ export default {
   getGiveAwayServeDetail: data => minRequest.get('/5e98065f4d8c4', data),
   // 赠送套餐详情 5e98065704a3f?setmeal_id=10
   getGiveAwaySetmealDetail: data => minRequest.get('/5e98065704a3f', data),
+  // 赠送记录列表 5e9d781dd92c9
+  giveAwayList: () => minRequest.get('/5e9d781dd92c9'),
+  // 赠送商品下单 5e9d7817aea4c
+  giveAwayOrder: data => minRequest.post('/5e9d7817aea4c', data),
+  // 赠送订单预览  5e9ea4671e89c/?order_id=223
+  gerOrderList: data => minRequest.get('/5e9ea4671e89c', data),
+  // 确认赠送  5e9f9e0ee9a86?order_id=215
+  postOrderGet: data => minRequest.get('/5e9f9e0ee9a86', data),
 
   /**
    * @description post请求

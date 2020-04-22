@@ -17,7 +17,7 @@
     </swiper>
     <view class="goods-item p-lr-20 m-bottom-20"  v-if="!noData">
       <view class="top-view f28 m-top-10 f28"  v-if="product_type === 'product' ">{{list.product.product_name}}</view>
-      <view class="top-view f28 m-top-10 f28"  v-if="product_type === 'service' ">{{list.service_name}}</view>
+      <view class="top-view f28 m-top-10 f28"  v-if="product_type === 'service' ">{{list.product_name}}</view>
       <view class="top-view f28 m-top-10 f28"  v-if="product_type === 'setmeal' ">{{list.setmeal_name}}</view>
       <view class="botm-view" v-if="product_type === 'product' ">
         <view class="f22">
@@ -34,8 +34,9 @@
       <!-- 服务商品 -->
       <view class="botm-view" v-if="product_type === 'service'">
         <view class="f22">
-          <text class="price">￥{{list.service_price}}</text>
+          <text class="price">￥{{list.price}}</text>
         </view>
+        <min-stepper v-model="list.step" @lesss="lesss($event,list)" @adds="addGoodServe(list)"  @change="changeServiceItem(list)"></min-stepper>
       </view>
     </view>
      <min-describe @chincesku="selSku" :sku="list.sku.sku_full_name" leftTxt="规格" v-if="product_type === 'product'"></min-describe>
@@ -108,27 +109,22 @@
         </view>
         <view class="main-sel-view p-lr-30 p-tb-30" >
             <view class="item" v-for="(item2,n) in selArr" :key="n" >
-              <!-- <view v-if="!item2.test"> -->
-                  <image   :src="errImg ? '/static/images/goods.png': item2.product_img" mode=""  @error="imgerr"/>
-                  <view   class="content-view">
-                    <view class="right-view-title">
-                      <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                      <text class="f26" style="color:#666666">规格：{{item2.sku.sku_full_name}}</text>
+                  <image   src="/static/images/goods.png" mode=""  />
+                  <!-- 已选服务商品 -->
+                  <view   class="content-view" v-if="product_type === 'service'">
+                    <view class="right-view-title" >
+                      <text class="f28 " style="display:block">{{item2.product_name}}</text>
+                      <text class="f26 t" >￥{{item2.price}}</text>
                     </view>
                     <view class="right-view-bottom">
-                      <view class="right-view-bottom-desc" >
-                        <text class="f20 t">￥<text  style="color:#FF0000;font-size:30">{{item2.sku.price}}</text></text>
-                      </view>
                       <view class="steper">
-                        <min-stepper v-model="item2.step" :isAnimation="false" :min='0' @change="aleradyGood($event,n)"></min-stepper>
-                        <!-- <view v-if="!isDel" @click="delItem(n)">删除</view> -->
+                        <!--  @change="aleradyGood($event,n)" -->
+                        <min-stepper  @lesss="lesss($event,item2)"  v-model="item2.step" :isAnimation="false" :min='0'></min-stepper>
                       </view>
                     </view>
                   </view>
-              <!-- </view> -->
             </view>
         </view>
-        <!-- <view class="empty-view"></view> -->
         <view class="bottom-view-t">
           <min-goods-submit
           style="position:fixed"
@@ -177,7 +173,7 @@ export default {
     totalAmountE () {
       let sum = 0
       this.selArr.map(item => {
-        sum += item.step * item.sku.price
+        sum += item.step * item.price
       })
       return sum.toFixed(2)
     },
@@ -202,6 +198,8 @@ export default {
     console.log(option)
     this.product_id = option.product_id
     this.product_type = option.product_type
+    console.log('从全局变量中获取已选商品列表', this.$store.state.goods.storeSelArr)
+    this.selArr = this.$store.state.goods.storeSelArr
   },
   mounted () {
     if (this.product_type === 'product') {
@@ -219,16 +217,27 @@ export default {
     } else if (this.product_type === 'service') {
       this.$minApi.getGiveAwayServeDetail({ service_id: this.product_id })
         .then(res => {
-          console.log('21321321213')
           this.list = res.info
-          this.list.step = 1
-          console.log(this.list)
           this.item = []
           this.item.push(this.list.main_img)
+          this.list = JSON.parse(JSON.stringify(this.list).replace(/service_name/g, 'product_name'))
+          this.list = JSON.parse(JSON.stringify(this.list).replace(/service_price/g, 'price'))
+          this.list = JSON.parse(JSON.stringify(this.list).replace(/main_img/g, 'product_img'))
+          console.log('服务商品', this.list)
         })
         .catch(() => {
           this.noData = true
         })
+      this.list.id = this.product_id * 1
+      if (this.selArr.length !== 0) {
+        this.selArr.map(item => {
+          if (this.list.id === item.id) {
+            this.list.step = item.step
+          }
+        })
+      } else {
+        this.list.step = 1
+      }
     } else if (this.product_type === 'setmeal') {
       this.$minApi.getGiveAwaySetmealDetail({ setmeal_id: this.product_id })
         .then(res => {
@@ -253,6 +262,42 @@ export default {
     /**  关闭选择规格弹出层 */
     closeSelectedSkuPop () {
       this.isSelSku = false
+    },
+    changeServiceItem (e) {
+      for (let i = 0; i < this.selArr.length; i++) {
+        if (this.selArr[i].id === e.id) {
+          this.$nextTick(() => {
+            this.selArr[i].step = e.step
+          })
+        }
+      }
+    },
+    // 服务商品--
+    lesss (e, item) {
+      // 数量为0时从已选商品中删除掉该商品
+      for (let i = 0; i < this.selArr.length; i++) {
+        if (this.selArr[i].id === item.id && e === 0) {
+          this.$nextTick(() => {
+            this.selArr.splice(i, 1)
+            this.$store.dispatch('goods/setStoreSelArr', this.selArr)
+          })
+        }
+      }
+    },
+    // 选择服务商品
+    addGoodServe (e) {
+      const result = this.selArr.some((item, index) => {
+        if (item.id === e.id) {
+          return true
+        }
+      })
+      if (!result) {
+        this.selArr.push(e)
+        // 存到全局变量
+        this.$store.dispatch('goods/setStoreSelArr', this.selArr)
+        console.log('已选赠送商品全局变量', this.$store.state.goods.storeSelArr)
+      }
+      console.log(this.selArr)
     },
     // 选择规格确定
     skuChioce () {
@@ -548,15 +593,20 @@ export default {
         flex: 1;
         height: 100%;
         display: flex;
-        flex-direction: column;
+        // flex-direction: column;
         justify-content: space-between;
         align-items: space-between;
         color: #333333;
         align-content: space-between;
         margin-bottom: 120rpx;
         .right-view-title{
+               height: 100%;
+               display: flex;
+              flex-direction: column;
+              justify-content: space-between;
           .t{
-            width: 100%
+            width: 100%;
+            color: red;
           }
         }
         .right-view-bottom{

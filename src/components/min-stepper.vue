@@ -79,6 +79,8 @@ export default {
       this.stepperCacheNum = Number(this.stepperNum.toFixed(1))
       this.emit(this.stepperCacheNum)
       this.$emit('input', this.stepperCacheNum)
+      this.$emit('lesss', this.stepperCacheNum)
+
       if (this.stepperCacheNum === Number(this.min) && this.isAnimation) this.lessAnimation()
     },
     add () {
@@ -87,6 +89,7 @@ export default {
       this.stepperCacheNum = Number(this.stepperNum.toFixed(1))
       this.emit(this.stepperCacheNum)
       this.$emit('input', this.stepperCacheNum)
+      this.$emit('adds', this.stepperCacheNum)
       if (this.stepperCacheNum >= Number(this.step) && this.isAnimation) this.addAnimation()
     },
     emit (val) {

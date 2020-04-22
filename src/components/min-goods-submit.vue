@@ -1,9 +1,9 @@
 <template>
   <view class="min-goods-submit min-border-top">
-    <view class="min-left p-tb-25 p-left-30" @click="$emit('leftClick')">
+    <view class="min-left  p-tb-25 p-left-30" style="flex-basis: 200rpx;" @click="$emit('leftClick')">
       <min-badge class="min-goods-count" :count="goodsCount" v-if="goodsCount * 1  > 0"/>
       <image class="min-icon" v-if="icon" :src="icon" alt="icon"/>
-      <text class="f28" v-if="leftText">{{leftText}}</text>
+      <text class="f28"  v-if="leftText">{{leftText}}</text>
     </view>
     <view class="min-main p-tb-20 p-right-30">
       <view class="min-total f22">
