@@ -27,7 +27,7 @@ export default {
       status: Number,
       date: '',
       list: {
-        baseInfo: { desk_name: '' },
+        deskInfo: { desk_name: '' },
         clientInfo: { client_name: '' }
       }
     }
@@ -48,7 +48,7 @@ export default {
         .then(res => {
           this.list = res
           console.log(this.list)
-          this.status = res.baseInfo.status
+          this.status = res.deskInfo.status
         })
     }
   }

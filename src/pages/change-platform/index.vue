@@ -136,19 +136,30 @@ export default {
       padding-bottom: 30rpx;
     }
     .list{
+      padding-left: 20rpx;
       .item{
         display: inline-block;
         width: 140rpx;
         border-radius:10rpx;
         padding: 20rpx 0;
         text-align: center;
-        margin-left: 30rpx;
-        &:nth-child(5n){
-          margin: 0;
-          margin-top: 20rpx;
+        // margin-left: 30rpx;
+        &:nth-child(n){
+          // margin: 0;
+          // margin-top: 20rpx;
+          margin-right: 20rpx;
+          margin-bottom: 20rpx;
+        }
+
+        &:nth-child(4n){
+          // margin: 0;
+          // margin-top: 20rpx;
+          margin-right: 0;
+          margin-bottom: 20rpx;
         }
         &:first-child{
-          margin: 0;
+          // margin: 0;
+          margin-right: 20rpx;
         }
         &>view{
           font-size: 28rpx;

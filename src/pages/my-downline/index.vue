@@ -2,12 +2,12 @@
   <view class="my-downline">
     <view class="top-view f26"></view>
     <view class="mid-view">
-      <text class="name m-left-10">我的上线：张无忌 158111112222</text>
+      <text class="name m-left-10">我的上线：{{list.superior.username}}{{list.superior.mobile}}</text>
       <view class="backi m-top-10">
         <view class="show-money">
           <view class="money">
             ￥
-            <text class="m">8888.8</text>
+            <text class="m">{{list.grand_total_rebate}}</text>
           </view>
           <view class="desc">累计获得分佣</view>
         </view>
@@ -19,15 +19,15 @@
       <view class="main">
         <view class="m min-border-bottom">
           <text>下线列表</text>
-          <text>共5230人</text>
+          <text>共{{nums}}人</text>
         </view>
       </view>
-      <view class="item  min-border-bottom" v-for="i in 8" :key="i">
+      <view class="item  min-border-bottom" v-for="(item,index) in list.subordinate" :key="index">
         <min-describe
-          leftIconValue="../../static/images/headurl60.png"
-          leftTxtB="15811112222"
-          leftTxt="流氓大亨"
-          rightTxtT="9999"
+          :leftIconValue="item.head_img"
+          :leftTxtB="item.mobile"
+          :leftTxt="item.username"
+          :rightTxtT="item.accumulated_rebate"
           rightTxtB="累计分佣"
           :leftIcon="true"
           :leftTxtTwo="true"
@@ -44,6 +44,22 @@ export default {
       name: 'invitation-record',
       type: 'navigateTo',
       path: '../invitation-record/index.vue'
+    })
+  },
+  data () {
+    return {
+      list: { superior: { username: '' } },
+      nums: Number
+    }
+  },
+  mounted () {
+    this.$minApi.getMyDownLine({
+      limit: 10,
+      page: 1
+    }).then(res => {
+      this.list = res
+      this.nums = this.list.subordinate.length
+      console.log(res)
     })
   },
   methods: {

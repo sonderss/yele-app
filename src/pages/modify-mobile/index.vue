@@ -2,7 +2,7 @@
   <view class="modify-mobile">
     <view class="p-lr-30 p-top-25">
       <view class="inp p-lr-30 p-tb-30 min-flex min-flex-main-start min-border-bottom">
-        <input type="number" placeholder="请输入原手机号码" maxlength="11">
+        <input type="number" v-model="phone" placeholder="请输入原手机号码" maxlength="11">
       </view>
     </view>
   </view>
@@ -15,12 +15,17 @@ export default {
   navigate: ['navigateTo'],
   data () {
     return {
-      code: 0
+      code: 0,
+      phone: ''
     }
+  },
+  mounted () {
+    this.phone = this.$store.state.user.userInfo.mobile
   },
   onNavigationBarButtonTap () {
     this.$minRouter.push({
-      name: 'bind-mobile'
+      name: 'bind-mobile',
+      params: { phone: this.phone }
     })
   }
 }

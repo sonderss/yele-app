@@ -6,19 +6,19 @@
         <view class="status">已停用</view>
         <view>
           台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：
-          <text class="emp">{{list.baseInfo.desk_name}}</text>
+          <text class="emp">{{list.deskInfo.desk_name}}</text>
         </view>
-        <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.baseInfo.group_name}}</view>
-        <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：{{list.baseInfo.is_minim_charge === 1 ? '￥'+list.baseInfo.minim_charge : '否'}}</view>
-        <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.baseInfo.seats) }}</view>
-        <view>开台条件： {{list.baseInfo.enable_minimum_consume === 0 ? '否' : list.baseInfo.minimum_consume_percent+'成低消'+ (list.baseInfo.finally_minimum_price)}}</view>
+        <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.deskInfo.group_name}}</view>
+        <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：{{list.deskInfo.is_minim_charge === 1 ? '￥'+list.deskInfo.minim_charge : '否'}}</view>
+        <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.deskInfo.seats) }}</view>
+        <view>开台条件： {{list.deskInfo.enable_minimum_consume === 0 ? '否' : list.deskInfo.minimum_consume_percent+'成低消'+ (list.deskInfo.finally_minimum_price)}}</view>
       </view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">操作信息</view>
       <view class="main p-tb-20">
-        <view>锁台人员：{{list.baseInfo.lock_user_name}}</view>
-        <view>锁台时间：{{$minCommon.formatDate(new Date(list.baseInfo.lock_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
+        <view>锁台人员：{{list.deskInfo.lock_user_name}}</view>
+        <view>锁台时间：{{$minCommon.formatDate(new Date(list.deskInfo.lock_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
       </view>
     </view>
     <view class="btns-confirmed">
@@ -64,15 +64,17 @@ export default {
         cancelColor: '#0090ff',
         success: (e) => {
           if (e.id === 1) {
-            this.$minApi.startUse({ id: this.idNum })
+            this.$minApi.startUse({ desk_id: this.idNum })
               .then(res => {
                 console.log(res)
                 if (res.length === 0) {
                   this.$showToast('启用成功')
-                  this.$minRouter.push({
-                    name: 'platform-detail',
-                    params: { id: this.idNum, date: this.date }
-                  })
+                  setTimeout(() => {
+                    this.$minRouter.push({
+                      name: 'platform-detail',
+                      params: { id: this.idNum, date: this.date }
+                    })
+                  }, 2000)
                 }
               })
           }

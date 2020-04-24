@@ -118,7 +118,7 @@ export default {
           if (e.id === 1) {
             // 销台接口
             this.$minApi.delOrder({
-              id: this.idNum
+              desk_id: this.idNum
             })
               .then(res => {
                 if (res.length === 0) {

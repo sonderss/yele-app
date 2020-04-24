@@ -85,6 +85,14 @@
 export default {
   name: 'order-detail',
   navigate: ['navigateTo'],
+  onLoad () {
+    console.log(this.$parseURL())
+    this.$minApi.getOrderDetailDown({
+      order_id: this.$parseURL().ordr_id
+    }).then(res => {
+      console.log(res)
+    })
+  },
   methods: {
     goodsDeatil (index) {
       // 跳到商品详情页

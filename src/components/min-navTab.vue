@@ -16,7 +16,7 @@
           :key="index"
           :id="'id'+index"
           @click="longClick(index)"
-        >{{item.cate_name}}</view>
+        >{{item.cate_name?item.cate_name:item}}</view>
         <view
           class="underlineBox"
           :style="'transform:translateX('+isLeft+'px);width:'+isWidth+'px'"
@@ -61,8 +61,18 @@ export default {
       })
     }
   },
-  created () {
-
+  mounted () {
+    var that = this
+    // 获取设备宽度
+    uni.getSystemInfo({
+      success (e) {
+        if (that.tabTitle.length <= 5) {
+          that.isWidth = e.windowWidth / that.tabTitle.length // 宽度除以导航标题个数=一个导航所占宽度
+        } else {
+          that.isWidth = e.windowWidth / 5
+        }
+      }
+    })
   },
   methods: {
     // 导航栏点击

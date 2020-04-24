@@ -128,7 +128,7 @@ export default {
     }
   },
   mounted () {
-    this.$minApi.getGiveAwayList({ opening_id: 23 }).then(res => {
+    this.$minApi.getGiveAwayList({ opening_id: 20 }).then(res => {
       res.list.map((item, index) => {
         item.product.map(item2 => {
           item2.step = 0

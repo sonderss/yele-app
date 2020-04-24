@@ -91,6 +91,12 @@
         <view class="pay">
           <min-radio title="微信" icon="/static/images/wx-pay.png" label="1" v-model="payType"/>
         </view>
+        <view class="pay">
+          <min-radio title="刷卡" icon="/static/images/cardPay.png" label="2" v-model="payType"/>
+        </view>
+        <view class="pay">
+          <min-radio title="后付款" icon="/static/images/latePay.png" label="4" v-model="payType"/>
+        </view>
       </view>
     </view>
     <min-goods-submit leftText="已选" totalAmount="666.00" buttonText="支付并开台"/>
@@ -99,10 +105,10 @@
 
 <script>
 //    全单打折     全单优惠    单品打折        单品优惠
-const ALL_DZ = 0, ALL_YH = 1, SINGLE_DZ = 2, SINGLE_YH = 3
+const ALL_DZ = 0; const ALL_YH = 1; const SINGLE_DZ = 2; const SINGLE_YH = 3
 
 export default {
-  data() {
+  data () {
     return {
       ALL_DZ,
       ALL_YH,

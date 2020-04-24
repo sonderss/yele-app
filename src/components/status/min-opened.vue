@@ -6,12 +6,12 @@
         <view class="status been-open">已开台</view>
         <view>
           台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：
-          <text class="emp">K112</text>
+          <text class="emp">{{list.deskInfo.desk_name}}</text>
         </view>
-        <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：卡座</view>
-        <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：￥500</view>
-        <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：4座</view>
-        <view>开台条件：6成低消（￥600）</view>
+        <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.deskInfo.group_name}}</view>
+        <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：{{list.deskInfo.is_minim_charge === 1 ? '￥'+list.deskInfo.minim_charge : '否'}}</view>
+        <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.deskInfo.seats) }}</view>
+        <view>开台条件：{{list.deskInfo.enable_minimum_consume === 0 ? '否' : list.deskInfo.minimum_consume_percent+'成低消'+ (list.deskInfo.finally_minimum_price)}}</view>
       </view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
@@ -50,7 +50,7 @@
       <view class="badge" @click="showToastTxt"  id='testDom'>
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
           <view class="toast anmatiin " v-if="toast">
-              <view class="bag_btn" >存酒</view>
+              <view class="bag_btn" @click="saveWine">存酒</view>
               <view class="bag_btn" @click="bill">账单</view>
               <view class="bag_btn" >订单</view>
                <view class="bag_btn" @click="getWine">取酒</view>
@@ -66,9 +66,13 @@
 <script>
 import mixin from './mixin'
 export default {
-  mixin: [mixin],
+  mixins: [mixin],
   props: {
-    idNum: Number
+    idNum: Number,
+    list: {
+      type: Object,
+      default: () => {}
+    }
   },
   data () {
     return {
@@ -82,6 +86,7 @@ export default {
     this.$nextTick(() => {
       document.querySelector('body').addEventListener('click', this.handleBodyClick)
     })
+    console.log('已开台详情', this.list)
   },
   methods: {
     // goGetHistory () {
@@ -115,6 +120,14 @@ export default {
         name: 'desk-bill'
       })
     },
+    // 存酒
+    saveWine () {
+      // 跳转到选择客户页面（存酒）
+      this.$minRouter.push({
+        name: 'select-customers',
+        params: { desk_id: this.idNum, desk_name: this.list.deskInfo.desk_name }
+      })
+    },
     // 取酒
     getWine () {
       // 这里将客户信息传过去,暂时写死
@@ -142,7 +155,7 @@ export default {
         success: (e) => {
           if (e.id === 1) {
             this.$minApi.clearOrder({
-              id: this.idNum
+              desk_id: this.idNum
             })
               .then(res => {
                 console.log(res)

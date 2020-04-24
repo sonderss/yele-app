@@ -28,9 +28,10 @@
 </template>
 
 <script>
+import '../../static/js/quit'
 export default {
   name: 'login',
-  navigate: ['navigateTo'],
+  navigate: ['navigateTo', 'reLaunch'],
   data () {
     return {
       countDown: 0,
@@ -56,10 +57,8 @@ export default {
         this.$showToast('登录成功')
         setTimeout(() => {
           this.$store.dispatch('user/setUserInfo', res)
-          this.$minRouter.push({
-            name: 'index',
-            type: 'reLaunch',
-            path: '/pages/index/index'
+          uni.redirectTo({
+            url: '../index/index'
           })
         }, 1000)
       })

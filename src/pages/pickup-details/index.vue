@@ -1,10 +1,10 @@
 <template>
   <view class="storing-liquor-detail p-tb-20 p-lr-30">
-    <view class="card p-lr-20">
+    <view class="card p-lr-20" v-if="this.list.fetch_product_info.length !== 0">
       <view class="top p-tb-30 min-border-bottom">
         <view>取酒客户信息</view>
       </view>
-      <view class="main p-tb-30">
+      <view class="main p-tb-30" >
         <view class="item">客户姓名：{{list.fetch_info.client_name}}</view>
         <view class="item">联系电话：{{list.fetch_info.client_mobile}}</view>
         <view class="item">取酒台号：<text class="item spectio">{{list.fetch_info.desk_name}}</text></view>
@@ -15,7 +15,7 @@
         <view class="item">确认时间：{{list.fetch_info.confirm_time != 0 ? $minCommon.formatDate(new Date(list.fetch_info.confirm_time*1000),'yyyy-MM-dd hh:mm:ss'):'0'}}</view>
       </view>
     </view>
-    <view class="goods-wrap m-top-20 p-lr-20">
+    <view class="goods-wrap m-top-20 p-lr-20" v-if="this.list.fetch_product_info.length !== 0">
       <view class="p-tb-30 min-border-bottom">取酒信息</view>
       <view class="goods-list p-t-10 p-bottom-20">
         <view class="p-top-20" v-for="(item,index) in list.fetch_product_info" :key="index">
@@ -39,7 +39,7 @@
         </view>
       </view>
     </view>
-    <view class="card p-lr-20 m-top-20">
+    <view class="card p-lr-20 m-top-20" v-if="this.list.fetch_product_info.length !== 0">
       <view class="top p-tb-30 min-border-bottom">存酒信息</view>
       <view class="main p-tb-30">
         <view class="item">客户姓名：{{list.deposit_info.client_name}}</view>
@@ -57,6 +57,7 @@
     <!-- <view class="btn-wrap">
       <min-btn shape="flat" :opacity="false">取酒</min-btn>
     </view> -->
+    <min-404 v-if="this.list.fetch_product_info.length === 0"></min-404>
   </view>
 </template>
 
@@ -73,7 +74,7 @@ export default {
   data () {
     return {
       count: 0,
-      list: { fetch_info: { client_name: '' }, deposit_info: { client_name: '' } }
+      list: { fetch_info: { client_name: '' }, deposit_info: { client_name: '' }, fetch_product_info: [] }
     }
   }
 }

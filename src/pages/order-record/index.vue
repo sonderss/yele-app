@@ -7,24 +7,6 @@
             </view>
             <text class="right-txt f28" :class="status[item.order_status].class">{{status[item.order_status].desc}}</text>
           </view>
-          <!-- <view v-if="!item.isSetMeal">
-            <view class="mid-view min-border-top ">
-                <view class="left-view">
-                  <view class="left-photo" v-for="(i,n) in item.pic" :key="n">
-                    <image :src="i.img" />
-                  </view>
-
-                  <view class="mid-desc">
-                      <text class="f28 fcolor title">{{item.title}}</text>
-                      <text class="tcolor f22 desc">{{item.desc}}</text>
-                  </view>
-                </view>
-                <view class="right-price">
-                  <text class="fcolor f28 testF">￥ {{item.price}}</text>
-                  <text class="tcolor f22 m-top-20">x {{item.num}}</text>
-                </view>
-            </view>
-          </view> -->
           <view >
             <view class="mid-view min-border-top "  >
                 <view class="left-view" >

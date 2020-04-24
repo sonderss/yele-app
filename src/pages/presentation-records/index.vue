@@ -21,13 +21,13 @@
         <view class="ordern">{{item.desk_name}}</view>
         <view class="status end">{{item.client_name}}</view>
       </view>
-      <view :class="item.isMore ? 'main1 p-top-20 ': 'main p-top-20 ' ">
+      <view v-if="item.product.length!==0" :class="item.isMore ? 'main1 p-top-20 ': 'main p-top-20 ' ">
         <view class="item" v-for="(item2,index2) in item.product" :key="index2">
            <text >{{item2.commodity_detail_name}}</text>
             <text>￥{{item2.commodity_price}}</text>
         </view>
       </view>
-      <view class="over-view min-border-bottom p-tb-20" @click="showMore(index)">
+      <view v-if="item.product.length!==0" class="over-view min-border-bottom p-tb-20" @click="showMore(index)">
           {{item.isMore ? '展开更多' : '收起'}}<text :class="item.isMore ? ' f22 botm1' : ' f22 botm'"></text>
       </view>
       <view class="timer ">

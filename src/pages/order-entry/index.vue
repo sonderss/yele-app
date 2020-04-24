@@ -47,6 +47,14 @@ export default {
       }]
     }
   },
+  mounted () {
+    this.$minApi.getOrderListDown({
+      opening_id: 31
+    }).then(res => {
+      console.log(res)
+      this.list = res.list
+    })
+  },
   methods: {
     order () {
       this.$minRouter.push({

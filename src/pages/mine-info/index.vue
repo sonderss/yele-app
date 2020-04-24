@@ -3,7 +3,7 @@
     <view class="cell-wrap p-lr-30 p-tb-20">
       <min-cell>
         <min-cell-item
-          :img="userInfo.head_img? userInfo.head_img: 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg'"
+          :img="userInfo.head_img"
           :title="userInfo.store_name"
           tail="编辑头像"
           imgSize="sm"
@@ -11,7 +11,7 @@
           arrow
         ></min-cell-item>
         <min-cell-item
-          title="名字" :tail="userInfo.username"
+          title="名字" :tail="userInfo.user_name"
           :border="true" arrow
         ></min-cell-item>
         <picker @change="bindPickerChange" :value="index" :range="sex">
@@ -28,12 +28,12 @@
         </picker>
         <picker mode="date"  @change="bindPickerChange2" >
           <min-cell-item
-            title="出生日期" :tail="date"
+            title="出生日期" :tail=" this.date  "
             :border="true" arrow
           ></min-cell-item>
         </picker>
         <min-cell-item
-          title="电话号码" :tail="$minCommon.hideTel(userInfo.mobile)"
+          title="手机" :tail="phone"
           :border="false" arrow
           @eventParent="setPhone"
         ></min-cell-item>
@@ -41,7 +41,7 @@
       <view class="m-top-20"></view>
       <min-cell>
         <min-cell-item
-          title="实名认证" tail="去认证"
+          title="实名认证" :tail="userInfo.is_certify === 1 ? '已认证':'未认证'"
           :border="true" arrow
           tailType="red"
            @eventParent="toFace"
@@ -71,18 +71,31 @@ export default {
         '柯尔克孜族', '达斡尔族', '景颇族', '毛南族', '撒拉族', '布朗族', '塔吉克族', '阿昌族', '普米族', '鄂温克族', '怒族', '京族', '基诺族', '德昂族', '保安族',
         '俄罗斯族', '裕固族', '乌孜别克族', '门巴族', '鄂伦春族', '独龙族', '塔塔尔族', '赫哲族', '珞巴族'],
       sex: ['不限', '男', '女'],
-      index: 1,
+      index: 0,
       index1: 0,
       date: '2020/3/20',
-      userInfo: {}
+      userInfo: {},
+      phone: ''
     }
   },
   onLoad () {
-    this.userInfo = this.$store.state.user.userInfo
-    console.log(this.userInfo)
+    this.phone = this.$store.state.user.userInfo.mobile
   },
   mounted () {
-
+    this.$minApi.getUserInfo().then(res => {
+      console.log(res)
+      this.userInfo = res
+      this.userInfo.birthday = this.userInfo.birthday.replace(/00:00:00/g, '')
+      this.minzu.map((item, index) => {
+        if (item === this.userInfo.nation) {
+          this.index1 = index
+        }
+      })
+      this.sex.map((item, index) => {
+        this.index = this.userInfo.sex
+      })
+      this.date = this.userInfo.birthday.replace(/-/g, '/')
+    })
   },
   methods: {
     bindPickerChange1 (e) {
@@ -102,7 +115,8 @@ export default {
     toFace () {
       // verify-name
       this.$minRouter.push({
-        name: 'verify-name'
+        name: 'verify-name',
+        params: { id_card: this.userInfo.id_card, is_certify: this.userInfo.is_certify, name: this.userInfo.user_name, phone: this.$store.state.user.userInfo.mobile }
       })
     },
     // payMethods drawing-way
@@ -122,9 +136,8 @@ export default {
                 console.log('success')
               }
             })
-            this.$minRouter.push({
-              name: 'login',
-              type: 'reLaunch'
+            uni.reLaunch({
+              url: '../login/index'
             })
           }
         }

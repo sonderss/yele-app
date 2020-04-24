@@ -98,7 +98,26 @@ export default {
   gerOrderList: data => minRequest.get('/5e9ea4671e89c', data),
   // 确认赠送  5e9f9e0ee9a86?order_id=215
   postOrderGet: data => minRequest.get('/5e9f9e0ee9a86', data),
-
+  // 个人资料
+  getUserInfo: () => minRequest.get('/5e9fe880cb610'),
+  // 修改手机号 5ea00df607233
+  setPhone: data => minRequest.post('/5ea00df607233', data),
+  // 实名认证 5ea01b1597aa8
+  postNameTrue: data => minRequest.post('/5ea01b1597aa8', data),
+  // 我的下线 5e9facde8be76?limit=10&page=1
+  getMyDownLine: data => minRequest.get('/5e9facde8be76', data),
+  // 邀请记录 5e9fbfc58bb01
+  getPlaseList: () => minRequest.get('/5e9fbfc58bb01'),
+  // 可邀请下线列表
+  getPleaseDownLineList: data => minRequest.get('/5e9fbb7d8f017', data),
+  // 订单列表
+  getOrderListDown: data => minRequest.get('/5ea16642aa64e', data),
+  // 订单详情
+  getOrderDetailDown: data => minRequest.get('/5ea16648a957f', data),
+  // 获取支付方式
+  getPayMethods: () => minRequest.get('/5ea06896a701e'),
+  // 创建订单5e9915d513f53
+  setOrder: data => minRequest.post('/5e9915d513f53', data),
   /**
    * @description post请求
    */

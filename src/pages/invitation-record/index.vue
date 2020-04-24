@@ -3,12 +3,13 @@
   <view class="invitation-record p-lr-30 p-tb-30">
 
       <min-cell-item
-        v-for="(item, index) in 2" :key="index"
-        :img="item.head_img ? item.head_img : '../../static/images/headurl60.png' "
-        title="刘大大"
-        label="申请时间：2019-12-05  14:05:36"
-        :tail="status[1].statusText"
-        :tailType="status[1].color"
+        v-for="(item, index) in list" :key="index"
+        :img="item.head_img.length>10 ? item.head_img : '../../static/images/headurl60.png' "
+        :title="item.sales_name"
+        :label="'申请时间：'+item.create_time"
+        :tailcolor="true"
+        :tail="status[item.status].statusText"
+        :tailType="status[item.status].color"
         :border="list.length !== index + 1"
         class="m-bottom-20"
       ></min-cell-item>
@@ -29,10 +30,16 @@ const status = {
 export default {
   name: 'invitation-record',
   navigate: ['navigateTo', 'switchTab'],
+  mounted () {
+    this.$minApi.getPlaseList().then(res => {
+      console.log(res)
+      this.list = res
+    })
+  },
   data () {
     return {
       status,
-      list: [1],
+      list: [],
       total: -1,
       params: {
         page: 1,
@@ -49,9 +56,6 @@ export default {
     // setTimeout(() => {
     //   uni.stopPullDownRefresh() // 停止下拉刷新动画
     // }, 2000)
-  },
-  mounted () {
-    // this.getApplyLog()
   },
   methods: {
     // getApplyLog (shuaxin) {

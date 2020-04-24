@@ -28,7 +28,8 @@
             @changes='changeChioce(index,index2)'
             v-model="item2.step"
             :desc="item2.sku.length >=1 ?item2.sku[0].sku_full_name : '暂无商品描述' "
-            :price="item2.sku.length >=1 ?item2.sku[0].sku_price : item2.price ">
+            :price="item2.sku.length >=1 ?item2.sku[0].sku_price : item2.price "
+            >
           </min-goods-chioce>
         </view>
       </view>
@@ -45,6 +46,7 @@
       :goodsCount="countNums"
       buttonText='去下单'
       :buttonLabel="buttonLabel"
+      @submit="submit"
       >
     </min-goods-submit>
   </view>
@@ -72,7 +74,7 @@
                   </view>
                   <view class="right-view-bottom">
                     <view class="right-view-bottom-desc" >
-                      <text class="f20 t">￥<text  style="color:#FF0000;font-size:30">{{item2.sku.price}}</text></text>
+                      <text class="f20 t">￥<text  style="color:#FF0000;font-size:30">{{item2.price}}</text></text>
                     </view>
                     <view class="steper">
 
@@ -181,7 +183,7 @@ export default {
     totalAmountE () {
       let sum = 0
       this.selArr.map(item => {
-        sum += item.step * item.sku.price
+        sum += item.step * item.price
       })
       return sum.toFixed(2)
     },
@@ -195,9 +197,9 @@ export default {
     }
   },
   onShow () {
-    if (this.$store.state.goods.selected_products.length > 0 && this.$store.state.goods.selected_products[0].step) {
-      this.selArr = this.$store.state.goods.selected_products
-    }
+    // if (this.$store.state.goods.selected_products.length > 0 && this.$store.state.goods.selected_products[0].step) {
+    //   this.selArr = this.$store.state.goods.selected_products
+    // }
   },
   watch: {
     selArr: function (a, b) {
@@ -285,19 +287,6 @@ export default {
         this.errImg = true
       }
     },
-    /** 添加商品事件 */
-    // addGoods (index, index2) {
-    //   const a = index + '' + index2
-    //   // // 判断选择项是否重复
-    //   if (!this.selNum.includes(a)) {
-    //     this.selNum.push(a)
-    //     this.selArr.push(this.mainArray[index].list[index2])
-    //     console.log('selArr', this.selArr)
-    //     // this.totalAmountE()
-    //   } else {
-
-    //   }
-    // },
     /** 清空已选商品 */
     delAll () {
       this.selArr = []
@@ -390,6 +379,16 @@ export default {
       this.addGoods(obj)
       this.closeSelectedSkuPop()
       console.log(this.selArr)
+    },
+    // 提交
+    submit () {
+      console.log('已选商品')
+      // 调用创建订单接口
+      // this.$minApi.setOrder({
+
+      // }).then(res => {
+      //   console.log(res)
+      // })
     },
     // 商品详情
     goDetails (index, index2) {

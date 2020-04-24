@@ -5,19 +5,19 @@
         <view class="main p-tb-20">
           <view class="status">空闲中</view>
           <view>
-            台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：<text class="emp">{{list.baseInfo.desk_name}}</text>
+            台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：<text class="emp">{{list.deskInfo.desk_name}}</text>
           </view>
           <view>
-            分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.baseInfo.group_name}}
+            分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.deskInfo.group_name}}
           </view>
           <view>
-            低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：{{list.baseInfo.is_minim_charge === 1 ? '￥'+ list.baseInfo.minim_charge :'否' }}
+            低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：{{list.deskInfo.is_minim_charge === 1 ? '￥'+ list.deskInfo.minim_charge :'否' }}
           </view>
           <view>
-            座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.baseInfo.seats)}}
+            座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.deskInfo.seats)}}
           </view>
           <view>
-            开台条件：{{list.baseInfo.enable_minimum_consume === 1 ? list.baseInfo.minimum_consume_percent+'成低消'+ (list.baseInfo.finally_minimum_price) : '否'}}
+            开台条件：{{list.deskInfo.enable_minimum_consume === 1 ? list.deskInfo.minimum_consume_percent+'成低消'+ (list.deskInfo.finally_minimum_price) : '否'}}
           </view>
         </view>
     </view>
@@ -86,7 +86,7 @@ export default {
       // console.log(this.idNum)
       this.$minRouter.push({
         name: 'start-stage',
-        params: { desk_id: this.idNum, status: this.list.baseInfo.status }
+        params: { desk_id: this.idNum, status: this.list.deskInfo.status }
       })
     },
     // 停用
@@ -101,7 +101,7 @@ export default {
         cancelColor: '#0090ff',
         success: (e) => {
           if (e.id === 1) {
-            this.$minApi.stopUse({ id: this.idNum })
+            this.$minApi.stopUse({ desk_id: this.idNum })
             // 停用成功
               .then(res => {
                 console.log(res)
@@ -125,7 +125,7 @@ export default {
       // 跳转到选择客户页面（存酒）
       this.$minRouter.push({
         name: 'select-customers',
-        params: { desk_id: this.idNum, desk_name: this.list.baseInfo.desk_name }
+        params: { }
       })
     },
     // 展示剩余按钮
