@@ -6,24 +6,24 @@
         <view class="status">已停用</view>
         <view>
           台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：
-          <text class="emp">{{list.deskInfo.desk_name}}</text>
+          <text class="emp">{{list.desk_info.desk_name}}</text>
         </view>
-        <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.deskInfo.group_name}}</view>
-        <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：{{list.deskInfo.is_minim_charge === 1 ? '￥'+list.deskInfo.minim_charge : '否'}}</view>
-        <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.deskInfo.seats) }}</view>
-        <view>开台条件： {{list.deskInfo.enable_minimum_consume === 0 ? '否' : list.deskInfo.minimum_consume_percent+'成低消'+ (list.deskInfo.finally_minimum_price)}}</view>
+        <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.desk_info.group_name}}</view>
+        <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：￥{{list.desk_info.minim_charge}}</view>
+        <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.desk_info.seats) }}</view>
+        <view>开台条件：{{list.desk_info.minimum_consume_percent+'成低消'+ `(${list.desk_info.desk_open_minimum})`}}</view>
       </view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">操作信息</view>
       <view class="main p-tb-20">
-        <view>锁台人员：{{list.deskInfo.lock_user_name}}</view>
-        <view>锁台时间：{{$minCommon.formatDate(new Date(list.deskInfo.lock_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
+        <view>锁台人员：{{list.desk_info.lock_user_name}}</view>
+        <view>锁台时间：{{$minCommon.formatDate(new Date(list.desk_info.lock_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
       </view>
     </view>
     <view class="btns-confirmed">
       <min-btn class="btn" @click="start_use">启用</min-btn>
-      <min-btn type="white" class="btn">存酒</min-btn>
+      <min-btn type="white" class="btn"  @click="saveWine">存酒</min-btn>
       <min-btn type="white" @click="goGetHistory" class="btn">历史</min-btn>
     </view>
       <min-modal ref='show'></min-modal>
@@ -53,6 +53,15 @@ export default {
     //     params: { id: this.idNum }
     //   })
     // },
+    // 存酒
+    saveWine () {
+      this.index = 2
+      // 跳转到选择客户页面（存酒）
+      this.$minRouter.push({
+        name: 'select-customers',
+        params: { desk_id: this.idNum }
+      })
+    },
     start_use () {
       this.$refs.show.handleShow({
         title: '确认启用？',

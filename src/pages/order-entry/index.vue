@@ -4,9 +4,9 @@
           <view class="f30 p-tb-25">台位信息</view>
           <view class="min-border-bottom" style="height:1rpx"></view>
           <view class="main min-flex min-flex-dir-top min-flex-align-top f28 p-bottom-10">
-            <text class="m-bottom-10 m-top-20">台      号：<text class="cardNum">K112</text></text>
-            <text class="m-bottom-10">低      消：￥500<text class="status-code">（未够低消）</text></text>
-            <text class="m-bottom-10">账单金额：￥324653.21</text>
+            <text class="m-bottom-10 m-top-20">台      号：<text class="cardNum">{{$parseURL().desk_info.name}}</text></text>
+            <text class="m-bottom-10">低      消：￥{{$parseURL().desk_info.charge}}</text>
+            <text class="m-bottom-10">账单金额：￥{{$parseURL().desk_info.price}}</text>
           </view>
       </min-cell>
       <view class="order m-tb-20">
@@ -19,7 +19,8 @@
               <text>赠送</text>
           </view>
       </view>
-      <min-order-list :isShowPlatform='false' :list='list'></min-order-list>
+      <min-order-list :isShowPlatform='false' :list='list' v-if="list.length > 0"></min-order-list>
+      <min-404 v-else></min-404>
   </view>
 </template>
 
@@ -48,8 +49,9 @@ export default {
     }
   },
   mounted () {
+    console.log('桌台ID和open_id', this.$parseURL())
     this.$minApi.getOrderListDown({
-      opening_id: 31
+      opening_id: this.$parseURL().open_id
     }).then(res => {
       console.log(res)
       this.list = res.list
@@ -59,15 +61,13 @@ export default {
     order () {
       this.$minRouter.push({
         name: 'placean-order',
-        type: 'navigateTo',
-        path: '/pages/placean-order/index'
+        params: { minim_charge: this.$parseURL().desk_info.charge }
       })
     },
     presentation () {
       this.$minRouter.push({
         name: 'give-away',
-        type: 'navigateTo',
-        path: '/pages/give-away/index'
+        params: { desk_id: this.$parseURL().desk_id }
       })
     }
   }

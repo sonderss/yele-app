@@ -2,10 +2,10 @@
   <view class="apply-open">
     <view class="p-top-20 p-lr-30" style="padding-bottom: 66rpx;">
       <view class="platform-info f28 p-lr-20 p-tb-20">
-        <view>台位抵消：￥1000</view>
-        <view>开台条件：<text class="emp">6成低消</text></view>
-        <view>订单金额：￥432523.00</view>
-        <view>达成状态：未达成开台条件</view>
+        <view>台位抵消：￥{{list.order_info.minim_charge}}</view>
+        <view>开台条件：<text class="emp">{{list.order_info.minimum_percent}}成低消 {{`(${list.order_info.desk_open_minimum})`}}</text></view>
+        <view>订单金额：￥{{list.order_info.bill_price}}</view>
+        <view>达成状态：{{list.order_info.is_can_open === 0 ? "未达成开台条件":"达成开台条件"}}</view>
       </view>
       <view class="goods-wrap m-top-20 p-lr-20">
         <view class="p-tb-30 min-border-bottom">商品</view>
@@ -25,14 +25,14 @@
       <view class="client-info m-top-20 p-lr-20 p-tb-30">
         <view class="p-bottom-30 min-border-bottom">客户信息</view>
         <view class="card p-top-30">
-          <view class="item">客户姓名：可乐</view>
-          <view class="item">联系电话：15016584603</view>
+          <view class="item">客户姓名：{{list.order_info.client_name ?list.order_info.client_name :'暂无数据'}}</view>
+          <view class="item">联系电话：{{list.order_info.client_mobile?  list.order_info.client_mobile:'暂无数据'}}</view>
         </view>
       </view>
     <min-remarks v-model='value'></min-remarks>
     </view>
     <view class="btn-wrap">
-      <min-btn shape="flat">提交申请</min-btn>
+      <min-btn shape="flat" @click="submit">提交申请</min-btn>
     </view>
   </view>
 </template>
@@ -43,7 +43,25 @@ export default {
   navigate: ['navigateTo'],
   data () {
     return {
-      value: ''
+      value: '',
+      list: { order_info: { minim_charge: '' } }
+    }
+  },
+  mounted () {
+    console.log('申请开台', this.$parseURL())
+    this.$minApi.previewOrder({
+      order_id: this.$parseURL().order_id,
+      desk_id: this.$parseURL().desk_id,
+      open_status: this.$parseURL().open_status
+    }).then(res => {
+      this.list = res
+      console.log(this.list)
+    })
+  },
+  methods: {
+    submit () {
+      // 开台申请  orderGetRoot  {desk_id:this.$parseURL().desk_id,reason:''}
+
     }
   }
 }

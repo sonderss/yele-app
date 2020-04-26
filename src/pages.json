@@ -1,4 +1,4 @@
-{
+          {
 	"pages": [
     
     {
@@ -937,7 +937,8 @@
             "buttons":[
               {
                 "text": "下一步",
-                "fontSize":"28rpx"
+                "fontSize":"28rpx",
+                "width":"auto"
               }
             ]
           }

@@ -6,12 +6,12 @@
         <view class="status">点单中</view>
         <view>
           台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：
-          <text class="emp">{{list.deskInfo.desk_name}}</text>
+          <text class="emp">{{list.desk_info.desk_name}}</text>
         </view>
-        <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.deskInfo.group_name}}</view>
-        <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：{{list.deskInfo.is_minim_charge === 1 ? '￥'+list.deskInfo.minim_charge : '否'}}</view>
-        <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.deskInfo.seats) }}</view>
-        <view>开台条件：{{list.deskInfo.enable_minimum_consume === 0 ? '否' : list.deskInfo.minimum_consume_percent+'成低消'+ (list.deskInfo.finally_minimum_price)}}</view>
+        <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.desk_info.group_name}}</view>
+        <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：￥{{list.desk_info.minim_charge}}</view>
+        <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.desk_info.seats) }}</view>
+        <view>开台条件：{{list.desk_info.minimum_consume_percent+'成低消'+ (list.desk_info.desk_open_minimum)}}</view>
       </view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
@@ -19,15 +19,15 @@
       <view class="main p-tb-20">
         <view>
           当前状态：
-          <text style="color: #FF0000;">不满足开台条件</text>
+          <text style="color: #FF0000;">{{list.order_info.is_can_open === 0 ?  '不满足开台条件' : '已够开台条件'}}</text>
         </view>
-        <view>开台订单：￥600（未支付）</view>
+        <view>开台订单：{{list.order_info.order_id === 0 ? '未进行点单':'￥'+list.order_info.order_price}}</view>
         <view class="card-btns">
           <min-btn size="xs" @click="reorder">重新下单</min-btn>
           <view class="m-left-20"></view>
-          <min-btn size="xs" type="white" border @click="applicationopening">申请开台</min-btn>
+          <min-btn size="xs" type="white" border @click="applicationopening(list.order_info.is_can_open)">申请开台</min-btn>
           <view class="m-left-20"></view>
-          <min-btn size="xs" type="white" border class="m-left-20" @click="checkorder">查看订单</min-btn>
+          <min-btn size="xs" type="white" border class="m-left-20" @click="checkorder(list.order_info.is_can_open)">查看订单</min-btn>
         </view>
       </view>
     </view>
@@ -129,7 +129,7 @@ export default {
       // 跳转到选择客户页面（存酒）
       this.$minRouter.push({
         name: 'select-customers',
-        params: { desk_id: this.idNum, desk_name: this.list.deskInfo.desk_name }
+        params: { desk_id: this.idNum, desk_name: this.list.desk_info.desk_name }
       })
     },
     // 预约
@@ -146,16 +146,24 @@ export default {
       })
     },
     // 申请开台
-    applicationopening () {
-      this.$minRouter.push({
-        name: 'apply-open'
-      })
+    applicationopening (n) {
+      if (n === 0) {
+        this.$minRouter.push({
+          name: 'apply-open',
+          params: { desk_id: this.idNum, order_id: this.list.order_info.order_id, open_status: 0 }
+        })
+      }
     },
     // 查看订单
-    checkorder () {
-      this.$minRouter.push({
-        name: 'confirm-order'
-      })
+    checkorder (n) {
+      if (n !== 0) {
+        this.$minRouter.push({
+          name: 'confirm-order',
+          params: { desk_id: this.idNum, order_id: this.list.order_info.order_id, open_status: 0 }
+        })
+      } else {
+        this.$showToast('暂时没有订单信息')
+      }
     },
     // 展示剩余按钮
     showToastTxt () {
@@ -174,7 +182,8 @@ export default {
     // 下单
     goOrder () {
       this.$minRouter.push({
-        name: 'placean-order'
+        name: 'placean-order',
+        params: { desk_id: this.list.desk_info.desk_id, minim_charge: this.list.desk_info.minim_charge }
       })
     }
   },

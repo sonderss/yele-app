@@ -5,7 +5,7 @@
         <view class="main p-tb-20">
           <view class="be-confirm ">待确认</view>
           <view>
-            台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：<text class="emp">K112</text>
+            台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：<text class="emp">{{list.desk_info.desk_name}}</text>
           </view>
           <view>
             分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：卡座
@@ -71,11 +71,16 @@ export default {
   props: {
     idNum: {
       type: Number
+    },
+    list: {
+      type: Object,
+      default: () => {}
     }
   },
   data () {
     return {
-      toast: false
+      toast: false,
+      index: 0
     }
   },
   methods: {
@@ -99,12 +104,17 @@ export default {
           if (e.id === 1) {
             // 销台接口
             this.$minApi.delOrder({
-              id: this.idNum
+              desk_id: this.idNum
             })
               .then(res => {
                 if (res.length === 0) {
                   this.$showToast('销台成功')
                 }
+                setTimeout(() => {
+                  this.$minRouter.push({
+                    name: 'platform-detail'
+                  })
+                }, 2000)
               })
           }
         }

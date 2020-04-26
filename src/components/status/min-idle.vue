@@ -5,19 +5,19 @@
         <view class="main p-tb-20">
           <view class="status">空闲中</view>
           <view>
-            台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：<text class="emp">{{list.deskInfo.desk_name}}</text>
+            台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：<text class="emp">{{list.desk_info.desk_name}}</text>
           </view>
           <view>
-            分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.deskInfo.group_name}}
+            分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.desk_info.group_name}}
           </view>
           <view>
-            低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：{{list.deskInfo.is_minim_charge === 1 ? '￥'+ list.deskInfo.minim_charge :'否' }}
+            低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：￥{{list.desk_info.minim_charge}}
           </view>
           <view>
-            座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.deskInfo.seats)}}
+            座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.desk_info.seats)}}
           </view>
           <view>
-            开台条件：{{list.deskInfo.enable_minimum_consume === 1 ? list.deskInfo.minimum_consume_percent+'成低消'+ (list.deskInfo.finally_minimum_price) : '否'}}
+            开台条件：{{list.desk_info.minimum_consume_percent+'成低消'+ (list.desk_info.desk_open_minimum)}}
           </view>
         </view>
     </view>
@@ -86,7 +86,7 @@ export default {
       // console.log(this.idNum)
       this.$minRouter.push({
         name: 'start-stage',
-        params: { desk_id: this.idNum, status: this.list.deskInfo.status }
+        params: { desk_id: this.idNum, status: this.list.desk_info.status }
       })
     },
     // 停用
@@ -125,7 +125,7 @@ export default {
       // 跳转到选择客户页面（存酒）
       this.$minRouter.push({
         name: 'select-customers',
-        params: { }
+        params: { desk_id: this.idNum }
       })
     },
     // 展示剩余按钮

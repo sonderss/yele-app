@@ -88,8 +88,8 @@ export default {
   },
   onLoad () {
     this.$minApi.billAllin({
-      opening_id: 4,
-      desk_id: 12
+      opening_id: this.$parseURL().open_id,
+      desk_id: this.$parseURL().desk_id
     }).then(res => {
       this.data = res
       console.log(this.data)

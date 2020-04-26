@@ -6,48 +6,46 @@
         <view class="status reserved">清台中</view>
         <view>
           台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：
-          <text class="emp">K112</text>
+          <text class="emp">{{list.desk_info.desk_name}}</text>
         </view>
-        <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：卡座</view>
-        <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：￥500</view>
-        <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：4座</view>
-        <view>开台条件：6成低消（￥600）</view>
+        <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.desk_info.group_name}}</view>
+        <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：￥{{list.desk_info.minim_charge}}</view>
+        <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.desk_info.seats)}}</view>
+        <view>开台条件：{{list.desk_info.minimum_consume_percent+'成低消'+ `(${list.desk_info.desk_open_minimum})`}}</view>
       </view>
     </view>
-    <view class="card p-lr-20 p-bottom-10 m-bottom-20">
+     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">客户信息</view>
       <view class="main p-tb-20">
-        <view>客户姓名：刘小青</view>
-        <view>联系电话：13563250000</view>
-        <view>当天生日：是</view>
-        <view>预抵时间：2020年02月15日 16:20:00</view>
+        <view>客户姓名：{{list.desk_info.client_name?list.desk_info.client_name:'暂无数据'}}</view>
+        <view>联系电话：{{list.desk_info.client_mobile?list.desk_info.client_mobile:'暂无数据' }}</view>
+        <view>当天生日：{{list.desk_info.is_birthday === 0 ? "否":"是"}}</view>
+        <view>预抵时间：{{list.desk_info.arrival_time}}</view>
       </view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">订单信息</view>
-     <view  class="m-bottom-10 m-top-20" style="width:100%;display: flex;justify-content: space-between;">
-          <text class="f28">订 单 号 ：65798254864346</text>
-          <text class="f26">已支付 </text>
+
+      <view  class="m-bottom-10 m-top-20"  v-for="i in list.order_list" :key="i.order_sn" style="width:100%;display: flex;justify-content: space-between;">
+          <text class="f28">订 单 号 ：{{i.order_sn}}</text>
+          <text class="f26">{{i.pay_status === 0 ? `待付${list.order_list.payable_price}`:'已支付'}} </text>
       </view>
-      <view  class="m-bottom-10 m-top-20" style="width:100%;display: flex;justify-content: space-between;">
-          <text class="f28">订 单 号 ：65798254864346</text>
-          <text class="f26">已支付 </text>
-      </view>
+
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">操作信息</view>
       <view class="main p-tb-20">
-        <view>客户姓名：刘小青</view>
-        <view>联系电话：13563250000</view>
-        <view>当天生日：是</view>
-        <view>预抵时间：2020年02月15日 16:20:00</view>
+        <view>营销人员：{{list.desk_info.book_user_name?list.desk_info.book_user_name:"暂无数据"}}</view>
+        <view>预约时间：{{list.desk_info.book_time}}</view>
+        <view>开台人员：{{list.desk_info.open_user_name}}</view>
+        <view>开台时间：{{$minCommon.formatDate(new Date(list.desk_info.open_time *1000),'yyyy-MM-dd hh:mm:ss') }}</view>
       </view>
     </view>
 
      <view class="btns">
       <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book">预约</view>
       <view :class="index === 1 ? 'btn active' : 'btn' " @click="saveWine">存酒</view>
-      <view  :class="index === 2 ? 'btn active' : 'btn' " >订单</view>
+      <view  :class="index === 2 ? 'btn active' : 'btn' " @click="orderGet">订单</view>
       <view class="badge" @click="showToastTxt"  id='testDom'>
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
           <view class="toast anmatiin " v-if="toast">
@@ -66,7 +64,11 @@ import mixin from './mixin'
 export default {
   mixins: [mixin],
   props: {
-    idNum: Number
+    idNum: Number,
+    list: {
+      type: Object,
+      default: () => {}
+    }
   },
   data () {
     return {
@@ -88,6 +90,13 @@ export default {
     //     params: { id: this.idNum }
     //   })
     // },
+    // 订单
+    orderGet () {
+      this.$minRouter.push({
+        name: 'order-list',
+        params: { open_id: this.list.desk_info.opening_id }
+      })
+    },
     // 预约
     book () {
       this.index = 0
@@ -123,6 +132,11 @@ export default {
               .then(res => {
                 if (res.length === 0) {
                   this.$showToast('销台成功')
+                  setTimeout(() => {
+                    this.$minRouter.push({
+                      name: 'platform-admin'
+                    })
+                  }, 2000)
                 }
               })
           }
@@ -133,7 +147,8 @@ export default {
     bill () {
       // 这里需要传开台记录id 台位ID
       this.$minRouter.push({
-        name: 'desk-bill'
+        name: 'desk-bill',
+        params: { open_id: this.list.desk_info.opening_id, desk_id: this.idNum }
       })
     },
     // 展示剩余按钮

@@ -3,10 +3,10 @@
     <view class="min-left  p-tb-25 p-left-30" style="flex-basis: 200rpx;" @click="$emit('leftClick')">
       <min-badge class="min-goods-count" :count="goodsCount" v-if="goodsCount * 1  > 0"/>
       <image class="min-icon" v-if="icon" :src="icon" alt="icon"/>
-      <text class="f28"  v-if="leftText">{{leftText}}</text>
+      <view class="f28"  :style="{color:leftTextColor,width:leftTextWidth}"  v-if="leftText"><text >{{leftTextDesc}}</text>{{leftText}}</view>
     </view>
     <view class="min-main p-tb-20 p-right-30">
-      <view class="min-total f22">
+      <view class="min-total f22" v-if="totalAmount">
         合计：<text class="min-amount">￥{{totalAmount}}</text>
       </view>
       <view class="f22" v-if="totalLabel">{{totalLabel}}</view>
@@ -47,6 +47,18 @@ export default {
       default: ''
     },
     leftText: {
+      type: String,
+      default: ''
+    },
+    leftTextColor: {
+      type: String,
+      default: ''
+    },
+    leftTextDesc: {
+      type: String,
+      default: ''
+    },
+    leftTextWidth: {
       type: String,
       default: ''
     },

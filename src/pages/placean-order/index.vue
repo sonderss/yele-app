@@ -42,7 +42,7 @@
     <min-goods-submit leftText="已选"
       @leftClick='selectedEvent'
       :totalAmount='totalAmountE'
-      totalLabel='台位低消：2000'
+      :totalLabel='totalLabel'
       :goodsCount="countNums"
       buttonText='去下单'
       :buttonLabel="buttonLabel"
@@ -65,7 +65,7 @@
             </view>
 
         <view class="main-sel-view p-lr-30 p-tb-30" >
-            <view class="item" v-for="(item2,n) in selArr" :key="n" @longpress='longTatch(n)'>
+            <view class="item" v-for="(item2,n) in selArr" :key="n">
                 <image :src="errImg ? '/static/images/goods.png': item2.product_img" mode="" @error="imageErro"/>
                 <view class="content-view">
                   <view class="right-view-title">
@@ -78,8 +78,7 @@
                     </view>
                     <view class="steper">
 
-                      <min-stepper v-if="isDel" :isAnimation='false' v-model="item2.step"  :min='0' @change="alDel($event,n)"></min-stepper>
-                      <view v-if="!isDel" @click="delItem(n)">删除</view>
+                      <min-stepper :isAnimation='false' v-model="item2.step"  :min='0' @change="alDel($event,n)"></min-stepper>
                     </view>
                   </view>
                 </view>
@@ -94,6 +93,7 @@
           :goodsCount="countNums"
           buttonText='去下单'
           buttonLabel='已开台'
+          @submit="submit"
           ></min-goods-submit>
         </view>
     </view>
@@ -112,7 +112,7 @@
               <view class="sku-view">
                 <text class="f22">{{skuObj.product_name}}</text>
                 <text class="f22 m-tb-20">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
-                <text class="f22 m">￥<text class="money">{{skuObj.sku[chioceIndex].price}}</text></text>
+                <text class="f22 m">￥<text class="money">{{skuObj.sku[chioceIndex].sku_price}}</text></text>
               </view>
           </view>
         </view>
@@ -154,6 +154,7 @@ export default {
       leftIndex: 0,
       chioceIndex: 0,
       buttonLabel: '(已开台)', // 已开台
+      totalLabel: '', // 台位低消
       scrollInto: '',
       skuObj: { sku: [{ sku_full_name: '' }] }, // 选择规格项
       isDel: true, //  所需删除的已选列表中对应项
@@ -177,6 +178,7 @@ export default {
     this.$nextTick(() => {
       this.getListData()
     })
+    this.totalLabel = `台位低消：${this.$parseURL().minim_charge}`
   },
   computed: {
     // 合计金额
@@ -271,11 +273,6 @@ export default {
       this.scrollInto = `item-${index}`
       this.leftIndex = index
     },
-
-    /** 点击商品事件(进入详情) */
-    goodsAdd (index, index2) {
-      // this.addGoods(index, index2)
-    },
     /** 已选商品弹出事件 */
     selectedEvent () {
       this.selected = true
@@ -306,10 +303,6 @@ export default {
       this.selArr.splice(n, 1)
       this.selNum.splice(n, 1)
       this.isDel = true
-    },
-    // 长按事件触发删除
-    longTatch (n) {
-      this.isDel = false
     },
     // 已选弹出层删除事件
     alDel (n, index) {
@@ -383,12 +376,40 @@ export default {
     // 提交
     submit () {
       console.log('已选商品')
-      // 调用创建订单接口
-      // this.$minApi.setOrder({
-
-      // }).then(res => {
-      //   console.log(res)
-      // })
+      console.log(this.$parseURL())
+      if (this.selArr.length === 0) return this.$showToast('请选择商品')
+      console.log('准备提交', this.selArr)
+      // [{"id":1,"type":"service","quantity":1,"sku_id":0,"combination":[]}
+      const products = []
+      this.selArr.map(item => {
+        const obj = {}
+        // 类型为商品
+        if (item.type === 'product') {
+          obj.id = item.id
+          obj.type = item.type
+          obj.quantity = item.step
+          obj.combination = []
+          obj.sku_id = item.sku.id
+        }
+        // 类型为服务商品
+        // 类型为套餐
+        products.push(obj)
+      })
+      this.$minApi.setOrder({
+        desk_id: this.$parseURL().desk_id,
+        products: JSON.stringify(products)
+      }).then(res => {
+        console.log(res)
+        if (res.orderId) {
+          this.$showToast('提交成功')
+          // setTimeout(() => {
+          //   this.$minRouter.push({
+          //     name: 'confirm-order',
+          //     params: { order_id: res.orderId,desk_id: this.$parseURL().desk_id,open_status:0}
+          //   }, 2000)
+          // })
+        }
+      })
     },
     // 商品详情
     goDetails (index, index2) {

@@ -1,22 +1,21 @@
 <template>
-  <view class="min-order-list">
+  <view class="min-order-list" v-if="list[0].order_product_list">
       <view class="main" v-for="(item,index) in list" :key="index" @click="toDetail(item.id)">
           <view class="top-view min-flex">
             <view class="left-view min-flex min-flex-main-start">
                <text v-if="isShowPlatform"  class="f20 m-right-10 radius-b" :class="item.source === 0 ? 'active-left-p' : 'active-left-m' ">{{item.source === 0 ?  '门店' : (item.source === 1 ? '平台' :'赠送' )}}</text>
                <text class="f26 m-left-20">单号：{{item.order_sn}}</text>
             </view>
-            <text class="right-txt f28"  :class="status[item.order_status].color">{{status[item.order_status].desc}}</text>
+            <text class="right-txt f28" v-if="item.order_status" :class="status[item.order_status].color">{{status[item.order_status].desc}}</text>
           </view>
-          <view v-if="item.order_product_list.length < 2">
-            <view class="mid-view min-border-top ">
+          <view  v-if="item.order_product_list.length < 2 && item.order_product_list.length !== 'undefined'">
+            <view class="mid-view min-border-top "  v-for="(i,n) in item.order_product_list" :key="n">
                 <view class="left-view">
-                  <view class="left-photo" v-for="(i,n) in item.order_product_list" :key="n">
+                  <view class="left-photo">
                     <image :src="i.product_img" />
                   </view>
-
                   <view class="mid-desc">
-                      <text class="f28 fcolor title">{{i.product_name}}</text>
+                      <text class="f28 fcolor title" v-if="i.product_name !== 'undefined'">{{i.product_name}}</text>
                       <text class="tcolor f22 desc">{{i.sku}}</text>
                   </view>
                 </view>
@@ -26,20 +25,18 @@
                 </view>
             </view>
           </view>
-          <view v-if="item.order_product_list.length > 2">
+          <view v-if="item.order_product_list.length > 2 && item.order_product_list.length !== 'undefined'">
             <view class="mid-view min-border-top ">
                 <view class="left-view">
-                  <view class="left-photo m-right-20" v-for="(i,n) in item.order_product_list" :key="n">
+                  <view class="left-photo m-right-20" v-for="(i,n) in item.order_product_list" :key="i.id">
                     <image :src="i.product_img" @error="imageErro($event,index,n)"/>
-                    <!-- <image src="../static/images/goods.png" style="width:100rpx;height:100rpx"/> -->
-
                   </view>
                 </view>
                 <view class="right-price">
                   <text class="fcolor f28">￥ {{item.order_price}}</text>
                 </view>
             </view>
-            <text class="f20 origin sign" >{{order[item.order_type].desc }}</text>
+            <text class="f20 origin sign" v-if="item.order_type !== 'undefined'">{{order[item.order_type].desc }}</text>
             <text class="allin f22 tcolor">查看全部 >></text>
           </view>
            <view class="bottom-view min-border-top">
@@ -83,12 +80,15 @@ export default {
   props: {
     list: {
       type: Array,
-      default: () => []
+      default: () => [{ order_product_list: [{ product_name: '', sku: {} }], order_type: 0 }]
     },
     isShowPlatform: {
       type: Boolean,
       default: true
     }
+  },
+  mounted () {
+    console.log('组件', this.list)
   },
   methods: {
     imageErro (e, index, n) {

@@ -1,19 +1,24 @@
 <template>
   <view class="platform-detail p-top-20 p-lr-30">
-    <!-- 空闲中组件 2 00-->
-    <min-idle :idNum="id" :date="date" :status="2" v-if="status === 2" :list="list"></min-idle>
-    <!-- 点单中 4 00-->
-    <min-order :idNum="id" v-if="status === 4" :list="list"></min-order>
-    <!-- 已预约 3 00 -->
-    <min-booked :idNum="id"  v-if="status === 3" :list="list"></min-booked>
-    <!-- 待确认 5 00-->
-    <min-confirmed :idNum="id"  v-if="status === 5" :list="list"></min-confirmed>
-    <!-- 已停用 1 00-->
-    <min-terminated :idNum="id" :date="date" v-if=" status === 1" :list="list"></min-terminated>
-    <!-- 已开台 6 00-->
-    <min-opened  :idNum="id" v-if=" status === 6" :list="list" ></min-opened>
-    <!-- 清台中 7-->
-    <min-taichung :idNum="id"  v-if=" status === 7" :list="list"></min-taichung>
+    <view v-if="list.desk_info.desk_name">
+        <!-- 空闲中组件 2 00-->
+        <min-idle :idNum="id" :date="date" :status="2" v-if="status === 2" :list="list"></min-idle>
+        <!-- 点单中 4 00-->
+        <min-order :idNum="id" v-if="status === 4" :list="list"></min-order>
+        <!-- 已预约 3 00 -->
+        <min-booked :idNum="id"  v-if="status === 3" :list="list"></min-booked>
+        <!-- 待确认 5 00-->
+        <min-confirmed :idNum="id"  v-if="status === 5" :list="list"></min-confirmed>
+        <!-- 已停用 1 00-->
+        <min-terminated :idNum="id" :date="date" v-if=" status === 1" :list="list"></min-terminated>
+        <!-- 已开台 6 00-->
+        <min-opened  :idNum="id" v-if=" status === 6" :list="list" ></min-opened>
+        <!-- 清台中 7-->
+        <min-taichung :idNum="id"  v-if=" status === 7" :list="list"></min-taichung>
+    </view>
+
+    <min-404 v-model="intNet" v-if="!list.desk_info.desk_name"></min-404>
+
   </view>
 </template>
 
@@ -25,10 +30,18 @@ export default {
     return {
       id: '',
       status: Number,
+      intNet: Boolean,
       date: '',
       list: {
-        deskInfo: { desk_name: '' },
-        clientInfo: { client_name: '' }
+        desk_info: { desk_name: '' }
+      }
+    }
+  },
+  watch: {
+    intNet: function (a) {
+      if (a) {
+        // 请求数据
+        this.getData()
       }
     }
   },
@@ -48,7 +61,7 @@ export default {
         .then(res => {
           this.list = res
           console.log(this.list)
-          this.status = res.deskInfo.status
+          this.status = res.desk_info.status
         })
     }
   }

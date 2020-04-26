@@ -1,8 +1,7 @@
 <template>
   <view class="order-list p-tb-20 p-lr-30">
 
-      <min-order-list :list="list">
-      </min-order-list>
+      <min-order-list :list="list"></min-order-list>
 
   </view>
 </template>
@@ -10,12 +9,12 @@
 export default {
   name: 'order-list',
   navigate: ['navigateTo'],
-  mounted () {
+  onLoad () {
     this.$minApi.getOrderListDown({
-      opening_id: 31
+      opening_id: this.$parseURL().open_id
     }).then(res => {
-      console.log(res)
       this.list = res.list
+      console.log(this.list)
     })
   },
   data () {

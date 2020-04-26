@@ -11,6 +11,7 @@ export default {
         name: 'platform-history',
         params: { id: this.idNum }
       })
+      console.log('id', this.idNum)
     }
   },
   mounted () {

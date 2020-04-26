@@ -44,6 +44,8 @@ export default {
   clearOrder: data => minRequest.get('/5e71d5877cf60', data),
   // 销台
   delOrder: data => minRequest.get('/5e71d58cd6f3c', data),
+  // 开台申请
+  orderGetRoot: data => minRequest.post('/5e7b1643442ff', data),
   // 获取预约详情
   getBookedDetail: data => minRequest.get('/5e7985d26f15e', data),
   // 账单汇总
@@ -118,6 +120,10 @@ export default {
   getPayMethods: () => minRequest.get('/5ea06896a701e'),
   // 创建订单5e9915d513f53
   setOrder: data => minRequest.post('/5e9915d513f53', data),
+  // 预览订单 5e942d8d68ea6 / ?order_id=263&desk_id=13&open_status=0
+  previewOrder: data => minRequest.get('/5e942d8d68ea6', data),
+  // 确认订单 5ea062b985018
+  confirmOrder: data => minRequest.post('/5ea062b985018', data),
   /**
    * @description post请求
    */

@@ -3,27 +3,27 @@
       <view class="main" v-for="(item,index) in list" :key="index" @click="goDetail(index)">
           <view class="top-view min-flex">
             <view class="left-view min-flex min-flex-main-start">
-               <text class="f30 ordern">{{item.desk_name}}</text>
+               <text class="f30 ordern">{{item.desk_name ?item.desk_name:'暂无数据'}}</text>
             </view>
             <text class="right-txt f28" :class="status[item.order_status].class">{{status[item.order_status].desc}}</text>
           </view>
           <view >
             <view class="mid-view min-border-top "  >
                 <view class="left-view" >
-                  <view class="left-photo m-right-20" v-for="(i,n) in item.product" :key="n">
+                  <view class="left-photo m-right-20" v-for="i in item.order_product_list" :key="i.id">
                     <image :src="i.product_img.length>10? i.product_img :'/static/images/goods.png'" />
                   </view>
                 </view>
                  <!-- 当图片不超过1张时 -->
-                <view class="mid-desc" v-if="item.product.length ===1">
+                <view class="mid-desc" v-if="item.order_product_list.length ===1">
                       <text class="f28 fcolor title">{{item.product_name}}</text>
                       <text class="tcolor f22 desc">{{item.sku_full_name}}</text>
                 </view>
-                <view class="right-price" v-if="item.product.length ===1">
+                <view class="right-price" v-if="item.order_product_list.length ===1">
                   <text class="fcolor f28 testF">￥ {{item.order_price}}</text>
-                  <text class="tcolor f22 m-top-20">x {{item.product[0].quantity}}</text>
+                  <text class="tcolor f22 m-top-20">x {{item.order_product_list[0].quantity}}</text>
                 </view>
-                <view class="right-price" v-if="item.product.length > 1">
+                <view class="right-price" v-if="item.order_product_list.length > 1">
                   <text class="fcolor f28">￥ {{item.order_price}}</text>
                     <text class="allin f22 tcolor">查看全部 >></text>
                 </view>
@@ -76,7 +76,8 @@ export default {
     goDetail (index) {
       // 这里跳转订单详情
       this.$minRouter.push({
-        name: 'order-detail'
+        name: 'order-detail',
+        params: { ordr_id: this.list[index].id }
       })
     }
   }
@@ -102,6 +103,7 @@ export default {
       .ordern{
         font-weight: bold;
         margin-left: 20rpx;
+        line-height: 84rpx;
       }
       .active-left-p{
         width: 80rpx;

@@ -69,7 +69,7 @@
               <view class="sku-view">
                 <text class="f22">{{skuObj.product_name}}</text>
                 <text class="f22 m-tb-20">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
-                <text class="f22 m">￥<text class="money">{{skuObj.sku[chioceIndex].price}}</text></text>
+                <text class="f22 m">￥<text class="money">{{skuObj.sku[chioceIndex].sku_price}}</text></text>
               </view>
           </view>
         </view>
@@ -117,7 +117,7 @@
                     </view>
                     <view class="right-view-bottom">
                       <view class="right-view-bottom-desc" >
-                        <text class="f20 t">￥<text  style="color:#FF0000;font-size:30">{{item2.sku.price}}</text></text>
+                        <text class="f20 t">￥<text  style="color:#FF0000;font-size:30">{{item2.sku.sku_price}}</text></text>
                       </view>
                       <view class="steper">
                         <min-stepper v-model="item2.step" :isAnimation="false" :min='0' @change="aleradyGood($event,n)"></min-stepper>
@@ -177,7 +177,7 @@ export default {
     totalAmountE () {
       let sum = 0
       this.selArr.map(item => {
-        sum += item.step * item.sku.price
+        sum += item.step * item.sku.sku_price
       })
       return sum.toFixed(2)
     },
