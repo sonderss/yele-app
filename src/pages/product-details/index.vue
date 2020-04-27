@@ -16,46 +16,49 @@
       </swiper-item>
     </swiper>
     <view class="goods-item p-lr-20 m-bottom-20"  v-if="!noData">
-      <view class="top-view f28 m-top-10 f28"  v-if="type === 1 || type ===4">{{list.product_name}}</view>
-      <view class="top-view f28 m-top-10 f28"  v-if="type === 2 || type ===5 ">{{list.service_name}}</view>
-      <view class="botm-view" v-if="type === 4">
+      <view class="top-view f28 m-top-10 f28" >{{list.product_name}}</view>
+      <!-- <view class="top-view f28 m-top-10 f28">{{list.service_name}}</view> -->
+      <view class="botm-view" >
         <view class="f22">
-          <text class="price">￥{{list.sku.length === 0 ? '暂无数据': list.sku[chioceIndex].sku_price}}</text>
+          <text class="price" v-if="product_type === 'product' ">￥{{list.sku.length === 0 ? '暂无数据': list.sku[chioceIndex].sku_price}}</text>
+          <text class="price" v-if="product_type === 'service' ">￥{{list.price}}</text>
         </view>
         <!-- @change="alDel($event,n)" -->
-        <min-stepper  v-if="selArr.length > 0"  v-model="selArr[indexL].step" @change="goodsChange"></min-stepper>
-        <min-stepper v-else v-model="lastStep"></min-stepper>
+        <min-stepper  v-if="selArr.length > 0"  v-model="product_num" @change="goodsChange($event)"></min-stepper>
+        <min-stepper v-else v-model="product_num"  @change="goodsChange($event)"></min-stepper>
       </view>
+    </view>
+    <min-describe @chincesku="selSku" sku="750ml*2010年/瓶" leftTxt="规格" v-if="product_type === 'product' "></min-describe>
+    <view class="introduction m-top-20 p-lr-20"  v-if="!noData">
+        <view class="title min-border-bottom m-bottom-30">详细介绍</view>
+        <view class="content p-bottom-30" >{{list.info}}</view>
+        <!-- <view class="content p-bottom-30" v-if="type === 2 || type=== 5">{{list.service_info}}</view> -->
+    </view>
+
       <!-- 电子菜单 -->
-      <view class="botm-view" v-if="type === 1">
+      <!-- <view class="botm-view" v-if="type === 1">
         <view class="f22">
           <text class="price">￥{{list.sku.length === 0 ? '暂无数据': list.sku[chioceIndex].price}}</text>
         </view>
         <view class="btn" v-if="list.sku.length >=1" @click="selSku">选规格</view>
-      </view>
+      </view> -->
       <!-- 服务商品 -->
-       <view class="botm-view" v-if="type === 2 || type=== 5">
+      <!-- <view class="botm-view" v-if="type === 2 || type=== 5">
         <view class="f22">
           <text class="price">￥{{list.service_price}}</text>
         </view>
         <min-stepper v-if=" type === 5" @change="goodsChange" v-model="count" ></min-stepper>
-      </view>
-    </view>
-     <min-describe @chincesku="selSku" sku="750ml*2010年/瓶" leftTxt="规格" v-if="type===4"></min-describe>
-    <view class="introduction m-top-20 p-lr-20"  v-if="!noData">
-        <view class="title min-border-bottom m-bottom-30">详细介绍</view>
-        <view class="content p-bottom-30" v-if="type === 1 || type===4">{{list.info}}</view>
-        <view class="content p-bottom-30" v-if="type === 2 || type=== 5">{{list.service_info}}</view>
-    </view>
+      </view> -->
 
     <min-goods-submit
       v-if="type != 1 && type != 2 "
       icon="../../static/images/cart.png"
       :goodsCount="countNums"
       :totalAmount="totalAmountE "
-      totalLabel="台位低消：￥1000.00"
+      :totalLabel="totalLabel"
       buttonText="去下单"
       @leftClick="leftClick"
+      @submit="submit"
     ></min-goods-submit>
      <!-- 选择规格 -->
     <min-popup :show="isSelSku"  @close='closeSelectedSkuPop'>
@@ -82,7 +85,7 @@
             </view>
         </view>
         <!-- 数量 -->
-        <view class="sku-item sku-item-num" v-if="type !== 1 && type!==2">
+        <view class="sku-item sku-item-num">
             <view class="f26">数量</view>
             <view class="m-tb-30">
                 <min-stepper :isAnimation="false" :min='1' v-model="skuObj.step"></min-stepper>
@@ -113,11 +116,12 @@
                   <view   class="content-view">
                     <view class="right-view-title">
                       <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                      <text class="f26" style="color:#666666">规格：{{item2.sku.sku_full_name}}</text>
+                      <text class="f26" style="color:#666666" v-if="item2.type === 'product'">规格：{{item2.sku.sku_full_name}}</text>
                     </view>
                     <view class="right-view-bottom">
                       <view class="right-view-bottom-desc" >
-                        <text class="f20 t">￥<text  style="color:#FF0000;font-size:30">{{item2.sku.sku_price}}</text></text>
+                        <text class="f20 t" v-if="item2.type === 'product'">￥<text  style="color:#FF0000;font-size:30">{{item2.sku.sku_price}}</text></text>
+                      <text class="f20 t" v-if="item2.type === 'service'">￥<text  style="color:#FF0000;font-size:30">{{item2.price}}</text></text>
                       </view>
                       <view class="steper">
                         <min-stepper v-model="item2.step" :isAnimation="false" :min='0' @change="aleradyGood($event,n)"></min-stepper>
@@ -135,8 +139,10 @@
           leftText="已选"
           :totalAmount='totalAmountE'
           :goodsCount="countNums"
+          :totalLabel="totalLabel"
           buttonText='去下单'
           buttonLabel='已开台'
+          @submit="submit"
           ></min-goods-submit>
         </view>
     </view>
@@ -167,7 +173,6 @@ export default {
       selected: false,
       selArr: [],
       errImg: false,
-      indexL: 0,
       lastStep: 0,
       flag: true
     }
@@ -177,7 +182,14 @@ export default {
     totalAmountE () {
       let sum = 0
       this.selArr.map(item => {
-        sum += item.step * item.sku.sku_price
+        if (item.type === 'product') {
+          sum += item.step * item.sku.sku_price
+        }
+        if (item.type === 'service') {
+          sum += item.step * item.price
+        }
+        this.$store.dispatch('goods/setOrderSelArr', this.selArr)
+        console.log('已选商品全局数据改变', this.$store.state.goods.orderSelArr)
       })
       return sum.toFixed(2)
     },
@@ -188,35 +200,65 @@ export default {
         num += this.selArr[i].step
       }
       return num
-    }
-  },
-  watch: {
-    lastStep: function (a) {
-      if (a > 0) {
-        console.log(this.selArr)
-        this.goodsChange()
-      }
+    },
+    // 详情商品初始值
+    product_num: {
+      get () {
+        let num = 1
+        // num = this.list.step
+        // 这里是商品有sku
+        if (this.selArr.length > 0) {
+          if (this.product_type === 'service') {
+            console.log('服务商品')
+            this.selArr.map(item => {
+              if (item.id === this.list.id) {
+                num = this.list.step
+                console.log(num)
+              }
+            })
+          }
+          if (this.product_type === 'product') {
+            if (this.list.sku.length > 0) {
+              this.list.sku.map(item => {
+                this.selArr.map(item2 => {
+                  if (item2.type === 'product') {
+                    if (item.id === item2.sku.id) {
+                      num = item2.step
+                    }
+                  }
+                })
+              })
+            }
+          }
+        }
+
+        return num
+      },
+      set (v) { }
     }
   },
   onLoad () {
     // type为1时  电子菜单商品详情
     this.product_id = this.$parseURL().product_id
-    this.type = this.$parseURL().type
-    console.log('type', this.type)
     this.product_type = this.$parseURL().product_type
-    if (this.$store.state.goods.selected_products.length > 0) {
-      this.selArr = this.$store.state.goods.selected_products
+
+    // this.type = this.$parseURL().type
+    console.log('商品信息', this.$parseURL())
+    if (this.$store.state.goods.orderSelArr.length > 0) {
+      this.selArr = this.$store.state.goods.orderSelArr
       console.log(this.selArr)
-    } else {
-      this.indexL = 0
     }
+    this.totalLabel = `台位低消：${this.$parseURL().minim_charge}`
+    this.buttonLabel = this.$parseURL().is_open_desk ? '(已开台)' : '(未开台)'
   },
   mounted () {
+    console.log(this.product_type)
     if (this.product_type === 'product') {
       this.$minApi.getOriderProductDetail({ product_id: this.product_id })
         .then(res => {
           this.list = res.info
           this.list.step = 1
+          this.list.type = 'product'
           console.log(this.list)
           this.item = []
           this.item.push(this.list.product_img)
@@ -229,6 +271,7 @@ export default {
         .then(res => {
           this.list = res.info
           this.list.step = 1
+          this.list.type = 'service'
           console.log(this.list)
           this.item = []
           this.item.push(this.list.main_img)
@@ -243,6 +286,7 @@ export default {
     selSku (index, index2) {
       this.isSelSku = true
       this.skuObj = this.list
+      this.skuObj.step = 1
     },
     /**  关闭选择规格弹出层 */
     closeSelectedSkuPop () {
@@ -266,15 +310,25 @@ export default {
     },
     // 已选商品统一列表方法
     addGoods (obj) {
+      if (this.selArr.length === 0) return this.selArr.push(obj)
       const result = this.selArr.some(item => {
-        if (item.sku.sku_id === obj.sku.sku_id) {
-          item.step = obj.step
-          return true
+        if (obj.type === 'service') {
+          if (item.id === obj.id) {
+            item.step = obj.step
+            return true
+          }
+        } else if (obj.type === 'product') {
+          if (item.type === 'product') {
+            if (item.sku.id === obj.sku.id) {
+              item.step = obj.step
+              return true
+            }
+          }
         }
       })
       if (!result) {
         this.selArr.push(obj)
-        this.$store.dispatch('goods/setselected_products', this.selArr)
+        this.$store.dispatch('goods/setOrderSelArr', this.selArr)
       }
       // this.selArr.map((item, index) => {
       //   this.list.sku.map((item2, index2) => {
@@ -288,7 +342,7 @@ export default {
     aleradyGood (e, index) {
       if (e === 0) {
         this.selArr.splice(index, 1)
-        this.$store.dispatch('goods/setselected_products', this.selArr)
+        this.$store.dispatch('goods/setOrderSelArr', this.selArr)
       }
     },
     // 图片错误
@@ -306,26 +360,73 @@ export default {
     // 已选商品清空
     delAll () {
       this.selArr = []
-      this.$store.dispatch('goods/setselected_products', this.selArr)
+      this.$store.dispatch('goods/setOrderSelArr', this.selArr)
+    },
+    // 提交
+    submit () {
+      console.log('已选商品')
+      console.log(this.$parseURL())
+      if (this.selArr.length === 0) return this.$showToast('请选择商品')
+      console.log('准备提交', this.selArr)
+      // [{"id":1,"type":"service","quantity":1,"sku_id":0,"combination":[]}
+      const products = []
+      this.selArr.map(item => {
+        const obj = {}
+        // 类型为商品
+        if (item.type === 'product') {
+          obj.id = item.id
+          obj.type = item.type
+          obj.quantity = item.step
+          obj.combination = []
+          obj.sku_id = item.sku.id
+        }
+        // 类型为服务商品
+        if (item.type === 'service') {
+          obj.id = item.id
+          obj.type = item.type
+          obj.quantity = item.step
+          obj.combination = []
+        }
+        // 类型为套餐
+        products.push(obj)
+      })
+      console.log(products)
+
+      this.$minApi.setOrder({
+        desk_id: this.$parseURL().desk_id,
+        products: JSON.stringify(products)
+      }).then(res => {
+        console.log(res)
+        if (res.orderId) {
+          this.$showToast('提交成功')
+          setTimeout(() => {
+            this.$minRouter.push({
+              name: 'confirm-order',
+              params: { order_id: res.orderId, desk_id: this.$parseURL().desk_id, open_status: this.$parseURL().is_open_desk ? 1 : 0 }
+            }, 2000)
+          })
+        }
+      })
     },
     // 商品详情计数器
-    goodsChange () {
+    goodsChange (e) {
+      this.$set(this.list, 'step', e)
+      if (this.product_type === 'service') {
+        const obj = {}
+        Object.assign(obj, this.list)
+        console.log(obj)
+        this.addGoods(obj)
+        return
+      }
       if (this.list.sku.length > 0) {
         const obj = {}
         const skuOne = this.list.sku[this.chioceIndex]
         Object.assign(obj, this.list)
         obj.sku = skuOne
+        console.log(obj)
         this.addGoods(obj)
         console.log(this.selArr)
       }
-      this.selArr.map((item, index) => {
-        this.list.sku.map((item2, index2) => {
-          if (item.sku.sku_id === item2.sku_id) {
-            this.indexL = index
-            item2.step = item.step
-          }
-        })
-      })
     }
   }
 }

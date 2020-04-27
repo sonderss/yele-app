@@ -15,34 +15,36 @@
       </swiper-item>
     </swiper>
     <view class="goods-item p-lr-20 m-bottom-20">
-      <view class="top-view f28 m-top-10 f28">{{list.setmeal_name}}</view>
+      <view class="top-view f28 m-top-10 f28">{{list.product_name}}</view>
       <view class="botm-view">
         <view class="f22">
           ￥
-          <text class="price">{{list.setmeal_price}}</text>
+          <text class="price">{{list.price}}</text>
         </view>
-        <min-stepper   @change='changeChioce'  v-model="count" v-if="type !== 3"></min-stepper>
+        <min-stepper  :isAnimation='false' @change='changeChioce($event)'  v-model="tcNum" ></min-stepper>
       </view>
     </view>
     <min-describe  @chincesku="toDeatil" :sku="list.combination[0].combination_name" leftTxt="套餐组合"></min-describe>
     <view class="introduction m-top-20 p-lr-20">
         <view class="title min-border-bottom m-bottom-30">详细介绍</view>
         <view class="content p-bottom-30">
-            {{list.setmeal_info}}
+            {{list.info}}
         </view>
     </view>
 
     <min-goods-submit
       @leftClick='selectedEvent'
-      v-if="type !== 3 "
-      icon="../../static/images/cart.png"
+      @submit="submit"
       :goodsCount="goodsCount"
-      totalLabel="台位低消：￥1000.00"
-      buttonText="去下单"
+      buttonText='去下单'
+      :buttonLabel='buttonLabel'
+      icon="../../static/images/cart.png"
+      :totalAmount="totalAmountE"
+      :totalLabel="totalLabel"
     ></min-goods-submit>
     <!-- 已选商品 -->
   <min-popup :show="selected" @close='closeSelectedPop'>
-    <view class="popview">
+          <view class="popview">
             <view class="top-view min-border-bottom ">
               <view>已选商品</view>
               <view class="right-view" @click="delAll">
@@ -59,11 +61,12 @@
                 <view class="content-view">
                   <view class="right-view-title">
                     <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                    <text class="f26" style="color:#666666">规格：{{item2.sku.sku_full_name}}</text>
+                    <text class="f26" style="color:#666666" v-if="item2.type = 'product' ">规格：{{item2.sku.sku_full_name}}</text>
                   </view>
                   <view class="right-view-bottom">
                     <view class="right-view-bottom-desc" >
-                      <text class="f20 t">￥<text  style="color:#FF0000;font-size:30">{{item2.sku.price}}</text></text>
+                      <text class="f20 t" v-if="item2.type === 'product'">￥<text  style="color:#FF0000;font-size:30">{{item2.sku.sku_price}}</text></text>
+                      <text class="f20 t" v-if="item2.type === 'service'">￥<text  style="color:#FF0000;font-size:30">{{item2.price}}</text></text>
                     </view>
                     <view class="steper">
 
@@ -77,17 +80,16 @@
 
     </view>
   </min-popup>
-     <!-- <view class="empty-view"></view> -->
-        <!-- <view class="bottom-view-t">
-          <min-goods-submit
+    <!-- <min-goods-submit
           style="position:fixed"
           leftText="已选"
           :totalAmount='totalAmountE'
           :goodsCount="countNums"
+          :totalLabel="totalLabel"
           buttonText='去下单'
           buttonLabel='已开台'
-          ></min-goods-submit>
-        </view> -->
+          @submit="submit"
+    ></min-goods-submit> -->
   </view>
 </template>
 
@@ -106,27 +108,58 @@ export default {
       autoplay: true,
       interval: 2000,
       duration: 500,
+      totalLabel: '2',
+      buttonText: '2',
       count: 0,
-      type: Number,
+      product_type: '',
       list: { combination: [{ combination_name: '' }] },
       selAll: [],
       selNum: [],
-      selected: false
+      selected: false,
+      tcNum: 0,
+      taocanItem: { combination: [] }
       // isDel: true
     }
   },
   onLoad () {
-    this.type = this.$parseURL().type
-    this.selArr = this.$store.state.goods.selected_products
+    this.product_type = this.$parseURL().product_type
+    this.totalLabel = `台位低消：${this.$parseURL().minim_charge}`
+    this.buttonLabel = this.$parseURL().is_open_desk ? '(已开台)' : '(未开台)'
+    if (this.$parseURL().product && this.$parseURL().product.length > 0) {
+      this.tcNum = 1
+    }
   },
   mounted () {
-    this.$minApi.getOriderPackageDetails({ setmeal_id: this.$parseURL().setmeal_id })
+    this.$minApi.getOriderPackageDetails({ setmeal_id: this.$parseURL().product_id })
       .then(res => {
         this.list = res.info
+        this.list.type = 'setmeal'
+        this.taocanItem.id = this.list.id
+        this.taocanItem.type = 'setmeal'
+        this.taocanItem.quantity = this.tcNum
+        this.taocanItem.combination.push(this.$parseURL().product)
         console.log(this.list)
       })
   },
+  onShow () {
+    this.selArr = this.$store.state.goods.orderSelArr
+    console.log(this.selArr)
+  },
   computed: {
+    // 合计金额
+    totalAmountE () {
+      let sum = 0
+      this.selArr.map(item => {
+        if (item.type === 'product') {
+          sum += item.step * item.sku.sku_price
+        }
+        if (item.type === 'service') {
+          sum += item.step * item.price
+        }
+        this.$store.dispatch('goods/setOrderSelArr', this.selArr)
+      })
+      return sum.toFixed(2)
+    },
     goodsCount () {
       let num = 0
       for (let i = 0; i < this.$store.state.goods.selected_products.length; i++) {
@@ -140,7 +173,7 @@ export default {
     toDeatil () {
       this.$minRouter.push({
         name: 'packages-detail',
-        params: { type: this.type, setmeal_id: this.$parseURL().setmeal_id }
+        params: { data: this.$parseURL() }
       })
     },
     /** 已选商品弹出事件 */
@@ -152,8 +185,13 @@ export default {
       this.selected = false
     },
     // 步进器
-    changeChioce () {
-      console.log(this.list)
+    changeChioce (e) {
+      this.taocanItem.quantity = e
+      console.log(this.taocanItem)
+      // this.$minRouter.push({
+      //   name: 'packages-detail',
+      //   params: { type: this.product_type, setmeal_id: this.$parseURL().product_id }
+      // })
     },
     delAll () {
       this.selArr = []
@@ -168,6 +206,52 @@ export default {
         this.selNum.splice(index, 1)
         this.$store.dispatch('goods/setselected_products', this.selArr)
       }
+    },
+    // 提交
+    submit () {
+      console.log('已选商品')
+      console.log(this.$parseURL())
+      if (this.selArr.length === 0) return this.$showToast('请选择商品')
+      console.log('准备提交', this.selArr)
+      // [{"id":1,"type":"service","quantity":1,"sku_id":0,"combination":[]}
+      const products = []
+      this.selArr.map(item => {
+        const obj = {}
+        // 类型为商品
+        if (item.type === 'product') {
+          obj.id = item.id
+          obj.type = item.type
+          obj.quantity = item.step
+          obj.combination = []
+          obj.sku_id = item.sku.id
+        }
+        // 类型为服务商品
+        if (item.type === 'service') {
+          obj.id = item.id
+          obj.type = item.type
+          obj.quantity = item.step
+          obj.combination = []
+        }
+        // 类型为套餐
+        products.push(obj)
+      })
+      console.log(products)
+
+      this.$minApi.setOrder({
+        desk_id: this.$parseURL().desk_id,
+        products: JSON.stringify(products)
+      }).then(res => {
+        console.log(res)
+        if (res.orderId) {
+          this.$showToast('提交成功')
+          setTimeout(() => {
+            this.$minRouter.push({
+              name: 'confirm-order',
+              params: { order_id: res.orderId, desk_id: this.$parseURL().desk_id, open_status: this.$parseURL().is_open_desk ? 1 : 0 }
+            }, 2000)
+          })
+        }
+      })
     },
     // 删除选择项
     delItem (n) {

@@ -70,11 +70,13 @@
                 <view class="content-view">
                   <view class="right-view-title">
                     <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                    <text class="f26" style="color:#666666">规格：{{item2.sku.sku_full_name}}</text>
+                    <text class="f26" style="color:#666666" v-if="item2.type === 'product'">规格：{{item2.sku.sku_full_name}}</text>
                   </view>
                   <view class="right-view-bottom">
                     <view class="right-view-bottom-desc" >
-                      <text class="f20 t">￥<text  style="color:#FF0000;font-size:30">{{item2.price}}</text></text>
+                      <text class="f20 t" v-if="item2.type === 'product'">￥<text  style="color:#FF0000;font-size:30">{{item2.sku.sku_price}}</text></text>
+                      <text class="f20 t" v-if="item2.type === 'service'">￥<text  style="color:#FF0000;font-size:30">{{item2.price}}</text></text>
+
                     </view>
                     <view class="steper">
 
@@ -153,7 +155,7 @@ export default {
       topArr: [],
       leftIndex: 0,
       chioceIndex: 0,
-      buttonLabel: '(已开台)', // 已开台
+      buttonLabel: '', // 已开台
       totalLabel: '', // 台位低消
       scrollInto: '',
       skuObj: { sku: [{ sku_full_name: '' }] }, // 选择规格项
@@ -178,6 +180,8 @@ export default {
     this.$nextTick(() => {
       this.getListData()
     })
+    console.log('下单路由参数', this.$parseURL())
+    this.buttonLabel = this.$parseURL().is_open_desk ? '(已开台)' : '(未开台)'
     this.totalLabel = `台位低消：${this.$parseURL().minim_charge}`
   },
   computed: {
@@ -185,7 +189,13 @@ export default {
     totalAmountE () {
       let sum = 0
       this.selArr.map(item => {
-        sum += item.step * item.price
+        if (item.type === 'product') {
+          sum += item.step * item.sku.sku_price
+        }
+        if (item.type === 'service') {
+          sum += item.step * item.price
+        }
+        this.$store.dispatch('goods/setOrderSelArr', this.selArr)
       })
       return sum.toFixed(2)
     },
@@ -194,14 +204,13 @@ export default {
       let num = 0
       for (let i = 0; i < this.selArr.length; i++) {
         num += this.selArr[i].step
+        this.$store.dispatch('goods/setOrderSelArr', this.selArr)
       }
       return num
     }
   },
   onShow () {
-    // if (this.$store.state.goods.selected_products.length > 0 && this.$store.state.goods.selected_products[0].step) {
-    //   this.selArr = this.$store.state.goods.selected_products
-    // }
+    this.selArr = this.$store.state.goods.orderSelArr
   },
   watch: {
     selArr: function (a, b) {
@@ -288,7 +297,7 @@ export default {
     delAll () {
       this.selArr = []
       this.selNum = []
-      this.$store.dispatch('goods/setselected_products', [])
+      this.$store.dispatch('goods/setOrderSelArr', [])
     },
     /** 关闭已选商品弹出层 */
     closeSelectedPop () {
@@ -322,30 +331,38 @@ export default {
       // 服务商品
       if (this.mainArray[index].product[index2].type === 'service') {
         // 直接放入已选商品
+        console.log('服务商品', this.mainArray[index].product[index2])
+        this.addGoods(this.mainArray[index].product[index2])
         return
       }
       // 套餐
       if (this.mainArray[index].product[index2].type === 'setmeal') {
         // 进入套餐详情页
         // 进入商品套餐详情
-        const type = 6
         this.$minRouter.push({
           name: 'package-details',
-          params: { type, setmeal_id: this.mainArray[index].product[index2].id }
+          params: {
+            page_type: 'order',
+            is_open_desk: this.$parseURL().is_open_desk,
+            desk_id: this.$parseURL().desk_id,
+            minim_charge: this.$parseURL().minim_charge,
+            product_id: this.mainArray[index].product[index2].id,
+            product_type: this.mainArray[index].product[index2].type
+          }
+
         })
         return
       }
       if (this.mainArray[index].product[index2].sku.length > 1) {
         this.selSku(index, index2)
-        return
       }
-      const obj = {}
-      if (this.mainArray[index].product[index2].sku.length > 0) {
-        // obj = this.mainArray[index].product[index2]
-        Object.assign(obj, this.mainArray[index].product[index2])
-        obj.sku = this.mainArray[index].product[index2].sku[0]
-      }
-      this.addGoods(obj)
+      // const obj = {}
+      // if (this.mainArray[index].product[index2].sku.length > 0) {
+      //   // obj = this.mainArray[index].product[index2]
+      //   Object.assign(obj, this.mainArray[index].product[index2])
+      //   obj.sku = this.mainArray[index].product[index2].sku[0]
+      // }
+      // this.addGoods(obj)
     },
     // 选择规格
     chioceO (index) {
@@ -354,14 +371,21 @@ export default {
     // 已选商品统一列表方法
     addGoods (obj) {
       const result = this.selArr.some(item => {
-        if (item.sku.sku_id === obj.sku.sku_id) {
-          item.step = obj.step
-          return true
+        if (obj.type === 'service') {
+          if (item.id === obj.id) {
+            item.step = obj.step
+            return true
+          }
+        } else if (obj.type === 'product') {
+          if (item.sku.id === obj.sku.id) {
+            item.step = obj.step
+            return true
+          }
         }
       })
       if (!result) {
         this.selArr.push(obj)
-        this.$store.dispatch('goods/setselected_products', this.selArr)
+        this.$store.dispatch('goods/setOrderSelArr', this.selArr)
       }
     },
     // 选择规格确定
@@ -371,7 +395,7 @@ export default {
       obj.sku = this.skuObj.sku[this.chioceIndex]
       this.addGoods(obj)
       this.closeSelectedSkuPop()
-      console.log(this.selArr)
+      console.log('选择规格确定', this.selArr)
     },
     // 提交
     submit () {
@@ -392,6 +416,12 @@ export default {
           obj.sku_id = item.sku.id
         }
         // 类型为服务商品
+        if (item.type === 'service') {
+          obj.id = item.id
+          obj.type = item.type
+          obj.quantity = item.step
+          obj.combination = []
+        }
         // 类型为套餐
         products.push(obj)
       })
@@ -402,37 +432,51 @@ export default {
         console.log(res)
         if (res.orderId) {
           this.$showToast('提交成功')
-          // setTimeout(() => {
-          //   this.$minRouter.push({
-          //     name: 'confirm-order',
-          //     params: { order_id: res.orderId,desk_id: this.$parseURL().desk_id,open_status:0}
-          //   }, 2000)
-          // })
+          setTimeout(() => {
+            this.$minRouter.push({
+              name: 'confirm-order',
+              params: { order_id: res.orderId, desk_id: this.$parseURL().desk_id, open_status: this.$parseURL().is_open_desk ? 1 : 0 }
+            }, 2000)
+          })
         }
       })
     },
     // 商品详情
     goDetails (index, index2) {
-      let type
+      // let type
       if (this.mainArray[index].product[index2].type === 'setmeal') {
         // 进入商品套餐详情
-        type = 6
         this.$minRouter.push({
           name: 'package-details',
-          params: { type, setmeal_id: this.mainArray[index].product[index2].id }
+          params: {
+            page_type: 'order',
+            is_open_desk: this.$parseURL().is_open_desk,
+            desk_id: this.$parseURL().desk_id,
+            minim_charge: this.$parseURL().minim_charge,
+            product_id: this.mainArray[index].product[index2].id,
+            product_type: this.mainArray[index].product[index2].type
+          }
+
         })
         return
       }
-      if (this.mainArray[index].product[index2].type === 'product') {
-        //  代表商品详情
-        type = 4
-      } else if (this.mainArray[index].product[index2].type === 'service') {
-        //  代表服务商品详情
-        type = 5
-      }
+      // if (this.mainArray[index].product[index2].type === 'product') {
+      //   //  代表商品详情
+      //   type = 'product'
+      // } else if (this.mainArray[index].product[index2].type === 'service') {
+      //   //  代表服务商品详情
+      //   type = 'service'
+      // }
       this.$minRouter.push({
         name: 'product-details',
-        params: { product_id: this.mainArray[index].product[index2].id, type, product_type: this.mainArray[index].product[index2].type }
+        params: {
+          page_type: 'order',
+          is_open_desk: this.$parseURL().is_open_desk,
+          desk_id: this.$parseURL().desk_id,
+          minim_charge: this.$parseURL().minim_charge,
+          product_id: this.mainArray[index].product[index2].id,
+          product_type: this.mainArray[index].product[index2].type
+        }
       })
     }
   }

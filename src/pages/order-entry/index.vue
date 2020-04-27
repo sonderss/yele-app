@@ -61,7 +61,7 @@ export default {
     order () {
       this.$minRouter.push({
         name: 'placean-order',
-        params: { minim_charge: this.$parseURL().desk_info.charge }
+        params: { desk_id: this.$parseURL().desk_id, is_open_desk: this.$parseURL().is_open_desk, minim_charge: this.$parseURL().desk_info.charge }
       })
     },
     presentation () {

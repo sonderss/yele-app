@@ -1,10 +1,10 @@
 export default {
   namespaced: true,
-  cache: 'not',
   state: {
     selected_products: [],
     giveAwayInfo: {}, // 限制信息
-    storeSelArr: [] // 赠送商品已选商品
+    storeSelArr: [], // 赠送商品已选商品
+    orderSelArr: []// 下单已选商品
   },
   mutations: {
     setselected_products: (state, data) => {
@@ -15,6 +15,9 @@ export default {
     },
     setStoreSelArr: (state, data) => {
       state.storeSelArr = data
+    },
+    setOrderSelArr: (state, data) => {
+      state.orderSelArr = data
     }
   },
   actions: {
@@ -26,6 +29,9 @@ export default {
     },
     setStoreSelArr ({ commit }, data) {
       commit('setStoreSelArr', data)
+    },
+    setOrderSelArr ({ commit }, data) {
+      commit('setOrderSelArr', data)
     }
   }
 }

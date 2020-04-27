@@ -142,16 +142,19 @@ export default {
     // 重新下单
     reorder () {
       this.$minRouter.push({
-        name: 'placean-order'
+        name: 'placean-order',
+        params: { desk_id: this.list.desk_info.desk_id, minim_charge: this.list.desk_info.minim_charge }
       })
     },
     // 申请开台
     applicationopening (n) {
-      if (n === 0) {
+      if (n !== 0) {
         this.$minRouter.push({
           name: 'apply-open',
           params: { desk_id: this.idNum, order_id: this.list.order_info.order_id, open_status: 0 }
         })
+      } else {
+        this.$showToast('不具备开台条件')
       }
     },
     // 查看订单

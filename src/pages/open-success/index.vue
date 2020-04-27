@@ -3,13 +3,13 @@
     <image class="icon" src="/static/images/success.png" alt="success" />
     <view class="title">开台成功</view>
     <view class="card f28 p-tb-30 p-lr-30">
-      <view>预定台号：<text>T3547</text></view>
-      <view>客户姓名：可乐加冰</view>
-      <view>联系电话：15016584603</view>
+      <view>台号：<text>{{$parseURL().desk_name}}</text></view>
+      <view>客户姓名：{{$parseURL().client_name?$parseURL().client_name:'暂无数据'}}</view>
+      <view>客户手机号：{{$parseURL().client_mobile? $parseURL().client_mobile:'暂无数据'}}</view>
     </view>
     <view class="btns">
-      <min-btn>回到台</min-btn>
-      <min-btn type="white">返回首页</min-btn>
+      <min-btn @click="toDesk">回到台</min-btn>
+      <min-btn type="white" @click="goIndex">返回首页</min-btn>
     </view>
   </view>
 </template>
@@ -17,6 +17,24 @@
 <script>
 export default {
   name: 'open-success',
+  navigate: ['navigateTo'],
+  mounted () {
+    console.log(this.$parseURL())
+  },
+  methods: {
+    toDesk () {
+      const date = this.$minCommon.formatDate(new Date(), 'yyyy-MM-dd')
+      this.$minRouter.push({
+        name: 'platform-detail',
+        params: { id: this.$parseURL().desk_id, date }
+      })
+    },
+    goIndex () {
+      this.$minRouter.push({
+        name: 'index'
+      })
+    }
+  },
   data () {
     return {
 

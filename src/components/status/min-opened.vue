@@ -30,7 +30,7 @@
       <view class="main1 p-top-20">
         <view  class="m-bottom-10" v-for="i in list.order_list" :key="i.order_sn" style="width:100%;display: flex;justify-content: space-between;">
             <text class="f28">订 单 号 ：{{i.order_sn}}</text>
-            <text class="f26">{{i.pay_status === 0 ? `待付${list.order_list.payable_price}`:'已支付'}}</text>
+            <text class="f26">{{i.pay_status === 0 ? `￥${i.payable_price}`:'已支付'}}</text>
         </view>
       </view>
       <view class="min-top-border"></view>
@@ -143,7 +143,12 @@ export default {
     goOrder () {
       this.$minRouter.push({
         name: 'order-entry',
-        params: { desk_id: this.idNum, open_id: this.list.desk_info.opening_id, desk_info: { name: this.list.desk_info.desk_name, charge: this.list.desk_info.minim_charge, price: this.list.payable_total } }
+        params: {
+          desk_id: this.idNum,
+          open_id: this.list.desk_info.opening_id,
+          is_open_desk: true,
+          desk_info: { name: this.list.desk_info.desk_name, charge: this.list.desk_info.minim_charge, price: this.list.payable_total }
+        }
       })
     },
     // 清台

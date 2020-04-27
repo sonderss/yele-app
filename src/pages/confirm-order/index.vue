@@ -90,6 +90,18 @@ export default {
         console.log(res)
         if (res.length === 0) {
           this.$showToast('开台成功！！！')
+          this.$store.dispatch('goods/setOrderSelArr', [])
+          setTimeout(() => {
+            this.$minRouter.push({
+              name: 'open-success',
+              params: {
+                client_mobile: this.list.order_info.client_mobile,
+                client_name: this.list.order_info.client_name,
+                desk_id: this.list.order_info.desk_id,
+                desk_name: this.list.order_info.desk_name
+              }
+            })
+          }, 2000)
         }
       })
     }
