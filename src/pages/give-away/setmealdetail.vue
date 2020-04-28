@@ -14,10 +14,10 @@
       </swiper-item>
     </swiper>
     <view class="goods-item p-lr-20 m-bottom-20">
-      <view class="top-view f28 m-top-10 f28">{{list.setmeal_name}}</view>
+      <view class="top-view f28 m-top-10 f28">{{list.product_name}}</view>
       <view class="botm-view">
         <view class="f22 m-bottom-20">
-          ￥ <text class="price">{{list.setmeal_price}}</text>
+          ￥ <text class="price">{{list.price}}</text>
         </view>
       </view>
     </view>

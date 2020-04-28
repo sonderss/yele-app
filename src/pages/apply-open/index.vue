@@ -4,19 +4,19 @@
       <view class="platform-info f28 p-lr-20 p-tb-20">
         <view>台位抵消：￥{{list.order_info.minim_charge}}</view>
         <view>开台条件：<text class="emp">{{list.order_info.minimum_percent}}成低消 {{`(${list.order_info.desk_open_minimum})`}}</text></view>
-        <view>订单金额：￥{{list.order_info.bill_price}}</view>
+        <view>订单金额：￥{{list.order_info.order_price}}</view>
         <view>达成状态：{{list.order_info.is_can_open === 0 ? "未达成开台条件":"达成开台条件"}}</view>
       </view>
       <view class="goods-wrap m-top-20 p-lr-20">
         <view class="p-tb-30 min-border-bottom">商品</view>
         <view class="goods-list p-top-10">
-          <view class="p-tb-20" v-for="index in 3" :key="index">
+          <view class="p-tb-20" v-for="item in list.order_product_list" :key="item.id">
             <min-goods-item
-              name="2020年元旦百威兄弟套餐12瓶"
-              price="2380.00"
-              icon="/static/images/goods.png"
-              specification="罐装*250ml*规格9/瓶"
-              :value="3"
+              :name="item.product_name"
+              :price="item.unit_price"
+              :icon="item.product_img.length> 5?item.product_img: '/static/images/goods.png'"
+              :specification="item.unit_name"
+              :value="item.quantity"
             >
             </min-goods-item>
           </view>
@@ -61,7 +61,20 @@ export default {
   methods: {
     submit () {
       // 开台申请  orderGetRoot  {desk_id:this.$parseURL().desk_id,reason:''}
-
+      this.$minApi.orderGetRoot({
+        desk_id: this.$parseURL().desk_id,
+        reason: this.value
+      }).then(res => {
+        console.log(res)
+        if (res.length === 0) {
+          this.$showToast('开台成功')
+          setTimeout(() => {
+            this.$minRouter.push({
+              name: 'platform-admin'
+            })
+          }, 2000)
+        }
+      })
     }
   }
 }

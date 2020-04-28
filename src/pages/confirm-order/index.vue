@@ -13,7 +13,7 @@
           <view class="p-tb-20" v-for="item in list.order_product_list" :key="item.id">
             <min-goods-item
               :name="item.product_name"
-              :price="item.units_total"
+              :price="item.unit_price"
               :icon="item.oproduct_img"
               :specification="item.sku"
               :value="item.quantity"

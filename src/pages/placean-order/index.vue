@@ -76,6 +76,7 @@
                     <view class="right-view-bottom-desc" >
                       <text class="f20 t" v-if="item2.type === 'product'">￥<text  style="color:#FF0000;font-size:30">{{item2.sku.sku_price}}</text></text>
                       <text class="f20 t" v-if="item2.type === 'service'">￥<text  style="color:#FF0000;font-size:30">{{item2.price}}</text></text>
+                      <text class="f20 t" v-if="item2.type === 'setmeal'">￥<text  style="color:#FF0000;font-size:30">{{item2.price}}</text></text>
 
                     </view>
                     <view class="steper">
@@ -160,7 +161,6 @@ export default {
       scrollInto: '',
       skuObj: { sku: [{ sku_full_name: '' }] }, // 选择规格项
       isDel: true, //  所需删除的已选列表中对应项
-      selNum: [],
       errImg: false,
       isSkuNum: 0, // 选择规格弹出层的数量
       isSelSku: false, // 选择规格
@@ -191,8 +191,7 @@ export default {
       this.selArr.map(item => {
         if (item.type === 'product') {
           sum += item.step * item.sku.sku_price
-        }
-        if (item.type === 'service') {
+        } else {
           sum += item.step * item.price
         }
         this.$store.dispatch('goods/setOrderSelArr', this.selArr)
@@ -204,7 +203,6 @@ export default {
       let num = 0
       for (let i = 0; i < this.selArr.length; i++) {
         num += this.selArr[i].step
-        this.$store.dispatch('goods/setOrderSelArr', this.selArr)
       }
       return num
     }
@@ -213,7 +211,11 @@ export default {
     this.selArr = this.$store.state.goods.orderSelArr
   },
   watch: {
-    selArr: function (a, b) {
+    selArr: {
+      handler (a, b) {
+        console.log(a)
+      },
+      deep: true
     }
   },
   methods: {
@@ -296,8 +298,7 @@ export default {
     /** 清空已选商品 */
     delAll () {
       this.selArr = []
-      this.selNum = []
-      this.$store.dispatch('goods/setOrderSelArr', [])
+      this.$store.dispatch('goods/setOrderSelArr', this.selArr)
     },
     /** 关闭已选商品弹出层 */
     closeSelectedPop () {
@@ -310,15 +311,15 @@ export default {
     // 删除选择项
     delItem (n) {
       this.selArr.splice(n, 1)
-      this.selNum.splice(n, 1)
       this.isDel = true
+      this.$store.dispatch('goods/setOrderSelArr', this.selArr)
     },
     // 已选弹出层删除事件
     alDel (n, index) {
       console.log(this.selArr)
       if (n === 0) {
         this.selArr.splice(index, 1)
-        this.selNum.splice(index, 1)
+        this.$store.dispatch('goods/setOrderSelArr', this.selArr)
       }
     },
     // 选择规格事件
@@ -337,6 +338,9 @@ export default {
       }
       // 套餐
       if (this.mainArray[index].product[index2].type === 'setmeal') {
+        console.log(213313213)
+        console.log(this.$store.state.goods.orderSelArr)
+
         // 进入套餐详情页
         // 进入商品套餐详情
         this.$minRouter.push({
@@ -349,7 +353,6 @@ export default {
             product_id: this.mainArray[index].product[index2].id,
             product_type: this.mainArray[index].product[index2].type
           }
-
         })
         return
       }
@@ -386,6 +389,7 @@ export default {
       if (!result) {
         this.selArr.push(obj)
         this.$store.dispatch('goods/setOrderSelArr', this.selArr)
+        console.log(this.selArr)
       }
     },
     // 选择规格确定
@@ -423,6 +427,12 @@ export default {
           obj.combination = []
         }
         // 类型为套餐
+        if (item.type === 'setmeal') {
+          obj.id = item.id
+          obj.type = item.type
+          obj.quantity = item.step
+          obj.combination = item.combination
+        }
         products.push(obj)
       })
       this.$minApi.setOrder({
@@ -443,18 +453,21 @@ export default {
     },
     // 商品详情
     goDetails (index, index2) {
+      const _self = this
       // let type
-      if (this.mainArray[index].product[index2].type === 'setmeal') {
+      if (_self.mainArray[index].product[index2].type === 'setmeal') {
+        console.log(_self.$store.state.goods.orderSelArr)
+        console.log(_self.mainArray)
         // 进入商品套餐详情
-        this.$minRouter.push({
+        _self.$minRouter.push({
           name: 'package-details',
           params: {
             page_type: 'order',
-            is_open_desk: this.$parseURL().is_open_desk,
-            desk_id: this.$parseURL().desk_id,
-            minim_charge: this.$parseURL().minim_charge,
-            product_id: this.mainArray[index].product[index2].id,
-            product_type: this.mainArray[index].product[index2].type
+            is_open_desk: _self.$parseURL().is_open_desk,
+            desk_id: _self.$parseURL().desk_id,
+            minim_charge: _self.$parseURL().minim_charge,
+            product_id: _self.mainArray[index].product[index2].id,
+            product_type: _self.mainArray[index].product[index2].type
           }
 
         })

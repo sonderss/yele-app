@@ -69,7 +69,7 @@
                       </view>
                       <view class="steper">
                         <!-- @change="changeIndex($event,n)" -->
-                        <min-stepper :isAnimation="false"  v-model="item2.step"  :min='0'></min-stepper>
+                        <min-stepper :isAnimation="false"  v-model="item2.step"  :max="item2.commodity_count"></min-stepper>
                         <!-- <view v-if="!isDel" @click="delItem(n)">删除</view> -->
                       </view>
                     </view>
@@ -136,14 +136,15 @@ export default {
       })
 
       // this.tabTitle = res.list
+      console.log(res)
       this.list = res.list
       this.content = `
-          1. 当前台消费金额￥${res.consumption_amount}，根据赠送方案，可赠送的商品金额为￥${res.presentation_limit}。<br />
-          2. 当前用户的赠送额度为￥${res.personal_remaining_quota}，不能超过此额度。<br />
+          1. 当前台消费金额￥${res.consumption_amount}，根据赠送方案，可赠送的商品金额为￥${res.desk_presentation_limit}。<br />
+          2. 当前用户的赠送额度为￥${res.personal_presentation_limit}，不能超过此额度。<br />
       `
-      this.$store.dispatch('goods/setselected_giveAwayInfo', { consumption_amount: res.consumption_amount, presentation_limit: res.presentation_limit, personal_remaining_quota: res.personal_remaining_quota })
-      this.totalLabel = `赠送额度：${res.personal_remaining_quota}`
-      console.log(this.list)
+      this.$store.dispatch('goods/setselected_giveAwayInfo', { consumption_amount: res.consumption_amount, desk_presentation_limit: res.desk_presentation_limit, personal_presentation_limit: res.personal_presentation_limit })
+      this.totalLabel = `赠送额度：${res.desk_presentation_limit}`
+      console.log(this.list, this.totalLabel)
       console.log('已选赠送商品全局变量', this.$store.state.goods.storeSelArr)
     // eslint-disable-next-line handle-callback-err
     }).catch(err => {
@@ -200,15 +201,20 @@ export default {
   methods: {
     toDetail (item) {
       console.log(item)
-      if (item.sku && item.sku.length !== 0) {
+      if (item.type === 'service') {
+        // 跳到赠送商品详情product-detail-giveaway
+        uni.navigateTo({
+          url: '/pages/give-away/produdetail?product_id=' + item.id + '&product_type=' + item.type
+        })
+      } else if (item.type === 'product') {
         // 跳到赠送商品详情
         uni.navigateTo({
           url: '/pages/give-away/produdetail?product_id=' + item.sku[0].id + '&product_type=' + item.type
         })
-      } else {
-        // 跳到赠送商品详情
+      } else if (item.type === 'setmeal') {
+        // 跳到套餐商品详情
         uni.navigateTo({
-          url: '/pages/give-away/produdetail?product_id=' + item.id + '&product_type=' + item.type
+          url: '/pages/give-away/setmealdetail?setmeal_id=' + item.id + '&product_type=' + item.type
         })
       }
     },

@@ -5,11 +5,12 @@
       <image class="min-goods-produced-icon" :class="[`min-goods-icon-${iconSize}`]" v-if="produced" src="/static/images/produced.png"/>
       <view class="min-goods-content" :class="{'min-produced': produced}">
         <view class="min-goods-name">{{name}}</view>
-        <view class="min-goods-size" v-show="specification">
+        <view class="min-goods-size" >
           {{specification}}
-          <view></view>
           <view class="count" v-if="!stepper">x {{count}}</view>
+
         </view>
+
         <view class="min-goods-price">￥{{price}}</view>
       </view>
       <view class="min-stepper-weap" v-if="stepper">

@@ -16,12 +16,12 @@
       </swiper-item>
     </swiper>
     <view class="goods-item p-lr-20 m-bottom-20"  v-if="!noData">
-      <view class="top-view f28 m-top-10 f28"  v-if="product_type === 'product' ">{{list.product.product_name}}</view>
+      <view class="top-view f28 m-top-10 f28"  v-if="product_type === 'product' ">{{list.info.product_name}}</view>
       <view class="top-view f28 m-top-10 f28"  v-if="product_type === 'service' ">{{list.product_name}}</view>
       <view class="top-view f28 m-top-10 f28"  v-if="product_type === 'setmeal' ">{{list.setmeal_name}}</view>
       <view class="botm-view" v-if="product_type === 'product' ">
         <view class="f22">
-          <text class="price">￥{{list.sku_price}}</text>
+          <text class="price">￥{{list.info.price}}</text>
         </view>
         <min-stepper v-model="count"></min-stepper>
       </view>
@@ -39,14 +39,14 @@
         <min-stepper v-model="list.step" @lesss="lesss($event,list)" @adds="addGoodServe(list)"  @change="changeServiceItem(list)"></min-stepper>
       </view>
     </view>
-     <min-describe @chincesku="selSku" :sku="list.sku.sku_full_name" leftTxt="规格" v-if="product_type === 'product'"></min-describe>
+     <min-describe @chincesku="selSku" :sku="list.info.sku[0].sku_full_name" leftTxt="规格" v-if="product_type === 'product'"></min-describe>
      <min-describe @chincesku='toDetail' :sku="list.combination[0].combination_name" leftTxt="套餐组合" v-if="product_type === 'setmeal'"></min-describe>
 
     <view class="introduction m-top-20 p-lr-20"  v-if="!noData">
         <view class="title min-border-bottom m-bottom-30">详细介绍</view>
-        <view class="content p-bottom-30" v-if="product_type === 'product'">{{list.product.info}}</view>
-        <view class="content p-bottom-30" v-if="product_type === 'service'">{{list.service_info}}</view>
-        <view class="content p-bottom-30" v-if="product_type === 'setmeal'">{{list.setmeal_info}}</view>
+        <view class="content p-bottom-30" v-if="product_type === 'product'">{{list.info.info}}</view>
+        <view class="content p-bottom-30" v-if="product_type === 'service'">{{list.info}}</view>
+        <view class="content p-bottom-30" v-if="product_type === 'setmeal'">{{list.info}}</view>
     </view>
 
     <min-goods-submit
@@ -59,18 +59,18 @@
       @leftClick="leftClick"
     ></min-goods-submit>
      <!-- 选择规格 -->
-    <min-popup :show="isSelSku"  @close='closeSelectedSkuPop'>
+   <min-popup :show="isSelSku"  @close='closeSelectedSkuPop'>
       <view class="skuPop">
         <view class="skuTop">
           <view class="leftView">
               <view class="img-view">
-                <image :src="errImg ? '/static/images/goods.png': skuObj.sku_img" @error="imgerr"></image>
+                <image :src="errImg ? '/static/images/goods.png': skuObj.product_img" @error="imgerr"></image>
               </view>
               <!-- sku信息 -->
               <view class="sku-view">
-                <text class="f22">{{skuObj.sku}}</text>
-               <!-- <text class="f22 m-tb-20">已选："{{skuObj.sku}}"</text> -->
-                <text class="f22 m">￥<text class="money">{{list.sku_price}}</text></text>
+                <text class="f22">{{skuObj.product_name}}</text>
+                <text class="f22 m-tb-20">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
+                <text class="f22 m">￥<text class="money">{{skuObj.price}}</text></text>
               </view>
           </view>
         </view>
@@ -79,16 +79,16 @@
         <view class="sku-item">
             <view class="f26">规格</view>
             <view class="item-view" >
-                <view class="item-active">{{skuObj.sku_full_name}}</view>
+                <view :class="chioceIndex ===index ?   'item-active' : 'item' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
             </view>
         </view>
         <!-- 数量 -->
-        <!-- <view class="sku-item sku-item-num" v-if="type !== 1 && type!==2">
+        <view class="sku-item sku-item-num">
             <view class="f26">数量</view>
             <view class="m-tb-30">
                 <min-stepper :isAnimation="false" :min='1' v-model="skuObj.step"></min-stepper>
             </view>
-        </view> -->
+        </view>
         <view class="min-border-bottom m-lr-30"></view>
         <view class="btn-sku" @click="skuChioce">确定</view>
       </view>
@@ -209,7 +209,7 @@ export default {
           // this.list.step = 1
           console.log(res)
           this.item = []
-          this.item.push(this.list.product.product_img)
+          this.item.push(this.list.info.product_img)
         })
         .catch(() => {
           this.noData = true
@@ -256,7 +256,7 @@ export default {
     // 选择规格事件
     selSku (index, index2) {
       this.isSelSku = true
-      this.skuObj = this.list.sku
+      this.skuObj = this.list.info
       console.log('skuObj', this.skuObj)
     },
     /**  关闭选择规格弹出层 */

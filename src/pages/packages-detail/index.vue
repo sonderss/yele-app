@@ -123,7 +123,7 @@ export default {
       item.combination_detail = []
       const item2 = { id: '' }
       item2.id = this.list.combination[index].combination_detail[index2].product_id
-      item2.type = this.list.combination[index].combination_detail[index2].comb_type
+      item2.type = this.list.combination[index].combination_detail[index2].comb_type === 1 ? 'product' : 'service'
       item2.quantity = this.list.combination[index].combination_detail[index2].step
       item2.sku_id = this.list.combination[index].combination_detail[index2].sku_id
       // item.combination_detail.push(item2)

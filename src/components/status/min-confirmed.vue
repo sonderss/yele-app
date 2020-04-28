@@ -8,16 +8,16 @@
             台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：<text class="emp">{{list.desk_info.desk_name}}</text>
           </view>
           <view>
-            分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：卡座
+            分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.desk_info.group_name}}
           </view>
           <view>
-            低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：￥500
+            低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：￥{{list.desk_info.minim_charge}}
           </view>
           <view>
-            座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：4座
+            座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.desk_info.seats) }}
           </view>
           <view>
-            开台条件：6成低消（￥600）
+            开台条件：{{list.desk_info.minimum_consume_percent+'成低消'+ `(${list.desk_info.desk_open_minimum})`}}
           </view>
         </view>
     </view>
@@ -26,9 +26,9 @@
       <view class="main p-tb-20">
         <view>
           当前状态：
-          <text style="color: #FF0000;">不满足开台条件</text>
+          <text style="color: #FF0000;">{{list.order_info.is_can_open === 0 ?  '不满足开台条件' : '已够开台条件'}}</text>
         </view>
-        <view>开台订单：￥600（未支付）</view>
+        <view>开台订单：{{list.order_info.order_id === 0 ? '未进行点单':'￥'+list.order_info.order_price}}</view>
       </view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
@@ -51,7 +51,7 @@
      <view class="btns">
       <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book">预约</view>
       <view :class="index === 1 ? 'btn active' : 'btn' " @click="goOrder">下单</view>
-      <view  :class="index === 2 ? 'btn active' : 'btn' ">存酒</view>
+      <view  :class="index === 2 ? 'btn active' : 'btn' " @click="saveWine">存酒</view>
       <view class="badge" @click="showToastTxt">
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
           <view class="toast anmatiin " v-if="toast">
@@ -124,6 +124,15 @@ export default {
     goOrder () {
       this.$minRouter.push({
         name: 'order-entry'
+      })
+    },
+    // 存酒
+    saveWine () {
+      this.index = 2
+      // 跳转到选择客户页面（存酒）
+      this.$minRouter.push({
+        name: 'select-customers',
+        params: { desk_id: this.idNum, desk_name: this.list.desk_info.desk_name }
       })
     },
     // 预约

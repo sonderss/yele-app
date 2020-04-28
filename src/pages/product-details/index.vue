@@ -184,8 +184,7 @@ export default {
       this.selArr.map(item => {
         if (item.type === 'product') {
           sum += item.step * item.sku.sku_price
-        }
-        if (item.type === 'service') {
+        } else {
           sum += item.step * item.price
         }
         this.$store.dispatch('goods/setOrderSelArr', this.selArr)
@@ -388,6 +387,12 @@ export default {
           obj.combination = []
         }
         // 类型为套餐
+        if (item.type === 'setmeal') {
+          obj.id = item.id
+          obj.type = item.type
+          obj.quantity = item.step
+          obj.combination = item.combination
+        }
         products.push(obj)
       })
       console.log(products)
