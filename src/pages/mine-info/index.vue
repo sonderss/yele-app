@@ -33,7 +33,7 @@
           ></min-cell-item>
         </picker>
         <min-cell-item
-          title="手机" :tail="phone"
+          title="手机" :tail="userInfo.mobile"
           :border="false" arrow
           @eventParent="setPhone"
         ></min-cell-item>
@@ -79,7 +79,7 @@ export default {
     }
   },
   onLoad () {
-    this.phone = this.$store.state.user.userInfo.mobile
+    // this.phone = this.$store.state.user.userInfo.mobile
   },
   mounted () {
     this.$minApi.getUserInfo().then(res => {
@@ -109,7 +109,8 @@ export default {
     },
     setPhone () {
       this.$minRouter.push({
-        name: 'modify-mobile'
+        name: 'modify-mobile',
+        params: { mobile: this.userInfo.mobile }
       })
     },
     toFace () {

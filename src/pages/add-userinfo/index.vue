@@ -66,7 +66,7 @@ export default {
           // 跳转下单
           setTimeout(() => {
             this.$minRouter.push({
-              name: 'placean-order'
+              name: 'platform-admin'
             })
           }, 2000)
         }

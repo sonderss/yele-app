@@ -67,10 +67,10 @@ export default {
       }).then(res => {
         console.log(res)
         if (res.length === 0) {
-          this.$showToast('开台成功')
+          this.$showToast('提交成功')
           setTimeout(() => {
             this.$minRouter.push({
-              name: 'platform-admin'
+              name: 'submit-success'
             })
           }, 2000)
         }

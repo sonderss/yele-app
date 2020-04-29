@@ -112,7 +112,8 @@ export default {
                 }
                 setTimeout(() => {
                   this.$minRouter.push({
-                    name: 'platform-detail'
+                    name: 'platform-detail',
+                    params: { id: this.idNum }
                   })
                 }, 2000)
               })
@@ -123,7 +124,8 @@ export default {
     // 下单
     goOrder () {
       this.$minRouter.push({
-        name: 'order-entry'
+        name: 'placean-order',
+        params: { desk_id: this.idNum, minim_charge: this.list.desk_info.minim_charge }
       })
     },
     // 存酒

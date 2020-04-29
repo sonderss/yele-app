@@ -20,7 +20,7 @@ export default {
     }
   },
   mounted () {
-    this.phone = this.$store.state.user.userInfo.mobile
+    this.phone = this.$parseURL().mobile
   },
   onNavigationBarButtonTap () {
     this.$minRouter.push({

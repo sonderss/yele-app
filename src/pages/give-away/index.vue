@@ -29,7 +29,8 @@
                       </text>
                     </view>
                     <view class="steper">
-                      <min-stepper v-model="item.step" @lesss="lesss($event,item)" :max="item.commodity_count" :min='0'  @change="changeItem(item)" @adds="getStep(item)" :isAnimation="false" ></min-stepper>
+                      <!-- :max="item.commodity_count" -->
+                      <min-stepper v-model="item.step" @lesss="lesss($event,item)" :max="item.commodity_count" :min='0'  @change="changeItem(item)"  :isAnimation="false" ></min-stepper>
                       <!-- <view class="isSku f24"  v-if="item2.sku.length > 1 "  @click="selSku(index,index2)">选规格</view> -->
                     </view>
                   </view>
@@ -43,51 +44,54 @@
       </swiper-item>
     </swiper>
 
-   <!-- 已选商品 -->
-    <min-popup :show="selected" @close='closeSelectedPop'>
-      <view class="popview">
-              <view class="top-view min-border-bottom p-lr-30">
-                <view>已选商品</view>
-                <view class="right-view" @click="delAll">
-                  <view class="icon-del m-right-10">
-                    <image src='../../static/images/del.png'></image>
-                  </view>
-                  <view class="f22 clear">清空</view>
+  <!-- 已选商品 -->
+  <min-popup :show="selected" @close='closeSelectedPop'>
+    <view class="popview">
+            <view class="top-view min-border-bottom ">
+              <view>已选商品</view>
+              <view class="right-view" @click="delAll">
+                <view class="icon-del m-right-10">
+                  <image src='../../static/images/del.png'/>
                 </view>
+                <view class="f22 clear">清空</view>
               </view>
-          <view class="main-sel-view p-lr-30 p-tb-30" >
-              <view class="item" v-for="(item2,n) in selArr" :key="n" >
-                  <image :src="item2.product_img"  @error="imageErro($event,n)"></image>
-                  <view class="content-view">
-                    <view class="right-view-title">
-                      <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                      <text class="f26" style="color:#666666" v-if="item2.sku.length > 1">规格：{{item2.sku[0].sku_full_name}}</text>
+            </view>
+
+        <view class="main-sel-view p-lr-30 p-tb-30" >
+            <view class="item" v-for="(item2,n) in selArr" :key="n">
+                <image :src="errImg ? '/static/images/goods.png': item2.product_img" mode="" @error="imageErro1"/>
+                <view class="content-view">
+                  <view class="right-view-title">
+                    <text class="f28 t" style="display:block">{{item2.product_name}}</text>
+                    <text class="f26" style="color:#666666" v-if="item2.type === 'product'">规格：{{item2.sku[0].sku_full_name}}</text>
+                  </view>
+                  <view class="right-view-bottom">
+                    <view class="right-view-bottom-desc" >
+                      <text class="f20 t">￥<text  style="color:#FF0000;font-size:30">{{item2.price}}</text></text>
+
                     </view>
-                    <view class="right-view-bottom">
-                      <view class="right-view-bottom-desc" >
-                        <text class="f20 t">￥<text  style="color:#FF0000;font-size:30">{{item2.price}}</text></text>
-                      </view>
-                      <view class="steper">
-                        <!-- @change="changeIndex($event,n)" -->
-                        <min-stepper :isAnimation="false"  v-model="item2.step"  :max="item2.commodity_count"></min-stepper>
-                        <!-- <view v-if="!isDel" @click="delItem(n)">删除</view> -->
-                      </view>
+                    <view class="steper">
+
+                      <min-stepper :isAnimation='false' v-model="item2.step" :max="item2.commodity_count" :min='0' @change="alDel($event,n)"></min-stepper>
                     </view>
                   </view>
-              </view>
-          </view>
-          <!-- <view class="empty-view"></view> -->
-          <view class="bottom-view-t" >
-            <min-goods-submit style="position:fixed" leftText="已选"
-            @submit='submit'
-            :totalAmount='moneySum'
-            :goodsCount="num"
-            buttonText='确定赠送'
-            >
-            </min-goods-submit>
-          </view>
-      </view>
-    </min-popup>
+                </view>
+            </view>
+        </view>
+        <!-- <view class="empty-view"></view> -->
+        <view class="bottom-view-t">
+          <min-goods-submit
+          style="position:fixed"
+          leftText="已选"
+          :totalAmount='moneySum'
+          :goodsCount="num"
+          buttonText='去下单'
+          buttonLabel='已开台'
+          @submit="submit"
+          ></min-goods-submit>
+        </view>
+    </view>
+  </min-popup>
 
     <min-goods-submit style="position:fixed"
      :totalLabel='totalLabel'
@@ -110,7 +114,6 @@ export default {
       currentPage: 'index',
       toView: '', // 回到顶部id
       step: 0,
-      totalAmountE: 0,
       countNums: 0,
       totalLabel: '',
       selected: false,
@@ -124,17 +127,23 @@ export default {
       allArr: [],
       chinceIndex: 0,
       chinceIndex2: 0,
-      orderId: ''
+      orderId: '',
+      errImg: false
     }
+  },
+  onShow () {
+    this.selArr = this.$store.state.goods.storeSelArr
   },
   mounted () {
     this.$minApi.getGiveAwayList({ desk_id: this.$parseURL().desk_id }).then(res => {
       res.list.map((item, index) => {
         item.product.map(item2 => {
           item2.step = 0
+          if (item2.type === 'product') {
+            item2.commodity_count = 2
+          }
         })
       })
-
       // this.tabTitle = res.list
       console.log(res)
       this.list = res.list
@@ -146,6 +155,7 @@ export default {
       this.totalLabel = `赠送额度：${res.desk_presentation_limit}`
       console.log(this.list, this.totalLabel)
       console.log('已选赠送商品全局变量', this.$store.state.goods.storeSelArr)
+      console.log(this.$store.state.goods.giveAwayInfo)
     // eslint-disable-next-line handle-callback-err
     }).catch(err => {
       setTimeout(() => {
@@ -171,31 +181,15 @@ export default {
       this.selArr.map(item => {
         counts += item.step
       })
-      this.selArr.map(item => {
-        this.list.map(item2 => {
-          item2.product.map(item3 => {
-            if (item3.id === item.id) {
-              if (item.sku.length === 0) {
-                if (item.id === item3.id) {
-                  item3.step = item.step
-                }
-              } else if (item.sku.length !== 0) {
-                if (item.sku[0].id === item3.sku[0].id) {
-                  item3.step = item.step
-                }
-              }
-            }
-          })
-        })
-      })
       return counts
     },
     moneySum () {
       let sum = 0
       this.selArr.map(item => {
         sum += item.price * item.step
+        this.$store.dispatch('goods/setStoreSelArr', this.selArr)
       })
-      return sum
+      return sum.toFixed(2)
     }
   },
   methods: {
@@ -204,17 +198,17 @@ export default {
       if (item.type === 'service') {
         // 跳到赠送商品详情product-detail-giveaway
         uni.navigateTo({
-          url: '/pages/give-away/produdetail?product_id=' + item.id + '&product_type=' + item.type
+          url: '/pages/give-away/produdetail?product_id=' + item.id + '&desk_id=' + this.$parseURL().desk_id + '&product_type=' + item.type + '&commodity_count=' + item.commodity_count
         })
       } else if (item.type === 'product') {
         // 跳到赠送商品详情
         uni.navigateTo({
-          url: '/pages/give-away/produdetail?product_id=' + item.sku[0].id + '&product_type=' + item.type
+          url: '/pages/give-away/produdetail?product_id=' + item.sku[0].id + '&desk_id=' + this.$parseURL().desk_id + '&product_type=' + item.type + '&commodity_count=' + item.commodity_count
         })
       } else if (item.type === 'setmeal') {
         // 跳到套餐商品详情
         uni.navigateTo({
-          url: '/pages/give-away/setmealdetail?setmeal_id=' + item.id + '&product_type=' + item.type
+          url: '/pages/give-away/setmealdetail?setmeal_id=' + item.id + '&desk_id=' + this.$parseURL().desk_id + '&product_type=' + item.type + '&commodity_count=' + item.commodity_count
         })
       }
     },
@@ -230,6 +224,13 @@ export default {
     getStep (e, index, index2) {
       this.addGoods(e)
     },
+    // 图片错误
+    imageErro1 (e) {
+      if (e.type === 'error') {
+        // this.skuObj.product_img = '../../static/images/goods.png'
+        this.errImg = true
+      }
+    },
     lesss (e, item) {
       // 数量为0时从已选商品中删除掉该商品
       for (let i = 0; i < this.selArr.length; i++) {
@@ -242,16 +243,35 @@ export default {
       }
     },
     changeItem (e) {
-      for (let i = 0; i < this.selArr.length; i++) {
-        if (this.selArr[i].id === e.id) {
-          this.$nextTick(() => {
-            this.selArr[i].step = e.step
-          })
-        }
+      console.log(e)
+      if (e.type === 'setmeal') {
+        console.log('到套餐详情,', e)
+        // 跳到套餐商品详情
+        uni.navigateTo({
+          url: '/pages/give-away/setmealdetail?setmeal_id=' + e.id + '&desk_id=' + this.$parseURL().desk_id + '&product_type=' + e.type + '&commodity_count=' + e.commodity_count
+        })
+        return
+      }
+      this.addGoods(e)
+      // for (let i = 0; i < this.selArr.length; i++) {
+      //   if (this.selArr[i].id === e.id) {
+      //     this.$nextTick(() => {
+      //       this.selArr[i].step = e.step
+      //     })
+      //   }
+      // }
+    },
+    // 已选弹出层删除事件
+    alDel (n, index) {
+      console.log(this.selArr)
+      if (n === 0) {
+        this.selArr.splice(index, 1)
+        this.$store.dispatch('goods/setStoreSelArr', this.selArr)
       }
     },
     // 添加到已选商品
     addGoods (e) {
+      console.log(e)
       // 无可赠次数
       if (e.commodity_count === 0) return this.$showToast('该商品无可送次数')
       if (this.selArr.length === 0) {
@@ -260,13 +280,21 @@ export default {
         console.log('已选赠送商品全局变量', this.$store.state.goods.storeSelArr)
         return
       }
-      const result = this.selArr.some((item, index) => {
-        if (item.sku.length === 0) {
+      const result = this.selArr.some(item => {
+        if (item.type === 'service') {
           if (item.id === e.id) {
+            item.step = e.step
             return true
           }
-        } else if (item.sku.length !== 0) {
+        } else if (item.type === 'product') {
+          // console.log(item, e)
           if (item.sku[0].id === e.sku[0].id) {
+            item.step = e.step
+            return true
+          }
+        } else if (item.type === 'setmeal') {
+          if (item.id === e.id) {
+            item.step = e.step
             return true
           }
         }
@@ -288,16 +316,20 @@ export default {
       this.selArr.map(item => {
         const obj = {}
         if (item.type === 'setmeal') {
-          obj.combination = []
+          obj.combination = item.combination
+          obj.id = item.id
+          obj.quantity = item.step
+          obj.type = item.type
+          obj.sku_id = 0
         }
-        if (item.sku.length === 0) {
+        if (item.type === 'service') {
           obj.id = item.id
           obj.sku_id = 0
           obj.type = item.type
           obj.quantity = item.step
-        } else if (item.sku.length > 0) {
-          obj.id = 0
-          obj.sku_id = item.sku[0].sku_id
+        } else if (item.type === 'product') {
+          obj.id = item.id
+          obj.sku_id = item.sku[0].id
           obj.type = item.type
           obj.quantity = item.step
         }
@@ -309,11 +341,13 @@ export default {
     // 请求提交数据
     postOrder (products) {
       this.$minApi.giveAwayOrder({
-        desk_id: 1,
+        desk_id: this.$parseURL().desk_id,
         products: JSON.stringify(products)
       }).then(res => {
         this.orderId = res.orderId
         this.$showToast('提交成功!')
+        this.selArr = []
+        this.$store.dispatch('goods/setStoreSelArr', this.selArr)
         console.log('获取到赠送单ID', this.orderId)
         setTimeout(() => {
           uni.navigateTo({
@@ -325,6 +359,7 @@ export default {
     /** 清空已选商品 */
     delAll () {
       this.selArr = []
+      this.$store.dispatch('goods/setStoreSelArr', this.selArr)
     },
     changeTab (e) {
       this.currentTab = e
@@ -473,12 +508,14 @@ export default {
   .popview {
     .top-view {
       width: 100%;
-      height: 83rpx;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #fff;
-      line-height: 83rpx;
+    height: 83rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 83rpx;
+    background-color: #fff;
+    padding: 0 30rpx;
+
       .clear {
         color: #666;
       }

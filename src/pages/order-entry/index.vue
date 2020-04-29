@@ -67,7 +67,7 @@ export default {
     presentation () {
       this.$minRouter.push({
         name: 'give-away',
-        params: { desk_id: this.$parseURL().desk_id }
+        params: { desk_id: this.$parseURL().desk_id, is_open_desk: this.$parseURL().is_open_desk }
       })
     }
   }

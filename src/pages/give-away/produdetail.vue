@@ -16,35 +16,34 @@
       </swiper-item>
     </swiper>
     <view class="goods-item p-lr-20 m-bottom-20"  v-if="!noData">
-      <view class="top-view f28 m-top-10 f28"  v-if="product_type === 'product' ">{{list.info.product_name}}</view>
+      <view class="top-view f28 m-top-10 f28"  v-if="product_type === 'product' ">{{list.product_name}}</view>
       <view class="top-view f28 m-top-10 f28"  v-if="product_type === 'service' ">{{list.product_name}}</view>
       <view class="top-view f28 m-top-10 f28"  v-if="product_type === 'setmeal' ">{{list.setmeal_name}}</view>
       <view class="botm-view" v-if="product_type === 'product' ">
         <view class="f22">
-          <text class="price">￥{{list.info.price}}</text>
+          <text class="price">￥{{list.price}}</text>
         </view>
-        <min-stepper v-model="count"></min-stepper>
+        <min-stepper v-model="list.step" @change="changeServiceItem(list)" :max="commodity_count"></min-stepper>
       </view>
-       <view class="botm-view" v-if="product_type === 'setmeal' ">
+       <!-- <view class="botm-view" v-if="product_type === 'setmeal' ">
         <view class="f22">
           <text class="price">￥{{list.setmeal_price}}</text>
         </view>
         <min-stepper v-model="count"></min-stepper>
-      </view>
+      </view> -->
       <!-- 服务商品 -->
       <view class="botm-view" v-if="product_type === 'service'">
         <view class="f22">
           <text class="price">￥{{list.price}}</text>
         </view>
-        <min-stepper v-model="list.step" @lesss="lesss($event,list)" @adds="addGoodServe(list)"  @change="changeServiceItem(list)"></min-stepper>
+        <min-stepper v-model="list.step"  :max="commodity_count" @change="changeServiceItem(list)"></min-stepper>
       </view>
     </view>
-     <min-describe @chincesku="selSku" :sku="list.info.sku[0].sku_full_name" leftTxt="规格" v-if="product_type === 'product'"></min-describe>
-     <min-describe @chincesku='toDetail' :sku="list.combination[0].combination_name" leftTxt="套餐组合" v-if="product_type === 'setmeal'"></min-describe>
+     <min-describe @chincesku="selSku" :sku="list.sku[0].sku_full_name" leftTxt="规格" v-if="product_type === 'product'"></min-describe>
 
     <view class="introduction m-top-20 p-lr-20"  v-if="!noData">
         <view class="title min-border-bottom m-bottom-30">详细介绍</view>
-        <view class="content p-bottom-30" v-if="product_type === 'product'">{{list.info.info}}</view>
+        <view class="content p-bottom-30" v-if="product_type === 'product'">{{list.info}}</view>
         <view class="content p-bottom-30" v-if="product_type === 'service'">{{list.info}}</view>
         <view class="content p-bottom-30" v-if="product_type === 'setmeal'">{{list.info}}</view>
     </view>
@@ -54,9 +53,10 @@
       icon="../../static/images/cart.png"
       :goodsCount="countNums"
       :totalAmount="totalAmountE "
-      totalLabel="赠送额度：1000"
+      :totalLabel="totalLabel"
       buttonText="确定赠送"
       @leftClick="leftClick"
+      @submit="submit"
     ></min-goods-submit>
      <!-- 选择规格 -->
    <min-popup :show="isSelSku"  @close='closeSelectedSkuPop'>
@@ -86,11 +86,11 @@
         <view class="sku-item sku-item-num">
             <view class="f26">数量</view>
             <view class="m-tb-30">
-                <min-stepper :isAnimation="false" :min='1' v-model="skuObj.step"></min-stepper>
+                <min-stepper :isAnimation="false" :max="commodity_count" :min='1' v-model="skuObj.step"></min-stepper>
             </view>
         </view>
         <view class="min-border-bottom m-lr-30"></view>
-        <view class="btn-sku" @click="skuChioce">确定</view>
+        <view class="btn-sku" @click="skuChioce(commodity_count)">确定</view>
       </view>
     </min-popup>
     <!-- 已选商品 -->
@@ -111,15 +111,16 @@
             <view class="item" v-for="(item2,n) in selArr" :key="n" >
                   <image   src="/static/images/goods.png" mode=""  />
                   <!-- 已选服务商品 -->
-                  <view   class="content-view" v-if="product_type === 'service'">
+                  <view   class="content-view" >
                     <view class="right-view-title" >
                       <text class="f28 " style="display:block">{{item2.product_name}}</text>
+                      <text  class="f28 " v-if="product_type === 'product'">规格:{{item2.sku[0].sku_full_name}}</text>
                       <text class="f26 t" >￥{{item2.price}}</text>
                     </view>
                     <view class="right-view-bottom">
                       <view class="steper">
                         <!--  @change="aleradyGood($event,n)" -->
-                        <min-stepper  @lesss="lesss($event,item2)"  v-model="item2.step" :isAnimation="false" :min='0'></min-stepper>
+                        <min-stepper  @lesss="lesss($event,item2)" :max="commodity_count" v-model="item2.step" :isAnimation="false" :min='0'></min-stepper>
                       </view>
                     </view>
                   </view>
@@ -131,13 +132,15 @@
           leftText="已选"
           :totalAmount='totalAmountE'
           :goodsCount="countNums"
-          buttonText='去下单'
-          buttonLabel='已开台'
+          buttonText='确定赠送'
+          @submit="submit"
           ></min-goods-submit>
         </view>
     </view>
   </min-popup>
     <min-404 v-if="noData" id='none'></min-404>
+    <min-modal ref="test"></min-modal >
+
   </view>
 </template>
 
@@ -155,7 +158,7 @@ export default {
       product_id: Number,
       type: Number,
       product_type: 'product',
-      list: { product: { product_name: '' }, sku: { sku_full_name: '' } },
+      list: {},
       isSelSku: false,
       skuObj: { sku: [{ sku_full_name: '' }] },
       chioceIndex: 0,
@@ -165,7 +168,11 @@ export default {
       errImg: false,
       indexL: 0,
       lastStep: 0,
-      flag: true
+      flag: true,
+      content: '',
+      totalLabel: '',
+      commodity_count: '',
+      desk_id: ''
     }
   },
   computed: {
@@ -173,7 +180,12 @@ export default {
     totalAmountE () {
       let sum = 0
       this.selArr.map(item => {
-        sum += item.step * item.price
+        if (item.type === 'product') {
+          sum += item.step * item.price
+        } else {
+          sum += item.step * item.price
+        }
+        this.$store.dispatch('goods/setStoreSelArr', this.selArr)
       })
       return sum.toFixed(2)
     },
@@ -186,30 +198,74 @@ export default {
       return num
     }
   },
-  watch: {
-    lastStep: function (a) {
-      if (a > 0) {
-        console.log(this.selArr)
-        this.goodsChange()
-      }
-    }
-  },
   onLoad (option) {
     console.log(option)
+    const info = this.$store.state.goods.giveAwayInfo
+    console.log(info)
     this.product_id = option.product_id
     this.product_type = option.product_type
+    this.commodity_count = option.commodity_count
+    this.desk_id = option.desk_id
     console.log('从全局变量中获取已选商品列表', this.$store.state.goods.storeSelArr)
     this.selArr = this.$store.state.goods.storeSelArr
+    this.content = `
+          1. 当前台消费金额￥${info.consumption_amount}，根据赠送方案，可赠送的商品金额为￥${info.desk_presentation_limit}。<br />
+          2. 当前用户的赠送额度为￥${info.personal_presentation_limit}，不能超过此额度。<br />
+      `
+    // this.$store.dispatch('goods/setselected_giveAwayInfo', { consumption_amount: res.consumption_amount, desk_presentation_limit: res.desk_presentation_limit, personal_presentation_limit: res.personal_presentation_limit })
+    this.totalLabel = `赠送额度：${info.desk_presentation_limit}`
+  },
+  onNavigationBarButtonTap (e) {
+    this.$refs.test.handleShow({
+      title: e.text,
+      content: this.content,
+      showCancel: false,
+      success: (e) => {
+        console.log(e) // 这里拿到的是modalID: "modal"，id: 1
+      }
+    })
+  },
+  watch: {
+    selArr: {
+      handler (n) {
+        console.log(n)
+        n.map((item, index) => {
+          if (item.step === 0) {
+            this.selArr.splice(index, 1)
+            this.$store.dispatch('goods/setStoreSelArr', this.selArr)
+          }
+        })
+      },
+      deep: true
+    }
   },
   mounted () {
+    if (this.selArr.length > 0) {
+      this.selArr.map(item => {
+        if (item.type === 'service') {
+          this.list = item
+          this.item = []
+          this.item.push(this.list.product_img)
+          console.log(this.list)
+        }
+        if (item.type === 'product') {
+          this.list = item
+          this.item = []
+          this.item.push(this.list.product_img)
+          console.log(this.list)
+        }
+      })
+      return
+    }
     if (this.product_type === 'product') {
       this.$minApi.getGiveAwayProductDetail({ sku_id: this.product_id })
         .then(res => {
-          this.list = res
+          this.list = res.info
+          this.list.type = this.product_type
           // this.list.step = 1
-          console.log(res)
+          console.log('product', res)
           this.item = []
-          this.item.push(this.list.info.product_img)
+          this.item.push(this.list.product_img)
         })
         .catch(() => {
           this.noData = true
@@ -219,33 +275,10 @@ export default {
         .then(res => {
           this.list = res.info
           this.item = []
-          this.item.push(this.list.main_img)
-          this.list = JSON.parse(JSON.stringify(this.list).replace(/service_name/g, 'product_name'))
-          this.list = JSON.parse(JSON.stringify(this.list).replace(/service_price/g, 'price'))
-          this.list = JSON.parse(JSON.stringify(this.list).replace(/main_img/g, 'product_img'))
+          this.item.push(this.list.product_img)
+          this.list.type = this.product_type
+          this.list.id = this.product_id * 1
           console.log('服务商品', this.list)
-        })
-        .catch(() => {
-          this.noData = true
-        })
-      this.list.id = this.product_id * 1
-      if (this.selArr.length !== 0) {
-        this.selArr.map(item => {
-          if (this.list.id === item.id) {
-            this.list.step = item.step
-          }
-        })
-      } else {
-        this.list.step = 1
-      }
-    } else if (this.product_type === 'setmeal') {
-      this.$minApi.getGiveAwaySetmealDetail({ setmeal_id: this.product_id })
-        .then(res => {
-          // console.log('21321321213')
-          this.list = res.info
-          this.list.step = 1
-          console.log(res)
-          this.item = this.list.setmeal_images
         })
         .catch(() => {
           this.noData = true
@@ -256,7 +289,7 @@ export default {
     // 选择规格事件
     selSku (index, index2) {
       this.isSelSku = true
-      this.skuObj = this.list.info
+      this.skuObj = this.list
       console.log('skuObj', this.skuObj)
     },
     /**  关闭选择规格弹出层 */
@@ -264,16 +297,11 @@ export default {
       this.isSelSku = false
     },
     changeServiceItem (e) {
-      for (let i = 0; i < this.selArr.length; i++) {
-        if (this.selArr[i].id === e.id) {
-          this.$nextTick(() => {
-            this.selArr[i].step = e.step
-          })
-        }
-      }
+      this.addGoods(e)
     },
     // 服务商品--
     lesss (e, item) {
+      console.log('lesss')
       // 数量为0时从已选商品中删除掉该商品
       for (let i = 0; i < this.selArr.length; i++) {
         if (this.selArr[i].id === item.id && e === 0) {
@@ -283,9 +311,11 @@ export default {
           })
         }
       }
+      console.log(this.selArr)
     },
     // 选择服务商品
     addGoodServe (e) {
+      console.log('addGoodServe')
       const result = this.selArr.some((item, index) => {
         if (item.id === e.id) {
           return true
@@ -300,8 +330,9 @@ export default {
       console.log(this.selArr)
     },
     // 选择规格确定
-    skuChioce () {
+    skuChioce (n) {
       this.closeSelectedSkuPop()
+      if (n === '0') return false
       const obj = {}
       Object.assign(obj, this.skuObj)
       obj.sku = this.skuObj.sku[this.chioceIndex]
@@ -315,36 +346,34 @@ export default {
     closeSelectedSkuPop1 () {
       this.selected = false
     },
-    toDetail (id) {
-      uni.navigateTo({
-        url: './setmealdetail?setmeal_id=' + this.product_id
-      })
-    },
+
     // 已选商品统一列表方法
     addGoods (obj) {
-      const result = this.selArr.some(item => {
-        if (item.sku.sku_id === obj.sku.sku_id) {
-          item.step = obj.step
-          return true
+      console.log('obj', obj)
+      const result = this.selArr.some((item, index) => {
+        if (obj.type === 'product') {
+          if (item.sku[0].id === obj.sku.id) {
+            item.step = obj.step
+            return true
+          }
+        } else if (obj.type === 'service') {
+          if (item.id === obj.id) {
+            console.log(item, obj)
+            // item.step = obj.step
+            return true
+          }
         }
       })
       if (!result) {
         this.selArr.push(obj)
-        this.$store.dispatch('goods/setselected_products', this.selArr)
+        this.$store.dispatch('goods/setStoreSelArr', this.selArr)
       }
-      // this.selArr.map((item, index) => {
-      //   this.list.sku.map((item2, index2) => {
-      //     if (item.sku.sku_id === item2.sku_id) {
-      //       this.indexL = index
-      //     }
-      //   })
-      // })
     },
     // 已选商品删除事件
     aleradyGood (e, index) {
       if (e === 0) {
         this.selArr.splice(index, 1)
-        this.$store.dispatch('goods/setselected_products', this.selArr)
+        this.$store.dispatch('goods/setStoreSelArr', this.selArr)
       }
     },
     // 图片错误
@@ -362,27 +391,60 @@ export default {
     // 已选商品清空
     delAll () {
       this.selArr = []
-      this.$store.dispatch('goods/setselected_products', this.selArr)
+      this.$store.dispatch('goods/setStoreSelArr', this.selArr)
     },
-    // 商品详情计数器
-    goodsChange () {
-      if (this.list.sku.length > 0) {
+    // 提交赠送商品
+    submit () {
+      if (this.selArr.length === 0) return this.$showToast('请选择赠送商品')
+      console.log('准备提交', this.selArr)
+      // [{"id":1,"type":"service","quantity":1,"sku_id":0,"combination":[]}
+      const products = []
+      this.selArr.map(item => {
         const obj = {}
-        const skuOne = this.list.sku[this.chioceIndex]
-        Object.assign(obj, this.list)
-        obj.sku = skuOne
-        this.addGoods(obj)
-        console.log(this.selArr)
-      }
-      this.selArr.map((item, index) => {
-        this.list.sku.map((item2, index2) => {
-          if (item.sku.sku_id === item2.sku_id) {
-            this.indexL = index
-            item2.step = item.step
+        if (item.type === 'setmeal') {
+          if (item.type === 'setmeal') {
+            obj.combination = item.combination
+            obj.id = item.id
+            obj.quantity = item.step
+            obj.type = item.type
+            obj.sku_id = 0
           }
-        })
+        }
+        if (item.type === 'service') {
+          obj.id = item.id
+          obj.sku_id = 0
+          obj.type = item.type
+          obj.quantity = item.step
+        } else if (item.type === 'product') {
+          obj.id = item.id
+          obj.sku_id = item.sku[0].id
+          obj.type = item.type
+          obj.quantity = item.step
+        }
+        products.push(obj)
+      })
+      console.log(products)
+      this.postOrder(products)
+    },
+    // 请求提交数据
+    postOrder (products) {
+      this.$minApi.giveAwayOrder({
+        desk_id: this.desk_id,
+        products: JSON.stringify(products)
+      }).then(res => {
+        this.orderId = res.orderId
+        this.$showToast('提交成功!')
+        this.selArr = []
+        this.$store.dispatch('goods/setStoreSelArr', this.selArr)
+        console.log('获取到赠送单ID', this.orderId)
+        setTimeout(() => {
+          uni.navigateTo({
+            url: './giveawayorder?order_id=' + this.orderId
+          })
+        }, 2000)
       })
     }
+
   }
 }
 </script>

@@ -3,17 +3,29 @@
     <image class="icon" src="/static/images/success.png" alt="success" />
     <view class="title">提交成功</view>
     <view class="tips">请尽快电联相关人员审核</view>
-    <view class="tips">2019年12月31日 12:06:20</view>
-    <min-btn class="min-btn">回到台</min-btn>
+    <view class="tips">{{timer}}</view>
+    <min-btn class="min-btn" @click="toAdmin">回到台</min-btn>
   </view>
 </template>
 
 <script>
 export default {
   name: 'submit-success',
+  navigate: ['navigateTo'],
   data () {
     return {
-
+      timer: ''
+    }
+  },
+  mounted () {
+    this.timer = this.$minCommon.formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')
+    console.log()
+  },
+  methods: {
+    toAdmin () {
+      this.$minRouter.push({
+        name: 'platform-admin'
+      })
     }
   }
 }

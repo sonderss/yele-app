@@ -18,7 +18,9 @@
       <view class="botm-view">
         <view class="f22 m-bottom-20">
           ￥ <text class="price">{{list.price}}</text>
+          <!-- v-model="list.step" @change="changeServiceItem(list)" :max="commodity_count" -->
         </view>
+         <min-stepper v-model="list.step" :max="commodity_count"></min-stepper>
       </view>
     </view>
     <view class="introduction " v-for="(item,index) in list.combination" :key="index">
@@ -41,6 +43,7 @@
           :key="index2"
           :leftIcon='true'
           @changeCount="changeCount($event,index,index2)"
+           :maxStep="item.is_check === 1 ? 1 : 999"
           :leftTxt="item2.product_name + `*${item2.num}` "
           :leftIconValue='item2.comb_type === 1 ? item2.product_img : item2.product_img'
           :step='type === 3 ? false: true'
@@ -48,7 +51,9 @@
         </view>
     </view>
     <view class="empty_view"></view>
-    <view class="btn" v-if="type !== 3">确定</view>
+    <view class="btn" @click="sureSubmit">确定</view>
+    <min-modal ref="test"></min-modal >
+
 </view>
 </template>
 
@@ -67,14 +72,38 @@ export default {
       num_prducts: 0,
       type: Number,
       setmeal_id: '',
-      list: { combination: [{ last_number: '', combination_detail: [] }] }
+      list: { combination: [{ last_number: '', combination_detail: [] }] },
+      content: '',
+      totalLabel: '',
+      selArr: [],
+      selArrL: [], // 全局变量
+      commodity_count: '',
+      desk_id: ''
     }
   },
   onLoad (option) {
     // this.list = this.$parseURL().setmeal_idgetPackageDetails
-
+    console.log(option)
+    this.desk_id = option.desk_id
     this.setmeal_id = option.setmeal_id
+    this.commodity_count = option.commodity_count
     console.log('套餐ID', this.setmeal_id)
+    const info = this.$store.state.goods.giveAwayInfo
+    this.content = `
+          1. 当前台消费金额￥${info.consumption_amount}，根据赠送方案，可赠送的商品金额为￥${info.desk_presentation_limit}。<br />
+          2. 当前用户的赠送额度为￥${info.personal_presentation_limit}，不能超过此额度。<br />
+      `
+    this.totalLabel = `赠送额度：${info.desk_presentation_limit}`
+  },
+  onNavigationBarButtonTap (e) {
+    this.$refs.test.handleShow({
+      title: e.text,
+      content: this.content,
+      showCancel: false,
+      success: (e) => {
+        console.log(e) // 这里拿到的是modalID: "modal"，id: 1
+      }
+    })
   },
   mounted () {
     this.$minApi.getOriderPackageDetails({ setmeal_id: this.setmeal_id })
@@ -85,6 +114,8 @@ export default {
           })
         })
         this.list = res.info
+        this.list.commodity_count = this.commodity_count
+        this.list.type = 'setmeal'
         console.log(this.list)
       })
   },
@@ -100,10 +131,73 @@ export default {
     }
   },
   methods: {
+    // changeCount (n, index, index2) {
+    //   // this.num_prducts = n
+    //   console.log(n, index, index2)
+    //   this.list.combination[index].combination_detail[index2].step = n
+    // },
+    sureSubmit () {
+      console.log(this.selArr)
+      // console.log(this.list)
+      const obj = {}
+      Object.assign(obj, this.list)
+      obj.combination = this.selArr
+      // this.addGoods(obj)
+      this.selArrL.push(obj)
+      console.log(this.selArrL)
+      this.$store.dispatch('goods/setStoreSelArr', this.selArrL)
+      setTimeout(() => {
+        this.$minRouter.push({
+          name: 'give-away',
+          params: { desk_id: this.desk_id }
+        })
+      }, 2000)
+    },
+
     changeCount (n, index, index2) {
       // this.num_prducts = n
-      console.log(n, index, index2)
       this.list.combination[index].combination_detail[index2].step = n
+      const item = { id: '' }
+
+      // obj.combination = []
+      item.id = this.list.combination[index].combination_detail[index2].comb_id
+      item.combination_detail = []
+      const item2 = { id: '' }
+      item2.id = this.list.combination[index].combination_detail[index2].product_id
+      item2.type = this.list.combination[index].combination_detail[index2].comb_type === 1 ? 'product' : 'service'
+      item2.quantity = this.list.combination[index].combination_detail[index2].step
+      item2.sku_id = this.list.combination[index].combination_detail[index2].sku_id
+      // item.combination_detail.push(item2)
+      // item.detail = item2
+      item.combination_detail.push(item2)
+
+      // this.detail.push(item)
+      this.addGoods(item)
+    },
+    addGoods (obj) {
+      if (this.selArr.length === 0) {
+        this.selArr.push(obj)
+        return
+      }
+
+      const resultF = this.selArr.some(item => {
+        if (item.id !== obj.id) {
+          return true
+        }
+        const result = item.combination_detail.some(item2 => {
+          if (item2.sku_id === obj.combination_detail[0].sku_id) {
+            item2.quantity = obj.combination_detail[0].quantity
+            return true
+          }
+        })
+        if (!result) {
+          item.combination_detail.push(obj.combination_detail[0])
+          // this.selArr.push(obj)
+        }
+      })
+      if (resultF) {
+        this.selArr.push(obj)
+      }
     }
   }
 

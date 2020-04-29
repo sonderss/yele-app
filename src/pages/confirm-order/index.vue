@@ -55,7 +55,7 @@ export default {
     return {
       payType: '0',
       list: { order_info: { minim_charge: '' } },
-      buttonText: '申请开台',
+      buttonText: '',
       totalAmount: '',
       payMethod: 'alipay_scan_code'
     }
@@ -82,28 +82,37 @@ export default {
   methods: {
     submit () {
       console.log(this.payMethod)
-      this.$minApi.confirmOrder({
-        order_id: this.$parseURL().order_id,
-        pay_type: this.payMethod,
-        desk_id: this.$parseURL().desk_id
-      }).then(res => {
-        console.log(res)
-        if (res.length === 0) {
-          this.$showToast('开台成功！！！')
-          this.$store.dispatch('goods/setOrderSelArr', [])
-          setTimeout(() => {
-            this.$minRouter.push({
-              name: 'open-success',
-              params: {
-                client_mobile: this.list.order_info.client_mobile,
-                client_name: this.list.order_info.client_name,
-                desk_id: this.list.order_info.desk_id,
-                desk_name: this.list.order_info.desk_name
-              }
-            })
-          }, 2000)
-        }
-      })
+      if (this.list.order_info.is_can_open === 1) {
+        this.$minApi.confirmOrder({
+          order_id: this.$parseURL().order_id,
+          pay_type: this.payMethod,
+          desk_id: this.$parseURL().desk_id
+        }).then(res => {
+          console.log(res)
+          if (res.length === 0) {
+            this.$showToast('开台成功！！！')
+            this.$store.dispatch('goods/setOrderSelArr', [])
+            setTimeout(() => {
+              this.$minRouter.push({
+                name: 'open-success',
+                params: {
+                  client_mobile: this.list.order_info.client_mobile,
+                  client_name: this.list.order_info.client_name,
+                  desk_id: this.list.order_info.desk_id,
+                  desk_name: this.list.order_info.desk_name
+                }
+              })
+            }, 2000)
+          }
+        })
+      } else {
+        // 申请开台
+        console.log(this.$parseURL())
+        this.$minRouter.push({
+          name: 'apply-open',
+          params: { desk_id: this.$parseURL().desk_id, order_id: this.$parseURL().order_id, open_status: 0 }
+        })
+      }
     }
   },
   mounted () {
@@ -117,6 +126,8 @@ export default {
       this.totalAmount = this.list.order_info.payable_price
       if (this.list.order_info.is_can_open === 1) {
         this.buttonText = '支付并开台'
+      } else {
+        this.buttonText = '申请开台'
       }
       console.log(this.list)
       // eslint-disable-next-line handle-callback-err

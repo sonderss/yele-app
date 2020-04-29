@@ -686,6 +686,18 @@
       }
     },
     {
+      "path": "pages/placean-order/orderstart",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"确认订单",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
       "path": "pages/confirm-order/index",
       "style": {
         "app-plus":{

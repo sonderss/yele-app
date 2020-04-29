@@ -72,9 +72,10 @@ export default {
     // console.log(this.$store.state.goods.giveAwayInfo)
     const res = this.$store.state.goods.giveAwayInfo
     this.content = `
-          1. 当前台消费金额￥${res.consumption_amount}，根据赠送方案，可赠送的商品金额为￥${res.presentation_limit}。<br />
-          2. 当前用户的赠送额度为￥${res.personal_remaining_quota}，不能超过此额度。<br />
+          1. 当前台消费金额￥${res.consumption_amount}，根据赠送方案，可赠送的商品金额为￥${res.desk_presentation_limit}。<br />
+          2. 当前用户的赠送额度为￥${res.personal_presentation_limit}，不能超过此额度。<br />
       `
+    this.totalLabel = `赠送额度：${res.desk_presentation_limit}`
   },
   methods: {
     // postOrderGet
