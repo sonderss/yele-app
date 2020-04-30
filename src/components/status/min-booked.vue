@@ -165,7 +165,8 @@ export default {
       this.index = 2
       // 跳转到选择客户页面（存酒）
       this.$minRouter.push({
-        name: 'select-customers'
+        name: 'select-customers',
+        params: { desk_id: this.idNum, desk_name: this.list.desk_info.desk_name }
       })
     },
     // 展示剩余按钮

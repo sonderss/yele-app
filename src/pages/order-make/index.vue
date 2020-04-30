@@ -169,7 +169,7 @@ export default {
         client_mobile: this.phone,
         business_date: dates,
         arrival_time: this.tsetvalue,
-        is_birthday: this.is_birthday ? 1 : 2,
+        is_birthday: this.is_birthday ? 1 : 0,
         remark: this.value,
         is_across: this.isKua
       }

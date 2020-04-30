@@ -141,7 +141,7 @@
           :goodsCount="countNums"
           :totalLabel="totalLabel"
           buttonText='去下单'
-          buttonLabel='已开台'
+          :buttonLabel='buttonLabel'
           @submit="submit"
           ></min-goods-submit>
         </view>
@@ -405,6 +405,15 @@ export default {
         if (res.orderId) {
           this.$showToast('提交成功')
           setTimeout(() => {
+            // 判断是否为已开台，已开台有签折信息
+            if (this.$parseURL().is_open_desk) {
+              // 已开台
+              console.log(res.orderId, this.$parseURL().desk_id, this.$parseURL().is_open_desk)
+              uni.navigateTo({
+                url: '../placean-order/orderstart?order_id=' + res.orderId + '&desk_id=' + this.$parseURL().desk_id + '&open_status=' + 1
+              })
+              return
+            }
             this.$minRouter.push({
               name: 'confirm-order',
               params: { order_id: res.orderId, desk_id: this.$parseURL().desk_id, open_status: this.$parseURL().is_open_desk ? 1 : 0 }

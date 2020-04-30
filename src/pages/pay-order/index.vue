@@ -152,7 +152,7 @@ export default {
       }).then(res => {
         console.log(res)
         if (res.length === 0) {
-          this.$showToast('开台成功！！！')
+          this.$showToast('支付成功！！！')
           this.$store.dispatch('goods/setOrderSelArr', [])
           setTimeout(() => {
             this.$minRouter.push({

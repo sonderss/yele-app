@@ -90,9 +90,11 @@ export default {
     radioChange (e) {
       console.log(e.detail.value * 1)
       if (e.detail.value * 1 >= 0) {
+        // 营销带客
         this.type = 1
         this.seil = this.list[e.detail.value]
       } else {
+        // 自来客
         this.type = 0
       }
     }

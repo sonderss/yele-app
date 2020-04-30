@@ -1,15 +1,19 @@
 <template>
   <view class="add-userinfo p-lr-30 p-tb-20">
-    <min-cell :card="false">
-      <view class="f30 p-tb-30">营销信息</view>
-      <view class="min-border-bottom" style="height:1rpx"></view>
-      <min-cell-item
-        :img="data.seil.head_img ? data.seil.head_img : 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg' "
-        :title="data.seil.sales_name + ' | '+  data.seil.position_name"
-        :label="data.seil.mobile"
-        :border="false"
-      ></min-cell-item>
-    </min-cell>
+
+          <min-cell :card="false" >
+            <view class="f30 p-tb-30" >营销信息 {{$parseURL().type === 0 ? '（自来客）' : ''}}</view>
+            <view class="min-border-bottom" style="height:1rpx"></view>
+            <min-cell-item
+              :img="data.seil.head_img ? data.seil.head_img : 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg' "
+              :title="data.seil.sales_name + ' | '+  data.seil.position_name"
+              :label="data.seil.mobile"
+              :border="false"
+              v-if="$parseURL().type === 0 ? false : true"
+            ></min-cell-item>
+
+          </min-cell>
+
     <view class="m-tb-20"></view>
     <min-cell :card="false" class="mid-view">
       <min-desc-input desc="客户姓名" value="刘轻丽" v-model="isName" placeholder="请输入客户姓名"></min-desc-input>
@@ -56,9 +60,23 @@ export default {
   methods: {
     next () {
       // console.log('电话：', this.isPhone)
+      const obj = {}
+      // 自来客 2 - 空闲,3 - 已预约
+      if (this.data.type === 0) {
+        obj.sales_uid = 0
+        obj.booking_id = ''
+      } else {
+        obj.sales_uid = this.$parseURL().seil.id
+        obj.booking_id = ''
+      }
       this.$minApi.startOrder({
         desk_id: this.data.msg.desk_id,
-        desk_status: this.data.msg.status
+        booking_id: this.$parseURL().msg.status === 3 ? '' : '',
+        sales_uid: this.data.type === 1 ? this.$parseURL().seil.id : '',
+        client_name: this.isName,
+        client_mobile: this.isPhone,
+        is_birthday: this.isShengri ? 1 : 0,
+        remark: this.value
       }).then(res => {
         console.log(res)
         if (res.length === 0) {

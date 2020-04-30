@@ -4,10 +4,10 @@
       <view :class="status === item.value ? 'btn active' : 'btn'" @click="chioceItem(item.value)" v-for="(item,index) in title" :key="index">{{item.name}}</view>
 
     </view>
-    <view class="platform-wrap" v-if="mines.length !== 0">
+    <view class="platform-wrap" v-if=" getMineChange && getMineChange.length > 0">
       <view class="title">我的台位</view>
       <view class="list">
-        <view class="item" :class="statusArr[item.desk_status].class" v-for="(item, index) in list.mines" :key="index"  @click="goDetail(item.id,item.desk_status)">
+        <view class="item" :class="statusArr[item.desk_status].class" v-for="(item, index) in getMineChange" :key="index"  @click="goDetail(item.id,item.desk_status)">
           <view class="name">{{item.desk_name}}</view>
           <view class="status">{{statusArr[item.desk_status].name}}</view>
           <view class="count">{{$minCommon.getSeats(item.seats)}}</view>
@@ -25,7 +25,7 @@
               :key="index2"
               @click="goDetail(item2.id,item2.desk_status)"
             >
-              <view class="name">{{item2.desk_name}}</view>
+              <view class="name" >{{item2.desk_name}}</view>
               <view class="status">{{statusArr[item2.desk_status].name}}</view>
               <view class="count">{{$minCommon.getSeats(item2.seats)}}</view>
             </view>
@@ -38,7 +38,7 @@
     <min-popup size="height" :show="show" @close='close'>
       <min-picker  @cancel="cancel" @sure="sure"></min-picker>
     </min-popup>
-   <min-404 id="none" v-if="!getDataChange"></min-404>
+   <!-- <min-404 id="none" v-if="getDataChange.length === 0"></min-404> -->
   </view>
 </template>
 
@@ -88,90 +88,85 @@ export default {
       titleNView: titleObj
     })
     // #endif
+    this.getData(this.date)
   },
   mounted () {
-    this.getData(this.date)
     // this.getData('2020-3-18')
   },
   onNavigationBarButtonTap () {
     this.show = !this.show
   },
   computed: {
-    // 返回数组
+    // 返回桌台数组
     getDataChange () {
-      let arr = this.list.desks
-      const brr = []
-      let indexArr = []
-      const indexBrr = []
+      const a = this.filterData((this.list.desks))
+      return a
+    },
+    // 我的桌台
+    getMineChange () {
+      let arr = []
+      // 定义一个分组，任何改变都根据这个分组来操作]
+      const newListDesk = []
       if (this.status === 999) {
-        arr = this.list.desks
+        // 全部桌台信息
+        arr = this.list.mines
       } else {
-        this.list.desks.map((item, index) => {
-          item.desk_lists.map((item2, index2) => {
-            if (this.status === item2.desk_status) {
-              indexArr.push(index)
-              indexBrr.push(index2)
-            }
-          })
+        this.list.mines.map(item => {
+          if (item.desk_status === this.status) {
+            newListDesk.push(item)
+          }
         })
-        if (indexArr.length === 0 && indexBrr.length === 0) {
-          return false
-        }
-        const itemArr = []
-        const itemBrr = []
-        indexArr = this.$minCommon.arrSet(indexArr)
-        indexArr.map(item => {
-          itemArr.push(this.list.desks[item])
-        })
-        itemArr.map(item => {
-          item.desk_lists.map((item2, index) => {
-            if (this.status === item2.desk_status) {
-              itemBrr.push(item2)
-            }
-          })
-        })
-        itemArr.map(item => {
-          itemBrr.map(item2 => {
-            if (item.id === item2.group_id) {
-              const op = []
-              op.push(item2)
-              const obj = {
-                id: item.id,
-                group_name: item.group_name,
-                desk_lists: op
-              }
-              brr.push(obj)
-            }
-          })
-        })
-        arr = brr
-        console.log(brr)
-
-        arr = this.testArr(arr)
-        console.log(arr)
+        arr = newListDesk
       }
       return arr
     }
   },
   methods: {
-    testArr (arr) {
-      let p = []
-      arr.forEach((item, index) => {
-        if (p.length !== 0) {
-          p.forEach((item2, index2) => {
-            if (item2.id !== item.id) {
-              p.push(item)
-            } else if (item2.id === item.id) {
-              item2.desk_lists = item2.desk_lists.concat(item.desk_lists)
-            }
-          })
-        } else {
-          p.push(item)
+    newArr (arr) {
+      let brr = {}
+      const newArr = []
+      arr.map(item => {
+        if (brr.id !== item.id) {
+          brr = item
+          newArr.push(brr)
         }
       })
-      p = this.$minCommon.arrSet(p)
-
-      return p
+      return newArr
+    },
+    // 封装一个筛选函数
+    filterData (array) {
+      let arr = []
+      // 定义一个分组，任何改变都根据这个分组来操作]
+      let newListDesk = []
+      if (this.status === 999) {
+        // 全部桌台信息
+        arr = array // this.list.desks
+      } else {
+        array.map((item, index) => {
+          item.desk_lists.map((item2, index2) => {
+            if (item2.desk_status === this.status) {
+              newListDesk.push(array[index])
+            }
+          })
+        })
+        // 去除新组重复的项
+        newListDesk = this.newArr(newListDesk)
+        let arrData = []
+        // 去除具体项不符合的条件
+        newListDesk.map((item, index) => {
+          const obj = { desk_lists: [], id: item.id, group_name: item.group_name }
+          item.desk_lists.map(item2 => {
+            if (item2.desk_status === this.status) {
+              obj.desk_lists.push(item2)
+              arrData.push(obj)
+            }
+          })
+        })
+        // 去重
+        arrData = this.newArr(arrData)
+        arr = arrData
+      }
+      return arr
     },
     // 导航选中事件
     chioceItem (status) {
@@ -192,6 +187,8 @@ export default {
           this.desks = res.desks
           this.mines = res.mines
           this.title = res.title
+          console.log(this.list)
+          console.log(res.desks)
         })
         // eslint-disable-next-line handle-callback-err
         .catch(err => {

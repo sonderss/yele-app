@@ -35,7 +35,7 @@
         <text class="bfont">合计：￥{{item.order_price}}</text>
       </view>
     </view>
-
+  <min-404 v-if="list.length === 0"></min-404>
   </view>
 </template>
 

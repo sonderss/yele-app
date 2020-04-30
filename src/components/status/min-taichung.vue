@@ -28,7 +28,7 @@
 
       <view  class="m-bottom-10 m-top-20"  v-for="i in list.order_list" :key="i.order_sn" style="width:100%;display: flex;justify-content: space-between;">
           <text class="f28">订 单 号 ：{{i.order_sn}}</text>
-          <text class="f26">{{i.pay_status === 0 ? `待付${list.order_list.payable_price}`:'已支付'}} </text>
+          <text class="f26">{{i.pay_status === 0 ? `待付${i.payable_price}`:'已支付'}} </text>
       </view>
 
     </view>
@@ -110,7 +110,9 @@ export default {
       this.index = 1
       // 跳转到选择客户页面（存酒）
       this.$minRouter.push({
-        name: 'select-customers'
+        name: 'select-customers',
+        params: { desk_id: this.idNum, desk_name: this.list.desk_info.desk_name }
+
       })
     },
     // 销台
@@ -134,7 +136,8 @@ export default {
                   this.$showToast('销台成功')
                   setTimeout(() => {
                     this.$minRouter.push({
-                      name: 'platform-admin'
+                      name: 'platform-detail',
+                      params: { id: this.idNum }
                     })
                   }, 2000)
                 }

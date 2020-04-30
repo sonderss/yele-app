@@ -21,10 +21,6 @@ export default {
     return {
       list: [{
         platform: true, isSetMeal: true, order_sn: '201901021532', status: { num: 2, desc: '待补差价' }, pic: [{ img: '/static/images/goods.png' }, { img: '/static/images/goods.png' }], price: '666.00', timer: '2019-12-10  12:35:65', result: '未付清'
-      }, {
-        platform: false, isSetMeal: false, order_sn: '201901021532', status: { num: 3, desc: '待确认' }, pic: [{ img: '/static/images/goods.png' }], price: '666.00', timer: '2019-12-10  12:35:65', num: 5, title: '2020年元旦跨年夜百威兄弟 终极套餐12瓶', desc: 'VSOP*750ml*2010年*/瓶VSOP*750ml*2010年*/瓶', result: '未付清'
-      }, {
-        platform: true, isSetMeal: true, sign: '换货单', order_sn: '201901021532', status: { num: 5, desc: '已出品' }, pic: [{ img: '/static/images/goods.png' }, { img: '/static/images/goods.png' }, { img: '/static/images/goods.png' }], price: '666.00', timer: '2019-12-10  12:35:65', num: 5, title: '2020年元旦跨年夜百威兄弟 终极套餐12瓶', desc: 'VSOP*750ml*2010年*/瓶', result: '已付清'
       }]
     }
   }

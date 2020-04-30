@@ -55,7 +55,7 @@
           <view class="toast anmatiin " v-if="toast">
               <view class="bag_btn" @click="saveWine">存酒</view>
               <view class="bag_btn" @click="bill">账单</view>
-              <view class="bag_btn" >订单</view>
+              <view class="bag_btn" @click="order">订单</view>
                <view class="bag_btn" @click="getWine">取酒</view>
               <view class="bag_btn" @click="clear_order">清台</view>
               <view class="bag_btn"  @click="goGetHistory">历史</view>
@@ -120,7 +120,15 @@ export default {
     bill () {
       // 这里需要传开台记录id 台位ID
       this.$minRouter.push({
-        name: 'desk-bill'
+        name: 'desk-bill',
+        params: { open_id: this.list.desk_info.opening_id, desk_id: this.idNum }
+      })
+    },
+    // 订单
+    order () {
+      this.$minRouter.push({
+        name: 'order-list',
+        params: { open_id: this.list.desk_info.opening_id }
       })
     },
     // 存酒
@@ -172,7 +180,8 @@ export default {
                   this.$showToast('清台成功')
                   setTimeout(() => {
                     this.$minRouter.push({
-                      name: 'platform-admin'
+                      name: 'platform-detail',
+                      params: { id: this.idNum }
                     })
                   }, 2000)
                 }

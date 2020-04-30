@@ -373,13 +373,16 @@ export default {
     },
     // 已选商品统一列表方法
     addGoods (obj) {
+      console.log('obj', obj)
       const result = this.selArr.some(item => {
-        if (obj.type === 'service') {
+        if (obj.type === 'service' && item.type === 'service') {
+          console.log(item)
           if (item.id === obj.id) {
             item.step = obj.step
             return true
           }
-        } else if (obj.type === 'product') {
+        } else if (obj.type === 'product' && item.type === 'product') {
+          console.log(item.sku.id, obj.sku.id, item)
           if (item.sku.id === obj.sku.id) {
             item.step = obj.step
             return true

@@ -176,6 +176,79 @@ class MinCommon {
       }
     }
   }
+
+  // 返回订单状态
+  static getOrderStatus (num) {
+    // 订单状态（0：待付款，1：待确认，2：待出品，3：出品中，4：已出品，5：已完成，-1：待补差价，-2：已取消，-3：已退单，-4：改价作废，-5：换货作废，-6：退货作废）
+    /**
+     *   { desc: '待付款', color: 'red' },
+        { desc: '待确认', color: 'green' },
+        { desc: '待出品', color: 'red' },
+        { desc: '出品中', color: 'blue' },
+        { desc: '已出品', color: 'blue' },
+        { desc: '已完成', color: 'origin' }
+     *
+     */
+    switch (num) {
+      case 0:
+        return { desc: '待付款', color: 'red' }
+
+      case 1:
+        return { desc: '待确认', color: 'green' }
+
+      case 2:
+        return { desc: '待出品', color: 'red' }
+
+      case 3:
+        return { desc: '出品中', color: 'blue' }
+
+      case 4:
+        return { desc: '已出品', color: 'blue' }
+
+      case 5:
+        return { desc: '已完成', color: 'origin' }
+
+      case -1:
+        return { desc: '待补差价', color: 'red' }
+
+      case -2:
+        return { desc: '已取消', color: 'green' }
+
+      case -3:
+        return { desc: '已退单', color: 'red' }
+
+      case -4:
+        return { desc: '改价作废', color: 'blue' }
+
+      case -5:
+        return { desc: '换货作废', color: 'origin' }
+
+      case -6:
+        return { desc: '退货作废', color: 'green' }
+      default:
+        return { desc: '暂无', color: '' }
+    }
+  }
+
+  // 付款方式
+  static getPayMethod (payType) {
+    switch (payType) {
+      case '0':
+        return 'alipay_scan_code'
+
+      case '1':
+        return 'wechat_scan_code'
+
+      case '2':
+        return 'credit_card'
+
+      case '3':
+        return 'cash'
+
+      case '4':
+        return 'postpay'
+    }
+  }
 }
 
 MinCommon.install = function (Vue) {

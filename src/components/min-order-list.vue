@@ -1,18 +1,20 @@
 <template>
   <view class="min-order-list" v-if="list[0].order_product_list">
-      <view class="main" v-for="(item,index) in list" :key="index" @click="toDetail(item.id)">
+      <view class="main" v-for="(item,index) in list" :key="item.order_sn" @click="toDetail(item.id)">
           <view class="top-view min-flex">
             <view class="left-view min-flex min-flex-main-start">
                <text v-if="isShowPlatform"  class="f20 m-right-10 radius-b" :class="item.source === 0 ? 'active-left-p' : 'active-left-m' ">{{item.source === 0 ?  '门店' : (item.source === 1 ? '平台' :'赠送' )}}</text>
                <text class="f26 m-left-20">单号：{{item.order_sn}}</text>
             </view>
-            <text class="right-txt f28" v-if="item.order_status" :class="status[item.order_status].color">{{status[item.order_status].desc}}</text>
+            <text class="right-txt f28"  :class="$minCommon.getOrderStatus(item.order_status).color">
+              {{$minCommon.getOrderStatus(item.order_status).desc}}
+            </text>
           </view>
           <view  v-if="item.order_product_list.length < 2 && item.order_product_list.length !== 'undefined'">
             <view class="mid-view min-border-top "  v-for="(i,n) in item.order_product_list" :key="n">
                 <view class="left-view">
                   <view class="left-photo">
-                    <image :src="i.product_img" />
+                    <image :src="i.product_img" @error="imageErro($event,index,n)"/>
                   </view>
                   <view class="mid-desc">
                       <text class="f28 fcolor title" v-if="i.product_name !== 'undefined'">{{i.product_name}}</text>
@@ -28,7 +30,7 @@
           <view v-if="item.order_product_list.length > 2 && item.order_product_list.length !== 'undefined'">
             <view class="mid-view min-border-top ">
                 <view class="left-view">
-                  <view class="left-photo m-right-20" v-for="(i,n) in item.order_product_list" :key="i.id">
+                  <view class="left-photo m-right-20" v-for="(i,n) in item.order_product_list" :key="n">
                     <image :src="i.product_img" @error="imageErro($event,index,n)"/>
                   </view>
                 </view>
@@ -51,14 +53,7 @@
 // 订单状态（0：待付款，1：待确认，2：待出品，3：出品中，4：已出品，5：已完成，-1：待补差价，-2：已取消，-3：已退单，-4：改价作废，-5：换货作废，-6：退货作废）
 // 1 待支付 2 待补差价 6 出品中（#FF0000）  ||  3 待确认  4  待出品 （#39BA01）  ||  7 已完成  5  已出品 （#0090FF）
 // 来源
-const status = [
-  { desc: '待付款', color: 'red' },
-  { desc: '待确认', color: 'green' },
-  { desc: '待出品', color: 'red' },
-  { desc: '出品中', color: 'blue' },
-  { desc: '已出品', color: 'blue' },
-  { desc: '已完成', color: 'origin' }
-]
+
 // （0：普通单，1：改价单，2：部分退货，3：整单退货，4：换货，5：开台单）
 const order = [
   { desc: '普通单', color: 'red' },
@@ -73,7 +68,6 @@ export default {
   data () {
     return {
       isSetMeal: false,
-      status,
       order
     }
   },
@@ -93,7 +87,8 @@ export default {
   methods: {
     imageErro (e, index, n) {
       if (e.type === 'error') {
-        this.list[index].order_product_list[n].product_img = 'https://seller-admin-dev.oss-cn-hangzhou.aliyuncs.com/store/default/20200410/ef0fc202004100939173542.png'
+        // this.list[index].order_product_list[n].product_img = '../src/static/images/goods.png'
+        this.$set(this.list[index].order_product_list[n], 'product_img', '/static/images/goods.png')
       }
     },
     toDetail (id) {

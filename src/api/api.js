@@ -124,6 +124,8 @@ export default {
   previewOrder: data => minRequest.get('/5e942d8d68ea6', data),
   // 确认订单 5ea062b985018
   confirmOrder: data => minRequest.post('/5ea062b985018', data),
+  // 取消订单 5ea7f3bce55df
+  cancelOrder: data => minRequest.post('/5ea7f3bce55df', data),
   /**
    * @description post请求
    */
