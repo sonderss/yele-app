@@ -1,12 +1,13 @@
 <template>
   <view>
-    <view class="min-search min-flex" :style="{'background': bgColor}">
-      <image class="search-icon" @click="$emit('search')" src="/static/images/search.png"></image>
-      <input class="search min-flex-1" type="text" confirm-type="search" :placeholder="placeholder"
-        @input="handleInput"
-        :value="value"
+    <view class="min-search min-flex">
+      <image class="search-icon" src="/static/images/search.png"></image>
+      <input class="search min-flex-1" type="text" placeholder="请输入搜索内容"
+        v-model="value"
+        @focus="handleFocus"
+        @blur="handleBlur"
       >
-      <view v-show="String(value)" @click="handleClose" class="search-close-box min-flex">
+      <view v-show="close" @click="handleClose" class="search-close-box min-flex">
         <image class="search-close" src="/static/images/close.png"></image>
       </view>
     </view>
@@ -15,30 +16,24 @@
 
 <script>
 export default {
-  props: {
-    placeholder: {
-      default: '请输入搜索内容',
-      type: String
-    },
-    value: {
-      type: [String, Number],
-      default: ''
-    },
-    bgColor: {
-      type: String,
-      default: '#fff'
-    }
-  },
+  name: '',
   data () {
     return {
+      close: false,
+      value: ''
     }
   },
   methods: {
-    handleClose () {
-      this.$emit('input', '')
+    handleFocus () {
+      this.close = true
     },
-    handleInput (e) {
-      this.$emit('input', e.target.value)
+    handleBlur () {
+      this.close = false
+      this.$emit('search', this.value)
+    },
+    handleClose () {
+      this.value = ''
+      this.$emit('search', this.value)
     }
   }
 }
@@ -47,7 +42,9 @@ export default {
 <style lang="scss" scoped>
 .min-search {
   position: relative;
+  margin: 0 30rpx;
   padding: 0 30rpx;
+  background: #FFFFFF;
   height: 88rpx;
   font-size: 28rpx;
   border-radius: 4px;
@@ -67,6 +64,5 @@ export default {
     width: 32rpx;
     height: 32rpx;
   }
-
 }
 </style>

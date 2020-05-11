@@ -56,31 +56,19 @@ class MinRequest {
     obj.timeOut = options.timeOut || this._config.timeOut
 
     obj = { ...obj, ...MinRequest._requestBefore(obj) }
+
     return new Promise((resolve, reject) => {
-      uni.showLoading({
-        title: '加载中...'
-      })
-      uni.onNetworkStatusChange(res => {
-        if (!res.isConnected) {
-          console.log(res)
-          uni.hideLoading()
-          clearTimeout(timer)
-          return resolve(MinRequest._requestAfter(res))
-        }
-      })
       obj.success = function (res) {
-        uni.hideLoading()
         clearTimeout(timer)
         resolve(MinRequest._requestAfter(res))
       }
       obj.fail = function (err) {
-        uni.hideLoading()
         clearTimeout(timer)
         reject(MinRequest._requestAfter(err))
       }
       requestTask = uni.request(obj)
+
       timer = setTimeout(() => {
-        uni.hideLoading()
         reject(new Error('网络请求超时'))
         requestTask.abort()
       }, obj.timeOut)
@@ -91,7 +79,6 @@ class MinRequest {
     options.url = url
     options.data = data
     options.method = 'GET'
-    // 这里是设置请求所需的token
     return this._request(options)
   }
 

@@ -4,7 +4,7 @@
 // ============================ 间距 ============================
 $name-list: margin padding;
 $short-name: m p;
-$gap: 10 16 20 25 30 35;
+$gap: 16 20 30;
 $type: top bottom left right lr tb;
 
 @each $prefix in $short-name {
@@ -70,20 +70,4 @@ $type: top bottom left right lr tb;
 }
 .stress-text {
   color: $stress-text;
-}
-
-// ============================ 无数据样式 ============================
-.nodata-wrap{
-  padding-top: 300rpx;
-  text-align: center;
-  .nodata{
-    width: 485rpx;
-    height: 291rpx;
-    margin: 0 auto;
-  }
-  .text{
-    padding-top: 50rpx;
-    font-size: 26rpx;
-    color: #333;
-  }
 }

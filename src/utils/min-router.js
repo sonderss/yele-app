@@ -7,7 +7,7 @@ class MinRouter {
     }
   }
 
-  _push ({ type, path, paramsStr }) { // 跳转页面
+  _push ({ type, path, paramsStr }) {
     return new Promise((resolve, reject) => {
       uni[type]({
         url: `/${path}?params=${paramsStr}`,
@@ -24,9 +24,9 @@ class MinRouter {
         let route
         if (routers.length > 0) {
           const router = routers[routers.length - 1]
-          route = router.route// 获取上一个页面信息的路由
+          route = router.route
         }
-        this._beforeEach(args.path, route, resolve) // 跳转页面拦截
+        this._beforeEach(args.path, route, resolve)
       } else {
         resolve(args)
       }

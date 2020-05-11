@@ -1,8 +1,7 @@
 <template>
   <view class="yele-grid min-flex min-flex-main-start min-flex-wrap-wrap m-lr-30 m-top-20 p-tb-20">
     <view class="grid-item min-flex min-flex-dir-top"
-      v-for="(item,index) in list" :key="item.name"
-      @click="goTo(index)"
+      v-for="item in list" :key="item.name"
     >
       <image class="img" :src="item.img"></image>
       <view class="f24">{{item.text}}</view>
@@ -22,15 +21,6 @@ export default {
   data () {
     return {
 
-    }
-  },
-  methods: {
-    goTo (n) {
-      this.$minRouter.push({
-        name: this.list[n].name,
-        type: 'navigateTo',
-        path: this.list[n].url
-      })
     }
   }
 

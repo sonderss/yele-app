@@ -15,7 +15,7 @@ export default {
     },
     maxCount: {
       type: Number,
-      default: 999
+      default: 99
     },
     dot: {
       type: Boolean,
@@ -45,14 +45,14 @@ export default {
   height: 30rpx;
   border-radius: 15rpx;
   min-width: 30rpx;
-  background: #FF0000;
+  background: #dd524d;
   color: #fff;
   line-height: 30rpx;
   text-align: center;
   padding: 0 10rpx;
   font-size: 20rpx;
   white-space: nowrap;
-  z-index: 9999;
+  z-index: 10;
   box-shadow: 0 0 0 1px #fff;
   box-sizing: border-box;
 }
@@ -64,7 +64,7 @@ export default {
   height: 16rpx;
   width: 16rpx;
   border-radius: 100%;
-  background: #FF0000;
+  background: #dd524d;
   z-index: 10;
   box-shadow: 0 0 0 1rpx #fff;
 }

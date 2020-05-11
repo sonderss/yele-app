@@ -3,9 +3,9 @@
 @import './line.scss';
 @import './ellipsis.scss';
 @import './class.scss';
+
 view, 
 text,
-
 input {
   box-sizing: border-box;
   color: $theme-text;
@@ -14,8 +14,4 @@ input {
 image {
   width: 100%;
   height: 100%;
-}
-@font-face {
-  font-family: 'iconfont';
-  src: url('../static//font//iconfont.ttf')
 }

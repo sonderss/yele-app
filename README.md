@@ -266,5 +266,4 @@ this.$refs.msg.open({
 | tail   | String  | -      | -           |
 | border | Boolean | true   | true、false |
 | arrow  | Boolean | fasle  | true、false |
-|tailType| String  | gray   | gray、black 、green、red |
 

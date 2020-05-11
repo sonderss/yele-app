@@ -89,9 +89,5 @@ export default {
     width: 100rpx;
     height: 100rpx;
   }
-  &-size-nm {
-    width: 60rpx;
-    height: 60rpx;
-  }
 }
 </style>
