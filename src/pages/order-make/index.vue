@@ -109,12 +109,28 @@ export default {
     // 获取时间
     getDate (start, end) {
       const ia = 30 * 60 * 1000
+      if (this.storeSetting.is_store_across !== 1) {
+        // 没有跨天
+        const startime1 = '2020/3/18' + ' ' + start
+        const endTie1 = '2020/3/18' + ' ' + end
+        const startimeDate1 = new Date(startime1).getTime()
+        const endTiemeDate1 = new Date(endTie1).getTime()
+        const arr1 = []
+
+        for (let i = startimeDate1; i <= endTiemeDate1; i += ia) {
+          const eq = new Date(i)
+          const a = this.$minCommon.formatDate(eq, 'hh:mm')
+          arr1.push(a)
+        }
+        this.date = arr1
+        return
+      }
       var startime = '2020/3/18' + ' ' + start
       var endTie = '2020/3/19' + ' ' + end
       const endTiemeDate = new Date(endTie)
       const startimeDate = new Date(startime)
-      var night = new Date('2020/3/18 24:00')
-      var tom = new Date('2020/3/19 00:00')
+      var night = new Date('2020/3/18 24:00:00')
+      var tom = new Date('2020/3/19 00:00:00')
       const nightLine = night.getTime()
       const tommorw = tom.getTime()
       // 开始的时间戳
@@ -135,7 +151,6 @@ export default {
       }
       this.date = arr
       this.nightArr = brr
-      // console.log(arr, brr)
     },
     getData (id) {
       return new Promise((resolve, reject) => {

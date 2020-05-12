@@ -6,10 +6,11 @@
       'min-btn-shape-' + shape,
       'min-btn-type-' + type,
       'min-btn-size-' + size,
+      border ? 'min-btn-border': '',
       hairline && !long ? 'min-btn-hairline' : '',
       disabled ? 'min-btn-disabled' : ''
     ]"
-    hover-class="min-btn-hover"
+    :hover-class="opacity ? 'min-btn-hover' : 'min-btn-opacity-none' "
     @click="handleClick"
   >
     <slot></slot>
@@ -47,6 +48,14 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    border: {
+      type: Boolean,
+      default: false
+    },
+    opacity: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {
@@ -73,7 +82,7 @@ export default {
 }
 .min-btn {
   position: relative;
-  margin: 0 30rpx;
+  /* margin: 0 30rpx; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -102,15 +111,28 @@ export default {
     border-radius: 4px;
     border: none;
   }
-  &-hover {
+  &-hover{
     opacity: 0.7;
+  }
+  &-opacity-none {
+    box-shadow: 0 2px #bebebe;
+    -webkit-transform: translateY(2px);
+    -ms-transform: translateY(2px);
+    -moz-tranform: translateY(2px);
+    transform: translateY(2px);
   }
   &-shape-circle {
     border-radius: 1000rpx;
   }
+  &-shape-flat {
+    border-radius: 0rpx;
+  }
   &-inline{
     display: inline-flex;
     vertical-align: middle;
+  }
+  &-border{
+    border: 1rpx solid #E7E7E7 !important;
   }
   &-long {
     margin: 0;
@@ -125,6 +147,9 @@ export default {
   }
   &-type-theme {
     @include btn-type(#FFE000, #333333, #aaaaaa)
+  }
+  &-type-white {
+    @include btn-type(#fff, #333333, #fff)
   }
   &-disabled {
     background-color: #CCCCCC;

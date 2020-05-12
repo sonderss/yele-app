@@ -70,6 +70,7 @@ export default {
   mixins: [mixin],
   props: {
     idNum: Number,
+    date: String,
     list: {
       type: Object,
       default: () => {}
@@ -116,8 +117,9 @@ export default {
                   this.$showToast('销台成功')
                   setTimeout(() => {
                     this.$minRouter.push({
-                      name: 'platform-detail',
-                      params: { id: this.idNum }
+                      name: 'redplatform-detail',
+                      type: 'redirectTo',
+                      params: { id: this.idNum, date: this.date }
                     })
                   }, 2000)
                 }

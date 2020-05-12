@@ -10,8 +10,8 @@
         <view class="content"  :class="isShow ? 'animation': 'show animation' "  :style="{'height':isShow? `${list.length%5 == 0 ? list.length / 5 : Math.round(list.length/5) + 1}00`-100+'rpx' :'0'}">
           <text  class="m-right-20" @click="chioce(index)" :class="current === index ? 'chioce-date-item-active' : 'chioce-date-item' " v-for="(item,index) in list" :key="index">{{item}}</text>
         </view>
-         <view class="content night" style="margin-bottom:20rpx" v-if="isShow">凌晨</view>
-         <view class="content"  v-if="isKua === 2 || isKua === '2'" :class="isShow ? 'animation': 'show animation' "  :style="{'height':isShow? `${nightArr.length%5 == 0 ? nightArr.length / 5 : Math.round(nightArr.length/5) + 1}00`-100+'rpx' :'0'}">
+         <view class="content night" style="margin-bottom:20rpx" v-if="isKua === 1 || isKua === '1'">凌晨</view>
+         <view class="content"  v-if="isKua === 1 || isKua === '1'" :class="isShow ? 'animation': 'show animation' "  :style="{'height':isShow? `${nightArr.length%5 == 0 ? nightArr.length / 5 : Math.round(nightArr.length/5) + 1}00`-100+'rpx' :'0'}">
           <text  class="m-right-20" @click="chioce1(index)" :class="current1 === index ? 'chioce-date-item-active' : 'chioce-date-item' " v-for="(item,index) in nightArr" :key="index">{{item}}</text>
         </view>
       </view>

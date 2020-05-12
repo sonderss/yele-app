@@ -28,7 +28,7 @@
         </picker>
         <picker mode="date"  @change="bindPickerChange2" >
           <min-cell-item
-            title="出生日期" :tail=" this.date  "
+            title="出生日期" :tail="date"
             :border="true" arrow
           ></min-cell-item>
         </picker>
@@ -117,7 +117,7 @@ export default {
       // verify-name
       this.$minRouter.push({
         name: 'verify-name',
-        params: { id_card: this.userInfo.id_card, is_certify: this.userInfo.is_certify, name: this.userInfo.user_name, phone: this.$store.state.user.userInfo.mobile }
+        params: { id_card: this.userInfo.id_card, is_certify: this.userInfo.is_certify, name: this.userInfo.user_name, phone: this.userInfo.mobile }
       })
     },
     // payMethods drawing-way

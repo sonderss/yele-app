@@ -60,6 +60,7 @@ export default {
     idNum: {
       type: Number
     },
+    date: String,
     status: {
       type: Number
     },
@@ -75,6 +76,7 @@ export default {
     }
   },
   mounted () {
+    console.log(this.idNum, this.date)
     // 监听关闭事件
     this.$nextTick(() => {
       document.querySelector('body').addEventListener('click', this.handleBodyClick)
@@ -148,8 +150,10 @@ export default {
                 if (res.length === 0) {
                   this.$showToast('取消成功')
                   setTimeout(() => {
-                    uni.redirectTo({
-                      url: '/pages/platform-admin/index'
+                    this.$minRouter.push({
+                      name: 'redplatform-detail',
+                      type: 'redirectTo',
+                      params: { id: this.idNum, date: this.date }
                     })
                   }, 2000)
                 } else {

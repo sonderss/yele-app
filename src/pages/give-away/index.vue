@@ -159,8 +159,8 @@ export default {
     // eslint-disable-next-line handle-callback-err
     }).catch(err => {
       setTimeout(() => {
-        this.$minRouter.push({
-          name: 'platform-admin'
+        uni.redirectTo({
+          url: '../platform-admin/index'
         })
       }, 2000)
     })

@@ -88,6 +88,9 @@ export default {
       titleNView: titleObj
     })
     // #endif
+    // this.getData(this.date)
+  },
+  onShow () {
     this.getData(this.date)
   },
   mounted () {
@@ -188,7 +191,6 @@ export default {
           this.mines = res.mines
           this.title = res.title
           console.log(this.list)
-          console.log(res.desks)
         })
         // eslint-disable-next-line handle-callback-err
         .catch(err => {

@@ -4,17 +4,17 @@
         <!-- 空闲中组件 2 00-->
         <min-idle :idNum="id" :date="date" :status="2" v-if="status === 2" :list="list"></min-idle>
         <!-- 点单中 4 00-->
-        <min-order :idNum="id" v-if="status === 4" :list="list"></min-order>
+        <min-order :idNum="id" :date="date" v-if="status === 4" :list="list"></min-order>
         <!-- 已预约 3 00 -->
-        <min-booked :idNum="id"  v-if="status === 3" :list="list"></min-booked>
+        <min-booked :idNum="id" :date="date" v-if="status === 3" :list="list"></min-booked>
         <!-- 待确认 5 00-->
-        <min-confirmed :idNum="id"  v-if="status === 5" :list="list"></min-confirmed>
+        <min-confirmed :idNum="id" :date="date" v-if="status === 5" :list="list"></min-confirmed>
         <!-- 已停用 1 00-->
         <min-terminated :idNum="id" :date="date" v-if=" status === 1" :list="list"></min-terminated>
         <!-- 已开台 6 00-->
-        <min-opened  :idNum="id" v-if=" status === 6" :list="list" ></min-opened>
+        <min-opened  :idNum="id" :date="date" v-if=" status === 6" :list="list" ></min-opened>
         <!-- 清台中 7-->
-        <min-taichung :idNum="id"  v-if=" status === 7" :list="list"></min-taichung>
+        <min-taichung :idNum="id" :date="date"  v-if=" status === 7" :list="list"></min-taichung>
     </view>
 
     <min-404 v-model="intNet" v-if="!list.desk_info.desk_name"></min-404>
@@ -24,8 +24,8 @@
 
 <script>
 export default {
-  name: 'platform-detail',
-  navigate: ['navigateTo'],
+  name: 'redplatform-detail',
+  navigate: ['navigateTo', 'redirectTo'],
   data () {
     return {
       id: '',

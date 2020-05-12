@@ -1,65 +1,118 @@
 <template>
   <view class="switch-stores m-lr-30 p-top-20">
+    <view class="add-stores" @click="navigateTo">
+      <view class="add-icon"/>
+      <view class="text">申请加入其他门店</view>
+    </view>
+    <view class="m-top-20"></view>
     <min-cell>
       <min-cell-item
-        v-for="(item, index) in list" :key="index"
-        :img="item.img" :title="item.title"
-        :label="item.subtitle" :tail="item.tail"
-        :border="list.length !== index + 1"
-      ></min-cell-item>
-      <min-cell-item
-        img="http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg" title="SIMBA"
-        label="广州市天河区元岗横路智汇parkB303室"
+        v-for="(item, index) in storeList" :key="index"
+        :img="item.head_img"
+        :title="item.store_name"
+        :label="item.address"
         arrow
-      >
-        <min-btn size="xs" slot="tail">申请</min-btn>
-      </min-cell-item>
+      ></min-cell-item>
     </min-cell>
+    <view class="nodata-wrap" v-if="storeList.length === 0">
+      <image class="nodata" src="../../static/images/nodata.png" />
+      <view class="text">暂无</view>
+    </view>
   </view>
 </template>
 
 <script>
-import MinBtn from '@/components/min-btn'
-import MinCell from '@/components/min-cell'
-import MinCellItem from '@/components/min-cell-item'
 export default {
-  name: 'SwitchStores',
-  components: {
-    MinBtn,
-    MinCell,
-    MinCellItem
-  },
+  name: 'switch-stores',
+  navigate: ['navigateTo', 'switchTab'],
   data () {
     return {
-      list: [{
-        img: 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg',
-        title: 'SIMBA',
-        subtitle: '广州市天河区元岗横路智汇parkB303室',
-        tail: '待审核'
-      }, {
-        img: 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg',
-        title: 'SIMBA',
-        subtitle: '广州市天河区元岗横路智汇parkB303室',
-        tail: '未通过'
-      }, {
-        img: 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg',
-        title: 'SIMBA',
-        subtitle: '广州市天河区元岗横路智汇parkB303室',
-        tail: '已通过'
-      }, {
-        img: 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg',
-        title: 'SIMBA',
-        subtitle: '广州市天河区元岗横路智汇parkB303室',
-        tail: '未通过'
-      }]
+      params: {
+        page: 1,
+        limit: 10
+      },
+      total: -1, // 总数
+      storeList: []
     }
-  }
-
+  },
+  mounted() {
+    this.getStoreList()
+  },
+  onReachBottom() { // 下拉翻页
+    this.getStoreList()
+  },
+  onPullDownRefresh() { // 上拉刷新
+    this.params.page = 1
+    this.getStoreList('shuaxin')
+    setTimeout(() => {
+      uni.stopPullDownRefresh() // 停止下拉刷新动画
+    }, 2000)
+  },
+  methods: {
+    navigateTo() {
+      this.$minRouter.push({
+        name: 'apply-stores',
+        type: 'navigateTo',
+        path: '/pages/switch-stores/index'
+      })
+    },
+    getStoreList(shuaxin) {
+      if (this.total === this.storeList.length) return //没有更多数据了
+      this.$minApi.getStoreList(this.params).then(res => {
+        if (shuaxin) this.storeList = []
+        this.storeList = this.storeList.concat(res.list)
+        this.total = res.list.total
+        this.params.page++
+      })
+    }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 page {
   background-color: #F7F7F7;
+}
+.switch-stores{
+  .add-stores{
+    background: #fff;
+    border-radius: 10rpx;
+    padding: 30rpx 20rpx;
+    .add-icon{
+      display: inline-block;
+      vertical-align: middle;
+      height: 0;
+      padding: 20rpx 10rpx;
+      background:rgba(255,50,7,1);
+      border-radius:2px;
+      position: relative;
+      border-radius: 100%;
+      &::before{
+        content: "";
+        display: inline-block;
+        width: 20rpx;
+        height: 4rpx;
+        background:#fff;
+        vertical-align: top;
+        margin-top: -2rpx;
+      }
+      &::after{
+        content: "";
+        display: inline-block;
+        width: 4rpx;
+        height: 20rpx;
+        background:#fff;
+        vertical-align: top;
+        position: absolute;
+        top: 11rpx;
+        left: 18rpx;
+      }
+    }
+    .text{
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 20rpx;
+    }
+  }
 }
 </style>

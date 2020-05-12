@@ -1,19 +1,23 @@
 <script>
+import store from './store/index'
 export default {
   onLaunch: function () {
-    // console.log('App Launch')
+    console.log('App Launch')
   },
-  onShow: function () {
-    // console.log('App Show')
+  onShow: () => {
+    console.log('App Show')
+    uni.onNetworkStatusChange(res => {
+      store.dispatch('status/setStatus', res.isConnected)
+    })
   },
   onHide: function () {
-    // console.log('App Hide')
+    console.log('App Hide')
   }
 }
 </script>
 
-<style>
-page {
+<style lang="scss" scoped>
+page{
   background: #F7F7F7;
 }
 .icon {

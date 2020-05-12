@@ -95,7 +95,7 @@
           :totalAmount='totalAmountE'
           :goodsCount="countNums"
           buttonText='去下单'
-          buttonLabel='已开台'
+          :buttonLabel="buttonLabel"
           @submit="submit"
           ></min-goods-submit>
         </view>

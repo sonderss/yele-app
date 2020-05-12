@@ -1,7 +1,7 @@
 <template>
   <view class="fetch-liquor p-tb-20 p-lr-30">
-    <min-search v-model="search"/>
-    <view class="list p-top-20" v-for="(item,index) in list" :key="index">
+    <min-search v-model="search" placeholder="客户姓名/手机号查询"/>
+    <view class="list p-top-20" v-for="(item,index) in getNewData" :key="index">
       <view class="card p-lr-20">
         <view class="top p-tb-30 min-border-bottom">
           <view class="order-num">单号：{{item.deposit_sn}}</view>
@@ -18,6 +18,7 @@
         </view>
       </view>
     </view>
+    <min-404 v-if="getNewData.length === 0 "></min-404>
   </view>
 </template>
 
@@ -29,9 +30,22 @@ export default {
     return {
       search: '',
       list: [],
-      clentInfo: {}
+      clentInfo: {},
+      arr: []
     }
   },
+  computed: {
+    getNewData () {
+      const newData = []
+      this.list.filter(item => {
+        if (item.client_name.indexOf(this.search) >= 0 || item.client_mobile.indexOf(this.search) >= 0) {
+          newData.push(item)
+        }
+      })
+      return newData
+    }
+  },
+
   mounted () {
     // 获取存酒记录
     this.$minApi.getWinekeepingrecord()

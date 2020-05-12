@@ -109,7 +109,8 @@ export default {
                   this.$showToast('停用成功')
                   setTimeout(() => {
                     this.$minRouter.push({
-                      name: 'platform-detail',
+                      name: 'redplatform-detail',
+                      type: 'redirectTo',
                       params: { id: this.idNum, date: this.date }
                     })
                   }, 2000)

@@ -72,6 +72,7 @@ export default {
   mixins: [mixin],
   props: {
     idNum: Number,
+    date: String,
     list: {
       type: Object,
       default: () => {}
@@ -144,7 +145,7 @@ export default {
       // 这里将客户信息传过去,暂时写死
       this.$minRouter.push({
         name: 'fetch-liquor',
-        params: { name: '刘小青', phone: '15811112222' }
+        params: { name: this.list.desk_info.client_name, phone: this.list.desk_info.client_mobile }
       })
     },
     // 下单
@@ -180,8 +181,9 @@ export default {
                   this.$showToast('清台成功')
                   setTimeout(() => {
                     this.$minRouter.push({
-                      name: 'platform-detail',
-                      params: { id: this.idNum }
+                      name: 'redplatform-detail',
+                      type: 'redirectTo',
+                      params: { id: this.idNum, date: this.date }
                     })
                   }, 2000)
                 }
