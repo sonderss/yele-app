@@ -9,17 +9,21 @@
           </view>
           <view >
             <view class="mid-view min-border-top "  >
-                <view class="left-view" >
-                  <view class="left-photo m-right-20" v-for="i in item.order_product_list" :key="i.id">
-                    <image :src="i.product_img.length>10? i.product_img :'/static/images/goods.png'" />
+                <view class="left-view" v-if="item.order_product_list.length > 1">
+                  <view class="left-photo m-right-20" >
+                    <image class="m-right-20" v-for="i in item.order_product_list" :key="i.id" :src="i.product_img.length>10? i.product_img :'/static/images/goods.png'" />
                   </view>
                 </view>
                  <!-- 当图片不超过1张时 -->
-                <view class="mid-desc" v-if="item.order_product_list.length ===1">
-                      <text class="f28 fcolor title">{{item.product_name}}</text>
-                      <text class="tcolor f22 desc">{{item.sku_full_name}}</text>
+                <view class="mid-desc" v-if="item.order_product_list.length === 1">
+                      <image :src="item.order_product_list[0].product_img.length>10?item.order_product_list[0].product_img :'/static/images/goods.png'" />
+                      <view style=" display: flex;flex-direction: column;" class="m-left-20">
+                           <text class="f28 fcolor title">{{item.order_product_list[0].product_name}}</text>
+                          <text class="tcolor f22 desc">{{item.order_product_list[0].sku}}</text>
+                      </view>
+
                 </view>
-                <view class="right-price" v-if="item.order_product_list.length ===1">
+                <view class="right-price" v-if="item.order_product_list.length === 1">
                   <text class="fcolor f28 testF">￥ {{item.order_price}}</text>
                   <text class="tcolor f22 m-top-20">x {{item.order_product_list[0].quantity}}</text>
                 </view>
@@ -69,7 +73,11 @@ export default {
   mounted () {
     this.$minApi.getOrderList().then(res => {
       this.list = res.list
-      console.log(this.list)
+      this.list.map(item => {
+        if (item.order_product_list.length > 4) {
+          item.order_product_list.splice(4)
+        }
+      })
     })
   },
   methods: {
@@ -138,24 +146,28 @@ export default {
     justify-content: space-between;
     height: 160rpx;
     .left-view{
-      display: flex;
         .left-photo{
-          width: 100rpx;
-          height: 100rpx;
+         display: flex;
           image{
             flex-shrink: 0;
+             width: 100rpx;
+            height: 100rpx;
           }
         }
-        .mid-desc{
-          margin-left: 20rpx;
+
+    }
+    .mid-desc{
           display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          align-content: space-between;
+          justify-content: flex-start;
+          image{
+             display:block;width:100rpx;height:100rpx
+          }
           .title{
             width: 343rpx;
             // overflow: hidden;
-            line-height: 30rpx
+             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .desc{
             margin-top: 5rpx;
@@ -165,9 +177,7 @@ export default {
             text-overflow: ellipsis;
 
           }
-        }
-    }
-
+     }
     .right-price{
         height: 100%;
         display: flex;

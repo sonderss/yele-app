@@ -9,7 +9,7 @@
     <view class="p-lr-30 ">
       <view class="p-lr-30 p-top-30 min-border-top">身份证号码</view>
       <!-- <view class="f26 assist-text p-lr-30 p-tb-30 min-border-bottom">未认证</view> -->
-       <input class="p-lr-30 m-tb-25" :disabled="info_user.is_certify === 1 ? true : false"  type='phone' v-model="info_user.id_card" :value="info_user.is_certify === 1 ? info_user.id_card : '未绑定' "  />
+       <input class="p-lr-30 m-tb-25" :disabled="info_user.is_certify === 1 ? true : false"  type='phone'  :value="info_user.is_certify === 1 ? info_user.id_card : '未绑定' "  />
         <view class="min-border-bottom"></view>
     </view>
     <view class="btn-wrap m-lr-20">
