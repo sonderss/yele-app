@@ -17,55 +17,49 @@
       <view class="mid-view p-lr-20">
         <text class="m" @click="changeMenu(index)" :class="menuIndex === index ?  'active' : ''" v-for="(item,index) in title" :key="index">{{item}}</text>
       </view>
-      <min-cell :card="false" class="m-top-20">
-          <view class="f30  top-view1">
+      <min-cell :card="false" class="m-top-20" >
+          <view class="f30  top-view1" v-if="menuIndex !== 1">
              <view class="left-view">
                 <text>未结订单</text>
                 <text class="status f26">待付金额：￥666298.00</text>
              </view>
              <text class="btn f26">结算</text>
           </view>
-          <view class="min-border-bottom" style="height:1rpx"></view>
-          <view class="main min-flex min-flex-dir-top min-flex-align-top f28 p-bottom-10">
-            <view  class="m-bottom-10 m-top-20" style="width:100%;display: flex;justify-content: space-between;">
-                <text class="f28">订 单 号 ：65798254864346</text>
-                <text class="f26">订单详情>> </text>
-            </view>
-            <text class="m-bottom-10 f28">订单金额：￥56463.00</text>
-            <text class="m-bottom-10 f28">应付金额：￥159332.00</text>
-            <text class="m-bottom-10 f28">待付金额：￥159332.00</text>
-          </view>
-          <view class="min-border-bottom" style="height:1rpx"></view>
-          <view class="main min-flex min-flex-dir-top min-flex-align-top f28 p-bottom-10">
-             <view  class="m-bottom-10 m-top-20" style="width:100%;display: flex;justify-content: space-between;">
-                <text class="f28">订 单 号 ：65798254864346</text>
-                <text class="f26">订单详情>> </text>
-            </view>
-            <text class="m-bottom-10  f28">订单金额：￥56463.00</text>
-            <text class="m-bottom-10  f28">应付金额：￥159332.00</text>
-            <text class="m-bottom-10  f28">待付金额：￥159332.00</text>
-          </view>
-      </min-cell>
-       <min-cell :card="false" class="m-top-20">
-          <view class="f30  top-view1">
-             <view class="left-view">
-                <text>已结订单</text>
-                <text class="status-al f26">合计：￥666298.00</text>
-             </view>
-             <!-- <text class="btn f26">结算</text> -->
-          </view>
-          <view class="min-border-bottom" style="height:1rpx"></view>
-          <view class="main min-flex min-flex-dir-top min-flex-align-top f28 p-bottom-10">
-            <view  class="m-bottom-10 m-top-20" style="width:100%;display: flex;justify-content: space-between;">
-                <text class="f28">订 单 号 ：65798254864346</text>
-                <text class="f26">订单详情>> </text>
-            </view>
-            <text class="m-bottom-10  f28">订单金额：￥56463.00</text>
-            <text class="m-bottom-10  f28">应付金额：￥159332.00</text>
-            <text class="m-bottom-10  f28">已付金额：￥159332.00</text>
-            <!-- <text class="m-bottom-10">待付金额：￥159332.00</text> -->
+
+          <view v-for="(item,index) in showData" :key="index" @click="toDetail(item.id)">
+              <view v-if="item.pay_status === 0">
+                <view class="min-border-bottom" style="height:1rpx"></view>
+                <view class="main min-flex min-flex-dir-top min-flex-align-top f28 p-bottom-10">
+                  <view  class="m-bottom-10 m-top-20" style="width:100%;display: flex;justify-content: space-between;">
+                      <text class="f28">订 单 号 ：{{item.order_sn}}</text>
+                      <text class="f26">订单详情>> </text>
+                  </view>
+                  <text class="m-bottom-10 f28">订单金额：￥{{item.order_price}}</text>
+                  <text class="m-bottom-10 f28">应付金额：￥{{item.payable_price}}</text>
+                  <text class="m-bottom-10 f28">待付金额：￥{{item.unpay_price}}</text>
+                </view>
+              </view>
           </view>
 
+          <view class="f30  top-view1 min-border-top" >
+             <view class="left-view">
+                <text>已结订单</text>
+             </view>
+          </view>
+          <view v-for="(item,index) in showData" :key="index" @click="toDetail(item.id)">
+              <view v-if="item.pay_status === 1">
+                <view class="min-border-bottom" style="height:1rpx"></view>
+                <view class="main min-flex min-flex-dir-top min-flex-align-top f28 p-bottom-10">
+                  <view  class="m-bottom-10 m-top-20" style="width:100%;display: flex;justify-content: space-between;">
+                      <text class="f28">订 单 号 ：{{item.order_sn}}</text>
+                      <text class="f26">订单详情>> </text>
+                  </view>
+                  <text class="m-bottom-10 f28">订单金额：￥{{item.order_price}}</text>
+                  <text class="m-bottom-10 f28">应付金额：￥{{item.payable_price}}</text>
+                  <text class="m-bottom-10 f28">已付金额：￥{{item.pay_price}}</text>
+                </view>
+              </view>
+          </view>
       </min-cell>
   </view>
 </template>
@@ -78,15 +72,45 @@ export default {
     return {
       title: ['门店订单', '平台订单'],
       menuIndex: 0,
-      data: {}
+      data: {},
+      list: [],
+      store: [],
+      market: [],
+      showData: []
+    }
+  },
+  watch: {
+    menuIndex (a) {
+      console.log(a)
+      if (a === 0) {
+        this.showData = this.store
+      } else if (a === 1) {
+        this.showData = this.market
+      }
     }
   },
   methods: {
     changeMenu (n) {
       this.menuIndex = n
+    },
+    toDetail (id) {
+      this.$minRouter.push({
+        name: 'order-detail',
+        params: { ordr_id: id }
+      })
+    },
+    test (data) {
+      data.map(item => {
+        if (item.source === 0) {
+          this.store.push(item)
+        } else {
+          this.market.push(item)
+        }
+      })
     }
   },
   onLoad () {
+    console.log(this.$parseURL())
     this.$minApi.billAllin({
       opening_id: this.$parseURL().open_id,
       desk_id: this.$parseURL().desk_id
@@ -94,6 +118,15 @@ export default {
       this.data = res
       console.log(this.data)
     })
+    // getOrderListDown
+    this.$minApi.getOrderListDown({ opening_id: this.$parseURL().open_id })
+      .then(res => {
+        console.log(res)
+        this.list = res.list
+        this.test(this.list)
+        this.showData = this.store
+        console.log(this.store, this.market)
+      })
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <view class="min-order-list" v-if="list[0].order_product_list">
-      <view class="main" v-for="(item,index) in list" :key="item.order_sn" @click="toDetail(item.id)">
+      <view class="main" v-for="(item,index) in list" :key="index" @click="toDetail(item.id)">
           <view class="top-view min-flex">
             <view class="left-view min-flex min-flex-main-start">
                <text v-if="isShowPlatform"  class="f20 m-right-10 radius-b" :class="item.source === 0 ? 'active-left-p' : 'active-left-m' ">{{item.source === 0 ?  '门店' : (item.source === 1 ? '平台' :'赠送' )}}</text>

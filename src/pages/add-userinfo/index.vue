@@ -79,15 +79,15 @@ export default {
         remark: this.value
       }).then(res => {
         console.log(res)
-        if (res.length === 0) {
-          this.$showToast('开台成功')
-          // 跳转下单
-          setTimeout(() => {
-            this.$minRouter.push({
-              name: 'platform-admin'
-            })
-          }, 2000)
-        }
+
+        this.$showToast('开台成功')
+        // 跳转下单
+        setTimeout(() => {
+          this.$minRouter.push({
+            name: 'placean-order',
+            params: { desk_id: res.opening.desk_id, minim_charge: res.opening.minimum_consume }
+          })
+        }, 2000)
       })
     }
   }

@@ -199,7 +199,7 @@ export default {
       this.$minApi
         .confirmOrder({
           order_id: this.list.id,
-          desk_id: '',
+          desk_id: this.list.desk_id,
           pay_type: this.$minCommon.getPayMethod(this.payType)
         })
         .then(res => {

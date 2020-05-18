@@ -26,8 +26,8 @@
       <view class="item">台位状态：<text class="status confirmed">{{status[item.status] }}</text></view>
       <view class="item">消费金额：￥{{item.bill_price}}</view>
       <view class="btm-view min-border-top m-top-20">
-        <view class="o" @click="queryOrder">查看订单</view>
-        <view class="o" @click="queryDist">查看账单</view>
+        <view class="o" @click="queryOrder(item)">查看订单</view>
+        <view class="o" @click="queryDist(item)">查看账单</view>
       </view>
     </view>
 
@@ -57,7 +57,7 @@ export default {
     getData (data) {
       this.$minApi.getBookList(data)
         .then(res => {
-          // console.log(res)
+          console.log(res)
           this.list = res.list
           this.list.map(item => {
             item.arrival_time = this.$minCommon.formatDate(new Date(item.arrival_time * 1000), 'yyyy-MM-dd hh:mm:ss')
@@ -100,9 +100,10 @@ export default {
       })
     },
     // 查看账单
-    queryDist () {
+    queryDist (item) {
       this.$minRouter.push({
-        name: 'desk-bill'
+        name: 'desk-bill',
+        params: { open_id: item.opening_id, desk_id: item.desk_id }
       })
     }
   }
