@@ -11,16 +11,6 @@
         </view>
       </view>
     </view>
-    <!-- <view class="platform-wrap p-top-20">
-      <view class="title">雅座区</view>
-      <view class="list">
-        <view :class="active2 == index ? 'item in-order': 'item leisure' "  @click="chioce2(index)" v-for="(item, index) in 6" :key="index">
-          <view class="name">K222</view>
-          <view class="status">空闲中</view>
-          <view class="count">6座</view>
-        </view>
-      </view>
-    </view> -->
     <view class="empty-view"></view>
     <view class="btn-wrap">
       <min-btn shape="flat" :opacity="false" @click="submit">转台</min-btn>
@@ -103,17 +93,13 @@ export default {
   },
   methods: {
     chioce1 (index, index2) {
-      // this.active2 = Number
       this.active1 = index
       this.active2 = index2
       console.log(index, index2)
     },
     submit () {
-      // console.log(this.data.old_id)
-      // console.log(this.active1, this.active2)
-      // console.log(this.getData[this.active1].desk_lists[this.active2])
       this.$minApi.changeOrder({
-        id: this.data.old_id,
+        desk_id: this.data.old_id,
         to_id: this.getData[this.active1].desk_lists[this.active2].id
       })
         .then(res => {

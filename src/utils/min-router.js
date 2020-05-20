@@ -100,6 +100,7 @@ class MinRouter {
 }
 
 function parseURL () {
+  console.log(this.$root.$mp.query.params)
   const query = this.$root.$mp.query.params
   if (query) {
     return JSON.parse(query)

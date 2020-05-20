@@ -47,9 +47,16 @@
            @eventParent="toFace"
         ></min-cell-item>
         <min-cell-item
-          title="提现方式"
+          title="提现银行卡"
           :border="true" arrow
+          tail="招商银行(0415)"
           @eventParent="payMethods"
+        ></min-cell-item>
+        <min-cell-item
+          title="提现密码"
+          :border="true" arrow
+          tail="未设定"
+          @eventParent="toSetPsd"
         ></min-cell-item>
       </min-cell>
     </view>
@@ -124,6 +131,11 @@ export default {
     payMethods () {
       this.$minRouter.push({
         name: 'drawing-way'
+      })
+    },
+    toSetPsd () {
+      this.$minRouter.push({
+        name: 'set-cardpsd'
       })
     },
     quit () {

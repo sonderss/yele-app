@@ -19,5 +19,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.min-card{
+  background: #fff;
+}
 </style>

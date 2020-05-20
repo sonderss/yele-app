@@ -44,6 +44,12 @@ export default {
           }
         },
         {
+          path: 'pages/statistics/index',
+          style: {
+            navigationBarTitleText: '新数据统计'
+          }
+        },
+        {
           path: 'pages/statistics-page/index',
           style: {
             navigationBarTitleText: '数据统计'

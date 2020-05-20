@@ -13,7 +13,7 @@
           <!--已出品-->
           <min-goods-item
             :name="item.product_name"
-            :price="item.total"
+            :price="item.order_price"
             :icon="item.product_img"
             :specification="item.sku"
             :value="item.quantity"
@@ -38,8 +38,8 @@
         <view class="item">订 单 号 ：{{list.order_sn}}</view>
         <view class="item">订单类型：{{list.pay_type === 0 ? '先付' :'后付'}}</view>
         <view class="item">下单人员：{{list.confirm_user_name}}</view>
-        <view class="item">下单时间：{{list.create_time}}</view>
-        <view class="item">订单金额：￥{{list.order_price}}</view>
+        <view class="item">下单时间：{{$minCommon.formatDate(new Date(list.create_time*1000),'yyyy/MM/dd hh:mm:ss' ) }}</view>
+        <view class="item">订单金额：￥{{list.order_total}}</view>
         <view class="item">已付金额：￥{{list.pay_price}}</view>
         <view class="item">
           支付状态：
@@ -54,7 +54,7 @@
       <view class="main p-tb-30">
         <view class="item">签折方式：{{type[list.order_status]}}</view>
         <view class="item">优惠内容：-----</view>
-        <view class="item">优惠金额：￥{{list.discount_price}}</view>
+        <view class="item">优惠金额：￥{{list.signoff_total}}</view>
         <view class="item">签折人员：{{list.signoff_user_name}}</view>
       </view>
     </view>

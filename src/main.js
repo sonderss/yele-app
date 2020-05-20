@@ -101,7 +101,6 @@ Vue.component('min-ducharts', MinDucharts)
 Vue.component('min-table', MinTable)
 Vue.config.productionTip = false
 App.mpType = 'app'
-
 Vue.use(MinRouter)
 Vue.use(MinRequest)
 Vue.use(MinCache)

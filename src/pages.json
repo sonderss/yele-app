@@ -12,7 +12,31 @@
 			"style": {
 				"navigationBarTitleText": "home"
 			}
-		},
+    },
+    {
+      "path": "pages/set-cardpsd/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"设置提现密码",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/bind-bank-card/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"绑定银行卡",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
     {
       "path": "pages/page",
       "style": {
@@ -55,6 +79,18 @@
         "app-plus":{
           "titleNView":{
             "titleText":"订单详情",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/statistics/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"新数据统计",
             "backgroundColor":"#030313",
             "titleColor":"#FFE001"
           }

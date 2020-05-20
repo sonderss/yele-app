@@ -1,6 +1,6 @@
 <template>
   <view class="storing-liquor-detail p-tb-20 p-lr-30" >
-    <view v-if="list.desk_name">
+    <view v-if="list.client_name">
       <view class="card p-lr-20">
         <view class="top p-tb-30 min-border-bottom">
           <view>客户信息</view>

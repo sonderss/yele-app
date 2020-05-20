@@ -22,7 +22,7 @@
                   </view>
                 </view>
                 <view class="right-price">
-                  <text class="fcolor f28 testF">￥ {{item.order_price}}</text>
+                  <text class="fcolor f28 testF">￥ {{item.order_total}}</text>
                   <text class="tcolor f22 m-top-20">x {{i.quantity}}</text>
                 </view>
             </view>
@@ -35,7 +35,7 @@
                   </view>
                 </view>
                 <view class="right-price">
-                  <text class="fcolor f28">￥ {{item.order_price}}</text>
+                  <text class="fcolor f28">￥ {{item.order_total}}</text>
                 </view>
             </view>
             <text class="f20 origin sign" v-if="item.order_type !== 'undefined'">{{order[item.order_type].desc }}</text>

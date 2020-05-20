@@ -5,9 +5,9 @@
         <view class="title">账单信息</view>
       </view>
       <view class="main p-tb-30">
-        <view class="item">订单金额：￥{{list.order_info.order_price}}</view>
-        <view class="item">优惠金额：￥{{list.order_info.discount_price}}</view>
-        <view class="item">应付金额：￥{{list.order_info.payable_price}}</view>
+        <view class="item">订单金额：￥{{list.order_info.order_total}}</view>
+        <view class="item">优惠金额：￥{{list.order_info.discount_total}}</view>
+        <view class="item">应付金额：￥{{list.order_info.actual_total}}</view>
       </view>
     </view>
     <view class="card p-lr-20 m-top-20">
@@ -34,16 +34,16 @@
         <view class="all-dz" v-if="discountType === ALL_DZ">
           <view class="header">
             <view class="title">全单打折</view>
-            <min-stepper :isAnimation="false" v-model="allAiscount" max="10" unit="折"/>
+            <min-stepper :isAnimation="false" v-model="allAiscount" max="9" unit="折"/>
           </view>
-          <min-slider v-model="allAiscount" max="10"/>
+          <min-slider v-model="allAiscount" max="9"/>
         </view>
         <!--全单优惠-->
         <view class="all-yh" v-if="discountType === ALL_YH">
           <view style="padding-bottom: 20rpx;">全单优惠</view>
           <view class="header">
             <view class="label">优惠金额</view>
-            <input class="input" type="number" placeholder="请输入优惠金额" placeholder-style="font-size:28rpx;">
+            <input class="input" type="number"  v-model="qdyouhui" placeholder="请输入优惠金额" placeholder-style="font-size:28rpx;">
           </view>
         </view>
         <!--单品打折-->
@@ -52,24 +52,24 @@
           <view class="goods" v-for="item in list.order_product_list" :key='item.id'>
             <view class="stepper">
                <view class="f28">{{item.product_name}}</view>
-              <min-stepper :isAnimation="false" v-model="singleAiscount" max="10" unit="折"/>
+              <min-stepper :isAnimation="false" v-model="item.singleAiscount" max="9" unit="折"/>
             </view>
-             <min-slider v-model="singleAiscount" max="10"/>
+             <min-slider v-model="item.singleAiscount" max="9"/>
           </view>
         </view>
         <!--单品优惠-->
         <view class="single-dz" v-if="discountType === SINGLE_YH">
           <view style="padding-bottom: 20rpx;">单品优惠</view>
           <view class="goods"  v-for="item in list.order_product_list" :key='item.id'>
-            <view class="stepper">
+            <view class="stepper m-tb-10">
                <view class="f28">{{item.product_name}}</view>
-               <min-stepper :isAnimation="false" v-model="singlePAic" max="10" unit="折"/>
+               <!--<min-stepper :isAnimation="false" v-model="singlePAic" max="10" unit="折"/>-->
+                <input class="input" type="number" v-model="item.youhui" placeholder="请输入优惠金额" placeholder-style="font-size:28rpx;">
             </view>
-             <min-slider v-model="singlePAic" max="10"/>
           </view>
         </view>
 
-        <view class="f28 p-bottom-30">扣除赠送额度：￥2000.00</view>
+        <view class="f28 p-bottom-30">扣除赠送额度：￥{{kouchu}}</view>
       </view>
     </view>
     <!--支付方式-->
@@ -93,7 +93,7 @@
           </view>
       </view>
     </view>
-    <min-goods-submit leftText="应付"  @submit="submit" :totalAmount="list.order_info.payable_price" buttonText="支付"/>
+    <min-goods-submit leftText="应付"  @submit="submit" :totalAmount="money" buttonText="支付"/>
   </view>
 </template>
 
@@ -116,13 +116,49 @@ export default {
       singleAiscount: 0,
       payType: 1,
       list: { order_info: { order_price: '' } },
-      payMethod: ''
+      payMethod: '',
+      qdyouhui: '',
+      kouchu: 0,
+      money: ''
     }
   },
   onLoad () {
     console.log(this.$parseURL().data)
   },
   watch: {
+    kouchu (a) {
+      console.log(a)
+      this.money = (this.list.order_info.actual_total - a * 1).toFixed(2)
+    },
+    // 全单打折
+    allAiscount (a) {
+      if (a === 0) {
+        // eslint-disable-next-line no-return-assign
+        this.kouchu = 0
+        return
+      }
+      // 80% 8折    a/100* 100%
+      this.kouchu = (this.list.order_info.actual_total - (((a / 10) * this.list.order_info.actual_total).toFixed(2))).toFixed(2)
+    },
+    // 全单优惠
+    qdyouhui (a) {
+      console.log(a)
+      if (a * 1 > this.list.order_info.actual_total * 1) {
+        this.$showToast('请输入合法金额')
+        return
+      }
+      this.kouchu = a
+    },
+    // 监听list
+    list: {
+      handler (a) {
+        a.order_product_list.map(item => {
+          console.log(item)
+          // this.kouchu = (this.list.order_info.actual_total - (((item.singleAiscount / 10) * this.list.order_info.actual_total).toFixed(2))).toFixed(2)
+        })
+      },
+      deep: true
+    },
     payType (a) {
       if (a === '0') {
         this.payMethod = 'alipay_scan_code'
@@ -144,34 +180,36 @@ export default {
   methods: {
     submit () {
       // confirmOrder
-
-      this.$minApi.confirmOrder({
-        order_id: this.$parseURL().data.order_id,
-        pay_type: this.payMethod,
-        desk_id: this.$parseURL().data.desk_id
-      }).then(res => {
-        console.log(res)
-        if (res.length === 0) {
-          this.$showToast('支付成功！！！')
-          this.$store.dispatch('goods/setOrderSelArr', [])
-          setTimeout(() => {
-            this.$minRouter.push({
-              name: 'open-success',
-              params: {
-                client_mobile: this.list.order_info.client_mobile,
-                client_name: this.list.order_info.client_name,
-                desk_id: this.list.order_info.desk_id,
-                desk_name: this.list.order_info.desk_name
-              }
-            })
-          }, 2000)
-        }
-      })
+      console.log(this.list)
+      // this.$minApi.confirmOrder({
+      //   order_id: this.$parseURL().data.order_id,
+      //   pay_type: this.payMethod,
+      //   desk_id: this.$parseURL().data.desk_id,
+      //   discount: {}
+      // }).then(res => {
+      //   console.log(res)
+      //   if (res.length === 0) {
+      //     this.$showToast('支付成功！！！')
+      //     this.$store.dispatch('goods/setOrderSelArr', [])
+      //     setTimeout(() => {
+      //       this.$minRouter.push({
+      //         name: 'open-success',
+      //         params: {
+      //           client_mobile: this.list.order_info.client_mobile,
+      //           client_name: this.list.order_info.client_name,
+      //           desk_id: this.list.order_info.desk_id,
+      //           desk_name: this.list.order_info.desk_name
+      //         }
+      //       })
+      //     }, 2000)
+      //   }
+      // })
     }
   },
   mounted () {
     this.$minApi.previewOrder({ order_id: this.$parseURL().data.order_id, desk_id: this.$parseURL().data.desk_id, open_status: this.$parseURL().data.open_status }).then(res => {
       this.list = res
+      this.money = this.list.order_info.actual_total
       console.log(this.list)
     // eslint-disable-next-line handle-callback-err
     }).catch(err => {

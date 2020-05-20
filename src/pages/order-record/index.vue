@@ -5,7 +5,7 @@
             <view class="left-view min-flex min-flex-main-start">
                <text class="f30 ordern">{{item.desk_name ?item.desk_name:'暂无数据'}}</text>
             </view>
-            <text class="right-txt f28" :class="status[item.order_status].class">{{status[item.order_status].desc}}</text>
+            <text class="right-txt f28" :class="$minCommon.getOrderStatus(item.order_status).color">{{$minCommon.getOrderStatus(item.order_status).desc}}</text>
           </view>
           <view >
             <view class="mid-view min-border-top "  >
@@ -24,11 +24,11 @@
 
                 </view>
                 <view class="right-price" v-if="item.order_product_list.length === 1">
-                  <text class="fcolor f28 testF">￥ {{item.order_price}}</text>
+                  <text class="fcolor f28 testF">￥ {{item.order_total}}</text>
                   <text class="tcolor f22 m-top-20">x {{item.order_product_list[0].quantity}}</text>
                 </view>
                 <view class="right-price" v-if="item.order_product_list.length > 1">
-                  <text class="fcolor f28">￥ {{item.order_price}}</text>
+                  <text class="fcolor f28">￥ {{item.order_total}}</text>
                     <text class="allin f22 tcolor">查看全部 >></text>
                 </view>
             </view>
@@ -73,6 +73,7 @@ export default {
   mounted () {
     this.$minApi.getOrderList().then(res => {
       this.list = res.list
+      console.log(this.list)
       this.list.map(item => {
         if (item.order_product_list.length > 4) {
           item.order_product_list.splice(4)

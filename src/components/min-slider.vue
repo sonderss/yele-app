@@ -1,6 +1,6 @@
 <template>
   <view class="min-slider">
-    <slider block-color="#007aff" :block-size="blockSize" :value="value" @changing="sliderChange" :step="step" :min="min" :max="max" />
+    <slider block-color="#007aff" :block-size="blockSize" :value="value" @change="sliderChange" @changing="sliderChange" :step="step" :min="min" :max="max" />
   </view>
 </template>
 
@@ -28,16 +28,16 @@ export default {
       default: 18
     }
   },
-  data() {
+  data () {
     return {
-      
+
     }
   },
   methods: {
-    sliderChange(e) {
+    sliderChange (e) {
       this.$emit('input', Number(e.detail.value))
     }
-  },
+  }
 }
 
 </script>

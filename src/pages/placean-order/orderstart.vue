@@ -6,7 +6,7 @@
           <view class="p-tb-20" v-for="item in list.order_product_list" :key="item.commodity_id">
             <min-goods-item
               :name="item.product_name"
-              :price="item.total"
+              :price="item.order_price"
               :icon="item.product_img"
               :specification="item.unit_name"
               :value="item.quantity"
@@ -37,13 +37,13 @@
         <view class="main p-top-20">
           <view class="item">台号：￥{{list.order_info.desk_name}}</view>
           <view class="item">低消：￥{{list.order_info.minim_charge}}</view>
-          <view class="item">当前账单金额：￥{{list.order_info.bill_price}}</view>
+          <view class="item">当前账单金额：￥{{list.order_info.order_total}}</view>
         </view>
       </view>
       <view style="height:100rpx"></view>
       <min-goods-submit
      leftText="合计"
-      :totalAmount='list.order_info.payable_price'
+      :totalAmount='list.order_info.order_total'
      buttonText='确定订单'
      @submit='submit'
      ></min-goods-submit>
