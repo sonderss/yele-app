@@ -66,7 +66,7 @@ export default {
       default: ''
     },
     discount: {
-      type: Boolean,
+      type: [Boolean, Number],
       default: false
     }
   },

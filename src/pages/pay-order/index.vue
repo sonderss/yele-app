@@ -69,7 +69,9 @@
           </view>
         </view>
 
-        <view class="f28 p-bottom-30">扣除赠送额度：￥{{kouchu}}</view>
+        <view class="f28 p-bottom-30" v-if="discountType === 0 || discountType === 1">扣除赠送额度：￥{{kouchu}}</view>
+        <view class="f28 p-bottom-30" v-if="discountType === 2 || discountType === 3">扣除赠送额度：￥{{k}}</view>
+
       </view>
     </view>
     <!--支付方式-->
@@ -93,7 +95,7 @@
           </view>
       </view>
     </view>
-    <min-goods-submit leftText="应付"  @submit="submit" :totalAmount="money" buttonText="支付"/>
+    <min-goods-submit leftText="应付"  @submit="submit" :totalAmount="money" buttonText="支付" />
   </view>
 </template>
 
@@ -114,7 +116,7 @@ export default {
       allAiscount: 0,
       singlePAic: 0,
       singleAiscount: 0,
-      payType: 1,
+      payType: 0,
       list: { order_info: { order_price: '' } },
       payMethod: '',
       qdyouhui: '',
@@ -125,10 +127,27 @@ export default {
   onLoad () {
     console.log(this.$parseURL().data)
   },
+  computed: {
+    k () {
+      let num = 0
+      this.list.order_product_list.map((item, index) => {
+        if (this.discountType === 2 && item.singleAiscount) {
+          num += (item.order_price * item.quantity - (((item.singleAiscount / 10) * item.order_price * item.quantity).toFixed(2))).toFixed(2) * 1
+        } else if (this.discountType === 3 && item.youhui) {
+          num += item.youhui * 1
+        }
+      })
+      // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+      this.money = (this.list.order_info.actual_total - num * 1).toFixed(2)
+      return num
+    }
+  },
   watch: {
     kouchu (a) {
       console.log(a)
-      this.money = (this.list.order_info.actual_total - a * 1).toFixed(2)
+      if (this.discountType === 0 || this.discountType === 1) {
+        this.money = (this.list.order_info.actual_total - a * 1).toFixed(2)
+      }
     },
     // 全单打折
     allAiscount (a) {
@@ -143,21 +162,17 @@ export default {
     // 全单优惠
     qdyouhui (a) {
       console.log(a)
-      if (a * 1 > this.list.order_info.actual_total * 1) {
-        this.$showToast('请输入合法金额')
-        return
-      }
       this.kouchu = a
     },
-    // 监听list
-    list: {
-      handler (a) {
-        a.order_product_list.map(item => {
-          console.log(item)
-          // this.kouchu = (this.list.order_info.actual_total - (((item.singleAiscount / 10) * this.list.order_info.actual_total).toFixed(2))).toFixed(2)
-        })
-      },
-      deep: true
+    money (a) {
+      console.log(a)
+      if (a * 1 < 0) {
+        this.$showToast('请重新输入合法值')
+        this.money = this.list.order_info.actual_total
+      }
+    },
+    discountType (a) {
+      console.log(a)
     },
     payType (a) {
       if (a === '0') {
@@ -179,31 +194,78 @@ export default {
   },
   methods: {
     submit () {
-      // confirmOrder
-      console.log(this.list)
-      // this.$minApi.confirmOrder({
-      //   order_id: this.$parseURL().data.order_id,
-      //   pay_type: this.payMethod,
-      //   desk_id: this.$parseURL().data.desk_id,
-      //   discount: {}
-      // }).then(res => {
-      //   console.log(res)
-      //   if (res.length === 0) {
-      //     this.$showToast('支付成功！！！')
-      //     this.$store.dispatch('goods/setOrderSelArr', [])
-      //     setTimeout(() => {
-      //       this.$minRouter.push({
-      //         name: 'open-success',
-      //         params: {
-      //           client_mobile: this.list.order_info.client_mobile,
-      //           client_name: this.list.order_info.client_name,
-      //           desk_id: this.list.order_info.desk_id,
-      //           desk_name: this.list.order_info.desk_name
-      //         }
-      //       })
-      //     }, 2000)
-      //   }
-      // })
+      if (this.list.order_info.can_use_quota) {
+        const discountData = { signoff_type: this.discountType }
+        if (this.discountType === 1) {
+          discountData.discount = this.kouchu
+        } else if (this.discountType === 0) {
+          discountData.discount = this.allAiscount
+        } else {
+          discountData.signoff_product = []
+          this.list.order_product_list.map(item => {
+            const obj = {}
+            obj.detail_id = item.detail_id
+            obj.type = item.type
+            if (this.discountType === 2) {
+              if (item.singleAiscount !== 0) {
+                obj.discount = item.singleAiscount
+              }
+            } else if (this.discountType === 3) {
+              if (item.youhui) {
+                obj.discount = item.youhui * 1
+              }
+            }
+            discountData.signoff_product.push(obj)
+          })
+        }
+        const data = {
+          order_id: this.$parseURL().data.order_id,
+          pay_type: this.payMethod ? this.payMethod : 'alipay_scan_code',
+          desk_id: this.$parseURL().data.desk_id,
+          discount: JSON.stringify(discountData)
+        }
+        this.$minApi.confirmOrder(data).then(res => {
+          console.log(res)
+          if (res.length === 0) {
+            this.$showToast('支付成功！！！')
+            this.$store.dispatch('goods/setOrderSelArr', [])
+            setTimeout(() => {
+              this.$minRouter.push({
+                name: 'open-success',
+                params: {
+                  client_mobile: this.list.order_info.client_mobile,
+                  client_name: this.list.order_info.client_name,
+                  desk_id: this.list.order_info.desk_id,
+                  desk_name: this.list.order_info.desk_name
+                }
+              })
+            }, 2000)
+          }
+        })
+      } else {
+        this.$minApi.confirmOrder({
+          order_id: this.$parseURL().data.order_id,
+          pay_type: this.payMethod ? this.payMethod : 'alipay_scan_code',
+          desk_id: this.$parseURL().data.desk_id
+        }).then(res => {
+          console.log(res)
+          if (res.length === 0) {
+            this.$showToast('支付成功！！！')
+            this.$store.dispatch('goods/setOrderSelArr', [])
+            setTimeout(() => {
+              this.$minRouter.push({
+                name: 'open-success',
+                params: {
+                  client_mobile: this.list.order_info.client_mobile,
+                  client_name: this.list.order_info.client_name,
+                  desk_id: this.list.order_info.desk_id,
+                  desk_name: this.list.order_info.desk_name
+                }
+              })
+            }, 2000)
+          }
+        })
+      }
     }
   },
   mounted () {
@@ -211,6 +273,9 @@ export default {
       this.list = res
       this.money = this.list.order_info.actual_total
       console.log(this.list)
+      this.list.order_product_list.map(item => {
+        this.$set(item, 'singleAiscount', 0)
+      })
     // eslint-disable-next-line handle-callback-err
     }).catch(err => {
       setTimeout(() => {

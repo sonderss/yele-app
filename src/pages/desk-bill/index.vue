@@ -21,7 +21,7 @@
           <view class="f30  top-view1" v-if="menuIndex !== 1">
              <view class="left-view">
                 <text>未结订单</text>
-                <text class="status f26">待付金额：￥666298.00</text>
+                <text class="status f26">待付金额：￥{{data.unpay_price}}</text>
              </view>
              <text class="btn f26">结算</text>
           </view>
@@ -34,8 +34,8 @@
                       <text class="f28">订 单 号 ：{{item.order_sn}}</text>
                       <text class="f26">订单详情>> </text>
                   </view>
-                  <text class="m-bottom-10 f28">订单金额：￥{{item.order_price}}</text>
-                  <text class="m-bottom-10 f28">应付金额：￥{{item.payable_price}}</text>
+                  <text class="m-bottom-10 f28">订单金额：￥{{item.order_total}}</text>
+                  <text class="m-bottom-10 f28">应付金额：￥{{item.actual_total}}</text>
                   <text class="m-bottom-10 f28">待付金额：￥{{item.unpay_price}}</text>
                 </view>
               </view>
@@ -54,8 +54,8 @@
                       <text class="f28">订 单 号 ：{{item.order_sn}}</text>
                       <text class="f26">订单详情>> </text>
                   </view>
-                  <text class="m-bottom-10 f28">订单金额：￥{{item.order_price}}</text>
-                  <text class="m-bottom-10 f28">应付金额：￥{{item.payable_price}}</text>
+                  <text class="m-bottom-10 f28">订单金额：￥{{item.order_total}}</text>
+                  <text class="m-bottom-10 f28">应付金额：￥{{item.actual_total}}</text>
                   <text class="m-bottom-10 f28">已付金额：￥{{item.pay_price}}</text>
                 </view>
               </view>

@@ -21,7 +21,7 @@
         <view  v-for="(item2,index2) in item.product"  :key="index2" @click.stop="goDetails(index,index2)">
           <min-goods-chioce
             :image='item2.product_img'
-            :discount='true'
+            :discount='item2.is_limited === 1 ? true: false '
             :title="item2.product_name"
             :badgeTxt="item2.type === 'setmeal' ? '套餐': '' "
             :badge="item2.type === 'setmeal'? true : false "

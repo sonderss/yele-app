@@ -98,6 +98,18 @@
       }
     },
     {
+      "path": "pages/statistics/detail",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"数据详情",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
       "path":"pages/statistics-page/index",
       "style": {
         "app-plus":{

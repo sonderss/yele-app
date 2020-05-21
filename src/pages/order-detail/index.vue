@@ -52,8 +52,18 @@
     <view class="card p-lr-20 m-top-20" v-if="list.is_signoff === 1">
       <view class="top p-tb-30 min-border-bottom">签折信息</view>
       <view class="main p-tb-30">
-        <view class="item">签折方式：{{type[list.order_status]}}</view>
-        <view class="item">优惠内容：-----</view>
+        <view class="item">签折方式：{{type[list.signoff_type]}}</view>
+        <view class="item" v-if="list.signoff_type !== 0 && list.signoff_type !== 1">
+            <view class="method-view min-border-bottom">
+              <view class="left">优惠内容：</view>
+              <view class="right">
+                <view  class="right_view" v-for="i in list.order_product_list" :key="i.id">
+                    <text class="min-ellipsis" style="width:300rpx">{{i.product_name}}</text>
+                    <text class="min-ellipsis" style="">￥{{i.signoff_price}}</text>
+                </view>
+              </view>
+            </view>
+        </view>
         <view class="item">优惠金额：￥{{list.signoff_total}}</view>
         <view class="item">签折人员：{{list.signoff_user_name}}</view>
       </view>
@@ -65,7 +75,7 @@
         <view class="item">联系电话：{{list.client_mobile}}</view>
       </view>
     </view>
-    <view class="card p-lr-20 m-top-20">
+    <view class="card p-lr-20 m-tb-20">
       <view class="top p-tb-30 min-border-bottom">台位信息</view>
       <view class="main p-tb-30">
         <view class="item">台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{list.desk_name}}</view>
@@ -76,6 +86,7 @@
         <view class="item">座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{list.desk_seats }}</view>
       </view>
     </view>
+    <view style="height:200rpx"></view>
     <min-goods-submit
       @leftClick="leftClick"
       :leftText="leftText"
@@ -124,8 +135,8 @@
 // 签折类型（0：全单打折，1：全单优惠，2：单品打折，3：单品优惠）
 const type = ['全单打折', '全单优惠', '单品打折', '单品优惠']
 export default {
-  name: 'order-detail',
-  navigate: ['navigateTo'],
+  name: 'redorder-detail',
+  navigate: ['navigateTo', 'redirectTo'],
   data () {
     return {
       leftText: '',
@@ -180,15 +191,14 @@ export default {
               })
               .then(res => {
                 console.log(res)
-                if (res.length === 0) {
-                  this.$showToast('取消成功!')
-                  setTimeout(() => {
-                    this.$minRouter.push({
-                      name: 'order-detail',
-                      params: { ordr_id: this.list.id }
-                    })
-                  }, 2000)
-                }
+                this.$showToast('取消成功!')
+                setTimeout(() => {
+                  this.$minRouter.push({
+                    name: 'redorder-detail',
+                    type: 'redirectTo',
+                    params: { ordr_id: this.list.id }
+                  })
+                }, 2000)
               })
           }
         }
@@ -261,6 +271,29 @@ export default {
         margin-top: 10rpx;
         &:first-child {
           margin: 0;
+        }
+        .method-view {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          .left {
+            width: auto;
+          }
+          .right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            .right_view{
+                display: flex;
+              justify-content: space-between;
+              align-items: center;
+            }
+            text {
+              display: block;
+              margin-bottom: 20rpx;
+            }
+          }
         }
       }
     }
