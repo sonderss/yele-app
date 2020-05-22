@@ -53,7 +53,7 @@ import MinOpened from '@/components/status/min-opened'
 import MinTaichung from '@/components/status/min-taichung'
 import MinDrawer from '@/components/min-drawer'
 import MinSteps from '@/components/min-steps'
-
+import MinDataShow from '@/components/min-data-show'
 import MinDucharts from '@/components/min-ducharts'
 import MinTable from '@/components/t-table/table.vue'
 Vue.component('min-avatar', MinAvatar)
@@ -99,6 +99,7 @@ Vue.component('min-drawer', MinDrawer)
 Vue.component('min-steps', MinSteps)
 Vue.component('min-ducharts', MinDucharts)
 Vue.component('min-table', MinTable)
+Vue.component('min-data-show', MinDataShow)
 Vue.config.productionTip = false
 App.mpType = 'app'
 Vue.use(MinRouter)

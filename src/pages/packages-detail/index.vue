@@ -82,10 +82,7 @@ export default {
     }
   },
   onLoad () {
-    // this.list = this.$parseURL().setmeal_idgetPackageDetails
     console.log(this.$parseURL())
-    // this.selArr = this.$store.state.goods.orderSelArr
-    // this.type = this.$parseURL().type
   },
   mounted () {
     this.$minApi.getOriderPackageDetails({ setmeal_id: this.$parseURL().data.product_id })
@@ -96,7 +93,6 @@ export default {
           })
         })
         this.list = res.info
-        console.log(this.list)
       })
   },
   computed: {
@@ -159,25 +155,7 @@ export default {
       }
     },
     subMit () {
-      /*
-      "id": 5, // 商品/套餐/服务id
-        "type": "setmeal", // 商品类型（product：商品，setmeal：套餐，service：服务）
-        "quantity": 1, // 购买数量
-        "sku_id": 0, // skuId
-        "combination": [ // 套餐组合数据，当购买商品类型为 setmeal （套餐 ）时传递
-            {
-                "id": 21, // 组合id
-                "combination_detail": [ // 组合商品数据
-                    {
-                        "id": 0, // 商品id
-                        "type": "product", // 商品类型（product：商品，service：服务）
-                        "quantity": 2, // 购买数量
-                        "sku_id": 12 // skuId
-                    }
-                ]
-            }
-        ]
-      */
+      console.log(this.selArr)
       this.$minRouter.push({
         name: 'package-details',
         params: {
@@ -189,7 +167,6 @@ export default {
           product: this.selArr
         }
       })
-      console.log(this.selArr)
     }
   }
 

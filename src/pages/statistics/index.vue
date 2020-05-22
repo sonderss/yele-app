@@ -1,39 +1,43 @@
 <template>
   <view class="statistics p-lr-20 p-top-20">
-
-      <view class="shuju">
-            <view class="top-view">
-              <view class="p-lr-20 p-tb-20 timer">
-                  <text>实时数据</text>
-                  <text>2020-03-16  14:30  更新时间</text>
-              </view>
-              <view class="t-view">
-                <text class="price f28">今日实收</text>
-                <view class="money">
-                  <view class="money_view">
-                    <text class="icon">￥</text>
-                    <text class="tr">8888.88</text>
-                  </view>
-                </view>
-              </view>
-              <view class="b-view">
-                <view class="left-view">
-                  <text class="f24">实收</text>
-                  <text class="c m-top-10">1000</text>
-                </view>
-                <view class="right-view">
-                  <text class="f24">开台率</text>
-                  <text class="c m-top-10">1000</text>
-                </view>
-              </view>
+    <view class="shuju">
+      <view class="top-view">
+        <view class="p-lr-20 p-tb-20 timer">
+          <text>实时数据</text>
+          <text>{{data_list.current_time}} 更新时间</text>
+        </view>
+        <view class="t-view">
+          <text class="price f28">今日实收</text>
+          <view class="money">
+            <view class="money_view">
+              <text class="icon">￥</text>
+              <text class="tr">{{data_list.business_volume}}</text>
             </view>
-      </view>
-      <view class="table">
-          <view  class="item" @click="toDeatil(index)" style="background-image:url(/static/images/data/01.png)" v-for="(i,index) in list" :key="i">
-            <text class="f26">{{i}}</text>
           </view>
-
+        </view>
+        <view class="b-view">
+          <view class="left-view">
+            <text class="f24">实收</text>
+            <text class="c m-top-10">{{data_list.actual_total}}</text>
+          </view>
+          <view class="right-view">
+            <text class="f24">开台率</text>
+            <text class="c m-top-10">{{data_list.opening_rate}}</text>
+          </view>
+        </view>
       </view>
+    </view>
+    <view class="table">
+      <view
+        class="item"
+        @click="toDeatil(index)"
+        :style="{backgroundImage:`url(/static/images/data/0${index}.png)`}"
+        v-for="(i,index) in list"
+        :key="i"
+      >
+        <text class="f26">{{i}}</text>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -43,8 +47,15 @@ export default {
   navigate: ['navigateTo'],
   data () {
     return {
-      list: ['营业统计', '桌台统计', '营销统计', '销售统计', '商品统计', '其他']
+      list: ['营业统计', '桌台统计', '营销统计', '销售统计', '商品统计', '其他'],
+      data_list: {}
     }
+  },
+  mounted () {
+    this.$minApi.getDataTJ().then(res => {
+      console.log(res)
+      this.data_list = res
+    })
   },
   methods: {
     toDeatil (index) {
@@ -69,20 +80,19 @@ export default {
     justify-content: space-between;
     border-radius: 10rpx;
     overflow: hidden;
-    box-shadow:0rpx 3rpx 10rpx 0rpx rgba(0, 0, 0, 0.2);
-     .timer{
-       display: flex;
-       justify-content: space-between;
-       align-items: center;
-       text{
-          font-size:20rpx;
-          font-family:PingFang SC;
-          font-weight:400;
-          color:#666666;
-          line-height:28rpx;
-       }
-
-     }
+    box-shadow: 0rpx 3rpx 10rpx 0rpx rgba(0, 0, 0, 0.2);
+    .timer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text {
+        font-size: 20rpx;
+        font-family: PingFang SC;
+        font-weight: 400;
+        color: #666666;
+        line-height: 28rpx;
+      }
+    }
     .t-view {
       height: 234rpx;
       display: flex;
@@ -122,7 +132,6 @@ export default {
           display: block;
           font-size: 48rpx;
           color: #030313;
-
         }
       }
     }
@@ -133,13 +142,13 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top:1rpx solid #E7E7E7;
+      border-top: 1rpx solid #e7e7e7;
       text {
         color: #fff;
         color: rgba(204, 204, 204, 1);
       }
       .c {
-        color: #24272B;
+        color: #24272b;
         font-size: 40rpx;
         font-weight: 500;
       }
@@ -150,7 +159,7 @@ export default {
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        border-right: 1rpx solid #E7E7E7;
+        border-right: 1rpx solid #e7e7e7;
       }
       .right-view {
         width: 50%;
@@ -162,43 +171,41 @@ export default {
       }
     }
   }
-
 }
-.table{
+.table {
   width: 100%;
   height: auto;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  .item{
+  .item {
     width: 320rpx;
     height: 224rpx;
     margin: 30rpx 0;
     background-size: cover;
     padding: 42rpx 0 0 32rpx;
-    text{
+    text {
       color: #fff;
       font-weight: 500;
     }
   }
-  .a{
-    background-image: url('/static/images/data/01.png');
+  .a {
+    background-image: url("/static/images/data/01.png");
   }
-  .b{
-    background-image: url('/static/images/data/02.png');
+  .b {
+    background-image: url("/static/images/data/02.png");
   }
-  .c{
-    background-image: url('/static/images/data/04.png');
+  .c {
+    background-image: url("/static/images/data/04.png");
   }
-  .d{
-    background-image: url('/static/images/data/03.png');
+  .d {
+    background-image: url("/static/images/data/03.png");
   }
-  .e{
-    background-image: url('/static/images/data/06.png');
-
+  .e {
+    background-image: url("/static/images/data/06.png");
   }
-  .f{
-    background-image: url('/static/images/data/05.png');
+  .f {
+    background-image: url("/static/images/data/05.png");
   }
 }
 </style>

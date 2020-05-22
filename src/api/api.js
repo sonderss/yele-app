@@ -140,6 +140,11 @@ export default {
   // 申请加入门店
   applyStores: data => minRequest.get('/5e5f1fc84a61b', data),
   // 申请门店记录
-  applyLog: data => minRequest.get('/5e5f4935600ae', data)
-
+  applyLog: data => minRequest.get('/5e5f4935600ae', data),
+  // 数据统计 5ec4991910d14?type=0
+  getDataTJ: () => minRequest.get('/5ec4991910d14'),
+  // 营业统计 5ec4df549584c?date_range=2
+  getBusinessStatistics: data => minRequest.get('/5ec4df549584c', data),
+  // 桌台统计 5ec5effc112a0?date_range=6
+  getTablestatistics: data => minRequest.get('/5ec5effc112a0', data)
 }

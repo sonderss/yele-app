@@ -117,7 +117,6 @@ export default {
     this.product_type = this.$parseURL().product_type
     this.totalLabel = `台位低消：${this.$parseURL().minim_charge}`
     this.buttonLabel = this.$parseURL().is_open_desk ? '(已开台)' : '(未开台)'
-    console.log(this.selArr)
   },
   watch: {
     // taocanItem: {
@@ -149,7 +148,6 @@ export default {
           obj.combination = this.product
           this.addGoods(obj)
         }
-        console.log(this.list)
       })
   },
   computed: {
@@ -182,10 +180,8 @@ export default {
       })
     },
     addGoods (obj) {
-      console.log(obj)
       if (this.selArr.length === 0) return this.selArr.push(obj)
       const result = this.selArr.some(item => {
-        console.log('item', item)
         // if (item.type === 'setmeal') {
         if (item.id !== obj.id) {
           return true
@@ -197,7 +193,6 @@ export default {
       if (result) {
         this.selArr.push(obj)
         this.$store.dispatch('goods/setOrderSelArr', this.selArr)
-        console.log(this.selArr)
       }
     },
     /** 已选商品弹出事件 */
@@ -211,18 +206,14 @@ export default {
     // 步进器
     changeChioce (e, id) {
       // this.taocanItem.quantity = e
-
+      console.log(this.product)
+      if (this.product.length === 0) return this.$showToast('请先选择套餐组合')
       this.selArr.map((item, index) => {
         if (item.id === id) {
           item.step = e
         }
       })
       this.$store.dispatch('goods/setOrderSelArr', this.selArr)
-      console.log(this.selArr)
-      // this.$minRouter.push({
-      //   name: 'packages-detail',
-      //   params: { type: this.product_type, setmeal_id: this.$parseURL().product_id }
-      // })
     },
     delAll () {
       this.selArr = []
@@ -240,11 +231,7 @@ export default {
     },
     // 提交
     submit () {
-      console.log('已选商品')
-      console.log(this.$parseURL())
       if (this.selArr.length === 0) return this.$showToast('请选择商品')
-      console.log('准备提交', this.selArr)
-      // [{"id":1,"type":"service","quantity":1,"sku_id":0,"combination":[]}
       const products = []
       this.selArr.map(item => {
         const obj = {}
@@ -278,7 +265,6 @@ export default {
         desk_id: this.$parseURL().desk_id,
         products: JSON.stringify(products)
       }).then(res => {
-        console.log(res)
         if (res.orderId) {
           this.$showToast('提交成功')
           setTimeout(() => {
