@@ -13,7 +13,7 @@
           :disabled="disabled"
         />
         <!--  :class="animation ? 'animation' : 'right-arrow-a animation' " -->
-        <img class="right-arrow p-left-10" v-if="isRightRrrow"  :class="animation ? 'right-arrow-a animation' : 'animation' "  src="../static/images/arrow.png" />
+        <image class="right-arrow p-left-10" v-if="isRightRrrow"  :class="animation ? 'right-arrow-a animation' : 'animation' "  src="/static/images/arrow.png" />
       </view>
 
     </view>

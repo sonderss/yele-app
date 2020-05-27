@@ -33,6 +33,8 @@
     "@dcloudio/uni-mp-toutiao": "^2.0.0-24220191115011",
     "@dcloudio/uni-mp-weixin": "^2.0.0-24220191115011",
     "@dcloudio/uni-stat": "^2.0.0-24220191115011",
+    "browserslist": "^4.12.0",
+    "caniuse-lite": "^1.0.30001066",
     "flyio": "^0.6.2",
     "node-sass": "^4.13.0",
     "regenerator-runtime": "^0.12.1",

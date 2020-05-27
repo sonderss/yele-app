@@ -7,12 +7,12 @@
         <view class="min-flex min-flex-main-start">
           <min-avatar size="md" :url="userInfo.head_img"></min-avatar>
           <view class="m-left-20">
-            <view class="f28">{{ userInfo.username }}</view>
-            <view class="f22 m-top-20">{{ userInfo.store_name }}  |  {{ userInfo.position_name }}</view>
+            <view class="f30" style="font-weight:bold">{{ userInfo.username }}</view>
+            <view class="f24 m-top-20">{{ userInfo.store_name }}  |  {{ userInfo.position_name }}</view>
           </view>
         </view>
         <view class="min-flex min-flex-main-center" @click="navigateTo">
-          <view class="f22">切换门店</view>
+          <view class="f24">切换门店</view>
           <view class="right_arrow"></view>
         </view>
       </view>
@@ -115,14 +115,18 @@ export default {
         url: 'my-income'
       }, {
         img: '/static/images/index/chart.png',
-        name: 'statistics-page',
-        url: 'statistics-page',
+        name: 'statistics',
+        url: 'statistics',
         text: '数据统计'
       }, {
         url: '../mine-info/index',
         name: 'mine-info',
         img: '/static/images/index/people.png',
         text: '个人资料'
+      }, {
+        name: 'my-downline',
+        img: '/static/images/index/my_d.png',
+        text: '我的下线'
       }]
     }
   },
@@ -197,7 +201,7 @@ export default {
   .word {
     position: relative;
     z-index: 2;
-    font-size: 50rpx;
+    font-size: 45rpx;
     color: #FFFFFF;
     font-weight: 700;
   }

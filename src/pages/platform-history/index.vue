@@ -61,13 +61,15 @@ export default {
     // 查看订单
     viewOrder () {
       this.$minRouter.push({
-        name: 'order-list'
+        name: 'order-list',
+        params: { open_id: this.$parseURL().open_id }
       })
     },
     // 查看账单
     viewBill () {
       this.$minRouter.push({
-        name: 'desk-bill'
+        name: 'desk-bill',
+        params: { desk_id: this.$parseURL().id, open_id: this.$parseURL().open_id }
       })
     }
   }

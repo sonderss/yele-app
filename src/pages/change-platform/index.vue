@@ -1,22 +1,25 @@
 <template>
   <view class="change-platform p-tb-20 p-lr-30">
-    <min-search v-model="search" placeholder="请输入桌台号搜索"/>
-    <view class="platform-wrap p-top-20" v-for="(item,index) in getData" :key="index">
-      <view class="title">{{item.group_name}}</view>
-      <view class="list">
-        <view :class="active1 == index && active2 === index2 ? 'item in-order': 'item leisure' " @click="chioce1(index,index2)" v-for="(item2, index2) in item.desk_lists" :key="index2">
-          <view class="name">{{item2.desk_name}}</view>
-          <view class="status">{{statusArr[item2.desk_status].name }}</view>
-          <view class="count">{{$minCommon.getSeats(item2.seats)}}</view>
+
+        <min-search v-model="search" placeholder="请输入桌台号搜索"/>
+         <view v-if="getNewData.length > 0">
+            <view class="platform-wrap p-top-20" v-for="(item,index) in getNewData" :key="index">
+              <view class="title">{{item.group_name}}</view>
+              <view class="list">
+                <view :class="active1 == index && active2 === index2 ? 'item in-order': 'item leisure' " @click="chioce1(index,index2)" v-for="(item2, index2) in item.desk_lists" :key="index2">
+                  <view class="name">{{item2.desk_name}}</view>
+                  <view class="status">{{statusArr[item2.desk_status].name }}</view>
+                  <view class="count">{{$minCommon.getSeats(item2.seats)}}</view>
+                </view>
+              </view>
+            </view>
+        <view class="empty-view"></view>
+         </view>
+        <view class="btn-wrap">
+          <min-btn shape="flat"  :disabled="isdisabled" :opacity="false" @click="submit">转台</min-btn>
         </view>
-      </view>
-    </view>
-    <view class="empty-view"></view>
-    <view class="btn-wrap">
-      <min-btn shape="flat" :opacity="false" @click="submit">转台</min-btn>
-    </view>
-    <min-modal ref='test'></min-modal>
-    <!-- <view >{{getData}}</view> -->
+
+    <min-404 id='my' desc="搜索其他台试试？" v-if="getNewData.length ===  0"></min-404>
   </view>
 </template>
 
@@ -39,46 +42,40 @@ export default {
     this.data = this.$parseURL()
   },
   mounted () {
-    const month = new Date().getMonth() + 1
-    const day = new Date().getDate()
-    const year = new Date().getFullYear()
-    const date = year + '-' + month + '-' + day
-    this.$minApi.GetTableList({ date })
-      .then(res => {
-        this.list = res.desks
-      })
+    this.getData()
   },
   computed: {
-    getData () {
-      let indexA = []
-      const idnexBrr = []
-      this.list.map((item, index) => {
-        item.desk_lists.map((item2, index2) => {
-          if (item2.desk_status === 2) {
-            indexA.push(index)
-            idnexBrr.push(item2)
-          }
+    getNewData () {
+      let data = []
+      if (this.search) {
+        const obj = {}
+        this.newList.map(item => {
+          item.desk_lists.map(item2 => {
+            if (item2.desk_name.includes(this.search)) {
+              Object.assign(obj, item)
+              obj.desk_lists = []
+              obj.desk_lists.push(item2)
+              data.push(obj)
+            }
+          })
         })
-      })
-      indexA = this.$minCommon.arrSet(indexA)
-      const arr = []
-      indexA.map(item => {
-        const obj = {
-          id: this.list[item].id,
-          group_name: this.list[item].group_name,
-          desk_lists: []
+      } else {
+        data = this.newList
+      }
+      data = this.$minCommon.arrSet(data)
+      return data
+    }
+  },
+  watch: {
+    getNewData: {
+      handler (a) {
+        if (a.length === 0) {
+          this.isdisabled = true
+        } else {
+          this.isdisabled = false
         }
-        arr.push(obj)
-      })
-      arr.map(item => {
-        idnexBrr.map(item2 => {
-          if (item.id === item2.group_id) {
-            item.desk_lists.push(item2)
-          }
-        })
-      })
-      // console.log(arr)
-      return arr
+      },
+      deep: true
     }
   },
   data () {
@@ -86,21 +83,61 @@ export default {
       statusArr,
       data: {},
       search: '',
-      active1: Number,
-      active2: Number,
-      list: []
+      active1: 0,
+      active2: 0,
+      list: [],
+      newList: [],
+      isdisabled: false
     }
   },
   methods: {
+    getData () {
+      const month = new Date().getMonth() + 1
+      const day = new Date().getDate()
+      const year = new Date().getFullYear()
+      const date = year + '-' + month + '-' + day
+      this.$minApi.GetTableList({ date })
+        .then(res => {
+          this.list = res.desks
+          let indexA = []
+          const idnexBrr = []
+          this.list.map((item, index) => {
+            item.desk_lists.map((item2, index2) => {
+              if (item2.desk_status === 2) {
+                indexA.push(index)
+                idnexBrr.push(item2)
+              }
+            })
+          })
+          indexA = this.$minCommon.arrSet(indexA)
+          const arr = []
+          indexA.map(item => {
+            const obj = {
+              id: this.list[item].id,
+              group_name: this.list[item].group_name,
+              desk_lists: []
+            }
+            arr.push(obj)
+          })
+          arr.map(item => {
+            idnexBrr.map(item2 => {
+              if (item.id === item2.group_id) {
+                item.desk_lists.push(item2)
+              }
+            })
+          })
+          this.newList = arr
+          console.log(this.newList)
+        })
+    },
     chioce1 (index, index2) {
       this.active1 = index
       this.active2 = index2
-      console.log(index, index2)
     },
     submit () {
       this.$minApi.changeOrder({
         desk_id: this.data.old_id,
-        to_id: this.getData[this.active1].desk_lists[this.active2].id
+        to_id: this.newList[this.active1].desk_lists[this.active2].id
       })
         .then(res => {
           console.log(res)

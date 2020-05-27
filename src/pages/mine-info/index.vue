@@ -5,7 +5,7 @@
         <min-cell-item
           :img="userInfo.head_img"
           :title="userInfo.store_name"
-          tail="编辑头像"
+          tail=""
           imgSize="sm"
           :border="true"
           arrow
@@ -33,7 +33,7 @@
           ></min-cell-item>
         </picker>
         <min-cell-item
-          title="手机" :tail="userInfo.mobile"
+          title="手机" :tail="$minCommon.hideTel(userInfo.mobile ? userInfo.mobile : '15888888888')"
           :border="false" arrow
           @eventParent="setPhone"
         ></min-cell-item>

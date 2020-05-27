@@ -1,8 +1,8 @@
 <template>
   <view class="min-checkbox" @click="change">
-    <img class="icon" v-if="isMatch" src="/static/images/radio.png" alt="radio">
-    <img class="icon" v-else src="/static/images/not-radio.png" alt="radio">
-    <image class="img-icon p-left-10" v-if="icon" :src="icon"/>
+    <image class="icon" v-if="isMatch" src="/static/images/radio.png" alt="radio" />
+    <image class="icon" v-else src="/static/images/not-radio.png" alt="radio" />
+    <image class="img-icon p-left-10" v-if="icon" :src="icon" />
     <view class="text p-left-10">{{ title }}</view>
     <slot></slot>
   </view>

@@ -32,6 +32,12 @@ export default {
           }
         },
         {
+          path: 'pages/authentication/index',
+          style: {
+            navigationBarTitleText: '身份验证'
+          }
+        },
+        {
           path: 'pages/storing-liquor-detail/index',
           style: {
             navigationBarTitleText: '存酒详情'

@@ -4,7 +4,7 @@
       <view class="platform-info f28 p-lr-20 p-tb-20">
         <view>台位抵消：￥{{list.order_info.minim_charge}}</view>
         <view>开台条件：<text class="emp">{{list.order_info.minimum_percent}}成低消 {{`(${list.order_info.desk_open_minimum})`}}</text></view>
-        <view>订单金额：￥{{list.order_info.order_price}}</view>
+        <view>订单金额：￥{{list.order_info.order_total}}</view>
         <view>达成状态：{{list.order_info.is_can_open === 0 ? "未达成开台条件":"达成开台条件"}}</view>
       </view>
       <view class="goods-wrap m-top-20 p-lr-20">

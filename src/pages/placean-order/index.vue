@@ -356,16 +356,17 @@ export default {
         })
         return
       }
-      if (this.mainArray[index].product[index2].sku.length > 1) {
-        this.selSku(index, index2)
+      if (this.mainArray[index].product[index2].type === 'product') {
+        if (this.mainArray[index].product[index2].sku.length > 1) {
+          this.selSku(index, index2)
+        } else {
+          const obj = {}
+          const skuOne = this.mainArray[index].product[index2].sku[0]
+          Object.assign(obj, this.mainArray[index].product[index2])
+          obj.sku = skuOne
+          this.addGoods(obj)
+        }
       }
-      // const obj = {}
-      // if (this.mainArray[index].product[index2].sku.length > 0) {
-      //   // obj = this.mainArray[index].product[index2]
-      //   Object.assign(obj, this.mainArray[index].product[index2])
-      //   obj.sku = this.mainArray[index].product[index2].sku[0]
-      // }
-      // this.addGoods(obj)
     },
     // 选择规格
     chioceO (index) {
@@ -558,7 +559,7 @@ uni-page-body{overflow: hidden;min-height: 100vh;width: 100%;}
       }
   }
 .main{
-
+    width: 75%;
     padding-left: 20rpx;
     flex-grow: 1;
 

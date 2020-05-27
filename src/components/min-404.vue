@@ -15,6 +15,10 @@ export default {
     pTop: {
       type: String,
       default: ''
+    },
+    desc: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -74,6 +78,9 @@ export default {
         case ('net'):
           t = '网络意外断开，请检查网络'
           break
+        case ('my'):
+          t = this.desc
+          break
         default:
           t = '暂无收藏'
       }
@@ -87,6 +94,9 @@ export default {
           break
         case ('net'):
           s = '../../static/images/netDown.png'
+          break
+        case ('my'):
+          s = '../../static/images/nodata.png'
           break
         default:
           s = '../../static/images/favorite.png'

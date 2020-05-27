@@ -1,5 +1,5 @@
-<template>
-  <view class="platform-detail">
+<template ref='body'>
+  <view class="platform-detail" >
     <view class="card p-lr-20 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">基本信息</view>
       <view class="main p-tb-20">
@@ -39,7 +39,7 @@
       <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book">预约</view>
       <view :class="index === 1 ? 'btn active' : 'btn' " @click="startOrder">开台</view>
       <view  :class="index === 2 ? 'btn active' : 'btn' " @click="saveWine">存酒</view>
-      <view class="badge" @click="showToastTxt"  id='testDom'>
+      <view class="badge" @click="showToastTxt" ref='testDom' id='testDom'>
           <text class="more" style="color: #CCCCCC;" >&#xe61c;</text>
           <view class="toast anmatiin "   v-if="toast">
               <view class="bag_btn" @click="backBook">推迟到店</view>
@@ -79,7 +79,10 @@ export default {
     console.log(this.idNum, this.date)
     // 监听关闭事件
     this.$nextTick(() => {
-      document.querySelector('body').addEventListener('click', this.handleBodyClick)
+      // document.querySelector('body').addEventListener('click', this.handleBodyClick)
+      // this.$refs.body.addEventListener('click', this.handleBodyClick)
+      // uni.selectorQuery.select('.platform-detail').addEventListener('click', this.handleBodyClick)
+      // uni.createSelectorQuery().in(this).select('.platform-detail').addEventListener('click', this.handleBodyClick)
     })
   },
   methods: {
@@ -179,19 +182,22 @@ export default {
     },
     // 关闭剩余按钮显示
     handleBodyClick (e) {
-      const targetDom = document.getElementById('testDom')
-      if (targetDom) {
-        const flag = targetDom.contains(e.target)
-        if (!flag) {
-          this.toast = false
-        }
-      }
+      // testDom
+      // const targetDom = document.getElementById('testDom')
+      // if (targetDom) {
+      //   const flag = targetDom.contains(e.target)
+      //   if (!flag) {
+      //     this.toast = false
+      //   }
+      // }
     }
-  },
-  beforeDestroy () {
-    // 事件销毁
-    document.querySelector('body').removeEventListener('click', this.handleBodyClick)
   }
+  // beforeDestroy () {
+  //   // 事件销毁
+  //   uni.createSelectorQuery().in(this).select('.platform-detail').removeEventListener('click', this.handleBodyClick)
+  //   // document.querySelector('body').removeEventListener('click', this.handleBodyClick)
+  //   // this.$refs.removeEventListener('click', this.handleBodyClick)
+  // }
 }
 </script>
 <style lang="scss" scoped>

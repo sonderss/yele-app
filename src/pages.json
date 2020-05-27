@@ -74,6 +74,18 @@
       }
     },
     {
+      "path":"pages/authentication/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"身份验证",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
       "path":"pages/order-detail/index",
       "style": {
         "app-plus":{
@@ -531,8 +543,11 @@
     {
       "path":"pages/platform-admin/index",
       "style": {
-        "navigationBarTitleText": "桌台管理",
         "titleNView": {
+            "titleText":"桌台管理",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001",
+            "fontWeight":"blod",
           "buttons": [
             {
               "text": "选择日期",
@@ -702,7 +717,8 @@
             "buttons":[
               {
                 "text": "邀请记录",
-                "fontSize":"28rpx"
+                "fontSize":"28rpx",
+                "width":"auto"
             }
             ]
           }

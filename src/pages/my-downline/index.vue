@@ -39,6 +39,8 @@
 </template>
 <script>
 export default {
+  name: 'my-downline',
+  navigate: ['navigateTo'],
   onNavigationBarButtonTap () {
     this.$minRouter.push({
       name: 'invitation-record',

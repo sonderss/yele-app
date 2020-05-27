@@ -11,7 +11,7 @@
         <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.desk_info.group_name}}</view>
         <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：￥{{list.desk_info.minim_charge}}</view>
         <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.desk_info.seats) }}</view>
-        <view>开台条件：{{list.desk_info.minimum_consume_percent+'成低消'+ `(${list.desk_info.desk_open_minimum})`}}</view>
+        <view>开台条件：{{list.desk_info.minimum_consume_percent+'成低消'+ `(￥${list.desk_info.desk_open_minimum})`}}</view>
       </view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
@@ -88,7 +88,7 @@ export default {
   mounted () {
     // 监听关闭事件
     this.$nextTick(() => {
-      document.querySelector('body').addEventListener('click', this.handleBodyClick)
+      // document.querySelector('body').addEventListener('click', this.handleBodyClick)
     })
     console.log('已开台详情', this.list)
   },
@@ -208,7 +208,7 @@ export default {
   },
   beforeDestroy () {
     // 事件销毁
-    document.querySelector('body').removeEventListener('click', this.handleBodyClick)
+    // document.querySelector('body').removeEventListener('click', this.handleBodyClick)
   }
 }
 </script>

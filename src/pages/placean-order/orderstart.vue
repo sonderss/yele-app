@@ -22,8 +22,8 @@
           <!-- <view :class="item.product_count === 1 ? 'status confirmed':'status end'">{{list.product_count === 1 ? '待确认': '已取酒'}}</view> -->
         </view>
         <view class="main p-top-20">
-          <view class="item">客户姓名：{{list.order_info.client_name ? list.order_info.client_name: '暂无数据'}}</view>
-          <view class="item">客户手机号：{{list.order_info.client_mobile?list.order_info.client_mobile:'暂无数据'}}</view>
+          <view class="item">客户姓名：{{list.order_info.client_name }}</view>
+          <view class="item">客户手机号：{{list.order_info.client_mobile}}</view>
 
         </view>
       <!-- <view class="timer min-top-border">{{item.create_time}}</view> -->
@@ -59,7 +59,7 @@ export default {
       order_id: '',
       desk_id: '',
       open_status: '',
-      list: {},
+      list: { order_info: { client_name: '' } },
       params: {}
     }
   },

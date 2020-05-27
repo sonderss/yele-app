@@ -9,9 +9,9 @@ export default {
     goGetHistory () {
       this.$minRouter.push({
         name: 'platform-history',
-        params: { id: this.idNum }
+        params: { id: this.idNum, open_id: this.list.desk_info.opening_id }
       })
-      console.log('id', this.idNum)
+      console.log('id', this.idNum, this.list.desk_info.opening_id)
     }
   },
   mounted () {

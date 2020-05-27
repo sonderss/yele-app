@@ -159,8 +159,8 @@ export default {
     // eslint-disable-next-line handle-callback-err
     }).catch(err => {
       setTimeout(() => {
-        uni.redirectTo({
-          url: '../platform-admin/index'
+        uni.navigateBack({
+          delta: 1
         })
       }, 2000)
     })

@@ -81,7 +81,7 @@ export default {
   mounted () {
     // 监听关闭事件
     this.$nextTick(() => {
-      document.querySelector('body').addEventListener('click', this.handleBodyClick)
+      // document.querySelector('body').addEventListener('click', this.handleBodyClick)
     })
   },
   methods: {
@@ -173,7 +173,7 @@ export default {
   },
   beforeDestroy () {
     // 事件销毁
-    document.querySelector('body').removeEventListener('click', this.handleBodyClick)
+    // document.querySelector('body').removeEventListener('click', this.handleBodyClick)
   }
 }
 </script>

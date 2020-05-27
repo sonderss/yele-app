@@ -2,7 +2,7 @@
   <view class="save-wine p-tb-20 p-lr-30">
     <view class="goods-wrap m-top-20 p-lr-20">
       <view class="p-tb-30 min-border-bottom">来源于订单</view>
-      <view class="goods-list p-t-10 p-bottom-20">
+      <view class="goods-list p-t-10 p-bottom-20" v-if="list.from_order.length > 0">
         <view class="p-top-20" v-for="(item,index) in list.from_order" :key="index">
           <view style="background: #fff;">
             <view class="goods-item">
@@ -25,11 +25,12 @@
           </view>
         </view>
       </view>
+      <view class="none" v-else>暂无</view>
     </view>
     <!-- 来源于取酒 -->
      <view class="goods-wrap m-top-20 p-lr-20">
       <view class="p-tb-30 min-border-bottom">来源于取酒</view>
-      <view class="goods-list p-t-10 p-bottom-20">
+      <view class="goods-list p-t-10 p-bottom-20" v-if="list.from_fetch.length > 0">
         <view class="p-top-20" v-for="(item,index) in list.from_fetch" :key="index">
           <view style="background: #fff;">
             <view class="goods-item">
@@ -51,6 +52,7 @@
           </view>
         </view>
       </view>
+       <view class="none" v-else>暂无</view>
     </view>
       <view class="client_desc p-lr-20 m-top-20">
          <min-desc-input sign="*" desc="客户姓名" v-model="name"></min-desc-input>
@@ -198,5 +200,12 @@ export default {
     height: 200rpx;
     background: #fff;
     margin-bottom: 140rpx;
+  }
+  .none{
+    width: 100%;
+    height: 100rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>

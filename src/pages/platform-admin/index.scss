@@ -18,6 +18,7 @@
       }
       &.active {
         background: #ffe001;
+        font-size: 28rpx;
       }
     }
   }
@@ -25,6 +26,7 @@
     background: #fff;
     padding: 30rpx 20rpx;
     margin-top: 20rpx;
+    border-radius: 10rpx;
     .title {
       font-size: 30rpx;
       padding-bottom: 30rpx;
@@ -34,9 +36,21 @@
         display: inline-block;
         width: 140rpx;
         border-radius: 10rpx;
-        padding: 20rpx 0;
+        padding: 20rpx  0;
         text-align: center;
         margin-left: 30rpx;
+        .status {
+          margin: 4rpx 0;
+          font-weight: bold;
+          font-size: 28rpx;
+        }
+        .name{
+          font-size: 24rpx;
+          
+        }
+        .count{
+          font-size: 24rpx;
+        }
         &:nth-child(4n+1) {
           margin: 0;
           margin-top: 20rpx;
@@ -48,9 +62,7 @@
           font-size: 28rpx;
           color: #fff;
         }
-        .status {
-          margin: 4rpx 0;
-        }
+        
         &.reserved {
           // 已预约
           background: #0090ff;
@@ -77,7 +89,18 @@
         &.leisure {
           // 空闲中
           background: #eeeeee;
-          & > view {
+          .status {
+            margin: 4rpx 0;
+            font-weight: bold;
+            color: #333;
+            font-size: 28rpx;
+          }
+          .name{
+            font-size: 24rpx;
+            color: #666;
+          }
+          .count{
+            font-size: 24rpx;
             color: #666;
           }
         }

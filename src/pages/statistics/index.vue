@@ -189,23 +189,5 @@ export default {
       font-weight: 500;
     }
   }
-  .a {
-    background-image: url("/static/images/data/01.png");
-  }
-  .b {
-    background-image: url("/static/images/data/02.png");
-  }
-  .c {
-    background-image: url("/static/images/data/04.png");
-  }
-  .d {
-    background-image: url("/static/images/data/03.png");
-  }
-  .e {
-    background-image: url("/static/images/data/06.png");
-  }
-  .f {
-    background-image: url("/static/images/data/05.png");
-  }
 }
 </style>

@@ -30,10 +30,9 @@
           :num="list.combination[0].last_number+''"
         ></min-describe>
       </view>
-
         <view class="title min-border-bottom m-bottom-30 p-lr-20">
            <text class="left-txt">请选择{{item.combination_name}}{{item.last_number}}份（{{item.is_check === 1 ? '不可重复选' : ''}}）</text>
-           <text v-if="type !== 3" class="right-txt f26">已选 <text class="num1">{{getCount}}</text> 份</text>
+           <text v-if="type !== 3" class="right-txt f26">已选 <text class="num1">{{item.goodsCount}}</text> 份</text>
         </view>
         <view class="content p-bottom-30">
           <min-describe  class="i"
@@ -93,6 +92,10 @@ export default {
           })
         })
         this.list = res.info
+        this.list.combination.map(item => {
+          this.$set(item, 'goodsCount', 0)
+        })
+        console.log(this.list)
       })
   },
   computed: {
@@ -107,11 +110,21 @@ export default {
     }
   },
   watch: {
+    selArr (a) {
+      console.log(a)
+    }
   },
   methods: {
     changeCount (n, index, index2) {
       // this.num_prducts = n
       this.list.combination[index].combination_detail[index2].step = n
+      // this.list.combination[index].goodsCount += 1
+      let num = 0
+      this.list.combination[index].combination_detail.map(item2 => {
+        num += item2.step
+      })
+      this.list.combination[index].goodsCount = num
+
       const item = { id: '' }
 
       // obj.combination = []
@@ -122,11 +135,7 @@ export default {
       item2.type = this.list.combination[index].combination_detail[index2].comb_type === 1 ? 'product' : 'service'
       item2.quantity = this.list.combination[index].combination_detail[index2].step
       item2.sku_id = this.list.combination[index].combination_detail[index2].sku_id
-      // item.combination_detail.push(item2)
-      // item.detail = item2
       item.combination_detail.push(item2)
-
-      // this.detail.push(item)
       this.addGoods(item)
     },
     addGoods (obj) {
@@ -136,9 +145,6 @@ export default {
       }
 
       const resultF = this.selArr.some(item => {
-        if (item.id !== obj.id) {
-          return true
-        }
         const result = item.combination_detail.some(item2 => {
           if (item2.sku_id === obj.combination_detail[0].sku_id) {
             item2.quantity = obj.combination_detail[0].quantity
@@ -149,13 +155,30 @@ export default {
           item.combination_detail.push(obj.combination_detail[0])
           // this.selArr.push(obj)
         }
+        if (item.id === obj.id) {
+          return true
+        }
       })
-      if (resultF) {
+      if (!resultF) {
         this.selArr.push(obj)
       }
     },
     subMit () {
-      console.log(this.selArr)
+      this.list.combination.map(item => {
+        if (item.necessary === 1) {
+          if (item.goodsCount !== item.last_number) {
+            return this.$showToast('请选择符合要求的份数')
+          }
+        }
+      })
+      const tempArr = JSON.parse(JSON.stringify(this.selArr))
+      tempArr.map((item, index) => {
+        item.combination_detail.map((item2, index2) => {
+          if (item2.quantity === 0) {
+            this.selArr[index].combination_detail.splice(index2, 1)
+          }
+        })
+      })
       this.$minRouter.push({
         name: 'package-details',
         params: {

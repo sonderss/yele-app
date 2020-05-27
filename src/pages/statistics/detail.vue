@@ -91,7 +91,7 @@
             </view>
           </view>
         </view>
-        <view class="f20 m-tb-20" style="color:#999999">更新时间：{{$minCommon.formatDate(new Date(zhuotai.desk_info.current_time*1000),'yyyy/MM/dd hh:mm:ss') }}</view>
+        <view class="f20 m-tb-20" style="color:#999999">更新时间：{{$minCommon.formatDate(new Date(Date.now()),'yyyy/MM/dd hh:mm:ss') }}</view>
       </view>
 
       <view  class="m-lr-20 m-tb-20 "  style="background:#FFF">
@@ -104,7 +104,8 @@
                 :key="i"
               >{{i}}</view>
             </view>
-            <text class="time p-lr-20 p-top-20" >更新时间：2020.02.23 13:22:00</text>
+            <view class="time f20 m-tb-20 p-left-20" v-if="current === 0">更新时间：{{$minCommon.formatDate(new Date(Date.now()),'yyyy/MM/dd hh:mm:ss') }}</view>
+          <text class="time m-tb-20 p-left-20" v-else>更新时间：{{$minCommon.formatDate(new Date(zhuotai.statistics_time.start_time*1000),'yyyy/MM/dd')}} - {{$minCommon.formatDate(new Date(zhuotai.statistics_time.end_time*1000),'MM/dd')}}</text>
             <view class="main_data_item min-border-bottom " >
               <view class="item_box_ " style="width:30%">
                 <text class="name">订台数</text>
@@ -200,56 +201,84 @@ export default {
       current: 0,
       // 数据总览
       chartData: {
-        categories: ['2019/5/5', '2019/5/6', '2019/5/6', '2019/5/8'],
         series: [
           {
             name: '支付宝',
-            data: 50
+            data: 50,
+            color: '#3288FD'
           },
           {
             name: '微信',
-            data: 30
+            data: 30,
+            color: '#8280FF'
           },
           {
             name: '刷卡',
-            data: 20
+            data: 20,
+            color: '#FFD43B'
           },
           {
             name: '现金',
-            data: 18
+            data: 18,
+            color: '#FF0000'
           }
-        ]
+        ],
+        actual_total: 0
       },
       yingye: {},
-      zhuotai: {}
+      isYYFlag: true,
+      zhuotai: { desk_info: { idle_desk: '' }, desk_statistics: { booking_count: 0 } }
     }
   },
   methods: {
     chince (i) {
       this.current = i
-      this.getYingYe(i)
-      this.getZhuoTai(i)
+      if (this.type === 0) {
+        this.getYingYe(i)
+      } else if (this.type === 1) {
+        this.getZhuoTai(i)
+      }
     },
     touchPie (e) {
-      console.log(e)
-      // canvaRing.showToolTip(e, {
-      //    format: function (item) {
-      //      return item.name + ':' + item.data
-      //    }
-      //  });
+      if (this.isYYFlag) return this.$showToast('暂无数据')
+      const xx = canvaPie.getCurrentDataIndex(e)
+      var text = ''
+      var value = ''
+      var color = ''
+      switch (xx) {
+        case 0:
+          text = '支付宝'
+          value = this.yingye.pay_method.ali_pay
+          color = '#3288FD'
+          break
+        case 1:
+          text = '微信'
+          value = this.yingye.pay_method.wx_pay
+          color = '#8280FF'
+          break
+        case 2:
+          text = '刷卡'
+          value = this.yingye.pay_method.swipe_pay
+          color = '#FFD43B'
+          break
+        case 3:
+          text = '现金'
+          value = this.yingye.pay_method.cash_pay
+          color = '#FF0000'
+          break
+        default:
+          text = ''
+          value = ''
+      }
       // 自定义点击展示数据
-      // const textList = [
-      //   { text: '支付宝', color: null },
-      //   { text: '实收金额: 10000（元）', color: null },
-      //   { text: '金额占比: 20% ', color: null }
-      // ]
+      const textList = [
+        { text: text, color: color },
+        { text: `实收金额: ${value}（元）`, color: null },
+        { text: `金额占比: ${(value / this.yingye.actual_total).toFixed(2) * 100}%`, color: null }
+      ]
       canvaPie.showToolTip(e, {
 
-        // textList
-        format: function (item, category) {
-          console.log('categories', category)
-          return category + '' + item.name + '\n' + item.data + ''
-        }
+        textList
       })
     },
     // 环形
@@ -273,7 +302,7 @@ export default {
           y: 'top'
         },
         title: {
-          name: '2335.5', // 标题
+          name: chartData.actual, // 标题
           color: '#7cb5ec'
         },
         subtitle: {
@@ -281,7 +310,7 @@ export default {
           color: '#999999',
           fontSize: 10
         },
-        dataPointShape: true,
+        dataPointShape: true, // dataLabel
         extra: {
           candle: {
             color: {
@@ -342,18 +371,10 @@ export default {
         disablePieStroke: true,
         dataLabel: false
       })
-      this.piearr = canvaPie.opts.series
       // canvaPie.stopAnimation()
-      canvaPie.addEventListener('renderComplete', () => {
-        console.log('渲染完成')
-      })
-    },
-    getServerData () {
-      // eslint-disable-next-line no-case-declarations
-      const Pie = { series: [] }
-      Pie.series = this.chartData.series
-      // ID 数据 是否显示图例  粗细   （环形图表）
-      this.showPie('canvasPie', Pie, true, 25)
+      // canvaPie.addEventListener('renderComplete', () => {
+      //   console.log('渲染完成')
+      // })
     },
     toAbout (id) {
       console.log(id)
@@ -364,8 +385,31 @@ export default {
     // 营业统计获取数据
     getYingYe (n) {
       this.$minApi.getBusinessStatistics({ date_range: n }).then(res => {
-        console.log(res)
         this.yingye = res
+        this.chartData.series.map((item, index) => {
+          switch (index) {
+            case 0:
+              item.data = this.yingye.pay_method.ali_pay * 1
+              break
+            case 1:
+              item.data = this.yingye.pay_method.wx_pay * 1
+              break
+            case 2:
+              item.data = this.yingye.pay_method.swipe_pay * 1
+              break
+            case 3:
+              item.data = this.yingye.pay_method.cash_pay * 1
+              break
+            default:
+              item.data = 0
+          }
+        })
+        const Pie = { series: [], actual: 123 }
+        Pie.series = this.chartData.series
+        Pie.actual = this.yingye.actual_total ? this.yingye.actual_total : '暂无'
+        this.isYYFlag = !this.yingye.actual_total
+        console.log(this.yingye)
+        this.showPie('canvasPie', Pie, true, 25)
       })
     },
     // 桌台数据
@@ -384,9 +428,8 @@ export default {
       this.cHeight = uni.upx2px(450)
       this.$nextTick(() => {
         // 初始化图表
-        this.getServerData()
+        this.getYingYe(0)
       })
-      this.getYingYe(0)
     } else if (this.type === 1) {
       this.getZhuoTai(0)
     }
@@ -398,6 +441,7 @@ export default {
         uni.setNavigationBarTitle({
           title: '营业统计'
         })
+
         break
       case '1':
         uni.setNavigationBarTitle({
