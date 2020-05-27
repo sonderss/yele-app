@@ -1,6 +1,6 @@
 <template>
   <view class="about p-lr-20 p-tb-20">
-      <min-data-show  :list="list" :titles="titles" />
+      <min-data-show  :id="this.id" :list="list" :titles="titles" :right="rightA"/>
   </view>
 </template>
 
@@ -10,7 +10,8 @@ export default {
     return {
       id: '',
       list: { data: [{ data: [{ name: '123', aa: '213', asd: '12' }] }, { data: [{ name: '123', aa: '213', asd: '321' }] }, { data: [{ name: '123', aa: '2', asd: '2' }] }] },
-      titles: ['姓名', '手机号', '业绩']
+      titles: ['姓名', '手机号', '业绩'],
+      rightA: true
     }
   },
   onLoad (option) {
@@ -31,11 +32,13 @@ export default {
         uni.setNavigationBarTitle({
           title: '角色业绩统计'
         })
+        this.rightA = false
         break
       case '3':
         uni.setNavigationBarTitle({
           title: '无业绩人员名单'
         })
+        this.rightA = false
         break
       case '4':
         uni.setNavigationBarTitle({

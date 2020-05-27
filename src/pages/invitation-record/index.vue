@@ -11,7 +11,7 @@
         :tail="status[item.status].statusText"
         :tailType="status[item.status].color"
         :border="list.length !== index + 1"
-        class="m-bottom-20"
+        mtb
       ></min-cell-item>
 
     <view class="nodata-wrap" v-if="list.length === 0">

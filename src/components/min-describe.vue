@@ -1,23 +1,24 @@
 <template>
-<view class="min-describe p-lr-20">
-    <view class="left-view" @click="chinceSku">
-      <view class="img-view" v-if="leftIcon">
-        <image :src="imageErro ?  '../../static/images/goods.png' : leftIconValue " @error="imgerro"/>
-      </view>
-      <view :class=" leftTxtTwo ? 'txt-view': ''">
-         <view class="left-txt" style="color:#333">{{leftTxt}}</view>
-         <view class="left-txt" style="color:#666" v-if="leftTxtTwo">{{leftTxtB}}</view>
-      </view>
-    </view>
-    <view class="right-view" @click="chinceSku">
-        <min-stepper v-if="step"  v-model="count" :max="maxStep" @change="emitEvent" :min='0' icon='/static/images/yellow-add.png'></min-stepper>
-        <text v-if="num">x {{num}}</text>
-        <view v-if="sku" class="right-icon f30">{{sku}}<image src='../../static/images/right-black.png' /></view>
-        <view class="txt-view1" v-if="leftTxtTwo">
-          <view class=".left-txt" style="color:#333">{{rightTxtT}}</view>
-          <view class="left-txt" style="color:#666">{{rightTxtB}}</view>
+<view class="min-describe p-lr-20 ">
+
+      <view class="left-view" @click="chinceSku">
+        <view class="img-view" v-if="leftIcon">
+          <image :src="imageErro ?  '/static/images/goods.png' : leftIconValue " @error="imgerro" />
         </view>
-    </view>
+        <view :class=" leftTxtTwo ? 'txt-view': ''">
+          <view class="left-txt" style="color:#333">{{leftTxt}}</view>
+          <view class="left-txt" style="color:#666" v-if="leftTxtTwo">{{leftTxtB}}</view>
+        </view>
+      </view>
+      <view class="right-view" @click="chinceSku">
+          <min-stepper v-if="step"  v-model="count" :max="maxStep" @change="emitEvent" :min='0' icon='/static/images/yellow-add.png'></min-stepper>
+          <text v-if="num">x {{num}}</text>
+          <view v-if="sku" class="right-icon f30">{{sku}}<image src='/static/images/right-black.png' /></view>
+          <view class="txt-view1" v-if="leftTxtTwo">
+            <view class="left-txt" style="color:#333">{{rightTxtT}}</view>
+            <view class="left-txt" style="color:#666">{{rightTxtB}}</view>
+          </view>
+      </view>
 </view>
 </template>
 <script>
@@ -96,6 +97,7 @@ export default {
   display: flex;
   background: #fff;
   justify-content: space-between;
+  margin: 20rpx 0;
   .left-view{
     display: flex;
     align-items: center;
@@ -124,7 +126,6 @@ export default {
     justify-content: center;
     color: #666666;
      .txt-view1{
-        text-align: left;
         display: flex;
         flex-direction: column;
         height:85rpx;

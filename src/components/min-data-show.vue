@@ -13,27 +13,30 @@
         >{{i}}</view>
       </view>
       <view class="main_data p-lr-20">
-          <view class="time_desc">
-              <text class="f20">统计时间：2020.02.23-04.23</text>
-              <text  class="f20">业绩合计：￥24654121.00</text>
+        <view class="time_desc">
+          <text class="f20">统计时间：2020.02.23-04.23</text>
+          <text class="f20">业绩合计：￥24654121.00</text>
+        </view>
+        <view class="main_table">
+          <view class="title_list min-border-bottom">
+            <view class="title_item" v-for="(title,index) in titles" :key="index">{{title}}</view>
           </view>
-          <view class="main_table">
-              <view class="title_list min-border-bottom">
-                  <view class="title_item" v-for="(title,index) in titles" :key="index">
-                   {{title}}
-                  </view>
-              </view>
-              <view  :class="index === list.data.length-1 ? 'main_list_table' : 'main_list_table min-border-bottom'" v-for="(item,index) in list.data" :key="index">
-                   <view class="left"  v-for="(i,n) in item.data" :key="n">
-                       <text>{{i.name}}</text>
-                       <text>{{i.aa}}</text>
-                       <text>{{i.asd}}</text>
-                   </view>
-                   <view class="right">
-                     <text v-if="right"> > </text>
-                   </view>
-              </view>
+          <view
+            :class="index === list.data.length-1 ? 'main_list_table' : 'main_list_table min-border-bottom'"
+            v-for="(item,index) in list.data"
+            :key="index"
+            @click="toDetail"
+          >
+            <view class="left" v-for="(i,n) in item.data" :key="n">
+              <text>{{i.name}}</text>
+              <text>{{i.aa}}</text>
+              <text>{{i.asd}}</text>
+            </view>
+            <view class="right">
+              <text v-if="right">></text>
+            </view>
           </view>
+        </view>
       </view>
     </view>
   </view>
@@ -53,6 +56,10 @@ export default {
     right: {
       type: Boolean,
       default: true
+    },
+    id: {
+      type: [String, Number],
+      default: ''
     }
   },
   data () {
@@ -71,6 +78,14 @@ export default {
     },
     chince (i) {
       this.current = i
+    },
+    toDetail (index) {
+      if (this.id === '0') {
+        console.log(123)
+        uni.navigateTo({
+          url: '/pages/statistics/person?id=' + this.id
+        })
+      }
     }
   }
 }
@@ -128,45 +143,57 @@ export default {
       bottom: 0;
     }
   }
-  .main_data{
+  .main_data {
     width: 100%;
     height: auto;
     background: #fff;
     padding-bottom: 20rpx;
-    .time_desc{
+    .time_desc {
       width: 100%;
       display: flex;
       justify-content: space-between;
       height: 50rpx;
       align-items: center;
-      text{color:#333333}
+      text {
+        color: #333333;
+      }
     }
-    .main_table{
+    .main_table {
       width: 100%;
       height: auto;
-      .title_list{
-           width: 100%;
-           height: 100rpx;
-           display: flex;
-           justify-content: space-between;
-           align-items: center;
-           padding: 0 60rpx;
-           padding-left: 40rpx;
-           .title_item{text{font-size: 30rpx;font-weight: 800;color: #333;}}
+      .title_list {
+        width: 100%;
+        height: 100rpx;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 60rpx;
+        padding-left: 40rpx;
+        .title_item {
+          text {
+            font-size: 30rpx;
+            font-weight: 800;
+            color: #333;
+          }
+        }
       }
-      .main_list_table{
+      .main_list_table {
         width: 100%;
         height: 84rpx;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        .left{
+        .left {
           width: 100%;
           display: flex;
           justify-content: space-between;
           padding: 0 30rpx;
         }
-        .right{width: 25rpx;height: 25rpx;line-height: 25rpx;}
+        .right {
+          width: 25rpx;
+          height: 25rpx;
+          line-height: 25rpx;
+        }
       }
     }
   }

@@ -3,7 +3,7 @@
     <view class="top-view f26"></view>
     <view class="mid-view">
       <text class="name m-left-10">我的上线：{{list.superior.username}}{{list.superior.mobile}}</text>
-      <view class="backi m-top-10">
+      <view class="backi m-top-10" :style="{backgroundImage:`url(${n})`,backgroundSize: 'cover'}">
         <view class="show-money">
           <view class="money">
             ￥
@@ -16,13 +16,14 @@
     </view>
 
     <view class="title-n">
-      <view class="main">
-        <view class="m min-border-bottom">
+      <view class="main   min-border-bottom">
+        <view  class="m">
           <text>下线列表</text>
           <text>共{{nums}}人</text>
         </view>
       </view>
-      <view class="item  min-border-bottom" v-for="(item,index) in list.subordinate" :key="index">
+
+      <view class="item"   v-for="(item,index) in list.subordinate" :key="index">
         <min-describe
           :leftIconValue="item.head_img"
           :leftTxtB="item.mobile"
@@ -31,13 +32,16 @@
           rightTxtB="累计分佣"
           :leftIcon="true"
           :leftTxtTwo="true"
+          :border="index === list.subordinate.length -1 ? false : true"
         ></min-describe>
+
       </view>
     </view>
 
   </view>
 </template>
 <script>
+import backs from '../../static/images/b-mydownl.png'
 export default {
   name: 'my-downline',
   navigate: ['navigateTo'],
@@ -51,7 +55,8 @@ export default {
   data () {
     return {
       list: { superior: { username: '' } },
-      nums: Number
+      nums: 0,
+      n: backs
     }
   },
   mounted () {
@@ -89,13 +94,14 @@ export default {
     padding: 0 24rpx;
     .name {
       color: #cccccc;
+      font-size: 28rpx;
     }
     .backi {
-      width: 100%;
+      width: 700rpx;
       height: 404rpx;
-      background-image: url("../../static/images/b-mydownl.png");
+      // background-image: url('~@/static/images/b-mydownl.png');
       background-repeat: no-repeat;
-      background-size: 100%;
+      background-size: cover;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -134,27 +140,27 @@ export default {
     }
   }
   .title-n {
-    width: 100%;
-    height: 88rpx;
+    width: 100vw;
+    height: 100rpx;
     margin-top: 200rpx;
     padding: 0 30rpx;
     .main {
       width: 100%;
-      height: 100%;
+      height:88rpx;
       background: #fff;
       display: flex;
       justify-content: center;
       flex-direction: column;
       align-items: center;
       border-radius: 10rpx 10rpx 0 0 ;
+      padding: 20rpx 0;
     }
     .item {
-      // width: 100%;
-      height: 140rpx;
+      height: auto;
       background: #fff;
       display: flex;
-      align-items: center;
-
+      justify-content: space-between;
+      flex-direction: column;
     }
     .i {
       width: 95%;

@@ -27,4 +27,15 @@ page{
   fill: currentColor;
   overflow: hidden;
 }
+uni-radio .uni-radio-input.uni-radio-input-checked::before {
+    font: normal normal normal 14rpx/1 uni;
+    content: "\EA08";
+    color: #000 !important;
+    font-size: 36rpx;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-48%) scale(.73);
+    -webkit-transform: translate(-50%,-48%) scale(.73);
+}
 </style>

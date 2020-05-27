@@ -83,7 +83,7 @@ export default {
   data () {
     return {
       count: 100,
-      list: {},
+      list: { from_order: [], from_fetch: [] },
       imgErro: false,
       name: '',
       phone: ''

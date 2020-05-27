@@ -17,7 +17,7 @@
       </view>
     </min-cell>
     <view style="height:100rpx"></view>
-    <view class="btn">提交申请</view>
+    <view class="btn" @click="toPost">提交申请</view>
   </view>
 </template>
 <script>
@@ -37,6 +37,11 @@ export default {
       console.log(res)
       this.list = res.list
     })
+  },
+  methods: {
+    toPost () {
+      return this.$showToast('正在开发中')
+    }
   }
 }
 </script>

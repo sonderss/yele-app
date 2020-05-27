@@ -38,6 +38,18 @@
       }
     },
     {
+      "path": "pages/statistics/person",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"个人",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
       "path": "pages/page",
       "style": {
         "app-plus":{

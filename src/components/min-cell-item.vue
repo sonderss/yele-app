@@ -1,6 +1,6 @@
 <template>
   <view class="cell-item min-flex min-flex-main-between bg-white p-tb-30"
-    :class="[border ? 'min-border-bottom' : '']"
+    :class="[border ? 'min-border-bottom' : '',mtb ? 'm-tb-20':'']"
     @click="event"
   >
     <view class="min-flex">
@@ -69,6 +69,10 @@ export default {
     title_right: {
       type: String,
       default: ''
+    },
+    mtb: {
+      type: Boolean,
+      default: false
     }
   },
   data () {

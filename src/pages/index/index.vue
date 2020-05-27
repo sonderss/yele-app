@@ -109,10 +109,9 @@ export default {
         text: '充公记录'
       }],
       grid3: [{
-        name: 'my-income',
-        img: '/static/images/index/wallet.png',
-        text: '我的钱包',
-        url: 'my-income'
+        name: 'my-downline',
+        img: '/static/images/index/my_d.png',
+        text: '我的下线'
       }, {
         img: '/static/images/index/chart.png',
         name: 'statistics',
@@ -124,9 +123,10 @@ export default {
         img: '/static/images/index/people.png',
         text: '个人资料'
       }, {
-        name: 'my-downline',
-        img: '/static/images/index/my_d.png',
-        text: '我的下线'
+        name: 'my-income',
+        img: '/static/images/index/wallet.png',
+        text: '我的收入',
+        url: 'my-income'
       }]
     }
   },

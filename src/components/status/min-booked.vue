@@ -72,7 +72,7 @@ export default {
   data () {
     return {
       toast: false,
-      index: Number
+      index: 0
     }
   },
   mounted () {

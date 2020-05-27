@@ -1,8 +1,8 @@
 <template>
   <view class="start-stage p-lr-30 p-tb-20">
     <radio-group @change="radioChange" style="margin-bottom:100rpx">
-      <view class="top-view-start p-tb-30 bg-white radius-6 p-lr-20">
-        <radio value="-1" color="#FE0000" class="radio" />
+      <view class="top-view-start p-tb-30 bg-white radius-6 p-lr-20" @click="test('-1')">
+        <radio value="-1" color="#FFE001" class="radio" :checked="a === -1 ? true : false" />
         <text class="text">自来客</text>
       </view>
       <min-cell :card="false" class="m-top-20">
@@ -15,8 +15,9 @@
           :img="item.head_img ? item.head_img: 'http://img3.imgtn.bdimg.com/it/u=2641512116,3445406201&fm=26&gp=0.jpg' "
           :title="`${item.sales_name} | ${item.position_name}`"
           :label="item.mobile"
+          @eventParent="test(index)"
         >
-          <radio slot="icon" :value="`${index}`" color="#FE0000" class="radio" />
+          <radio slot="icon" :value="`${index}`" color="#FFE001" :checked="a === index ? true : false" class="radio" />
         </min-cell-item>
       </min-cell>
     </radio-group>
@@ -38,7 +39,9 @@ export default {
       isNone: false,
       msg: {},
       type: '',
-      seil: {}
+      seil: {},
+      isChecked: false,
+      a: -2
     }
   },
   computed: {
@@ -46,7 +49,7 @@ export default {
       let data = []
       if (this.value) {
         this.list.filter(item => {
-          if (item.sales_name.includes(this.value) || item.mobile.includes(this.value)) {
+          if (item.sales_name.includes(this.value) || item.sales_name.includes(this.value)) {
             data.push(item)
           }
         })
@@ -72,6 +75,9 @@ export default {
     this.getData()
   },
   methods: {
+    test (n) {
+      this.a = n * 1
+    },
     getData () {
       this.$minApi.getMarketingList()
         .then(res => {
@@ -107,6 +113,7 @@ export default {
   .radio {
     transform: scale(0.834);
   }
+
   .top-view-start {
     background: #fff;
     margin-bottom: 20rpx;
@@ -124,4 +131,5 @@ export default {
 
   }
 }
+
 </style>

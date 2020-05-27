@@ -4,8 +4,8 @@
        <view class="top min-border-bottom">
          <view>提现到</view>
          <view class="methods" @click="toChioce">
-            <image src="/static/images/drawing-way/alipay.png" />
-            <text class="m-lr-10 f28">支付宝(3******24254@qq.com)</text>
+
+            <text class="m-lr-10 f28">银行卡相关数据暂无接口</text>
             <image style="width:24rpx;height:24rpx" src="/static/images/arrow.png" />
          </view>
        </view>

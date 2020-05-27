@@ -73,7 +73,7 @@
       <view class="top_view">
         <view class="main_">
           <view class="left">
-            <view class="image_" :style="{backgroundImage: `url(/static/images/back_data.png)`}">
+            <view class="image_" :style="{backgroundImage: `url(/static/images/back_data1.png)`}">
               <text class="m-top-20" style="color:#fff;font-size:58rpx;font-weight:blod">{{zhuotai.desk_info.idle_desk}}</text>
               <text class="f22" style="color:#fff;">空闲中</text>
             </view>
@@ -83,9 +83,10 @@
               <text class="m-top-20" style="color:#fff;font-size:58rpx;font-weight:blod">{{zhuotai.desk_info.opened_desk}}</text>
               <text class="f22" style="color:#fff;">开台中</text>
             </view>
+
           </view>
           <view class="right">
-            <view class="image_" :style="{backgroundImage: `url(/static/images/back_data.png)`}">
+            <view class="image_" :style="{backgroundImage: `url(/static/images/back_data1.png)`}">
               <text class="m-top-20" style="color:#fff;font-size:58rpx;font-weight:blod">{{zhuotai.desk_info.lock_desk}}</text>
               <text class="f22" style="color:#fff;">已停用</text>
             </view>
@@ -662,29 +663,31 @@ export default {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
   }
   padding: 0 30rpx;
   .left {
     width: 208rpx;
-    height: 270rpx;
+    height: 233rpx;
     display: flex;
     align-items: flex-end;
   }
   .mid {
-    width: 233rpx;
+    width: 230rpx;
     height: 270rpx;
     align-items: center;
   }
   .right {
     width: 208rpx;
-    height: 270rpx;
+    height: 233rpx;
     display: flex;
     align-items: flex-end;
   }
   .image_ {
     width: 100%;
-    height: 233rpx;
+    height: 100%;
     background-size: cover;
+    background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -819,7 +822,7 @@ export default {
       .mid_view {
         width: 100%;
         padding-bottom: 27rpx;
-        padding-top: 27rpx;
+        // padding-top: 27rpx;
         display: flex;
         justify-content: space-between;
         align-items: center;

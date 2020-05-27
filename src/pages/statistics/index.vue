@@ -1,13 +1,12 @@
 <template>
-  <view class="statistics p-lr-20 p-top-20">
-    <view class="shuju">
+  <view class="statistics">
       <view class="top-view">
         <view class="p-lr-20 p-tb-20 timer">
           <text>实时数据</text>
           <text>{{data_list.current_time}} 更新时间</text>
         </view>
         <view class="t-view">
-          <text class="price f28">今日实收</text>
+          <text class="price f28">营业额</text>
           <view class="money">
             <view class="money_view">
               <text class="icon">￥</text>
@@ -17,17 +16,16 @@
         </view>
         <view class="b-view">
           <view class="left-view">
-            <text class="f24">实收</text>
+            <text class="f24" style="color:#666">实收</text>
             <text class="c m-top-10">{{data_list.actual_total}}</text>
           </view>
           <view class="right-view">
-            <text class="f24">开台率</text>
+            <text class="f24" style="color:#666">开台率</text>
             <text class="c m-top-10">{{data_list.opening_rate}}</text>
           </view>
         </view>
       </view>
-    </view>
-    <view class="table">
+    <view class="table m-top-20">
       <view
         class="item"
         @click="toDeatil(index)"
@@ -70,7 +68,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.shuju {
+.statistics{
+  padding: 20rpx 40rpx;
+  margin-top: 0;
+}
+
   .top-view {
     width: 100%;
     height: 482rpx;
@@ -105,7 +107,7 @@ export default {
         font-size: 28rpx;
         font-family: PingFang SC;
         font-weight: 400;
-        color: rgba(204, 204, 204, 1);
+        color:#333;
         line-height: 26rpx;
         margin-bottom: 30rpx;
         padding-top: 30rpx;
@@ -171,7 +173,7 @@ export default {
       }
     }
   }
-}
+
 .table {
   width: 100%;
   height: auto;
@@ -181,7 +183,7 @@ export default {
   .item {
     width: 320rpx;
     height: 224rpx;
-    margin: 30rpx 0;
+    margin:20rpx 0;
     background-size: cover;
     padding: 42rpx 0 0 32rpx;
     text {

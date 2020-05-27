@@ -81,7 +81,7 @@ export default {
   data () {
     return {
       show: false,
-      index: Number,
+      index: 0,
       toast: false
     }
   },
