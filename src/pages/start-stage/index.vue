@@ -49,7 +49,7 @@ export default {
       let data = []
       if (this.value) {
         this.list.filter(item => {
-          if (item.sales_name.includes(this.value) || item.sales_name.includes(this.value)) {
+          if (item.sales_name.includes(this.value) || item.mobile.includes(this.value)) {
             data.push(item)
           }
         })
