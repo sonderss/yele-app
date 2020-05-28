@@ -555,7 +555,6 @@ export default {
     margin: 0 30rpx;
     padding: 30rpx 0;
     padding-bottom: 10rpx;
-    height: 300rpx;
     overflow: auto;
 
     .item-view {

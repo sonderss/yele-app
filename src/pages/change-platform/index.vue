@@ -16,7 +16,7 @@
         <view class="empty-view"></view>
          </view>
         <view class="btn-wrap">
-          <min-btn shape="flat"  :disabled="isdisabled" :opacity="false" @click="submit">转台</min-btn>
+          <view :class="isdisabled ? 'btn_dis':'btn' "  @click="submit">转台</view>
         </view>
 
     <min-404 id='my' desc="搜索其他台试试？" v-if="getNewData.length ===  0"></min-404>
@@ -135,13 +135,15 @@ export default {
       this.active2 = index2
     },
     submit () {
-      this.$minApi.changeOrder({
-        desk_id: this.data.old_id,
-        to_id: this.newList[this.active1].desk_lists[this.active2].id
-      })
-        .then(res => {
-          console.log(res)
+      if (!this.isdisabled) {
+        this.$minApi.changeOrder({
+          desk_id: this.data.old_id,
+          to_id: this.newList[this.active1].desk_lists[this.active2].id
         })
+          .then(res => {
+            console.log(res)
+          })
+      }
     }
   }
 }
@@ -233,6 +235,19 @@ export default {
     position: fixed;
     left: 0;
     bottom: 0;
+    .btn{
+      width:100%;
+    height:98rpx;
+    background:rgba(255,224,1,1);
+    text-align: center;
+    line-height: 98rpx;
+    }.btn_dis{
+        width:100%;
+    height:98rpx;
+    background:#EEEEEE;
+    text-align: center;
+    line-height: 98rpx;
+    }
   }
 }
 </style>

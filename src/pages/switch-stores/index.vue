@@ -11,6 +11,7 @@
         :img="item.head_img"
         :title="item.store_name"
         :label="item.address"
+        :border="index === storeList.length -1 ? false : true"
         arrow
       ></min-cell-item>
     </min-cell>

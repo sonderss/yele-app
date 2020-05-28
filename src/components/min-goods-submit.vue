@@ -6,10 +6,10 @@
       <view class="f28"  :style="{color:leftTextColor,width:leftTextWidth}"  v-if="leftText"><text >{{leftTextDesc}}</text>{{leftText}}</view>
     </view>
     <view class="min-main p-tb-20 p-right-30">
-      <view class="min-total f22" v-if="totalAmount">
+      <view class="min-total f28" v-if="totalAmount">
         合计：<text class="min-amount">￥{{totalAmount}}</text>
       </view>
-      <view class="f22" v-if="totalLabel">{{totalLabel}}</view>
+      <view class="f26" v-if="totalLabel">{{totalLabel}}</view>
     </view>
     <view class="min-right" @click="$emit('submit')" >
       <view class="min-text" >{{buttonText}}</view>
@@ -97,7 +97,7 @@ export default {
     }
     .min-goods-count{
       position: absolute;
-      top: -10rpx;
+       top: -10rpx;
       left: 78rpx;
     }
   }
@@ -109,9 +109,9 @@ export default {
     align-items: flex-end;
     .min-total{
       .min-amount{
-        font-size: 26rpx;
+        font-size: 28rpx;
         color: #FF0000;
-        font-weight:400;
+        font-weight:bold;
       }
     }
   }

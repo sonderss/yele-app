@@ -157,6 +157,7 @@ export default {
     .right-view-title{
       .t{
         width: 100%;
+        font-weight: bold;
         .discount{
           width:78rpx;
           height:19rpx;

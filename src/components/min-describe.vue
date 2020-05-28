@@ -11,7 +11,10 @@
         </view>
       </view>
       <view class="right-view" @click="chinceSku">
-          <min-stepper v-if="step"  v-model="count" :max="maxStep" @change="emitEvent" :min='0' icon='/static/images/yellow-add.png'></min-stepper>
+         <view v-if="step">
+              <min-stepper   v-model="count" :isAnimation="false" :max="maxStep" @change="emitEvent"  icon='/static/images/yellow-add.png'></min-stepper>
+         </view>
+
           <text v-if="num">x {{num}}</text>
           <view v-if="sku" class="right-icon f30">{{sku}}<image src='/static/images/right-black.png' /></view>
           <view class="txt-view1" v-if="leftTxtTwo">

@@ -1,7 +1,7 @@
 <template>
 <view class="list_box " style="overflow:auto;">
 
-  <view class="left" v-if="mainArray.length !== 0">
+  <view class="left" :style="{marginTop: android  === 'android' ? '-50rpx' :'20rpx' }" v-if="mainArray.length !== 0">
       <view class="left_view">
           <scroll-view scroll-y="true"  :style="{ 'height':scrollHeight }">
             <view class="item"
@@ -15,7 +15,7 @@
       </view>
   </view>
 
-  <view class="main">
+  <view class="main" :style="{top: android  === 'ios' ? '-30rpx' :'-30rpx' }">
     <scroll-view enable-back-to-top  :style="{ 'height':scrollHeight }" scroll-y  @scroll="mainScroll" :scroll-into-view="scrollInto" :scroll-with-animation="true">
       <view v-for="(item,index) in mainArray"  :key="index" :id="`item-${index}`" >
         <view  v-for="(item2,index2) in item.product"  :key="index2" @click.stop="goDetails(index,index2)">
@@ -52,19 +52,18 @@
   </view>
   <!-- 已选商品 -->
   <min-popup :show="selected" @close='closeSelectedPop'>
-    <view class="popview">
 
             <view class="top-view min-border-bottom ">
               <view>已选商品</view>
               <view class="right-view" @click="delAll">
                 <view class="icon-del m-right-10">
-                  <image src='../../static/images/del.png'/>
+                  <image src='/static/images/del.png'/>
                 </view>
                 <view class="f22 clear">清空</view>
               </view>
             </view>
-
-        <view class="main-sel-view p-lr-30 p-tb-30" >
+            <view v-if="android === 'android'" style="height:100rpx"></view>
+        <view class="main-sel-view p-lr-30 p-tb-30">
             <view class="item" v-for="(item2,n) in selArr" :key="n">
                 <image :src="errImg ? '/static/images/goods.png': item2.product_img" mode="" @error="imageErro"/>
                 <view class="content-view">
@@ -99,13 +98,12 @@
           @submit="submit"
           ></min-goods-submit>
         </view>
-    </view>
   </min-popup>
 
    <!-- 选择规格 -->
     <min-popup :show="isSelSku" @close='closeSelectedSkuPop'>
       <!--  -->
-      <view class="skuPop">
+
         <view class="skuTop">
           <view class="leftView">
               <view class="img-view">
@@ -113,15 +111,15 @@
               </view>
               <!-- sku信息 -->
               <view class="sku-view">
-                <text class="f22">{{skuObj.product_name}}</text>
-                <text class="f22 m-tb-20">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
-                <text class="f22 m">￥<text class="money">{{skuObj.sku[chioceIndex].sku_price}}</text></text>
+                <text class="f24">{{skuObj.product_name}}</text>
+                <text class="f24 m-tb-10">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
+                <text class="f30 m">￥<text class="money">{{skuObj.sku[chioceIndex].sku_price}}</text></text>
               </view>
           </view>
         </view>
         <view class="min-border-bottom m-lr-30"></view>
         <!-- 可选择规格项 -->
-        <view class="sku-item">
+        <view class="sku-item" style="height:auto">
             <view class="f26">规格</view>
             <view class="item-view" >
                 <view :class="chioceIndex ===index ?   'item-active' : 'item' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
@@ -129,14 +127,14 @@
         </view>
         <view class="min-border-bottom m-lr-30"></view>
         <!-- 数量 -->
-        <view class="sku-item sku-item-num">
+        <view class="sku-item sku-item-num" >
             <view class="f26">数量</view>
             <view class="m-tb-30">
-                <min-stepper :isAnimation="false" :min='1' v-model="skuObj.step"></min-stepper>
+                <min-stepper :isAnimation="false"  v-model="skuObj.step"></min-stepper>
             </view>
         </view>
         <view class="btn-sku" @click="skuChioce">确定</view>
-      </view>
+
     </min-popup>
     <view class="data_bull" v-if="mainArray.length === 0">
        <min-404  id='none'></min-404>
@@ -166,6 +164,7 @@ export default {
       isSelSku: false, // 选择规格
       // indexDel: Number, // 所需删除的已选列表中的索引
       selArr: [], // 已选商品列表
+      android: '',
       selected: false// 已选商品弹出层
 
     }
@@ -177,6 +176,8 @@ export default {
         this.scrollHeight = `${res.windowHeight}px`
       }
     })
+    this.android = uni.getSystemInfoSync().platform
+    console.log(this.android)
     this.$nextTick(() => {
       this.getListData()
     })
@@ -401,6 +402,7 @@ export default {
       const obj = {}
       Object.assign(obj, this.skuObj)
       obj.sku = this.skuObj.sku[this.chioceIndex]
+      console.log(obj)
       this.addGoods(obj)
       this.closeSelectedSkuPop()
       console.log('选择规格确定', this.selArr)
@@ -508,7 +510,7 @@ export default {
 }
 </script>
 
-<style lang="scss" >
+<style lang="scss" scoped>
 
 uni-page-body{overflow: hidden;min-height: 100vh;width: 100%;}
 .list_box{
@@ -565,7 +567,7 @@ uni-page-body{overflow: hidden;min-height: 100vh;width: 100%;}
 
     position: fixed;
     left: 165rpx;
-    top: 0;
+    top: -30rpx;
     bottom: 50rpx;
     overflow: auto;
 
@@ -581,7 +583,7 @@ uni-page-body{overflow: hidden;min-height: 100vh;width: 100%;}
 }
 }
 // 已选商品的弹出层
-.popview{
+
   .top-view{
     width: 100%;
     height: 83rpx;
@@ -639,7 +641,8 @@ uni-page-body{overflow: hidden;min-height: 100vh;width: 100%;}
         margin-bottom: 120rpx;
         .right-view-title{
           .t{
-            width: 100%
+            width: 100%;
+            font-weight: bold;
           }
         }
         .right-view-bottom{
@@ -650,6 +653,9 @@ uni-page-body{overflow: hidden;min-height: 100vh;width: 100%;}
             .right-view-bottom-desc{
               display: flex;
               align-items: center;
+              .t{
+                color:#FF0000;
+              }
             }
             .steper{
               // position: absolute;
@@ -673,7 +679,7 @@ uni-page-body{overflow: hidden;min-height: 100vh;width: 100%;}
     width: 100%;
     height: 50rpx;
   }
-}
+
 // 选择规格弹出
 .skuTop{
   width: 100%;
@@ -714,13 +720,12 @@ uni-page-body{overflow: hidden;min-height: 100vh;width: 100%;}
   margin: 0 30rpx;
   padding: 30rpx 0;
   padding-bottom: 10rpx;
-  height: 300rpx;
   overflow: auto;
   .item-view{
     margin-top: 20rpx;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     flex-wrap: wrap;
     .item {
         padding: 0 20rpx;
@@ -728,7 +733,7 @@ uni-page-body{overflow: hidden;min-height: 100vh;width: 100%;}
         height: 58rpx;
         border: 1px solid rgba(51, 51, 51, 1);
         border-radius: 10rpx;
-        margin-right: 20rpx;
+        margin-right: 40rpx;
         margin-bottom: 20rpx;
         text-align: center;
         line-height: 58rpx;
@@ -738,18 +743,20 @@ uni-page-body{overflow: hidden;min-height: 100vh;width: 100%;}
         padding: 0 20rpx;
         word-wrap: none;
         height: 58rpx;
+
         border: 1px solid #fe432a;
         border-radius: 10rpx;
-        margin-right: 20rpx;
+      margin-right: 40rpx;
         margin-bottom: 20rpx;
         text-align: center;
         line-height: 58rpx;
+        color: #fe432a;
       }
   }
 }
-.sku-item-num{
-  height: 200rpx;
-}
+// .sku-item-num{
+//   height: 200rpx;
+// }
 .btn-sku{
   width: 100%;
   height: 98rpx;

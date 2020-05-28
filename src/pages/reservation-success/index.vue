@@ -11,8 +11,8 @@
 
     </view>
     <view class="btns">
-      <min-btn @click="goOn">继续订台</min-btn>
-      <min-btn type="white" @click="backIndex">返回首页</min-btn>
+      <view class="btn" @click="goOn">继续订台</view>
+      <view class="btn_w"  @click="backIndex">返回首页</view>
     </view>
   </view>
 </template>
@@ -71,7 +71,7 @@ export default {
     font-weight:400;
     color:#666666;
     text-align: center;
-    margin-top: 40rpx;
+    margin-top:20rpx;
   }
   .card{
     background: #FFF;
@@ -88,12 +88,26 @@ export default {
     }
   }
   .btns{
+    width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-top: 40rpx;
-    .min-btn{
-      width: 330rpx;
-      margin: 0;
+    .btn{
+      width:330rpx;
+      height:88rpx;
+      background:rgba(255,224,1,1);
+      border-radius:10rpx;
+       text-align: center;
+      line-height: 88rpx;
+    }
+    .btn_w{
+        width:330rpx;
+      height:88rpx;
+      background:rgba(255,255,255,1);
+      border-radius:10rpx;
+      text-align: center;
+      line-height: 88rpx;
     }
   }
 }

@@ -114,10 +114,10 @@ export default {
       this.date = e.target.value.replace(/-/g, '/')
     },
     setPhone () {
-      this.$minRouter.push({
-        name: 'modify-mobile',
-        params: { mobile: this.userInfo.mobile }
-      })
+      // this.$minRouter.push({
+      //   name: 'modify-mobile',
+      //   params: { mobile: this.userInfo.mobile }
+      // })
     },
     toFace () {
       // verify-name

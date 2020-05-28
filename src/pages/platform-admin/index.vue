@@ -221,6 +221,7 @@ export default {
       const page = pages[pages.length - 1]
       const currentWebview = page.$getAppWebview()
       const titleObj = currentWebview.getStyle().titleNView
+      titleObj.buttons[0].text = ''
       titleObj.buttons[0].text = this.date
       currentWebview.setStyle({
         titleNView: titleObj

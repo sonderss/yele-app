@@ -20,7 +20,7 @@
           </view>
       </view>
       <min-order-list :isShowPlatform='false' :list='list' v-if="list.length > 0"></min-order-list>
-      <min-404 v-else></min-404>
+      <min-404 v-else pTop="50rpx"></min-404>
   </view>
 </template>
 

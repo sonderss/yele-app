@@ -164,13 +164,16 @@ export default {
       }
     },
     subMit () {
-      this.list.combination.map(item => {
+      const result = this.list.combination.some(item => {
         if (item.necessary === 1) {
           if (item.goodsCount !== item.last_number) {
-            return this.$showToast('请选择符合要求的份数')
+            return true
           }
         }
       })
+      if (result) {
+        return this.$showToast('请选择正确的份数')
+      }
       const tempArr = JSON.parse(JSON.stringify(this.selArr))
       tempArr.map((item, index) => {
         item.combination_detail.map((item2, index2) => {

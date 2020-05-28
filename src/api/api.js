@@ -110,6 +110,8 @@ export default {
   getMyDownLine: data => minRequest.get('/5e9facde8be76', data),
   // 邀请记录 5e9fbfc58bb01
   getPlaseList: () => minRequest.get('/5e9fbfc58bb01'),
+  // 邀请下线 Invite offline 5e9fe52f40729
+  postInviteOffline: data => minRequest.post('/5e9fe52f40729', data),
   // 可邀请下线列表
   getPleaseDownLineList: data => minRequest.get('/5e9fbb7d8f017', data),
   // 订单列表

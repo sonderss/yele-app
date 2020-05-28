@@ -1,6 +1,6 @@
 <template>
   <view class="reservation-date p-lr-30 p-tb-20">
-    <min-cell  >
+    <min-cell  :card="false">
       <min-cell-item
          v-for="(item,index) in list"
         :key="index"

@@ -2,7 +2,7 @@
   <view class="switch-stores m-lr-30 p-top-20">
     <min-search placeholder="请输入门店名称搜索" @search="search" v-model="params.store_name" />
     <view class="m-bottom-20"></view>
-    <min-cell>
+    <min-cell :card="false">
       <min-cell-item
         v-for="(item, index) in elseStoreList"
         :key="index"
@@ -15,9 +15,10 @@
       </min-cell-item>
     </min-cell>
     <min-modal ref="showModal"></min-modal>
-
     <min-404 v-if="elseStoreList.length === 0"></min-404>
+
     <!-- <view class="nodata-wrap"  >
+
       <image class="nodata" src="../../static/images/nodata.png" />
       <view class="text">暂无</view>
     </view>-->

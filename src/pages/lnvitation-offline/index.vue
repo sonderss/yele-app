@@ -8,14 +8,14 @@
          <min-checkbox v-model="n.f"></min-checkbox>
          <view class="test">
                 <min-describe
-                :leftIconValue="n.head_img"
+                  :leftIconValue="n.head_img"
                   :leftTxtB="n.mobile"
                   :leftTxt="n.sales_name"
                   :rightTxtT="n.position_name"
                   :rightTxtB="n.rightTxtB"
                   :leftIcon="true"
                   :leftTxtTwo="true"
-                   @chincesku="test(i)"
+                   @chincesku="test(n)"
                 >
 
                 </min-describe>
@@ -77,7 +77,10 @@ export default {
   },
   methods: {
     toPost () {
-      return this.$showToast('正在开发中')
+      // this.$minApi.postInviteOffline({ id }).then(res => {
+      //   console.log(res)
+      // })
+      // return this.$showToast('正在开发中')
     },
     test (n) {
       this.list[n].f = !this.list[n].f

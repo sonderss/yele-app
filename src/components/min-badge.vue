@@ -53,7 +53,7 @@ export default {
   font-size: 20rpx;
   white-space: nowrap;
   z-index: 9999;
-  box-shadow: 0 0 0 1px #fff;
+  box-shadow: 0 0 0 1rpx #fff;
   box-sizing: border-box;
 }
 .min-badge-dot {

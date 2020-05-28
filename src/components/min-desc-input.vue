@@ -11,6 +11,7 @@
           @input="input"
           :value='value'
           :disabled="disabled"
+          placeholder-style="color:#999"
         />
         <!--  :class="animation ? 'animation' : 'right-arrow-a animation' " -->
         <image class="right-arrow p-left-10" v-if="isRightRrrow"  :class="animation ? 'right-arrow-a animation' : 'animation' "  src="/static/images/arrow.png" />
