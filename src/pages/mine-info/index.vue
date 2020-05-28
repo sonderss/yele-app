@@ -5,7 +5,6 @@
         <min-cell-item
           :img="userInfo.head_img"
           :title="userInfo.store_name"
-          tail=""
           imgSize="sm"
           :border="true"
           arrow

@@ -21,7 +21,7 @@
       </min-cell>
       <text class="desc f24 p-tb-20">我们将向存酒客户发送一条取酒码</text>
       <view class="code min-flex">
-         <input type="text" class="p-left-20" v-model="fetch_code" placeholder="输入验证码"/>
+         <input type="number" maxlength="6" class="p-left-20" v-model="fetch_code" placeholder="输入验证码"/>
          <text class="f28 p-right-20" :class="flag ? 'timertxt' : 'codeing' " @click="sendCode">{{flag ? timerTxt : `${timerTxt} S` }}</text>
       </view>
       <view class="btn">
@@ -38,8 +38,8 @@ export default {
   data () {
     return {
       timerTxt: '发送取酒码',
-      num: 8,
-      fetch_code: '754421',
+      num: 60,
+      fetch_code: '',
       flag: true,
       list: { title: '取酒客户信息', content: [{ name: '客户姓名', value: '刘晓庆' }, { name: '联系电话', value: '13563250000' }] }
     }
@@ -51,32 +51,27 @@ export default {
   },
   methods: {
     sendCode () {
+      if (!this.$minCommon.checkMobile(this.$parseURL().client_mobile)) return this.$showToast('手机号不正确')
       if (this.flag) {
-        this.num = 8
+        this.num = 60
       }
-      // this.$minApi.getVerificationCode({
-      //   mobile: this.$parseURL().client_mobile
-      // }).then(res => {
-
-      // })
-      uni.showToast({
-        icon: 'none',
-        title: '验证码已发送',
-        duration: 2000
+      this.$minApi.getVerificationCode({
+        mobile: this.$parseURL().client_mobile
+      }).then(res => {
+        this.$showToast('发送成功')
+        this.$minCommon.setCountDown(() => {
+          this.num--
+          this.timerTxt = this.num
+          this.flag = false
+          if (this.num <= 0) {
+            this.timerTxt = '发送取酒码'
+            this.flag = true
+          }
+        }, this.num)
       })
-      this.$minCommon.setCountDown(() => {
-        this.num--
-        this.timerTxt = this.num
-        this.flag = false
-        if (this.num <= 0) {
-          this.timerTxt = '发送取酒码'
-          this.flag = true
-        }
-      }, this.num)
     },
     submit () {
       // 取酒提交
-      console.log(this.fetch_code)
       this.$minApi.getWinePost({ id: this.$parseURL().id, opening_id: this.$parseURL().opening_id, fetch_code: this.fetch_code })
     }
   }

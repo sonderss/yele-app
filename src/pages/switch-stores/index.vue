@@ -1,11 +1,11 @@
 <template>
   <view class="switch-stores m-lr-30 p-top-20">
     <view class="add-stores" @click="navigateTo">
-      <view class="add-icon"/>
+      <image src='/static/images/yellow-add.png' class="add-icon" />
       <view class="text">申请加入其他门店</view>
     </view>
     <view class="m-top-20"></view>
-    <min-cell>
+    <min-cell :card="false">
       <min-cell-item
         v-for="(item, index) in storeList" :key="index"
         :img="item.head_img"
@@ -35,13 +35,13 @@ export default {
       storeList: []
     }
   },
-  mounted() {
+  mounted () {
     this.getStoreList()
   },
-  onReachBottom() { // 下拉翻页
+  onReachBottom () { // 下拉翻页
     this.getStoreList()
   },
-  onPullDownRefresh() { // 上拉刷新
+  onPullDownRefresh () { // 上拉刷新
     this.params.page = 1
     this.getStoreList('shuaxin')
     setTimeout(() => {
@@ -49,15 +49,15 @@ export default {
     }, 2000)
   },
   methods: {
-    navigateTo() {
+    navigateTo () {
       this.$minRouter.push({
         name: 'apply-stores',
         type: 'navigateTo',
         path: '/pages/switch-stores/index'
       })
     },
-    getStoreList(shuaxin) {
-      if (this.total === this.storeList.length) return //没有更多数据了
+    getStoreList (shuaxin) {
+      if (this.total === this.storeList.length) return // 没有更多数据了
       this.$minApi.getStoreList(this.params).then(res => {
         if (shuaxin) this.storeList = []
         this.storeList = this.storeList.concat(res.list)
@@ -65,7 +65,7 @@ export default {
         this.params.page++
       })
     }
-  },
+  }
 }
 </script>
 
@@ -78,35 +78,12 @@ page {
     background: #fff;
     border-radius: 10rpx;
     padding: 30rpx 20rpx;
+    display: flex;
+    align-items: center;
     .add-icon{
       display: inline-block;
-      vertical-align: middle;
-      height: 0;
-      padding: 20rpx 10rpx;
-      background:rgba(255,50,7,1);
-      border-radius:2px;
-      position: relative;
-      border-radius: 100%;
-      &::before{
-        content: "";
-        display: inline-block;
-        width: 20rpx;
-        height: 4rpx;
-        background:#fff;
-        vertical-align: top;
-        margin-top: -2rpx;
-      }
-      &::after{
-        content: "";
-        display: inline-block;
-        width: 4rpx;
-        height: 20rpx;
-        background:#fff;
-        vertical-align: top;
-        position: absolute;
-        top: 11rpx;
-        left: 18rpx;
-      }
+      width: 44rpx;
+      height: 44rpx;
     }
     .text{
       display: inline-block;

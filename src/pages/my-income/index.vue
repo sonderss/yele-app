@@ -31,11 +31,11 @@
       </view>
        <view class="btn" @click="releaserecord">
         <image class="m-bottom-10" src="../../static/images/zhichu.png" />
-        <text>发放记录</text>
+        <text>冻结明细</text>
       </view>
       <view class="btn" @click="withdrawalsrecord">
         <image class="m-bottom-10" src="../../static/images/tixian.png" />
-        <text>提现记录</text>
+        <text>收支明细</text>
       </view>
     </view>
 
@@ -196,6 +196,7 @@ export default {
     }
     .c {
       color: #ffe001;
+      font-weight: bold;
     }
     .left-view {
       width: 50%;

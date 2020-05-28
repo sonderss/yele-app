@@ -11,7 +11,7 @@
     </view>
     <view class="p-lr-30">
       <view class="inp p-lr-30 p-tb-35 min-flex min-flex-main-start min-border-bottom">
-        <input type="number" v-model="phoneCode" placeholder="请输入验证码" maxlength="11">
+        <input type="number" v-model="phoneCode" placeholder="请输入验证码" maxlength="6">
       </view>
     </view>
   </view>
@@ -26,43 +26,45 @@ export default {
     return {
       code: 0,
       newPhone: '',
-      phoneCode: '25423',
+      phoneCode: '',
       oldPhone: ''
     }
   },
   onNavigationBarButtonTap () {
-    if (this.$minCommon.checkMobile(this.newPhone) && this.phoneCode) {
-      // 修改手机号
-      this.$minApi.setPhone({
-        old_mobile: this.oldPhone,
-        new_mobile: this.newPhone,
-        msg_code: this.phoneCode
-      }).then(res => {
-        console.log('请求修改手机号接口', res)
-        if (res.length === 0) {
-          // 修改全局变量
-          this.$store.state.user.userInfo.mobile = this.newPhone
-          console.log(this.$store.state.user.userInfo)
-          this.$showToast('修改手机号成功')
-          setTimeout(() => {
-            this.$minRouter.push({
-              name: 'mine-info',
-              type: 'redirectTo'
-            })
-          }, 2000)
-        }
-      })
-    }
+    if (!this.$minCommon.checkMobile(this.newPhone) || this.phoneCode.length !== 6) return this.$showToast('请完整信息')
+    // 修改手机号
+    this.$minApi.setPhone({
+      old_mobile: this.oldPhone,
+      new_mobile: this.newPhone,
+      msg_code: this.phoneCode
+    }).then(res => {
+      console.log('请求修改手机号接口', res)
+      if (res.length === 0) {
+        // 修改全局变量
+        this.$store.state.user.userInfo.mobile = this.newPhone
+        console.log(this.$store.state.user.userInfo)
+        this.$showToast('修改手机号成功')
+        setTimeout(() => {
+          this.$minRouter.push({
+            name: 'mine-info',
+            type: 'redirectTo'
+          })
+        }, 2000)
+      }
+    })
   },
   onLoad () {
     this.oldPhone = this.$parseURL().phone
-    console.log(this.oldPhone)
   },
   methods: {
     countDown () {
-      this.$minCommon.setCountDown((num) => {
-        console.log(num)
-        this.code = num
+      if (!this.$minCommon.checkMobile(this.newPhone)) return this.$showToast('请输入正确的手机号')
+
+      this.$minApi.getVerificationCode({ mobile: this.newPhone }).then(res => {
+        this.$showToast('发送成功')
+        this.$minCommon.setCountDown((num) => {
+          this.code = num
+        })
       })
     }
   }

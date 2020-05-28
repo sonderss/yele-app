@@ -1,7 +1,7 @@
 <template>
   <view class="withdrawal-success p-lr-20 p-tb-20">
     <view class="main-view">
-      <view style="width:180rpx;color:#666666;margin-right:40rpx">当前状态</view>
+      <view style="margin-right:30rpx">当前状态</view>
       <min-steps
         direction="column"
         :options="option"
@@ -53,7 +53,7 @@ export default {
   background: rgba(255, 255, 255, 1);
   border-radius: 10rpx;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding-top: 60rpx;
   padding-left: 30rpx;
   padding-right: 30rpx;

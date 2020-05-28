@@ -29,7 +29,7 @@
           <view class="item">联系电话：{{list.order_info.client_mobile?  list.order_info.client_mobile:'暂无数据'}}</view>
         </view>
       </view>
-    <min-remarks v-model='value'></min-remarks>
+    <min-remarks title='申请原因' v-model='value'></min-remarks>
     </view>
     <view class="btn-wrap">
       <min-btn shape="flat" @click="submit">提交申请</min-btn>

@@ -23,8 +23,8 @@
           >{{i}}</view>
         </view>
         <view class="main_data1">
-          <text class="time" v-if="current === 0">更新时间：{{$minCommon.formatDate( new Date(Date.now())  ,'yyyy/MM/dd hh:mm:ss')}}</text>
-          <text class="time" v-else>更新时间：{{$minCommon.formatDate(new Date(yingye.statistics_time.start_time*1000),'yyyy/MM/dd')}} - {{$minCommon.formatDate(new Date(yingye.statistics_time.end_time*1000),'MM/dd')}}
+          <text class="time" v-if="current === 0">更新时间：{{getNowTime}}</text>
+          <text class="time" v-else>更新时间：{{getStartTime}} - {{getEndTime}}
           </text>
 
           <view class="main_data_item">
@@ -92,7 +92,7 @@
             </view>
           </view>
         </view>
-        <view class="f20 m-tb-20" style="color:#999999">更新时间：{{$minCommon.formatDate(new Date(Date.now()),'yyyy/MM/dd hh:mm:ss') }}</view>
+        <view class="f20 m-tb-20" style="color:#999999">更新时间：{{getNowTime}}</view>
       </view>
 
       <view  class="m-lr-20 m-tb-20 "  style="background:#FFF">
@@ -105,8 +105,8 @@
                 :key="i"
               >{{i}}</view>
             </view>
-            <view class="time f20 m-tb-20 p-left-20" v-if="current === 0">更新时间：{{$minCommon.formatDate(new Date(Date.now()),'yyyy/MM/dd hh:mm:ss') }}</view>
-          <text class="time m-tb-20 p-left-20" v-else>更新时间：{{$minCommon.formatDate(new Date(zhuotai.statistics_time.start_time*1000),'yyyy/MM/dd')}} - {{$minCommon.formatDate(new Date(zhuotai.statistics_time.end_time*1000),'MM/dd')}}</text>
+            <view class="time f20 m-tb-20 p-left-20" v-if="current === 0">更新时间：{{getNowTime}}</view>
+          <text class="time m-tb-20 p-left-20" v-else>更新时间：{{getStartTime}} - {{getEndTime}}</text>
             <view class="main_data_item min-border-bottom " >
               <view class="item_box_ " style="width:30%">
                 <text class="name">订台数</text>
@@ -148,7 +148,7 @@
           </view>
       </view>
 
-      <view class="taiwei m-lr-20">
+      <view class="taiwei m-lr-20" v-if=" zhuotai.consumption_rank.length !== 0">
         <view class="top_view" >
           <view class="mid_view min-border-bottom">
              桌台消费排行榜
@@ -228,7 +228,35 @@ export default {
       },
       yingye: {},
       isYYFlag: true,
-      zhuotai: { desk_info: { idle_desk: '' }, desk_statistics: { booking_count: 0 } }
+      zhuotai: { desk_info: { idle_desk: '' }, desk_statistics: { booking_count: 0 }, consumption_rank: [] }
+    }
+  },
+  computed: {
+    getNowTime () {
+      const t = this.$minCommon.formatDate(new Date(Date.now()), 'yyyy/MM/dd hh:mm:ss')
+      return t
+    },
+    getStartTime () {
+      let t = ''
+      if (this.type === 0) {
+        t = this.$minCommon.formatDate(new Date(this.yingye.statistics_time.start_time * 1000), 'yyyy/MM/dd')
+      } else if (this.type === 1) {
+        t = this.$minCommon.formatDate(new Date(this.zhuotai.statistics_time.start_time * 1000), 'yyyy/MM/dd')
+      } else {
+        t = '暂无'
+      }
+      return t
+    },
+    getEndTime () {
+      let t = ''
+      if (this.type === 0) {
+        t = this.$minCommon.formatDate(new Date(this.yingye.statistics_time.end_time * 1000), 'yyyy/MM/dd')
+      } else if (this.type === 1) {
+        t = this.$minCommon.formatDate(new Date(this.zhuotai.statistics_time.end_time * 1000), 'yyyy/MM/dd')
+      } else {
+        t = '暂无'
+      }
+      return t
     }
   },
   methods: {
@@ -432,7 +460,7 @@ export default {
         this.getYingYe(0)
       })
     } else if (this.type === 1) {
-      this.getZhuoTai(0)
+      // this.getZhuoTai(0)
     }
   },
   onLoad (option) {
@@ -448,6 +476,7 @@ export default {
         uni.setNavigationBarTitle({
           title: '桌台统计'
         })
+        this.getZhuoTai(0)
         break
       case '2':
         this.list = yingxiao

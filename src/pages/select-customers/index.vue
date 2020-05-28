@@ -74,17 +74,9 @@ export default {
         border-radius:10rpx;
         text-align: center;
         line-height: 58rpx;
-        border: 1rpx solid #E7E7E7
+          background:rgba(255,224,1,1);
       }
-      .btn:hover{
-        width:142rpx;
-        height:58rpx;
-        background:rgba(255,224,1,1);
-        border-radius:10rpx;
-        text-align: center;
-        line-height: 58rpx;
-        border: none
-      }
+
     }
   }
 }

@@ -57,7 +57,7 @@ export default {
       type: Boolean,
       default: true
     },
-    id: {
+    ids: {
       type: [String, Number],
       default: ''
     }
@@ -80,12 +80,16 @@ export default {
       this.current = i
     },
     toDetail (index) {
-      if (this.id === '0') {
-        console.log(123)
-        uni.navigateTo({
-          url: '/pages/statistics/person?id=' + this.id
-        })
-      }
+      console.log(this.ids)
+      // if (this.ids === '0') {
+      //   uni.navigateTo({
+      //     url: '/pages/statistics/person?id=' + this.ids
+      //   })
+      // }
+
+      uni.navigateTo({
+        url: '/pages/statistics/person?id=' + this.ids
+      })
     }
   }
 }

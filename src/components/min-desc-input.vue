@@ -97,6 +97,9 @@ export default {
       justify-content: flex-end;
       align-items: center;
     }
+    input{
+      line-height: 98rpx;
+    }
   }
   .right-arrow-a{
     transform:rotate(90deg);

@@ -1,6 +1,6 @@
 <template>
   <view class="about p-lr-20 p-tb-20">
-      <min-data-show  :id="this.id" :list="list" :titles="titles" :right="rightA"/>
+      <min-data-show  :ids="id" :list="list" :titles="titles" :right="rightA"/>
   </view>
 </template>
 

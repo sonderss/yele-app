@@ -3,18 +3,23 @@
     <min-search bgcolor="#EEEEEE" placeholder="请输入营销姓名/手机号搜索"></min-search>
     <min-cell class="m-tb-20" :card="false">
       <view class="title min-border-bottom">可邀请的下线</view>
-      <view class="item min-border-bottom" v-for="(n,i) in list" :key="i">
-        <min-checkbox v-model="n.a"></min-checkbox>
+
+     <view class="items" :key="i"  v-for="(n,i) in list">
+         <min-checkbox v-model="n.f"></min-checkbox>
         <min-describe
-          :leftIconValue="n.head_img"
+        :leftIconValue="n.head_img"
           :leftTxtB="n.mobile"
           :leftTxt="n.sales_name"
           :rightTxtT="n.position_name"
           :rightTxtB="n.rightTxtB"
           :leftIcon="true"
           :leftTxtTwo="true"
-        ></min-describe>
+        >
+
+        </min-describe>
+
       </view>
+
     </min-cell>
     <view style="height:100rpx"></view>
     <view class="btn" @click="toPost">提交申请</view>
@@ -30,13 +35,18 @@ export default {
     }
   },
   mounted () {
-    this.$minApi.getPleaseDownLineList({
-      page: 1,
-      limitL: 10
-    }).then(res => {
-      console.log(res)
-      this.list = res.list
-    })
+    this.$minApi
+      .getPleaseDownLineList({
+        page: 1,
+        limitL: 10
+      })
+      .then(res => {
+        console.log(res)
+        this.list = res.list
+        this.list.map(item => {
+          this.$set(item, 'f', false)
+        })
+      })
   },
   methods: {
     toPost () {
@@ -50,11 +60,12 @@ export default {
   height: 88rpx;
   line-height: 88rpx;
 }
-.item {
-  height: 152rpx;
-  display: flex;
-  align-items: center;
-  text-align: right;
+.items{
+      height: auto;
+      background: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
 }
 .btn {
   width: 100%;

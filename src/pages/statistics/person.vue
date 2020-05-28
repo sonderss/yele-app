@@ -1,7 +1,7 @@
 <template>
   <view class="person p-lr-20 p-tb-20">
-    <view class="card p-lr-20 p-bottom-10 m-bottom-20">
-      <view class="p-tb-30 min-border-bottom">客户信息</view>
+    <view class="card p-lr-20 m-bottom-20">
+
       <view class="main p-tb-20">
         <view>客户姓名：刘小青</view>
         <view>联系电话：13563250000</view>
@@ -10,10 +10,15 @@
       </view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
-      <view class="p-tb-30 min-border-bottom">操作信息</view>
+      <view class="p-tb-30 min-border-bottom">订单信息</view>
       <view class="main p-tb-20">
         <view>营销人员：刘清清</view>
         <view>预抵时间：2020年02月15日 16:20:00</view>
+        <view>营销人员：刘清清</view>
+        <view>预抵时间：2020年02月15日 16:20:00</view>
+      </view>
+      <view class="card-btns min-border-top">
+          <view class="btn f26">查看账单</view>
       </view>
     </view>
   </view>
@@ -45,72 +50,25 @@ export default {
     background: #fff;
     border-radius: 10rpx;
     .main{
-      position: relative;
-      &>view{
-        margin-bottom: 10rpx;
-        &:last-child{
-          margin: 0;
-        }
-      }
-      .emp{
-        display: inline-block;
-        font-weight: bold;
-        color: #FE0000;
-      }
-      .status{
-        position: absolute;
-        top: 20rpx;
-        right: 0;
-        color: #FE0000;
-      }
-      .reserved {
-        // 已预约
-        position: absolute;
-        top: 20rpx;
-        right: 0;
-        color: #0090ff;
-      }
-      .been-open {
-        // 已开台
-        position: absolute;
-        top: 20rpx;
-        right: 0;
-        color: #ff0000;
-      }
-      .be-confirm {
-        // 待确认
-        position: absolute;
-        top: 20rpx;
-        right: 0;
-        color: #39ba01;
-      }
-      .clearing{
-        // 清台中
-        background: #39ba01;
-      }
-      .in-order {
-        // 点单中
-        background: #ff9c00;
-      }
-      .leisure {
-        // 空闲中
-        background: #eeeeee;
-        & > view {
-          color: #666;
-        }
-      }
-      .disabled {
-        // 已停用
-        background: #eeeeee;
-        & > view {
-          color: #ccc;
-        }
-      }
-      .card-btns{
-        margin-top: 30rpx !important;
+      view{margin-bottom:10rpx;}
+
+    }
+    .card-btns{
+      height: 90rpx;
         display: flex;
         justify-content: flex-end;
+
+        align-items: center;
+
+        .btn{
+          width:142rpx;
+          height:58rpx;
+          background:rgba(255,255,255,1);
+          border:1rpx solid rgba(231,231,231,1);
+          border-radius:10rpx;
+          line-height: 58rpx;
+          text-align: center;
+        }
       }
-    }
   }
 </style>

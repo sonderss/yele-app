@@ -1,12 +1,13 @@
 <template>
   <view class="apply-log p-lr-30 p-tb-30">
-    <min-cell>
+    <min-cell :card="false">
       <min-cell-item
         v-for="(item, index) in list" :key="index"
         :img="item.head_img"
         :title="item.store_name"
         :label="`申请时间：${$minCommon.formatDate(new Date(item.create_time * 1000), 'yyyy-MM-dd hh:mm:ss')}`"
         :tail="status[item.status].statusText"
+        :tailcolor="true"
         :tailType="status[item.status].color"
         :border="list.length !== index + 1"
       ></min-cell-item>
@@ -67,4 +68,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.green{
+  color: red;
+}
 </style>
