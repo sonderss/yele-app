@@ -1,0 +1,133 @@
+.platform-admin {
+  .btns {
+    .btn {
+      display: inline-block;
+      width: 156rpx;
+      padding: 12rpx 0;
+      border-radius: 10rpx;
+      background: #fff;
+      text-align: center;
+      margin-left: 20rpx;
+      font-size: 26rpx;
+      &:nth-child(5n) {
+        margin: 0;
+        margin-top: 20rpx;
+      }
+      &:first-child {
+        margin: 0;
+      }
+      &.active {
+        background: #ffe001;
+        font-size: 28rpx;
+        font-weight: 700;
+      }
+    }
+  }
+  .platform-wrap {
+    background: #fff;
+    padding: 30rpx 20rpx;
+    margin-top: 20rpx;
+    border-radius: 10rpx;
+    .title {
+      font-size: 30rpx;
+      padding-bottom: 30rpx;
+    }
+    .list {
+      .item {
+        display: inline-block;
+        width: 140rpx;
+        border-radius: 10rpx;
+        padding: 20rpx  0;
+        height: 150rpx;
+        text-align: center;
+        margin-left: 30rpx;
+        .status {
+          margin: 4rpx 0;
+          font-weight: bold;
+          font-size: 28rpx;
+        }
+        .name{
+          font-size: 24rpx;
+          
+        }
+        .count{
+          font-size: 24rpx;
+        }
+        &:nth-child(4n+1) {
+          margin: 0;
+          margin-top: 20rpx;
+        }
+        &:first-child {
+          margin: 0;
+        }
+        & > view {
+          font-size: 28rpx;
+          color: #fff;
+        }
+        
+        &.reserved {
+          // 已预约
+          background: #0090ff;
+          & > view {
+            color: #fff;
+          }
+        }
+        &.been-open {
+          // 已开台
+          background: #ff0000;
+        }
+        &.be-confirm {
+          // 待确认
+          background: #39ba01;
+        }
+        &.clearing{
+          // 清台中
+           background: #eeeeee;
+           .status {
+             margin: 4rpx 0;
+             font-weight: bold;
+             color: #333;
+             font-size: 28rpx;
+           }
+           .name{
+             font-size: 24rpx;
+             color: #666;
+           }
+           .count{
+             font-size: 24rpx;
+             color: #666;
+           }
+        }
+        &.in-order {
+          // 点单中
+          background: #ff9c00;
+        }
+        &.leisure {
+          // 空闲中
+          background: #eeeeee;
+          .status {
+            margin: 4rpx 0;
+            font-weight: bold;
+            color: #333;
+            font-size: 28rpx;
+          }
+          .name{
+            font-size: 24rpx;
+            color: #666;
+          }
+          .count{
+            font-size: 24rpx;
+            color: #666;
+          }
+        }
+        &.disabled {
+          // 已停用
+          background: #eeeeee;
+          & > view {
+            color: #ccc;
+          }
+        }
+      }
+    }
+  }
+}
