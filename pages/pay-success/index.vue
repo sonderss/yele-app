@@ -46,13 +46,13 @@ export default {
   },
   methods: {
     goOn () {
-      this.$minRouter.push({
-        name: 'platform-admin'
-      })
+      uni.reLaunch({
+          url: '../platform-admin/index'
+      });
     },
     backIndex () {
-      this.$minRouter.push({
-        name: 'index'
+      uni.reLaunch({
+          url: '../index/index'
       })
     }
   }

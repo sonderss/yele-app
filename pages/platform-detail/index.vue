@@ -60,7 +60,6 @@ export default {
       this.$minApi.getOrderDetail({ desk_id: this.id, date: this.date })
         .then(res => {
           this.list = res
-          console.log(this.list)
           this.status = res.desk_info.status
         })
     }

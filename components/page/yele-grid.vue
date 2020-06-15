@@ -1,8 +1,9 @@
 <template>
-  <view class="yele-grid min-flex min-flex-main-start min-flex-wrap-wrap m-lr-30 m-top-20 p-tb-20">
+  <view  class="yele-grid min-flex min-flex-main-start min-flex-wrap-wrap m-lr-30 m-top-20 p-tb-20">
     <view class="grid-item min-flex min-flex-dir-top"
       v-for="(item,index) in list" :key="item.name"
       @click="goTo(index)"
+      v-root="item.root"
     >
       <image class="img" :src="item.img"></image>
       <view class="f24">{{item.text}}</view>
@@ -43,7 +44,7 @@ export default {
   border-radius: 6px;
   .grid-item {
     padding: 10rpx 0;
-    width: 33.33333%;
+    width: 25%;
   }
   .img {
     width: 80rpx;

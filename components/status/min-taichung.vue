@@ -43,15 +43,15 @@
     </view>
 
      <view class="btns">
-      <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book">预约</view>
-      <view :class="index === 1 ? 'btn active' : 'btn' " @click="saveWine">存酒</view>
-      <view  :class="index === 2 ? 'btn active' : 'btn' " @click="orderGet">订单</view>
+      <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book" v-root="'desk.book'">预约</view>
+      <view :class="index === 1 ? 'btn active' : 'btn' " @click="saveWine" v-root="'desk.saveWine'">存酒</view>
+      <view  :class="index === 2 ? 'btn active' : 'btn' " @click="orderGet" >订单</view>
       <view class="badge" @click="showToastTxt"  id='testDom'>
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
           <view class="toast anmatiin " v-if="toast">
-              <view class="bag_btn" @click="bill">账单</view>
-              <view class="bag_btn" @click="del_order">销台</view>
-              <view class="bag_btn"  @click="goGetHistory">历史</view>
+              <view class="bag_btn" @click="bill" v-root="'desk.bill'">账单</view>
+              <view class="bag_btn" @click="del_order" v-root="'desk.close'">销台</view>
+              <view class="bag_btn"  @click="goGetHistory" v-root="'desk.history'">历史</view>
              <view class="bag"></view>
           </view>
       </view>

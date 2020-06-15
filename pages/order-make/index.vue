@@ -20,7 +20,7 @@
     <view class="m-tb-20"></view>
     <min-cell class="mid-view" :card="false">
       <min-desc-input desc="客户姓名" v-model="name1" sign="*" placeholder="请输入姓名" ></min-desc-input>
-      <min-desc-input desc="联系电话" v-model="phone" sign="*" placeholder="请输入联系电话"></min-desc-input>
+      <min-desc-input desc="联系电话" v-model="phone" sign="*" :maxlength="11" placeholder="请输入联系电话"></min-desc-input>
 
         <view @click="goChioce"> <min-desc-input sign="*"  desc="预约日期" :isRightRrrow="true"  :value="dates"  placeholder="请选择预约日期" :disabled="true"></min-desc-input></view>
       <!-- <min-desc-input desc="预抵时间" sign="*"  :border="false" :value='shopDate' :isRightRrrow="true" placeholder="请选择到店日期" :disabled="true"></min-desc-input> -->

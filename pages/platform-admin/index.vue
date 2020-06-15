@@ -215,17 +215,17 @@ export default {
     },
     // 日期选择器确认
     sure (e) {
-      console.log(e)
       // 2020-05-29
       let a = e.a + '-'+e.b+'-'+e.c
-      this.date = e.b + '月' + e.c + '日'
+      this.date = a
+      let ti = e.b + '月' + e.c + '日'
       // #ifdef APP-PLUS
       const pages = getCurrentPages()
       const page = pages[pages.length - 1]
       const currentWebview = page.$getAppWebview()
       const titleObj = currentWebview.getStyle().titleNView
       titleObj.buttons[0].text = ''
-      titleObj.buttons[0].text = this.date
+      titleObj.buttons[0].text =  ti 
       currentWebview.setStyle({
         titleNView: titleObj
       })

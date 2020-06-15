@@ -5,7 +5,7 @@
          <view>提现到</view>
          <view class="methods" @click="toChioce">
 
-            <text class="m-lr-10 f28">银行卡相关数据暂无接口</text>
+            <text class="m-lr-10 f28">{{info.bank_card_name ? info.bank_card_name :'银行卡相关数据暂无接口'}}</text>
             <image style="width:24rpx;height:24rpx" src="/static/images/arrow.png" />
          </view>
        </view>
@@ -27,10 +27,33 @@
 export default {
   name: 'redwidth-draw',
   navigate: ['navigateTo','redirectTo'],
+  data(){
+    return {
+       info:{},
+       lastString:''
+    }
+  },
+  onLoad(){
+    console.log(this.$store.state.user.userInfo);
+    this.$minApi.getUserInfo().then(res => {
+      this.info = res
+      this.getCardLast(this.info.bank_card_num)
+      console.log(res);
+    })
+  },
   methods: {
     toChioce () {
       this.$minRouter.push({
-        name: 'drawing-way'
+        name: 'drawing-way',
+        params:{card_name:this.info.bank_card_name,card:this.lastString}
+      })
+    },
+    // 获取银行卡后四位
+    getCardLast(bank_card_num){
+      let card = [...bank_card_num]
+      let a = [4,3,2,1]
+      a.forEach(item => {
+          this.lastString+= card[card.length-item]
       })
     },
     // 体现

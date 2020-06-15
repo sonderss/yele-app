@@ -3,7 +3,6 @@ import store from './store/index'
 export default {
   onLaunch: function () {
     console.log('App Launch')
-    // let a = JSON.parse( localStorage.getItem("minvuexcache"))
   },
   onShow: () => {
     console.log('App Show')

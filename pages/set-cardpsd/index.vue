@@ -62,7 +62,7 @@ export default {
         // this.$showToast("这里设置成功返回个人信息页并修改密码状态")
         if(res) {
           this.$showToast("设置成功")
-          this.$store.dispatch('user/setUserInfo', res)
+           this.$store.dispatch('user/setUserInfoAuth', res.apiAuth)
           setTimeout(() => {
               this.$minRouter.push({
                 name:"redmine-info",

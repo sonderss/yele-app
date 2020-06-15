@@ -22,9 +22,9 @@
       </view>
     </view>
     <view class="btns-confirmed">
-      <view :class="index === 0 ? 'btn f28 active' :'btn f28'" @click="start_use">启用</view>
-      <view :class="index === 1 ? 'btn f28 active' :'btn f28'" @click="saveWine">存酒</view>
-      <view :class="index === 2 ? 'btn f28 active' :'btn f28'"  @click="goGetHistory">历史</view>
+      <view :class="index === 0 ? 'btn f28 active' :'btn f28'" @click="start_use" v-root="'desk.unlock'">启用</view>
+      <view :class="index === 1 ? 'btn f28 active' :'btn f28'" @click="saveWine" v-root="'desk.saveWine'">存酒</view>
+      <view :class="index === 2 ? 'btn f28 active' :'btn f28'"  @click="goGetHistory" v-root="'desk.history'">历史</view>
     </view>
       <min-modal ref='show'></min-modal>
   </view>

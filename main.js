@@ -58,7 +58,7 @@ import MinDucharts from '@/components/min-ducharts'
 import MinTable from '@/components/t-table/table.vue'
 import MinPay from '@/components/min-pay.vue'
 import MinPullDown from '@/components/min-pulldown.vue'
-import Rtest from '@/components/refresh.vue'
+import MinRefush from '@/components/min-refush.vue'
 Vue.component('min-avatar', MinAvatar)
 Vue.component('min-btn', MinBtn)
 Vue.component('min-cell', MinCell)
@@ -105,7 +105,7 @@ Vue.component('min-table', MinTable)
 Vue.component('min-data-show', MinDataShow)
 Vue.component('min-pay',MinPay)
 Vue.component('min-pulldown',MinPullDown)
-Vue.component('min-rtest',Rtest)
+Vue.component('min-refush',MinRefush)
 Vue.config.productionTip = false
 App.mpType = 'app'
 Vue.use(MinRouter)
@@ -117,7 +117,7 @@ Vue.prototype.$store = store
 
 Vue.directive('root', {
   inserted: function (el, bind) {
-    console.log(bind)
+    // console.log(bind)
     if (!test(bind.value)) {
       el.parentNode.removeChild(el)
     }

@@ -14,7 +14,7 @@
               <image src='/static/images/index/order.png' />
               <text>下单</text>
           </view>
-          <view class="view right" @click="presentation">
+          <view class="view right" @click="presentation" v-root="'presentation'">
               <image src='/static/images/index/gift.png' />
               <text>赠送</text>
           </view>

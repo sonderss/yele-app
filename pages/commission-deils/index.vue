@@ -39,8 +39,20 @@
           <text class="f26">2019-06-09 16:41:25</text>
       </view>
       <view  class="m-bottom-10 m-top-20 t" style="width:100%;display: flex;justify-content: space-between;">
+          <text class="f28">下单人</text>
+          <text class="f26">刘小青</text>
+      </view>
+      <view  class="m-bottom-10 m-top-20 t" style="width:100%;display: flex;justify-content: space-between;">
           <text class="f28">订单号</text>
           <text class="f26">3546841324641345654</text>
+      </view>
+      <view  class="m-bottom-10 m-top-20 t" style="width:100%;display: flex;justify-content: space-between;">
+          <text class="f28">订单金额</text>
+          <text class="f26">￥6200</text>
+      </view>
+      <view  class="m-bottom-10 m-top-20 t" style="width:100%;display: flex;justify-content: space-between;">
+          <text class="f28">业绩</text>
+          <text class="f26">￥500</text>
       </view>
       <view class="table_view">
         <min-table></min-table>

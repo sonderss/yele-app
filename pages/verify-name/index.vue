@@ -4,12 +4,16 @@
     <view class="p-lr-30 p-top-25">
       <view class="p-lr-30">姓名</view>
       <!-- <view class="f26 assist-text p-lr-30 p-tb-30 min-border-bottom" v-if="info_user.is_certify !== 1">未绑定</view> -->
-      <input class="p-lr-30 m-tb-25" placeholder="请输入姓名" :disabled="info_user.is_certify === 1 ? true : false"  type='phone' :value="info_user.is_certify === 1 ? info_user.phone : '' "  />
+      <input class="p-lr-30 m-tb-25" placeholder="请输入姓名" :disabled="info_user.is_certify === 1 ? true : false"  type='text' 
+      v-model="name"
+      />
     </view>
     <view class="p-lr-30 ">
       <view class="p-lr-30 p-top-30 min-border-top">身份证号码</view>
       <!-- <view class="f26 assist-text p-lr-30 p-tb-30 min-border-bottom">未认证</view> -->
-       <input class="p-lr-30 m-tb-25" placeholder="请输入身份证号码" :disabled="info_user.is_certify === 1 ? true : false"  type='phone'  :value="info_user.is_certify === 1 ? info_user.id_card : '' "  />
+       <input class="p-lr-30 m-tb-25" maxlength="20" placeholder="请输入身份证号码" :disabled="info_user.is_certify === 1 ? true : false"  type='idcard' 
+        v-model="idCard"
+        />
         <view class="min-border-bottom"></view>
     </view>
 
@@ -37,7 +41,8 @@ export default {
       idCard: '',
       code: '',
       rPhone: '',
-      countDown: 0
+      countDown: 0,
+      name:""
     }
   },
   methods: {
@@ -54,19 +59,23 @@ export default {
       })
     },
     toTrue () {
+      if(!this.name)return this.$showToast('填写姓名')
+      if(this.idCard.length < 19)return this.$showToast('身份证填写错误')
+      if(this.code.length !== 6)return this.$showToast('验证码格式错误')
       this.$minApi.postNameTrue({
-        user_name: this.info_user.name,
-        id_card: this.info_user.id_card
+        user_name: this.name,
+        id_card: this.idCard,
+        msg_code:this.code
       }).then(res => {
-        console.log(res)
-        if (res.length === 0) {
           this.$showToast('实名成功')
+          console.log(res);
+          this.$store.dispatch('user/setUserInfoAuth', res.apiAuth)
           setTimeout(() => {
             this.$minRouter.push({
-              name: 'mine-info'
+              name: 'redmine-info',
+              type:"redirectTo"
             })
           }, 2000)
-        }
       })
     }
   },
@@ -78,7 +87,8 @@ export default {
     this.rPhone = this.rPhone.split('')
     this.rPhone = this.rPhone.splice(7)
     this.rPhone = this.rPhone.join('')
-    console.log(this.rPhone)
+    this.name   = this.info_user.is_certify === 1 ?  this.info_user.name : '' 
+    this.idCard = this.info_user.is_certify === 1 ? this.info_user.id_card : '' 
     // this.info_user.is_certify = 0
   }
 }
