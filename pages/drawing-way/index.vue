@@ -1,9 +1,9 @@
 <template>
   <view class="drawing-way m-lr-30 p-top-20">
-     <view class="card p-lr-20" v-if="$parseURL().card_name" @click="jiebang">
+     <view class="card p-lr-20" v-if="userInfo.bank_card_num" @click="jiebang">
       <view class="left">
-          <image class="icon" src="/static/images/goods.png"/>
-          <p class="m-left-20 f30">{{$parseURL().card_name+`(${$parseURL().card})`}}</p>
+          <image class="icon" src="/static/images/goods.png" />
+          <p class="m-left-20 f30">{{userInfo.bank_card_name}}({{lastString}})</p>
       </view>
       <view style="color:#FF0000;font-size:25rpx">解绑</view>
      </view>
@@ -23,11 +23,30 @@ export default {
   navigate: ['navigateTo'],
   data () {
     return {
+      userInfo:{},
+      lastString:""
     }
   },
-  mounted () {
+  onShow(){
+    this.lastString = ''
+    this.$minApi.getUserInfo().then(res => {
+      console.log(res)
+      this.userInfo = res
+       this.getCardLast(this.userInfo.bank_card_num)
+    })
   },
   methods: {
+     // 获取银行卡后四位
+    getCardLast(bank_card_num){
+      if( this.lastString.length !== 4){
+          let card = [...bank_card_num]
+          let a = [4,3,2,1]
+          a.map(item => {
+              this.lastString+= card[card.length-item]
+          })
+      }
+      
+    },
     toBangding () {
       this.$minRouter.push({
         name: 'authentication',

@@ -2,7 +2,6 @@
   <view class="order-list p-tb-20 p-lr-30">
 
       <min-order-list :list="list" ></min-order-list>
-
   </view>
 </template>
 <script>

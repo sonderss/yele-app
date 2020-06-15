@@ -151,8 +151,8 @@
 
 <script>
 export default {
-  name: 'placean-order',
-  navigate: ['navigateTo'],
+  name: 'redplacean-order',
+  navigate: ['navigateTo','redirectTo'],
   data () {
     return {
       scrollHeight: '1000px',

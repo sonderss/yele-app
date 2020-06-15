@@ -88,7 +88,7 @@ export default {
       color: #FFFFFF;
     }
     .code {
-      color: #FA315F;
+      color: #FFE001;
     }
     .clear-icon{
       width: 66rpx;

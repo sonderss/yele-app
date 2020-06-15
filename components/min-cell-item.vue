@@ -120,6 +120,9 @@ export default {
     &-red {
       color: #FF0000;
     }
+    &-blue {
+      color: #0090ff;
+    }
   }
   .arrow {
     width: 24rpx;

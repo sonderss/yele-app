@@ -24,7 +24,7 @@
      <view class="btn">
         <min-btn :opacity="false" :long="true" @click="toAddUserInfo">下一步</min-btn>
       </view>
-    <min-404 v-if="isNone" pTop="200rpx"></min-404>
+    <min-404 v-if="isNone" pTop="100rpx"></min-404>
   </view>
 </template>
 
@@ -96,9 +96,12 @@ export default {
     toAddUserInfo () {
       if (this.type !== '') {
         this.$minRouter.push({
-          name: 'add-userinfo',
+          name: 'redadd-userinfo',
+          type:"redirectTo",
           params: { msg: this.msg, type: this.type, seil: this.seil }
         })
+      }else{
+        this.$showToast('请选择类型')
       }
     },
     radioChange (e) {

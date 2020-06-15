@@ -7,7 +7,7 @@
         <!-- <image class="right-arrow p-left-10"  :class="isShow ? 'animation' : 'right-arrow-a animation' "  src="../../static/images/arrow.png" /> -->
       </view>
       <view v-if="isArray">
-        <view class="content"  :class="isShow ? 'animation': 'show animation' "  :style="{'height':isShow? `${list.length%5 == 0 ? list.length / 5 : Math.round(list.length/5) + 1}00`-140+'rpx' :'0'}">
+        <view class="content"  :class="isShow ? 'animation': 'show animation' "  :style="{'height':isShow? `${list.length%5 == 0 ? list.length / 5 : Math.round(list.length/5) + 1}00`-140+'rpx' :'0','padding-bottom':ism +'rpx'}">
           <text  class="m-right-20" @click="chioce(index)" :class="current === index ? 'chioce-date-item-active' : 'chioce-date-item' " v-for="(item,index) in list" :key="index">{{item}}</text>
         </view>
          <view class="content night" style="margin-bottom:20rpx" v-if="isKua === 1 || isKua === '1'">凌晨</view>
@@ -62,10 +62,18 @@ export default {
       isShow: true,
       current: Number,
       value: '',
-      current1: Number
+      current1: Number,
+      ism:''
       // data: ['8:00', '23:00', '9:00']
     }
   },
+  watch:{
+    list(a){
+      if(a.length < 3) {
+          this.ism =  20
+      }
+    }
+  },  
   computed: {
     isArray () {
       if (toString.call(this.list) === '[object Array]') {
@@ -76,7 +84,9 @@ export default {
   },
   methods: {
     test () {
-      this.isShow = !this.isShow
+      if(this.list.length > 3){
+        this.isShow = !this.isShow
+      }
     },
     chioce (n) {
       this.current = n

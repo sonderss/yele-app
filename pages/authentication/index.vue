@@ -119,13 +119,13 @@ export default {
     },
     jiebang(){
        this.$minApi.jieBankCard().then(res=>{
+         console.log(res);
            this.$showToast("解绑成功")
-           this.$store.dispatch('user/setUserInfo', res)
+           this.$store.dispatch('user/setUserInfoAuth', res.apiAuth)
            setTimeout(() => {
-              this.$minRouter.push({
-                name:'redmine-info',
-                type:"redirectTo"
-              })
+                uni.navigateBack({
+                    delta: 1
+                })
            },2000)
        })
     }

@@ -68,13 +68,12 @@ export default {
           msg_code:this.code
       }).then(res=>{
         console.log(res);
-           this.$store.dispatch('user/setUserInfo', res)
+            this.$store.dispatch('user/setUserInfoAuth', res.apiAuth)
            this.$showToast('绑定成功')
            setTimeout(() => {
-              this.$minRouter.push({
-                name:"redmine-info",
-                type:'redirectTo'
-              })
+                uni.navigateBack({
+                    delta: 1
+                })
            },2000)
            
       })

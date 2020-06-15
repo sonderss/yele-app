@@ -37,14 +37,14 @@ export default {
   },
   methods: {
     goOn () {
-      this.$minRouter.push({
-        name: 'platform-admin'
-      })
+      uni.navigateBack({
+          delta: 2
+      });
     },
     backIndex () {
-      this.$minRouter.push({
-        name: 'index'
-      })
+       uni.navigateBack({
+          delta: 3
+      });
     }
   }
 }

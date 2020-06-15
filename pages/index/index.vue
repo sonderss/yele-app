@@ -151,18 +151,18 @@
 					url: 'statistics',
 					text: '数据统计',
 					root: 'statistics'
+				},{
+					name: 'my-income',
+					img: '/static/images/index/wallet.png',
+					text: '我的收入',
+					root: 'finance',
+					url: 'my-income'
 				}, {
 					url: '../mine-info/index',
 					name: 'mine-info',
 					img: '/static/images/index/people.png',
 					text: '个人资料',
 					root: 'userInfo'
-				}, {
-					name: 'my-income',
-					img: '/static/images/index/wallet.png',
-					text: '我的收入',
-					root: 'finance',
-					url: 'my-income'
 				}]
 			}
 		},

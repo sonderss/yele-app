@@ -64,10 +64,9 @@ export default {
           this.$showToast("设置成功")
            this.$store.dispatch('user/setUserInfoAuth', res.apiAuth)
           setTimeout(() => {
-              this.$minRouter.push({
-                name:"redmine-info",
-                type:"redirectTo"
-              })
+                uni.navigateBack({
+                    delta: 1
+                })
           },2000)
         }
       })

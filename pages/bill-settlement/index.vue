@@ -43,6 +43,17 @@ export default {
       }
       this.$minApi.postPay(obj).then(res=>{
         console.log(res)
+            if(res.paid === 1){
+              this.$showToast('支付成功！！！')
+              setTimeout(() => {
+                this.$minRouter.push({
+                  name: 'pay-success',
+                  params: {id:this.$parseURL().billId}
+                })
+              }, 2000)
+            }else{
+              this.$showToast('第三方支付开发中')
+            }
       })
     }
   },  

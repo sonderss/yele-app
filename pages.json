@@ -9,7 +9,7 @@
     {
       "path": "pages/login/index",
       "style": {
-        "app-plus": {"titleNView": false}
+        "app-plus": {"titleNView": false,"bounce":false}
       }
     },
     {
@@ -1088,22 +1088,9 @@
     {
       "path": "pages/index/index",
       "style": {
-        "enablePullRefresh":true,
-        "app-plus": {"titleNView": false}
+        "app-plus": {"titleNView": false,"bounce":false}
       }
-    },
-    {
-      "path": "pages/login/index",
-      "style": {
-        "app-plus": {"titleNView": false}
-      }
-    },
-    {
-			"path": "pages/home/index",
-			"style": {
-				"navigationBarTitleText": "home"
-			}
-		}
+    }
 	],
 	"globalStyle": {
 		"navigationBarTitleText": "uni-app",

@@ -1,5 +1,5 @@
 <template>
-  <view class="stage-make p-lr-30 p-tb-20">
+  <view class="stage-make p-lr-30 p-bottom-20">
     <min-cell class="top-view" :shadow="false" :card="false">
       <view class="top-title">客户信息</view>
       <view class="min-border-bottom color-view"></view>
@@ -20,6 +20,7 @@
         :img="data.head_img"
         :title="`${data.user_name}  | ${data.position_name}`"
         :label="data.mobile"
+        :border="false"
       ></min-cell-item>
     </min-cell>
     <view class="btn">

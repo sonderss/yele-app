@@ -13,7 +13,7 @@
       ></min-cell-item>
     </min-cell>
     <view class="nodata-wrap" v-if="list.length === 0">
-      <image class="nodata" src="../../static/images/nodata.png" />
+      <image class="nodata" src="/static/images/nodata.png" />
       <view class="text">暂无</view>
     </view>
   </view>
@@ -21,8 +21,8 @@
 
 <script>
 const status = {
- 1: { statusText: '待审核', color: 'red' },
-  2: { statusText: '已通过', color: 'green' },
+ 1: { statusText: '待审核', color: 'green' },
+  2: { statusText: '已通过', color: 'blue' },
   3: { statusText: '未通过', color: 'red' }
 }
 
@@ -69,6 +69,9 @@ export default {
 
 <style lang="scss" scoped>
 .green{
+  color: green;
+}
+.red{
   color: red;
 }
 </style>

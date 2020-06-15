@@ -192,8 +192,9 @@ export default {
         this.$minApi.confirmOrder(data).then(res => {
           console.log(res)
           
-            this.$showToast('支付成功！！！')
-            if(res.paid === 1){ 
+            
+            if(res.paid === 1){
+              this.$showToast('支付成功！！！')
               setTimeout(() => {
                 this.$minRouter.push({
                   name: 'pay-success',

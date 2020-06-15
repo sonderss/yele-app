@@ -90,24 +90,23 @@ export default {
   onLoad () {
     // this.phone = this.$store.state.user.userInfo.mobile
   },
-  mounted () {
-    this.$minApi.getUserInfo().then(res => {
-      console.log(res)
-      this.userInfo = res
-      this.userInfo.birthday =  this.userInfo.birthday.split('').splice(0,11).join('')
-      this.getCardLast(this.userInfo.bank_card_num)
+  onShow(){
+        this.$minApi.getUserInfo().then(res => {
+          console.log(res)
+          this.userInfo = res
+          this.userInfo.birthday =  this.userInfo.birthday.split('').splice(0,11).join('')
+          this.getCardLast(this.userInfo.bank_card_num)
 
-      this.minzu.map((item, index) => {
-        if (item === this.userInfo.nation) {
-          this.index1 = index
-        }
-      })
-      this.sex.map((item, index) => {
-        this.index = this.userInfo.sex
-      })
-      this.date = this.userInfo.birthday.replace(/-/g, '/')
-    })
-
+          this.minzu.map((item, index) => {
+            if (item === this.userInfo.nation) {
+              this.index1 = index
+            }
+          })
+          this.sex.map((item, index) => {
+            this.index = this.userInfo.sex
+          })
+          this.date = this.userInfo.birthday.replace(/-/g, '/')
+        })
   },
   methods: {
    changeHeadImg(){
@@ -159,11 +158,14 @@ export default {
     },
     // 获取银行卡后四位
     getCardLast(bank_card_num){
-      let card = [...bank_card_num]
-      let a = [4,3,2,1]
-      a.forEach(item => {
-          this.lastString+= card[card.length-item]
-      })
+      if( this.lastString.length !== 4){
+          let card = [...bank_card_num]
+          let a = [4,3,2,1]
+          a.map(item => {
+              this.lastString+= card[card.length-item]
+          })
+      }
+      
     },
     setPhone () {
       // this.$minRouter.push({
@@ -187,9 +189,7 @@ export default {
     },
     toSetPsd () {
       this.$minRouter.push({
-        name: 'redset-cardpsd',
-        type:'redirectTo',
-        params:{phone:this.userInfo.mobile}
+        name: 'set-cardpsd'
       })
     },
     quit () {

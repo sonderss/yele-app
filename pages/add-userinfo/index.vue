@@ -16,7 +16,7 @@
     <view class="m-tb-20"></view>
     <min-cell :card="false" class="mid-view">
       <min-desc-input desc="客户姓名" value="刘轻丽" v-model="isName" placeholder="请输入客户姓名"></min-desc-input>
-      <min-desc-input desc="联系电话" v-model="isPhone" placeholder="请输入联系电话"></min-desc-input>
+      <min-desc-input desc="联系电话" :maxlength="11" v-model="isPhone" placeholder="请输入联系电话"></min-desc-input>
       <min-switch desc="是否当天生日" v-model="isShengri"></min-switch>
     </min-cell>
     <view class="m-tb-20"></view>
@@ -29,8 +29,8 @@
 
 <script>
 export default {
-  name: 'add-userinfo',
-  navigate: ['navigateTo'],
+  name: 'redadd-userinfo',
+  navigate: ['navigateTo',"redirectTo"],
   data () {
     return {
       isShengri: true,
@@ -83,7 +83,8 @@ export default {
         // 跳转下单
         setTimeout(() => {
           this.$minRouter.push({
-            name: 'placean-order',
+            name: 'redplacean-order',
+            type:"redirectTo",
             params: { desk_id: res.opening.desk_id, minim_charge: res.opening.minimum_consume }
           })
         }, 2000)

@@ -23,7 +23,7 @@
       </view>
       <view class="item">预约时间：{{item.create_time}}</view>
       <view class="item">预抵时间：{{item.arrival_time}}</view>
-      <view class="item">台位状态：<text class="status confirmed">{{status[item.status] }}</text></view>
+      <view class="item">台位状态：<text :class="item.status === 4 || item.status === 5 ? 'status': 'status confirmed'">{{status[item.status] }}</text></view>
       <view class="item">消费金额：￥{{item.bill_price}}</view>
       <view class="btm-view min-border-top m-top-20">
         <view class="o" @click="queryOrder(item)">查看订单</view>

@@ -210,7 +210,7 @@ export default {
         })
       } else {
         this.addData(data).then(res => {
-          uni.navigateTo({
+          uni.redirectTo({
             url: '../reservation-success/index?data=' + JSON.stringify(res)
           })
         })

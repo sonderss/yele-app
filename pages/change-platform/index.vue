@@ -144,9 +144,9 @@ export default {
              console.log(res)
              this.$showToast('转台成功!')
              setTimeout(() => {
-                this.$minRouter.push({
-                  name:'platform-admin'
-                })
+                uni.navigateBack({
+                    delta: 2
+                });
              },2000)
              
           })
