@@ -50,6 +50,7 @@ minRequest.interceptors.response((response) => {
         url: '/pages/login/index'
       })
     }
+    
     return Promise.reject(data)
   }
   return data

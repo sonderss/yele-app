@@ -14,7 +14,7 @@
         "usingComponents" : true,
         "splashscreen" : {
             "alwaysShowBeforeRender" : true,
-            "waiting" : true,
+            "waiting" : false,
             "autoclose" : true,
             "delay" : 0
         },
@@ -92,9 +92,19 @@
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "static/images/splash.9.png",
-                    "xhdpi" : "static/images/splash.9.png",
-                    "xxhdpi" : "static/images/splash.9.png"
+                    "hdpi" : "unpackage/res/drawable-hdpi/splash.9.png",
+                    "xhdpi" : "unpackage/res/drawable-xhdpi/splash.9.png",
+                    "xxhdpi" : "unpackage/res/drawable-xxhdpi/splash.9.png"
+                },
+                "ios" : {
+                    "iphone" : {
+                        "portrait-896h@3x" : "C:/Users/Administrator/Desktop/d/1242_2688.png",
+                        "portrait-896h@2x" : "C:/Users/Administrator/Desktop/d/828_1792.png",
+                        "iphonex" : "C:/Users/Administrator/Desktop/d/1125_2436.png",
+                        "retina55" : "C:/Users/Administrator/Desktop/d/1242_2208.png",
+                        "retina47" : "C:/Users/Administrator/Desktop/d/750_1334.png",
+                        "retina40" : "C:/Users/Administrator/Desktop/d/640_1136.png"
+                    }
                 }
             }
         },

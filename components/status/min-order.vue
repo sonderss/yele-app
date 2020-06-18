@@ -37,7 +37,7 @@
         <view>客户姓名：{{list.desk_info.client_name}}</view>
         <view>联系电话：{{list.desk_info.client_mobile}}</view>
         <view>当天生日：{{list.desk_info.is_birthday ? '是' : '否'}}</view>
-        <view>预抵时间：{{list.desk_info.arrival_time}}</view>
+        <view>预抵时间：{{$minCommon.formatDate(new Date(list.desk_info.arrival_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
       </view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20" v-if="list.desk_info.booking_id !== 0">
@@ -156,13 +156,23 @@ export default {
     },
     // 申请开台
     applicationopening (n) {
+      console.log(this.list.order_info.order_id);
+       
       if (n !== 0) {
         this.$minRouter.push({
           name: 'apply-open',
           params: { desk_id: this.idNum, order_id: this.list.order_info.order_id, open_status: 0 }
         })
       } else {
-        this.$showToast('不具备开台条件')
+         this.$minRouter.push({
+          name: 'apply-open',
+          params: {
+          desk_id:this.idNum,
+          isOrder:this.list.order_info.order_id ? false:true,
+          data:{ 
+            order_info:{client_mobile:this.list.desk_info.client_mobile,client_name:this.list.desk_info.client_name,minimum_percent:this.list.desk_info.minimum_consume_percent,minim_charge:this.list.desk_info.minim_charge,desk_open_minimum:this.list.desk_info.desk_open_minimum,is_can_open:this.list.order_info.is_can_open}} 
+          }
+        })
       }
     },
     // 查看订单
@@ -173,7 +183,15 @@ export default {
           params: { desk_id: this.idNum, order_id: this.list.order_info.order_id, open_status: 0 }
         })
       } else {
-        this.$showToast('暂时没有订单信息')
+        this.$minRouter.push({
+          name: 'confirm-order',
+          params: {  
+           desk_id:this.idNum,  
+          isOrder:this.list.order_info.order_id ? false:true,
+          data:{ 
+            order_info:{client_mobile:this.list.desk_info.client_mobile,client_name:this.list.desk_info.client_name,minimum_percent:this.list.desk_info.minimum_consume_percent,minim_charge:this.list.desk_info.minim_charge,desk_open_minimum:this.list.desk_info.desk_open_minimum,is_can_open:this.list.order_info.is_can_open}} 
+          }
+        })
       }
     },
     // 展示剩余按钮

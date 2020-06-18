@@ -1,5 +1,5 @@
 <template>
-  <view  class="yele-grid min-flex min-flex-main-start min-flex-wrap-wrap m-lr-30 m-top-20 p-tb-20">
+  <view class="yele-grid min-flex min-flex-main-start min-flex-wrap-wrap m-lr-30 m-top-20">
     <view class="grid-item min-flex min-flex-dir-top"
       v-for="(item,index) in list" :key="item.name"
       @click="goTo(index)"
@@ -43,7 +43,7 @@ export default {
   background: #FFFFFF;
   border-radius: 6px;
   .grid-item {
-    padding: 10rpx 0;
+    padding: 30rpx 0;
     width: 25%;
   }
   .img {

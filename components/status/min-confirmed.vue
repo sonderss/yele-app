@@ -34,17 +34,18 @@
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">客户信息</view>
       <view class="main p-tb-20">
-        <view>客户姓名：刘小青</view>
-        <view>联系电话：13563250000</view>
-        <view>当天生日：是</view>
-        <view>预抵时间：2020年02月15日 16:20:00</view>
+        <view>客户姓名：{{list.desk_info.client_name}}</view>
+        <view>联系电话：{{list.desk_info.client_mobile}}</view>
+        <view>当天生日：{{list.desk_info.is_birthday ? '是' : '否'}}</view>
+        <view>预抵时间：{{ $minCommon.formatDate(new Date(list.desk_info.arrival_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
       </view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">操作信息</view>
       <view class="main p-tb-20">
-        <view>营销人员：刘清清</view>
-        <view>预抵时间：2020年02月15日 16:20:00</view>
+       <view>预约时间：{{ $minCommon.formatDate(new Date(list.desk_info.book_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
+        <view>营销人员：{{list.desk_info.book_user_name}}</view>
+        <view>预抵时间：{{ $minCommon.formatDate(new Date(list.desk_info.arrival_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
       </view>
     </view>
 

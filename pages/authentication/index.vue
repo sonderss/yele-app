@@ -7,29 +7,6 @@
       </view>
        
       <view class="bom">
-        <!--
-         <ul class="iul">
-             <li>
-                  <input  v-model="value"  type="number" :focus="current === 0 ? true : false"  maxlength='1' @input="inputValueChange($event,0)"/>
-             </li>
-             <li>
-                  <input  v-model="value1"  type="number" :focus="current === 1 ? true : false"  maxlength='1' @input="inputValueChange($event,1)"/>
-             </li>
-             <li>
-                  <input  v-model="value2" type="number" :focus="current === 2 ? true : false"  maxlength='1' @input="inputValueChange($event,2)"/>
-             </li>
-             <li>
-                  <input  v-model="value3"  type="number" :focus="current === 3 ? true : false"  maxlength='1' @input="inputValueChange($event,3)"/>
-             </li>
-             <li>
-                  <input  v-model="value4" type="number" :focus="current === 4 ? true : false"  maxlength='1' @input="inputValueChange($event,4)"/>
-             </li>
-             <li>
-                  <input  v-model="value5"  type="number" :focus="current === 5 ? true : false"  maxlength='1' @input="inputValueChange($event,5)"/>
-             </li>
-         </ul>
-        -->
-
         <ul class="iul">
          <input type="number" v-model="key" :focus="isfocus" maxlength="6" />
           <li  @click.stop="getFocus">{{value}}</li>
@@ -58,18 +35,13 @@ export default {
       value3: "",
       value4: "",
       value5: "",
-      store_id: "",
-      userid: "",
       key: "",
-      isfocus: true
+      isfocus: true,
+      basics_id:""
     };
   },
   onLoad() {
-    this.store_id = this.$store.state.user.userInfo.store_id;
-    this.userid = this.$store.state.user.userInfo.id;
-    console.log(this.store_id, this.userid);
-    // MD5( 门店ID + MD5( 用户ID + 用户输入的密码 ) )
-   console.log(this.$parseURL());
+    this.basics_id = this.$store.state.user.userInfo.basics_id
   },
   watch: {
     key(a) {
@@ -82,8 +54,9 @@ export default {
       this.value5 = arr[5];
       if(a.length === 6){
          let str = this.value +  this.value1 + this.value2 + this.value3 + this.value4 + this.value5 
-          let userpsd = MD5(this.userid +str)
-          let post_ = MD5(this.store_id + userpsd+'')
+          let userpsd = MD5(this.basics_id +str)
+          // MD5 ( basics_id + MD5 ( basics_id + 提现密码) )
+          let post_ = MD5(this.basics_id + userpsd + '')
           this.postYz(post_)
       }
     }

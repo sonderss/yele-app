@@ -43,9 +43,9 @@
              <view v-if="item.type === 2">新增商品：{{item.product_name}}</view>
         </view>
         <view class="item">新订单金额：￥{{list.return_order.new_order_total}}</view>
-        <view class="item">已付金额：￥{{123213213}}</view>
-        <view class="item" v-if="list.return_order.price_type === 1">待补金额：￥{{12321321321323}}</view>
-        <view class="item" v-if="list.return_order.price_type === 2">退还金额：￥{{12321321321323}}</view>
+        <view class="item">已付金额：￥{{list.pay_price}}</view>
+        <view class="item" v-if="list.return_order.price_type === 1">待补金额：￥{{list.return_order.price}}</view>
+        <view class="item" v-if="list.return_order.price_type === 2">退还金额：￥{{list.return_order.price}}</view>
 
         <view class="item">审核人：{{list.return_order.reviewer_name ? `￥${list.return_order.reviewer_name}` : '暂无数据'}}</view>
          <view class="item">收银：{{list.return_order.cashier_name}}</view>
@@ -58,7 +58,7 @@
       <view class="main p-tb-30">
         <view class="item">订 单 号 ：{{list.order_sn}}</view>
         <view class="item">订单类型：{{list.pay_type === 0 ? '先付' :'后付'}}</view>
-        <view class="item">下单人员：{{list.confirm_user_name}}</view>
+        <view class="item">下单人员：{{list.confirm_user_name ? list.confirm_user_name  : '暂无数据'}}</view>
         <view class="item">下单时间：{{$minCommon.formatDate(new Date(list.create_time*1000),'yyyy/MM/dd hh:mm:ss' ) }}</view>
         <view class="item">订单金额：￥{{list.order_total}}</view>
         <view class="item">已付金额：￥{{list.pay_price}}</view>
@@ -92,8 +92,8 @@
     <view class="card p-lr-20 m-top-20">
       <view class="top p-tb-30 min-border-bottom">客户信息</view>
       <view class="main p-tb-30">
-        <view class="item">客户姓名：{{list.client_name}}</view>
-        <view class="item">联系电话：{{list.client_mobile}}</view>
+        <view class="item">客户姓名：{{list.client_name ? list.client_name : '暂无数据'}}</view>
+        <view class="item">联系电话：{{list.client_mobile ? list.client_mobile : '暂无数据'}}</view>
       </view>
     </view>
     <view class="card p-lr-20 m-tb-20">

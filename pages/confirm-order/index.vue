@@ -4,17 +4,17 @@
       <view class="platform-info f28 p-lr-20 p-tb-20" :style="list.order_info.is_can_open === 0 ? 'background:#ffe4e4' : 'background:#fff'">
         <view>台位抵消：￥{{list.order_info.minim_charge}}</view>
         <view>开台条件：<text class="emp">{{list.order_info.minimum_percent}}成低消 {{`(${list.order_info.desk_open_minimum})`}}</text></view>
-        <view>订单金额：￥{{list.order_info.order_total}}</view>
+        <view v-if='!$parseURL().isOrder'>订单金额：￥{{list.order_info.order_total}}</view>
         <view>达成状态：{{list.order_info.is_can_open === 0 ? "未达成开台条件":"达成开台条件"}}</view>
       </view>
-      <view class="goods-wrap m-top-20 p-lr-20">
+      <view v-if='!$parseURL().isOrder'  class="goods-wrap m-top-20 p-lr-20">
         <view class="p-tb-30 min-border-bottom">商品</view>
         <view class="goods-list p-top-10">
           <view class="p-tb-20" v-for="item in list.order_product_list" :key="item.id">
             <min-goods-item
               :name="item.product_name"
               :price="item.unit_price"
-              :icon="item.oproduct_img"
+              :icon="item.product_img"
               :specification="item.sku"
               :value="item.quantity"
             >
@@ -22,16 +22,16 @@
           </view>
         </view>
       </view>
-      <min-pay v-model="payType" />
+      <min-pay v-if='!$parseURL().isOrder' v-model="payType" />
     </view>
-    <min-goods-submit  @submit="submit" :leftText="'￥'+ list.order_info.actual_total"  leftTextDesc="应付：" leftTextColor="red" leftTextWidth='350rpx'  :buttonText="buttonText"/>
+    <min-goods-submit  @submit="submit" :leftText="'￥'+ totalAmount"  leftTextDesc="应付：" leftTextColor="red" leftTextWidth='350rpx'  :buttonText="buttonText"/>
   </view>
 </template>
 
 <script>
 export default {
-  name: 'confirm-order',
-  navigate: ['navigateTo'],
+  name: 'redconfirm-order',
+  navigate: ['navigateTo','redirectTo'],
   data () {
     return {
       payType: 1,
@@ -45,6 +45,19 @@ export default {
   },
   methods: {
     submit () {
+       if(this.$parseURL().isOrder){
+         // 没有订单 - 申请开台
+          console.log(this.$parseURL())
+          this.$minRouter.push({
+            name: 'apply-open',
+            params: {
+              desk_id:this.$parseURL().desk_id,
+              isOrder: true,
+              data:this.$parseURL().data
+            }
+          })
+         return 
+       }
       if (this.list.order_info.is_can_open === 1) {
         this.$minApi.confirmOrder({
           order_id: this.$parseURL().order_id,
@@ -53,11 +66,12 @@ export default {
         }).then(res => {
           console.log(res)
           
-            this.$showToast('开台成功！！！')
+            this.$showToast('开台成功')
             this.$store.dispatch('goods/setOrderSelArr', [])
             setTimeout(() => {
               this.$minRouter.push({
-                name: 'open-success',
+                name: 'redopen-success',
+                type:"redirectTo",
                 params: {
                   client_mobile: this.list.order_info.client_mobile,
                   client_name: this.list.order_info.client_name,
@@ -79,13 +93,21 @@ export default {
   },
   mounted () {
     console.log('订单ID', this.$parseURL())
+    if(this.$parseURL().isOrder){
+        // 没有订单
+        console.log('没有订单');
+        this.buttonText = '申请开台'
+        this.totalAmount = '0'
+         this.list = this.$parseURL().data
+        return 
+    }
     this.$minApi.previewOrder({
       order_id: this.$parseURL().order_id,
       desk_id: this.$parseURL().desk_id,
       open_status: this.$parseURL().open_status
     }).then(res => {
       this.list = res
-      this.totalAmount = this.list.order_info.payable_price
+      this.totalAmount = this.list.order_info.actual_total
       if (this.list.order_info.is_can_open === 1) {
         this.buttonText = '支付并开台'
       } else {
@@ -93,13 +115,14 @@ export default {
       }
       console.log(this.list)
       // eslint-disable-next-line handle-callback-err
-    }).catch(err => {
-      setTimeout(() => {
-        this.$minRouter.push({
-          name: 'platform-admin'
-        })
-      }, 2000)
     })
+    // .catch(err => {
+    //   setTimeout(() => {
+    //     this.$minRouter.push({
+    //       name: 'platform-admin'
+    //     })
+    //   }, 2000)
+    // })
   }
 }
 </script>

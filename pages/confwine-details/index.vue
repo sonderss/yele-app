@@ -21,10 +21,10 @@
       <view class="contxt p-tb-20">
           <view class="item">充公单号：{{data.order_sn}}</view>
           <view class="item">充公人员：{{data.confiscate_user_name}}</view>
-          <view class="item">确认人员：{{data.confirm_user_name}}</view>
+          <view class="item">确认人员：{{data.confirm_user_name ? data.confirm_user_name :'暂无数据' }}</view>
           <view class="item">提成合计：￥{{data.total_commission}}</view>
           <view class="item">充公时间：{{data.friend_create_time}}</view>
-          <view class="item">确认时间：{{data.friend_operate_time}}</view>
+          <view class="item">确认时间：{{data.friend_operate_time ? data.friend_operate_time :'暂无数据'}}</view>
         </view>
     </view>
   </view>

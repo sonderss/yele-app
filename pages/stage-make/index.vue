@@ -31,8 +31,8 @@
 
 <script>
 export default {
-  name: 'stage-make',
-  navigate: ['navigateTo'],
+  name: 'redstage-make',
+  navigate: ['navigateTo','redirectTo'],
   onLoad () {
      console.log(this.$parseURL())
     this.booking_id = this.$parseURL().booking_id
@@ -66,7 +66,8 @@ export default {
             // 跳转下单
             setTimeout(() => {
               this.$minRouter.push({
-                name: 'placean-order',
+                name: 'redplacean-order',
+                type:'redirectTo',
                 params: { desk_id: res.opening.desk_id, minim_charge: res.opening.minimum_consume }
               })
             }, 2000)

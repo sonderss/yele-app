@@ -17,13 +17,13 @@
      <view class="card p-lr-20 p-bottom-10 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">客户信息</view>
       <view class="main p-tb-20">
-        <view>客户姓名：{{list.desk_info.client_name}}</view>
-        <view>联系电话：{{list.desk_info.client_mobile}}</view>
-        <view>当天生日：{{list.desk_info.is_birthday  === 0 ? '否' : '是'}}</view>
-        <view>预抵时间：{{$minCommon.formatDate(new Date(list.desk_info.arrival_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
+        <view><text style='width:140rpx'>客户姓名：</text>{{list.desk_info.client_name}}</view>
+        <view><text style='width:140rpx'>联系电话：</text>{{list.desk_info.client_mobile}}</view>
+        <view><text >当天生日：</text>{{list.desk_info.is_birthday  === 0 ? '否' : '是'}}</view>
+        <view><text style='width:140rpx'>预抵时间：</text>{{$minCommon.formatDate(new Date(list.desk_info.arrival_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
         <view style="display:flex;justify-content: space-between;" v-if="list.desk_info.remark">
-          <view style="width:130rpx">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注 :</view>
-          <view style="margin-left:18rpx;flex:1">{{list.desk_info.remark}}</view>
+          <view><text>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  注:</text></view>
+          <view style="margin-left:20rpx;flex:1">{{list.desk_info.remark}}</view>
         </view>
 
       </view>

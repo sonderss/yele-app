@@ -220,7 +220,7 @@ export default {
       let a = e.a + '-'+e.b+'-'+e.c
       this.date = a
       let ti = e.b + '月' + e.c + '日'
-      //  this.getData(a)
+       this.getData(a)
       // #ifdef APP-PLUS
       const pages = getCurrentPages()
       const page = pages[pages.length - 1]

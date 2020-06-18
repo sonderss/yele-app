@@ -22,7 +22,7 @@
     <view class="m-tb-20"></view>
     <min-remarks v-model='value'></min-remarks>
     <view class="btn">
-      <min-btn :long="true" @click="next">下一步</min-btn>
+      <min-btn :long="true" @click="next">去下单</min-btn>
     </view>
   </view>
 </template>
@@ -78,16 +78,14 @@ export default {
         remark: this.value
       }).then(res => {
         console.log(res)
-
-        this.$showToast('开台成功')
+        // this.$showToast('开台成功')
         // 跳转下单
-        setTimeout(() => {
           this.$minRouter.push({
             name: 'redplacean-order',
             type:"redirectTo",
             params: { desk_id: res.opening.desk_id, minim_charge: res.opening.minimum_consume }
           })
-        }, 2000)
+
       })
     }
   }

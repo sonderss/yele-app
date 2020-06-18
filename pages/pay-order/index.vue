@@ -87,8 +87,8 @@
 const ALL_DZ = 0; const ALL_YH = 1; const SINGLE_DZ = 2; const SINGLE_YH = 3
 
 export default {
-  name: 'pay-order',
-  navigate: ['navigateTo'],
+  name: 'redpay-order',
+  navigate: ['navigateTo','redirectTo'],
   data () {
     return {
       ALL_DZ,
@@ -191,20 +191,18 @@ export default {
         }
         this.$minApi.confirmOrder(data).then(res => {
           console.log(res)
-          
-            
             if(res.paid === 1){
               this.$showToast('支付成功！！！')
               setTimeout(() => {
                 this.$minRouter.push({
-                  name: 'pay-success',
+                  name: 'redpay-success',
+                  type:"redirectTo",
                   params: {id:this.$parseURL().data.order_id}
                 })
               }, 2000)
             }else{
               this.$showToast('第三方支付开发中')
             }
-            
         })
       } else {
         console.log(this.$parseURL().data.order_id);
@@ -218,7 +216,8 @@ export default {
             if(res.paid === 1){ 
               setTimeout(() => {
                 this.$minRouter.push({
-                  name: 'pay-success',
+                  name: 'redpay-success',
+                  type:"redirectTo",
                   params: {id:this.$parseURL().data.order_id}
                 })
               }, 2000)

@@ -136,6 +136,7 @@ export default {
     },
     submit () {
       if (!this.isdisabled) {
+        if(this.data.old_id === this.newList[this.active1].desk_lists[this.active2].id)return this.$showToast('该台与原台位相同')
         this.$minApi.changeOrder({
           desk_id: this.data.old_id,
           to_id: this.newList[this.active1].desk_lists[this.active2].id

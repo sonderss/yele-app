@@ -119,8 +119,9 @@ export default {
       })
     }
   },
-  onLoad () {
-    console.log(this.$parseURL())
+  onShow(){
+     console.log(this.$parseURL())
+    
     this.$minApi.billAllin({
       opening_id: this.$parseURL().open_id,
       desk_id: this.$parseURL().desk_id
@@ -132,11 +133,33 @@ export default {
     this.$minApi.getOrderListDown({ opening_id: this.$parseURL().open_id })
       .then(res => {
         console.log(res)
+        this.list = []
+        this.store = []
+        this.market = []
         this.list = res.list
         this.test(this.list)
         this.showData = this.store
         console.log(this.store, this.market)
       })
+  },
+  onLoad () {
+    // console.log(this.$parseURL())
+    // this.$minApi.billAllin({
+    //   opening_id: this.$parseURL().open_id,
+    //   desk_id: this.$parseURL().desk_id
+    // }).then(res => {
+    //   this.data = res
+    //   console.log(this.data)
+    // })
+    // // getOrderListDown
+    // this.$minApi.getOrderListDown({ opening_id: this.$parseURL().open_id })
+    //   .then(res => {
+    //     console.log(res)
+    //     this.list = res.list
+    //     this.test(this.list)
+    //     this.showData = this.store
+    //     console.log(this.store, this.market)
+    //   })
   }
 }
 </script>

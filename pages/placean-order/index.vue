@@ -239,6 +239,19 @@ export default {
           if(item.step === 0){
               a.splice(index,1)
               this.$store.dispatch('goods/setOrderSelArr', a)
+              this.mainArray.map(item1 => {
+                if(item1.product && item1.product.length > 0){
+                      item1.product.map((item2,index2) => {
+                            if(item2.type === 'product' || item2.step === 0){
+                                 if(item.id || item.id ===  item2.sku[0].id){
+                                   // 重置多规格商品
+                                     item2.isFlag = false
+                                     item2.isF
+                                 }
+                            }
+                      })
+                  }
+                })
           }else{
             this.test(item.step,item.id)
           }
@@ -246,13 +259,27 @@ export default {
       },
       deep: true
     }
+    // mainArray:{
+    //   handler(a){
+    //       if(a.product && a.product.length > 0){
+    //         console.log(a);
+    //           a.product.map((item2,index2) => {
+    //             console.log(item2);
+    //                if(item2.step === 0){
+    //                  console.log('充值');
+    //                }
+    //           })
+    //       }
+    //   },
+    //   deep:true
+    // }
   },
   methods: {
     test(step,id){
         this.mainArray.map(item => {
          if(item.product && item.product.length > 0){
               item.product.map((item2,index2) => {
-                  if(item2.type === 'product' && item2.sku.length > 0 && id == item2.id){
+                  if(item2.type === 'product' && item2.sku.length > 0 && id == item2.sku[0].id){
                        item2.isFlag = true
                        item2.step = step
                   }
@@ -277,6 +304,7 @@ export default {
             val.product.map(item2 => {
                if(item2.type === 'product'  && item2.sku.length > 1){
                 this.$set(item2,"isFlag",false) 
+                this.$set(item2,"isPro",true)
               }else if( item2.type === 'setmeal'){
                  this.$set(item2,"isFlag",false) 
               } else{
@@ -353,26 +381,11 @@ export default {
     },
     /** 清空已选商品 */
     delAll () {
-      this.selArr = []
-      this.$store.dispatch('goods/setOrderSelArr', this.selArr)
+      for(let i=0;i<this.selArr.length;i++){
+        this.selArr.splice(i,1)
+      }
       this.selected = false
       this.getListData()
-      // this.mainArray.map(item => {
-      //   if( item.product && item.product.length >0 ){
-      //     item.product.map((item2,index) => {
-      //       if(item2.step > 0){
-      //           console.log('需要更新',item2)
-      //           item2.isFlag = true
-      //           // this.$set(item2,"step",0)
-      //           setTimeout(() => {
-      //               item2.isFlag = false
-      //           },200)
-      //       }
-          
-      //     })
-      //   }
-        
-      // })
     },
     /** 关闭已选商品弹出层 */
     closeSelectedPop () {
@@ -585,7 +598,8 @@ export default {
               return
             }
             this.$minRouter.push({
-              name: 'confirm-order',
+              name: 'redconfirm-order',
+              type:'redirectTo',
               params: { order_id: res.orderId, desk_id: this.$parseURL().desk_id, open_status: this.$parseURL().is_open_desk ? 1 : 0 }
             }, 2000)
             

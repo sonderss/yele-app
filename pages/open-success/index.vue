@@ -16,17 +16,17 @@
 
 <script>
 export default {
-  name: 'open-success',
-  navigate: ['navigateTo'],
+  name: 'redopen-success',
+  navigate: ['navigateTo','redirectTo'],
   mounted () {
     console.log(this.$parseURL())
   },
   methods: {
     toDesk () {
-      const date = this.$minCommon.formatDate(new Date(), 'yyyy-MM-dd')
       this.$minRouter.push({
-        name: 'platform-detail',
-        params: { id: this.$parseURL().desk_id, date }
+        name: 'redplatform-detail',
+        type:'redirectTo',
+        params: { id: this.$parseURL().desk_id, date:this.$store.state.status.date.date }
       })
     },
     goIndex () {

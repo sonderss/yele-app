@@ -206,6 +206,8 @@ export default {
   // 获取发卡行信息 5edf641c4199d?bank_card_num=4323132135444121
   getCardInfo: data => minRequest.get('/5edf641c4199d',data),
   // 绑定银行卡 5edf3db074e13
-  postCard: data => minRequest.post('/5edf3db074e13',data)
+  postCard: data => minRequest.post('/5edf3db074e13',data),
+  // 用户权限 5ee8747279279
+  getApiPross: () => minRequest.get('/5ee8747279279')
 
 }

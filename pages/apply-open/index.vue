@@ -1,13 +1,18 @@
 <template>
   <view class="apply-open">
     <view class="p-top-20 p-lr-30" style="padding-bottom: 66rpx;">
-      <view class="platform-info f28 p-lr-20 p-tb-20">
+      <view class="platform-info f28 p-lr-20 p-tb-20" v-if='!$parseURL().isOrder'>
         <view>台位抵消：￥{{list.order_info.minim_charge}}</view>
         <view>开台条件：<text class="emp">{{list.order_info.minimum_percent}}成低消 {{`(${list.order_info.desk_open_minimum})`}}</text></view>
         <view>订单金额：￥{{list.order_info.order_total}}</view>
         <view>达成状态：{{list.order_info.is_can_open === 0 ? "未达成开台条件":"达成开台条件"}}</view>
       </view>
-      <view class="goods-wrap m-top-20 p-lr-20">
+       <view class="platform-info f28 p-lr-20 p-tb-20" v-else>
+        <view>台位抵消：￥{{list.order_info.minim_charge}}</view>
+        <view>开台条件：<text class="emp">{{list.order_info.minimum_percent}}成低消 {{`(${list.order_info.desk_open_minimum})`}}</text></view>
+        <view>达成状态：{{list.order_info.is_can_open === 0 ? "未达成开台条件":"达成开台条件"}}</view>
+      </view>
+      <view class="goods-wrap m-top-20 p-lr-20" v-if='!$parseURL().isOrder'>
         <view class="p-tb-30 min-border-bottom">商品</view>
         <view class="goods-list p-top-10">
           <view class="p-tb-20" v-for="item in list.order_product_list" :key="item.id">
@@ -49,14 +54,21 @@ export default {
   },
   mounted () {
     console.log('申请开台', this.$parseURL())
-    this.$minApi.previewOrder({
-      order_id: this.$parseURL().order_id,
-      desk_id: this.$parseURL().desk_id,
-      open_status: this.$parseURL().open_status
-    }).then(res => {
-      this.list = res
-      console.log(this.list)
-    })
+    if(this.$parseURL().isOrder){
+        console.log('没有订单');
+      this.list = this.$parseURL().data
+      console.log(this.list);
+    }else{
+        this.$minApi.previewOrder({
+          order_id: this.$parseURL().order_id,
+          desk_id: this.$parseURL().desk_id,
+          open_status: this.$parseURL().open_status
+        }).then(res => {
+          this.list = res
+          console.log(this.list)
+        })
+    }
+    
   },
   methods: {
     submit () {

@@ -75,7 +75,8 @@ export default {
     submit () {
       // 跳转支付订单页
       this.$minRouter.push({
-        name: 'pay-order',
+        name: 'redpay-order',
+        type:"redirectTo",
         params: { data: this.params }
       })
     }

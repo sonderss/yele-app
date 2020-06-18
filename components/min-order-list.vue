@@ -17,7 +17,7 @@
                     <image :src="i.product_img"  />
                   </view>
                   <view class="mid-desc">
-                      <text class="f28 fcolor title" v-if="i.product_name !== 'undefined'">{{i.product_name}}</text>
+                      <text class="f28 fcolor title min-ellipsis " v-if="i.product_name !== 'undefined'">{{i.product_name}}</text>
                       <text class="tcolor f22 desc">{{i.sku}}</text>
                   </view>
                 </view>

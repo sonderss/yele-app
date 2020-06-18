@@ -20,7 +20,7 @@
         <view>客户姓名：{{list.desk_info.client_name?list.desk_info.client_name:'暂无数据'}}</view>
         <view>联系电话：{{list.desk_info.client_mobile?list.desk_info.client_mobile:'暂无数据' }}</view>
         <view>当天生日：{{list.desk_info.is_birthday === 0 ? "否":"是"}}</view>
-        <view>预抵时间：{{list.desk_info.arrival_time}}</view>
+        <view>预抵时间：{{$minCommon.formatDate(new Date(list.desk_info.arrival_time *1000),'yyyy-MM-dd hh:mm:ss') }}</view>
       </view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">

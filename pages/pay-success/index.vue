@@ -26,8 +26,8 @@
 // （1：支付宝扫码，2：微信扫码，3：现金支付，4：刷卡支付，5：后付款）
 const method = ['暂无','支付宝扫码','微信扫码','现金支付','刷卡支付','后付款']
 export default {
-  name: 'pay-success',
-  navigate: ['navigateTo'],
+  name: 'redpay-success',
+  navigate: ['navigateTo',"redirectTo"],
   data () {
     return {
       list: {},
@@ -36,6 +36,7 @@ export default {
   },
   onLoad (option) {
     console.log(this.$parseURL())
+    console.log(this.$store.state.status.date);
     this.$minApi.getPayStatus({
       order_id:this.$parseURL().id
     }).then(res=>{
@@ -46,9 +47,12 @@ export default {
   },
   methods: {
     goOn () {
-      uni.reLaunch({
-          url: '../platform-admin/index'
-      });
+    
+      this.$minRouter.push({
+        name:"redplatform-detail",
+        type:"redirectTo",
+        params:{id:this.$store.state.status.date.id,date:this.$store.state.status.date.date}
+      })
     },
     backIndex () {
       uni.reLaunch({

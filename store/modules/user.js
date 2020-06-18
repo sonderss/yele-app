@@ -10,8 +10,10 @@ export default {
     },
     setUserInfoAuth: (state,data) => {
       state.userInfo.apiAuth = data
-      console.log(state.userInfo)
-    }
+    },
+    setUserAccss: (state,data) => {
+      state.userInfo.access = data
+    },
   },
   actions: {
     setUserInfo ({ commit }, data) {
@@ -20,5 +22,8 @@ export default {
     setUserInfoAuth ({ commit }, data) {
       commit('setUserInfoAuth', data)
     },
+    setUserAccss ({ commit }, data) {
+      commit('setUserAccss', data)
+    }
   }
 }

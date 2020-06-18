@@ -95,8 +95,8 @@ export default {
           console.log(res)
           this.userInfo = res
           this.userInfo.birthday =  this.userInfo.birthday.split('').splice(0,11).join('')
-          this.getCardLast(this.userInfo.bank_card_num)
-
+         
+          if(this.userInfo.bank_card_num){ this.getCardLast(this.userInfo.bank_card_num)}
           this.minzu.map((item, index) => {
             if (item === this.userInfo.nation) {
               this.index1 = index
@@ -139,9 +139,12 @@ export default {
           nation:this.minzu[ this.index1],
           birthday: new Date(this.date).getTime()/1000
         }
+        console.log(data);
         // uoDateuserInfo  API
         this.$minApi.setPersonInfo(data).then(res=>{
-          this.$showToast('重新登录后，修改生效')
+           console.log(res);
+           this.$showToast('修改成功')
+           this.$store.dispatch('user/setUserInfoAuth', res.apiAuth)
         })
     },
     bindPickerChange1 (e) {

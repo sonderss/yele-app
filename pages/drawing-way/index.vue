@@ -32,7 +32,9 @@ export default {
     this.$minApi.getUserInfo().then(res => {
       console.log(res)
       this.userInfo = res
-       this.getCardLast(this.userInfo.bank_card_num)
+       if(this.userInfo.bank_card_num){
+         this.getCardLast(this.userInfo.bank_card_num)
+       }
     })
   },
   methods: {

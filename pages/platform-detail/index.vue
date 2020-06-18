@@ -45,15 +45,38 @@ export default {
       }
     }
   },
+  onBackPress(options) {  
+    
+          const pages = getCurrentPages();//当前页
+          const beforePage = pages[pages.length - 2];//上个页面
+          const  page = pages[pages.length - 1];//页面
+          console.log(beforePage.route,page.route);
+      if (options.from === 'backbutton') {
+        console.log('navigateBack');
+          if(beforePage.route !== page.route) {
+              this.back(1);  
+              return true;  
+          }else {
+               this.back(2);  
+              return true;  
+          }
+      }
+  },  
   onLoad (option) {
     this.id = this.$parseURL().id
     // 暂时使用获取到的详情状态数据
     // this.status = this.$parseURL().status
 
     this.date = this.$parseURL().date
+    this.$store.dispatch('status/setDate',{id:this.id,date:this.date})
     this.getData()
   },
   methods: {
+    back(a) {  
+        uni.navigateBack({  
+            delta:a 
+        });  
+    },
     // 调用接口获取台详情数据数据
     getData () {
       // const date = this.$minCommon.formatDate(new Date(), 'yyyy-MM-dd')

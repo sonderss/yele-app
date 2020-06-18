@@ -209,7 +209,8 @@ export default {
           product_id: this.$parseURL().data.product_id,
           desk_id: this.$parseURL().data.desk_id,
           is_open_desk: this.$parseURL().data.is_open_desk,
-          product: this.selArr
+          product: this.selArr,
+          toPage:1
         }
       })
     }

@@ -21,7 +21,7 @@
         </view>
         <view style="height: 114rpx"></view>
         <view class="p-lr-30">
-          <min-btn @click="login" shape="circle"><text style="font-size:30rpx">登  录</text></min-btn>
+          <min-btn @click="login" shape="circle"><text style="font-size:30rpx">登      录</text></min-btn>
         </view>
   </view>
 </template>
@@ -35,7 +35,7 @@ export default {
     return {
       countDown: 0,
       code: '521125',
-      mobile: '13800138001'
+      mobile: '13197669435'
     }
   },
   methods: {

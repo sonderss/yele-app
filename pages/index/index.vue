@@ -1,7 +1,6 @@
 <template>
 
 	<view class="index" @touchstart="start" @touchmove="move" @touchend="end">
-	
     <scroll-view   scroll-y  :style="{transition: top === 0 ? 'transform 300ms':'',transform: 'translateY('+ top + 'rpx' +')'}" 
      >
         	<view class="back-img-box">
@@ -43,41 +42,9 @@
 				</view>
 
 			</view>
-
-			<!-- <view class="activity min-flex min-flex-main-between m-lr-30">
-      <view class="activity-item min-flex" >
-        <image class="bimg" src="/static/images/index/back1.png"></image>
-        <view class="word">敬请期待</view>
-      </view>
-      <view class="activity-item min-flex" @click="goListPages">
-        <image class="bimg" src="/static/images/index/back2.png"></image>
-        <view class="word">敬请期待</view>
-      </view>
-    </view>
-     <yele-grid :list="grid1"></yele-grid>
-
-      <view class="bar white-item m-lr-30 min-flex min-flex-main-start" @click="toPlatform">
-        <view class="bar_view_left">
-              <image class="img m-right-30" src="/static/images/index/bar.png"></image>
-            <view>
-              <view class="f28">酒台管理</view>
-              <view class="f22 assist-text">订台、下单、赠送、开台、存酒</view>
-            </view>
-        </view>
-        
-         <view class="yele-grid min-flex min-flex-main-start min-flex-wrap-wrap m-lr-30 m-top-20 p-tb-20">
-            <view class="grid-item min-flex min-flex-dir-top">
-              <image class="img" src="/static/images/index/bar1.png" />
-              <view class="f24">充公酒</view>
-            </view>
-          </view>
-      </view>
-  -->
 			<yele-grid :list="grid2"></yele-grid>
 			<yele-grid :list="grid3"></yele-grid>
-		
 	  </scroll-view>
-		
 	</view>
 </template>
 
@@ -92,6 +59,48 @@
 			MinAvatar,
 			YeleGrid
 		},
+    onShow(){
+       	uni.request({
+            url:'http://api.app-store.dev.yeleonline.com/api/5ee8747279279',  
+            header:{"access-token":"HPkSFqbVhWpCRxVRpOTkyEubusFxBEEd","api-auth":this.$store.state.user.userInfo.apiAuth},
+            success: (res) => { 
+              console.log(res);
+              const { code, data, msg } = res.data
+              // 统一处理响应请求，后续完善
+              if (code !== 1) {
+                uni.showToast({
+                  title: msg,
+                  duration: 2000,
+                  icon: 'none'
+                })
+                // 登录过期
+                if (code === 1000011) {
+                  this.$store.dispatch('user/setUserInfo', {})
+                  uni.reLaunch({
+                    url: '/pages/login/index'
+                  })
+                }
+                return
+              }
+                if(this.$store.state.user.userInfo.access.length !== res.data.data.permission.length){ 
+                  this.$showToast('权限有变更，请重新登录')
+                  setTimeout(() => {
+                        uni.reLaunch({
+                            url: '../login/index'
+                        });
+                    },2000)
+                } 
+                if(res.data.data.permission.length === 0){
+                    this.$showToast('没有任何权限，请联系管理员')
+                    setTimeout(() => {
+                        uni.reLaunch({
+                            url: '../login/index'
+                        });
+                    },2000)
+                }
+            }
+        })
+    },
 		data() {
 			return {
 				back,
@@ -166,7 +175,6 @@
 				}]
 			}
 		},
-
 		computed: {
 			userInfo() { // 用户信息
 				return this.$store.state.user.userInfo
@@ -218,9 +226,6 @@
 			end(e){
 					this.top = 0
 			}
-		},
-		onLoad() {
-			this.back = back
 		}
 	}
 </script>
@@ -246,17 +251,16 @@
 
 			justify-content: space-between;
 			align-items: center;
-
 			.left {
 				background: #fff;
 				border-radius: 10rpx;
-				flex: 1;
+        flex: 1;
 			}
 
 			.right {
 				background: #fff;
 				border-radius: 10rpx;
-				width: 25%;
+        width: 20%;
 			}
 
 		}
@@ -335,7 +339,7 @@
 		background: #fff;
 
 		.left_item {
-			width: 34.69%;
+			width: 200rpx;
 			height: 100%;
 			display: flex;
 			justify-content: center;

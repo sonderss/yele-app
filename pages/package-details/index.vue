@@ -120,7 +120,7 @@ export default {
     this.product_type = this.$parseURL().product_type
     this.totalLabel = `台位低消：${this.$parseURL().minim_charge}`
     this.buttonLabel = this.$parseURL().is_open_desk ? '(已开台)' : '(未开台)'
-   
+   console.log(this.$parseURL().toPage);
   },
   watch: {
     // taocanItem: {
@@ -139,6 +139,23 @@ export default {
   onShow () {
     this.selArr = this.$store.state.goods.orderSelArr
   },
+  onBackPress(options) {  
+    
+          const pages = getCurrentPages();//当前页
+          const beforePage = pages[pages.length - 2];//上个页面
+          const  page = pages[pages.length - 1];//页面
+          console.log(beforePage.route,page.route);
+      if (options.from === 'backbutton') {
+        console.log('navigateBack');
+          if(beforePage.route !== page.route) {
+              this.back(1);  
+              return true;  
+          }else {
+               this.back(2);  
+              return true;  
+          }
+      }
+  },  
   mounted () {
    this.getData()
   },
@@ -179,11 +196,15 @@ export default {
         }
       })
     },
+     back(a) {  
+        uni.navigateBack({  
+            delta:a 
+        });  
+    },
     // 套餐2级
     toDeatil () {
       this.$minRouter.push({
-        name: 'redpackages-detail',
-        type:'redirectTo',
+        name: 'packages-detail',
         params: { data: this.$parseURL() }
       })
     },
