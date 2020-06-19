@@ -1,6 +1,6 @@
 <template>
   <view class="pay-order p-tb-20 p-lr-30">
-    <view class="card p-lr-20 m-top-20">
+    <view class="card p-lr-20 ">
       <view class="top p-tb-20 min-border-bottom">
         <view class="title">账单信息</view>
       </view>
@@ -192,7 +192,7 @@ export default {
         this.$minApi.confirmOrder(data).then(res => {
           console.log(res)
             if(res.paid === 1){
-              this.$showToast('支付成功！！！')
+              this.$showToast('支付成功')
               setTimeout(() => {
                 this.$minRouter.push({
                   name: 'redpay-success',

@@ -71,7 +71,7 @@
           <text>下线分佣</text>
         </view>
       </view>
-      <view class="method-view min-border-bottom">
+      <view class="method-view">
         <view class="left">活动方案</view>
         <view class="right">
           <text>活动名称1</text>

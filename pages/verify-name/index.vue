@@ -20,10 +20,12 @@
     <view class="btm_desc p-lr-30" v-if="info_user.is_certify !== 1">
           <view class="top_view p-lr-30 p-top-20">
               <text>验证码将发送到尾号为{{rPhone}}手机上</text>
-               <text class="code" @click="getVerificationCode" v-if="countDown === 0">获取验证码</text>
-               <text  v-else >{{countDown}} s</text>
           </view>
-          <input v-model="code" class="m-top-20 p-lr-30" type="number"  maxlength="6" placeholder="验证码"/>
+          <view class="botm_view  p-lr-30 m-top-20">
+               <input v-model="code"  type="number"  maxlength="6" placeholder="验证码"/>
+               <text style="width:150rpx;text-align:center" class="code" @click="getVerificationCode" v-if="countDown === 0">获取验证码</text>
+               <text style="width:150rpx;text-align:center"  v-else >{{countDown}} s</text>
+          </view>
     </view>
     <view class="btn-wrap m-lr-20">
       <min-btn v-if="info_user.is_certify !== 1" @click="toTrue">去认证</min-btn>
@@ -113,6 +115,18 @@ export default {
     display: flex;
     justify-content: space-between;
     width: 100%;
+  }
+  .botm_view{
+    width: 100%;
+    height:100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    input{
+      height: 100%;
+      padding: 20rpx 0;
+      flex: 1;
+    }
   }
   display: flex;
   flex-direction: column;

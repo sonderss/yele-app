@@ -1,5 +1,5 @@
 <template>
-  <view class="giveawayorder p-top-20 p-lr-30">
+  <view class="giveawayorder p-lr-30">
       <view class="goods-wrap m-top-20 p-lr-20">
         <view class="p-tb-30 min-border-bottom">商品</view>
         <view class="goods-list p-top-10">

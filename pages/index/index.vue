@@ -339,13 +339,14 @@
 		background: #fff;
 
 		.left_item {
-			width: 200rpx;
+			width: 150rpx;
 			height: 100%;
 			display: flex;
 			justify-content: center;
 			align-items: center;
 			padding: 10rpx 0;
-
+      padding-left: 50rpx;
+      margin-right: 20rpx;
 			.img {
 				width: 80rpx;
 				height: 80rpx;

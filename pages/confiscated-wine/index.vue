@@ -12,9 +12,9 @@
         </scroll-view>
       </view>
 
-    <view class="main" >
+    <view class="main" style="margin-top:35rpx">
       <scroll-view  scroll-y="true" :style="{ 'height':scrollHeight }" @scroll="mainScroll" @scrolltolower='test' :scroll-into-view="scrollInto" scroll-with-animation="true">
-        <view class="item" v-for="(item,index) in mainArray" :key="index"  :id="'item-'+index">
+        <view class="item" v-for="(item,index) in mainArray" :key="index"  :id="'item-'+index" >
               <view class="goods" v-for="(item2,index2) in item.list" :key="index2" >
                 <image :src="item2.product_img" mode=""  @error='imgerr($event,index,index2)'></image>
                 <view class="content-view">

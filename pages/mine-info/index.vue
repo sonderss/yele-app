@@ -55,9 +55,15 @@
         ></min-cell-item>
         <min-cell-item
           title="提现密码"
-          :border="false" arrow
+           arrow
           :tail="userInfo.is_cash_pwd ? '已设置':'未设置'"
           @eventParent="toSetPsd"
+        ></min-cell-item>
+        <min-cell-item
+          title="版本"
+          :border="false"  
+           :isWidth="false"
+          :tail="version ? `v ${version}` : 'H5无法获取' "
         ></min-cell-item>
       </min-cell>
     </view>
@@ -84,11 +90,17 @@ export default {
       date: '2020/3/20',
       userInfo: {},
       phone: '',
-      lastString:''
+      lastString:'',
+      version:''
     }
   },
   onLoad () {
-    // this.phone = this.$store.state.user.userInfo.mobile
+    // #ifdef APP-PLUS
+					// 获取本地应用资源版本号
+					plus.runtime.getProperty(plus.runtime.appid,  inf => {
+            this.version = inf.version
+					});
+    // #endif
   },
   onShow(){
         this.$minApi.getUserInfo().then(res => {
@@ -218,5 +230,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.mine-info{
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+}
 </style>

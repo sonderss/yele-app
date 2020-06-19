@@ -9,7 +9,8 @@
     {
       "path": "pages/login/index",
       "style": {
-        "app-plus": {"titleNView": false,"bounce":false}
+        "app-plus": {"titleNView": false,"bounce":false},
+		"navigationBarTextStyle":"black"
       }
     },
     {

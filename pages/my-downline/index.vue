@@ -26,22 +26,28 @@
                     <view class="f28 " style="color:#333">共{{nums}}人</view>
             </view>
       </view>
-      <view class="item p-lr-20"   v-for="(item,index) in list.subordinate" :key="index">
-            <view class="cell-item min-flex min-flex-main-between bg-white p-tb-30 min-border-bottom">
-              <view class="min-flex">
-                <view>
-                  <min-avatar size="xs" :url="item.head_img ? item.head_img : '/static/images/goods.png'"></min-avatar>
-                </view>
-                <view class="m-left-20" style="width:400rpx">
-                  <view class="f28 min-ellipsis" >{{item.user_name}}</view>
-                  <view class="label m-top-10 f24 assist-text min-ellipsis">{{item.mobile}}</view>
-                </view>
-              </view>
-              <view class="min-flex min-flex-dir-top">
-                <view class="f28 tail" style="color:#333">{{item.accumulated_rebate}}</view>
-                <view class="f26" style="color:#666">累计分佣</view>
-              </view>
+      <view v-if="list.subordinate.length !== 0">
+            <view class="item p-lr-20"   v-for="(item,index) in list.subordinate" :key="index">
+                  <view class="cell-item min-flex min-flex-main-between bg-white p-tb-30 min-border-bottom">
+                    <view class="min-flex">
+                      <view>
+                        <min-avatar size="xs" :url="item.head_img ? item.head_img : '/static/images/goods.png'"></min-avatar>
+                      </view>
+                      <view class="m-left-20" style="width:400rpx">
+                        <view class="f28 min-ellipsis" >{{item.user_name}}</view>
+                        <view class="label m-top-10 f24 assist-text min-ellipsis">{{item.mobile}}</view>
+                      </view>
+                    </view>
+                    <view class="min-flex min-flex-dir-top">
+                      <view class="f28 tail" style="color:#333">{{item.accumulated_rebate}}</view>
+                      <view class="f26" style="color:#666">累计分佣</view>
+                    </view>
+                  </view>
             </view>
+      </view>
+      <view class="item p-lr-20 " style="padding-bottom:30rpx" v-else>
+        
+      <view class="min-border-top"><min-404 pTop="30rpx"/></view>
       </view>
     </view>
 
@@ -61,7 +67,7 @@ export default {
   },
   data () {
     return {
-      list: { superior: { username: '' } },
+      list: { superior: { username: '' },subordinate:[] },
       nums: 0,
       n: backs
     }
