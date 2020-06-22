@@ -20,7 +20,7 @@
                 <view class="content-view">
                   <view class="right-view-title" >
                     <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                    <text class="f26 t" v-if="item2.sku.length === 1" style="color:#666666">规格：{{item2.sku[0].sku_full_name}}</text>
+                    <text class="f26 t" v-if="item2.sku.length >= 1" style="color:#666666">规格：{{item2.sku[0].sku_full_name}}</text>
                   </view>
                   <!-- <view class="describe">第{{index2+1}}个商品的描述内容</view>
                   <view class="money">第{{index2+1}}个商品的价格</view> -->

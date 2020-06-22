@@ -5,7 +5,7 @@
         <view>客户姓名：{{item.client_name}}</view>
         <view>联系电话：{{item.client_mobile}}</view>
         <view>开台时间：{{item.opened_time}}</view>
-        <view v-if="item.deactivated === 2">销台时间：{{item.closed_time}}</view>
+        <view v-if="item.opening_status === -1">销台时间：{{item.closed_time}}</view>
         <view>营销人员：{{item.sales_name}}</view>
         <view>账单金额：￥{{item.bill_price}}</view>
         <view>应付金额：￥{{item.receivable_price}}</view>
@@ -15,7 +15,7 @@
         <view v-if="item.pay_status === 0" :class="item.pay_status === 0 ? 'amount': 'tips'">
            待付金额：￥{{item.unpay_price}}
         </view>
-        <view v-if="item.deactivated === 1" class="tips">
+        <view v-if="item.opening_status === -1" class="tips">
             已结清
         </view>
         <view v-else class="amount"></view>

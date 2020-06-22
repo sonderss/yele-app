@@ -55,18 +55,24 @@
         ></min-cell-item>
         <min-cell-item
           title="提现密码"
+           :border="false"  
            arrow
           :tail="userInfo.is_cash_pwd ? '已设置':'未设置'"
           @eventParent="toSetPsd"
         ></min-cell-item>
-        <min-cell-item
-          title="版本"
-          :border="false"  
-           :isWidth="false"
-          :tail="version ? `v ${version}` : 'H5无法获取' "
-        ></min-cell-item>
       </min-cell>
     </view>
+    <view  class="cell-wrap p-lr-30">
+        <min-cell :card="false">
+          <min-cell-item
+            title="版本"
+            :border="false"  
+            :isWidth="false"
+            :tail="version ? `v ${version}` : 'H5无法获取' "
+          ></min-cell-item>
+        </min-cell>
+    </view>
+    
     <view class="m-top-30 p-lr-30">
       <min-btn type="white" @click="quit">退出登录</min-btn>
     </view>

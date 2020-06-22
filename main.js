@@ -117,10 +117,9 @@ Vue.prototype.$store = store
 
 Vue.directive('root', {
    inserted:  (el, bind) => {
-    //  console.log(el,bind)
     if (!test(bind.value)) {
-      // this.$showToast('暂无权限')
       // el.parentNode.removeChild(el)
+    }else{
     }
     function test (root) {
       const data = store.state.user.userInfo.access

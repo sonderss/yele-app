@@ -69,8 +69,9 @@
           </view>
         </view>
 
-        <view class="f28 p-bottom-30" v-if="discountType === 0 || discountType === 1">扣除赠送额度：￥{{kouchu}}</view>
-        <view class="f28 p-bottom-30" v-if="discountType === 2 || discountType === 3">扣除赠送额度：￥{{k}}</view>
+        <view class="f28 p-bottom-30" v-if="discountType === 0">扣除赠送额度：￥{{kouchu ? kouchu: 0}}</view>
+        <view class="f28 p-bottom-30" v-if=" discountType === 1">扣除赠送额度：￥{{quanyou ? quanyou: 0}}</view>
+        <view class="f28 p-bottom-30" v-if=" discountType === 2 || discountType === 3">扣除赠送额度：￥{{k ? k : 0}}</view>
 
       </view>
     </view>
@@ -103,7 +104,9 @@ export default {
       payMethod: 1,
       qdyouhui: '',
       kouchu: 0,
-      money: ''
+      money: '',
+      delArr:[],
+      quanyou:''
     }
   },
   onLoad () {
@@ -131,6 +134,9 @@ export default {
         this.money = (this.list.order_info.actual_total - a * 1).toFixed(2)
       }
     },
+    quanyou(a){
+         this.money = (this.list.order_info.actual_total - a * 1).toFixed(2)
+    },
     // 全单打折
     allAiscount (a) {
       if (a === 0) {
@@ -144,7 +150,7 @@ export default {
     // 全单优惠
     qdyouhui (a) {
       console.log(a)
-      this.kouchu = a
+      this.quanyou = a
     },
     money (a) {
       console.log(a)
@@ -154,7 +160,19 @@ export default {
       }
     },
     discountType (a) {
-      console.log(a)
+        this.money = 0
+      if(a === 0){
+        this.kouchu = (this.list.order_info.actual_total - (((this.allAiscount / 10) * this.list.order_info.actual_total).toFixed(2))).toFixed(2)
+         this.money = (this.list.order_info.actual_total - this.kouchu  * 1).toFixed(2)
+      }else if(a === 1) {
+          this.kouchu = this.quanyou 
+            this.money = (this.list.order_info.actual_total - this.kouchu  * 1).toFixed(2)
+      }
+    },
+    delArr(a){
+      a.map((item,index) => {
+         this.$store.state.goods.orderSelArr.splice(index,1)
+      })
     }
   },
   methods: {
@@ -212,7 +230,7 @@ export default {
           desk_id: this.$parseURL().data.desk_id
         }).then(res => {
           console.log(res)
-            this.$showToast('支付成功！！！')
+            this.$showToast('支付成功')
             if(res.paid === 1){ 
               setTimeout(() => {
                 this.$minRouter.push({
@@ -226,6 +244,9 @@ export default {
             }
         })
       }
+      this.$store.state.goods.orderSelArr.map((item,index) => {
+          this.delArr.push(index)
+      })
     }
   },
   mounted () {

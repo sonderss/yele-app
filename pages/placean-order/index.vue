@@ -1,7 +1,7 @@
 <template>
 <view class="list_box " style="overflow:auto;">
 
-  <view class="left" :style="{marginTop: android  === 'android' ? '20rpx' :'20rpx' }" v-if="mainArray.length !== 0">
+  <view class="left" :style="{marginTop: '0' }" v-if="mainArray.length !== 0">
       <view class="left_view">
           <scroll-view scroll-y="true"  :style="{height:scrollHeight}">
             <view class="item"
@@ -16,8 +16,7 @@
       </view>
   </view>
 
-  <view class="main" :style="{top: android  === 'ios' ? '20rpx' :'20rpx' }">
-    <scroll-view enable-back-to-top  :style="{ 'height':scrollHeight }" scroll-y  @scroll="mainScroll" :scroll-into-view="scrollInto" :scroll-with-animation="true">
+    <scroll-view  class="main"   :show-scrollbar="false" :style="{ 'height':scrollHeight,top:'20rpx'}"  :scroll-y="true"  @scroll="mainScroll" :scroll-into-view="scrollInto" :scroll-with-animation="true">
       <view v-for="(item,index) in mainArray"  :key="index" :id="`item-${index}`" >
         <view  v-for="(item2,index2) in item.product"  :key="index2" @click.stop="goDetails(index,index2)">
           <min-goods-chioce
@@ -39,7 +38,6 @@
 
       <view style="height:120rpx;"></view>
     </scroll-view>
-  </view>
   <!-- 底部按钮 -->
   <view class="bottom-view" v-if="mainArray.length !== 0">
     <min-goods-submit 
@@ -175,7 +173,8 @@ export default {
       testIndex:Number,
       delArr:[], // 所需删除索引
       selected: false,// 已选商品弹出层
-      tempId:{index:"",index2:""}
+      tempId:{index:"",index2:""},
+      load:'',
     }
   },
   onLoad () {
@@ -246,19 +245,18 @@ export default {
                                  if(item.id || item.id ===  item2.sku[0].id){
                                    // 重置多规格商品
                                      item2.isFlag = false
-                                     item2.isF
                                  }
                             }
                       })
                   }
                 })
           }else{
-            this.test(item.step,item.id)
+            this.test(item.step,item.id,item.type)
           }
         })
       },
       deep: true
-    }
+    },
     // mainArray:{
     //   handler(a){
     //       if(a.product && a.product.length > 0){
@@ -275,15 +273,15 @@ export default {
     // }
   },
   methods: {
-    test(step,id){
+    test(step,id,type){
         this.mainArray.map(item => {
          if(item.product && item.product.length > 0){
               item.product.map((item2,index2) => {
-                  if(item2.type === 'product' && item2.sku.length > 0 && id == item2.sku[0].id){
+                  if(item2.type === 'product' && type === 'product' && item2.sku.length > 0 && id == item2.id){
                        item2.isFlag = true
                        item2.step = step
                   }
-                  if(item2.type === 'service' && id == item2.id){
+                  if(item2.type === 'service' && type === 'service'  && id == item2.id){
                         item2.step = step
                   }
               })
@@ -345,26 +343,31 @@ export default {
     },
     /* 主区域滚动监听 */
     mainScroll (e) {
-      const top = e.detail.scrollTop
-      // console.log(top)
-      if (top === 0) {
-        this.leftIndex = 0
+      this.$minCommon.debounce( this.testHua(e))
+      
+    },
+    // 测试滑动
+    testHua(e){
+        const top = e.detail.scrollTop
+          if (top === 0) {
+              this.leftIndex = 0
+              return 
+          }
+          let index = 0
+          /* 查找当前滚动距离 */
+          for (let i = (this.topArr.length - 1); i >= 0; i--) {
+            /* 在部分安卓设备上，因手机逻辑分辨率与rpx单位计算不是整数，滚动距离与有误差，增加2px来完善该问题 */
+            if ((top + 2) >= this.topArr[i]) {
+              index = i + 1
+          }
       }
-      let index = 0
-      /* 查找当前滚动距离 */
-      for (let i = (this.topArr.length - 1); i >= 0; i--) {
-        /* 在部分安卓设备上，因手机逻辑分辨率与rpx单位计算不是整数，滚动距离与有误差，增加2px来完善该问题 */
-        if ((top + 2) >= this.topArr[i]) {
-          index = i + 1
-          break
-        }
-      }
-      this.leftIndex = (index < 0 ? 0 : index)
+        this.leftIndex = (index < 0 ? 0 : index)
     },
     /* 左侧导航点击 */
     leftTap (index) {
-      // console.log(e.currentTarget.dataset.index)
-      // const index = e.currentTarget.dataset.index
+      this.$minCommon.debounce( this.testLH(index))
+    },
+    testLH(index){
       this.scrollInto = `item-${index}`
       this.leftIndex = index
     },
@@ -375,15 +378,16 @@ export default {
     // 图片错误
     imageErro (e) {
       if (e.type === 'error') {
-        this.skuObj.product_img = '../../static/images/goods.png'
+        this.skuObj.product_img = '/static/images/goods.png'
         this.errImg = true
       }
     },
     /** 清空已选商品 */
     delAll () {
       for(let i=0;i<this.selArr.length;i++){
-        this.selArr.splice(i,1)
+         this.selArr.splice(i,1)
       }
+      this.selArr = []
       this.selected = false
       this.getListData()
     },
@@ -581,8 +585,8 @@ export default {
         desk_id: this.$parseURL().desk_id,
         products: JSON.stringify(products)
       }).then(res => {
-        this.selArr = []
-        this.$store.dispatch('goods/setOrderSelArr', [])
+        // this.selArr = []
+        // this.$store.dispatch('goods/setOrderSelArr', [])
         if (res.orderId) {
           this.$showToast('提交成功')
           setTimeout(() => {
@@ -708,7 +712,7 @@ uni-page-body{overflow: hidden;min-height: 100vh;width: 100%;}
       }
   }
 .main{
-    width: 75%;
+    width: 72%;
     padding-left: 20rpx;
     flex-grow: 1;
 

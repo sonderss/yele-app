@@ -1,11 +1,11 @@
 <template>
   <view class="drawing-way m-lr-30 p-top-20">
-     <view class="card p-lr-20" v-if="userInfo.bank_card_num" @click="jiebang">
+     <view class="card p-lr-20" v-if="userInfo.bank_card_num">
       <view class="left">
           <image class="icon" src="/static/images/goods.png" />
           <p class="m-left-20 f30">{{userInfo.bank_card_name}}({{lastString}})</p>
       </view>
-      <view style="color:#FF0000;font-size:25rpx">解绑</view>
+      <view style="color:#FF0000;font-size:25rpx"  @click="jiebang">解绑</view>
      </view>
     <view class="nodata-wrap" style="padding-top:130rpx" v-else>
       <image class="nodata" src="/static/images/nodata.png"  />

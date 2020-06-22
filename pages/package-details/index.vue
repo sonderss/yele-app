@@ -52,7 +52,7 @@
               <view>已选商品</view>
               <view class="right-view" @click="delAll">
                 <view class="icon-del m-right-10">
-                  <image src='../../static/images/del.png'/>
+                  <image src='/static/images/del.png'/>
                 </view>
                 <view class="f22 clear">清空</view>
               </view>
@@ -245,8 +245,10 @@ export default {
       this.$store.dispatch('goods/setOrderSelArr', this.selArr)
     },
     delAll () {
+      for(let i=0;i<this.selArr.length;i++){
+         this.selArr.splice(i,1)
+      }
       this.selArr = []
-      this.$store.dispatch('goods/setOrderSelArr', this.selArr)
       this.list.step = 0
     },
     // 已选弹出层删除事件

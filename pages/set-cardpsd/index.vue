@@ -1,8 +1,8 @@
 <template>
   <view class="set-cardpsd p-lr-30 p-tb-20">
     <min-cell  :card="false">
-      <min-desc-input desc="提现密码" v-model="name"  placeholder="请输入6位数字的密码" ></min-desc-input>
-      <min-desc-input desc="确认密码" v-model="card"  placeholder="请再次输入密码" ></min-desc-input>
+      <min-desc-input desc="提现密码" v-model="name"   :maxlength='6' typeinput="number" placeholder="请输入6位数字的密码" ></min-desc-input>
+      <min-desc-input desc="确认密码" v-model="card"  :maxlength='6'  typeinput="number" placeholder="请再次输入密码" ></min-desc-input>
       <view class="btm_desc">
           <view class="top_view">
               <text>验证码</text>
