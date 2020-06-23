@@ -36,15 +36,15 @@
       </view>
     </view>
     <view class="btns">
-      <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book" v-root="'desk.book'">预约</view>
-      <view :class="index === 1 ? 'btn active' : 'btn' " @click="startOrder" v-root="'desk.open'">开台</view>
-      <view  :class="index === 2 ? 'btn active' : 'btn' " @click="saveWine" v-root="'desk.saveWine'">存酒</view>
+      <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book" >预约</view>
+      <view :class="index === 1 ? 'btn active' : 'btn' " @click="startOrder">开台</view>
+      <view  :class="index === 2 ? 'btn active' : 'btn' " @click="saveWine" >存酒</view>
       <view class="badge" @click="showToastTxt" ref='testDom' id='testDom'>
           <text class="more" style="color: #CCCCCC;" >&#xe61c;</text>
           <view class="toast anmatiin "   v-if="toast">
-              <view class="bag_btn" @click="backBook" v-root="'desk.delayBook'">推迟到店</view>
-              <view class="bag_btn" @click="cancel" v-root="'desk.cancelBook'">取消订台</view>
-              <view class="bag_btn"  @click="goGetHistory" v-root="'desk.history'">历史</view>
+              <view class="bag_btn" @click="backBook">推迟到店</view>
+              <view class="bag_btn" @click="cancel">取消订台</view>
+              <view class="bag_btn"  @click="goGetHistory">历史</view>
              <view class="bag"></view>
           </view>
       </view>
@@ -87,22 +87,23 @@ export default {
   },
   methods: {
     // 历史
-    // goGetHistory () {
+    // goGetHistory (root) {
+    //   console.log(root);
+    //   let result = this.$getRoot(root)
+    //   if(!result) return this.$showToast('抱歉，暂无权限')
+    // },
+    // 预约
+    // book () {
+    //   this.index = 0
     //   this.$minRouter.push({
-    //     name: 'platform-history',
+    //     name: 'order-make',
     //     params: { id: this.idNum }
     //   })
     // },
-    // 预约
-    book () {
-      this.index = 0
-      this.$minRouter.push({
-        name: 'order-make',
-        params: { id: this.idNum }
-      })
-    },
     // 开台
     startOrder () {
+       let a  =  this.$getRoot('desk.open')
+      if(!a) return this.$showToast('抱歉，暂无权限')
       this.index = 1
       this.$minRouter.push({
         name: 'stage-make',
@@ -111,6 +112,8 @@ export default {
     },
     // 推迟到店
     backBook () {
+      let a  =  this.$getRoot('desk.delayBook')
+      if(!a) return this.$showToast('抱歉，暂无权限')
       this.$refs.show.handleShow({
         title: `确定将用户的预抵时间推迟${this.list.store_setting.booking_delay_setting.delay_time}分钟`,
         content: '',
@@ -137,6 +140,8 @@ export default {
     },
     // 取消订台
     cancel () {
+       let a  =  this.$getRoot('desk.cancelBook')
+      if(!a) return this.$showToast('抱歉，暂无权限')
       this.$refs.show.handleShow({
         title: '是否取消当前预定',
         content: '',
@@ -169,6 +174,8 @@ export default {
     },
     // 存酒
     saveWine () {
+      let a = this.$getRoot('desk.saveWine')
+      if(!a) return this.$showToast('抱歉，暂无权限')
       this.index = 2
       // 跳转到选择客户页面（存酒）
       this.$minRouter.push({

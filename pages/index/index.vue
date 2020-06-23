@@ -14,14 +14,14 @@
               <view class="f24 m-top-20">{{ userInfo.store_name }} | {{ userInfo.position_name }}</view>
             </view>
           </view>
-          <view class="min-flex min-flex-main-center" @click="navigateTo" v-root="'changeStore'">
+          <view class="min-flex min-flex-main-center" @click="navigateTo('changeStore')" >
             <view class="f24">切换门店</view>
             <view class="right_arrow"></view>
           </view>
         </view>
         <view style="height: 70rpx;"></view>
         <view class="bar m-lr-30 min-flex min-flex-main-start">
-          <view class="left" @click="toPlatform" v-root="'desk'">
+          <view class="left" @click="toPlatform('desk')">
             <view class="yele-grid2">
               <view class="left_item">
                 <image class="img" src="/static/images/index/bar.png" />
@@ -32,7 +32,7 @@
               </view>
             </view>
           </view>
-          <view class="right m-left-20" @click="toCwine" v-root="'confiscate'">
+          <view class="right m-left-20" @click="toCwine('confiscate')">
             <view class="yele-grid1">
               <view class="min-flex min-flex-dir-top">
                 <image class="img" src="/static/images/index/bar1.png" />
@@ -202,7 +202,9 @@ export default {
   },
 
   methods: {
-    navigateTo() {
+    navigateTo(root) {
+      let result = this.$getRoot(root)
+      if(!result) return this.$showToast('抱歉，暂无权限')
       this.$minRouter.push({
         name: "switch-stores",
         type: "navigateTo",
@@ -214,12 +216,16 @@ export default {
         this.$refs.pullScroll.refresh();
       });
     },
-    toCwine() {
+    toCwine(root) {
+       let result = this.$getRoot(root)
+      if(!result) return this.$showToast('抱歉，暂无权限')
       this.$minRouter.push({
         name: "confiscated-wine"
       });
     },
-    toPlatform() {
+    toPlatform(root) {
+       let result = this.$getRoot(root)
+      if(!result) return this.$showToast('抱歉，暂无权限')
       this.$minRouter.push({
         name: "platform-admin",
         type: "navigateTo",

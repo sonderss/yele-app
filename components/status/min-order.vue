@@ -49,14 +49,14 @@
     </view>
 
     <view class="btns">
-      <view :class="index === 0 ? 'btn active' : 'btn' "  v-root="'desk.book'" @click="book">预约</view>
-      <view :class="index === 1 ? 'btn active' : 'btn' " v-root="'desk.order'" @click="goOrder">下单</view>
-      <view  :class="index === 2 ? 'btn active' : 'btn' " v-root="'desk.saveWine'" @click="saveWine">存酒</view>
+      <view :class="index === 0 ? 'btn active' : 'btn' "   @click="book">预约</view>
+      <view :class="index === 1 ? 'btn active' : 'btn' "   @click="goOrder">下单</view>
+      <view  :class="index === 2 ? 'btn active' : 'btn' " @click="saveWine">存酒</view>
       <view class="badge" @click="showToastTxt"  id='testDom'>
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
           <view class="toast anmatiin " v-if="toast">
-              <view class="bag_btn" @click="del_order"  v-root="'desk.close'">销台</view>
-              <view class="bag_btn"  @click="goGetHistory"  v-root="'desk.history'">历史</view>
+              <view class="bag_btn" @click="del_order">销台</view>
+              <view class="bag_btn"  @click="goGetHistory" >历史</view>
              <view class="bag"></view>
           </view>
       </view>
@@ -97,42 +97,46 @@ export default {
     //   })
     // },
     // 销台
-    del_order () {
-      this.$refs.show.handleShow({
-        title: '',
-        content: '是否销台',
-        contentCenter: true,
-        cancelText: '否',
-        confirmText: '是',
-        confirmColor: 'red',
-        cancelColor: '#0090ff',
-        success: (e) => {
-          if (e.id === 1) {
-            // 销台接口
-            this.$minApi.delOrder({
-              desk_id: this.idNum
-            })
-              .then(res => {
-                if (res.length === 0) {
-                  this.$showToast('销台成功')
-                  setTimeout(() => {
-                    this.$minRouter.push({
-                      name: 'redplatform-detail',
-                      type: 'redirectTo',
-                      params: { id: this.idNum, date: this.date }
-                    })
-                  }, 2000)
-                }
-              })
-              .catch(() => {
-                this.$showToast('缺少开台ID')
-              })
-          }
-        }
-      })
-    },
+    // del_order () {
+    //    let a = this.$getRoot('desk.close')
+    //   if(!a) return this.$showToast('抱歉，暂无权限')
+    //   this.$refs.show.handleShow({
+    //     title: '',
+    //     content: '是否销台',
+    //     contentCenter: true,
+    //     cancelText: '否',
+    //     confirmText: '是',
+    //     confirmColor: 'red',
+    //     cancelColor: '#0090ff',
+    //     success: (e) => {
+    //       if (e.id === 1) {
+    //         // 销台接口
+    //         this.$minApi.delOrder({
+    //           desk_id: this.idNum
+    //         })
+    //           .then(res => {
+    //             if (res.length === 0) {
+    //               this.$showToast('销台成功')
+    //               setTimeout(() => {
+    //                 this.$minRouter.push({
+    //                   name: 'redplatform-detail',
+    //                   type: 'redirectTo',
+    //                   params: { id: this.idNum, date: this.date }
+    //                 })
+    //               }, 2000)
+    //             }
+    //           })
+    //           .catch(() => {
+    //             this.$showToast('缺少开台ID')
+    //           })
+    //       }
+    //     }
+    //   })
+    // },
     // 存酒
     saveWine () {
+        let a = this.$getRoot('desk.saveWine')
+      if(!a) return this.$showToast('抱歉，暂无权限')
       this.index = 2
       // 跳转到选择客户页面（存酒）
       this.$minRouter.push({
@@ -141,12 +145,12 @@ export default {
       })
     },
     // 预约
-    book () {
-      this.$minRouter.push({
-        name: 'order-make',
-        params: { id: this.idNum }
-      })
-    },
+    // book () {
+    //   this.$minRouter.push({
+    //     name: 'order-make',
+    //     params: { id: this.idNum }
+    //   })
+    // },
     // 重新下单
     reorder () {
       // 取消该单
@@ -220,6 +224,8 @@ export default {
     },
     // 下单
     goOrder () {
+       let a = this.$getRoot('desk.order')
+      if(!a) return this.$showToast('抱歉，暂无权限')
       this.$minRouter.push({
         name: 'placean-order',
         params: { desk_id: this.list.desk_info.desk_id, minim_charge: this.list.desk_info.minim_charge }

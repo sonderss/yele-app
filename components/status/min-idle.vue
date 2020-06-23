@@ -23,14 +23,14 @@
     </view>
 
      <view class="btns">
-      <view :class="index === 0 ? 'btn active' : 'btn' "   @click="book" v-root="'desk.book'">预约</view>
-      <view :class="index === 1 ? 'btn active' : 'btn' "  @click="startOrder" v-root="'desk.open'">开台</view>
-      <view :class="index === 2 ? 'btn active' : 'btn' " @click="saveWine" v-root="'desk.saveWine'">存酒</view>
+      <view :class="index === 0 ? 'btn active' : 'btn' "   @click="book">预约</view>
+      <view :class="index === 1 ? 'btn active' : 'btn' "  @click="startOrder" >开台</view>
+      <view :class="index === 2 ? 'btn active' : 'btn' " @click="saveWine">存酒</view>
       <view class="badge" @click="showToastTxt"  id='testDom'>
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
           <view class="toast anmatiin " v-if="toast">
-              <view class="bag_btn"  @click="goGetHistory" v-root="'desk.history'">历史</view>
-              <view  class="bag_btn"  @click="stopUse" v-root="'desk.lock'">停用</view>
+              <view class="bag_btn"  @click="goGetHistory">历史</view>
+              <view  class="bag_btn"  @click="stopUse">停用</view>
              <view class="bag"></view>
           </view>
       </view>
@@ -73,15 +73,17 @@ export default {
     //   })
     // },
     // 预约
-    book () {
-      this.index = 0
-      this.$minRouter.push({
-        name: 'order-make',
-        params: { id: this.idNum }
-      })
-    },
+    // book () {
+    //   this.index = 0
+    //   this.$minRouter.push({
+    //     name: 'order-make',
+    //     params: { id: this.idNum }
+    //   })
+    // },
     // 开台
     startOrder () {
+       let a  =  this.$getRoot('desk.open')
+      if(!a) return this.$showToast('抱歉，暂无权限')
       this.index = 1
       // console.log(this.idNum)
       this.$minRouter.push({
@@ -91,6 +93,8 @@ export default {
     },
     // 停用
     stopUse () {
+      let a  =  this.$getRoot('desk.lock')
+      if(!a) return this.$showToast('抱歉，暂无权限')
       this.$refs.show.handleShow({
         title: '',
         content: '是否确认停用此台',
@@ -122,6 +126,8 @@ export default {
     },
     // 存酒
     saveWine () {
+      let a = this.$getRoot('desk.saveWine')
+      if(!a) return this.$showToast('抱歉，暂无权限')
       this.index = 2
       // 跳转到选择客户页面（存酒）
       this.$minRouter.push({

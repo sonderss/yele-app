@@ -2,8 +2,8 @@
   <view class="platform-history p-top-20 p-lr-30">
     <view class="card p-lr-20 p-top-30 m-bottom-20"  v-for="(item,index) in list" :key='index'>
       <view class="main p-bottom-30" >
-        <view>客户姓名：{{item.client_name}}</view>
-        <view>联系电话：{{item.client_mobile}}</view>
+        <view>客户姓名：{{item.client_name ? item.client_name : '暂无'}}</view>
+        <view>联系电话：{{item.client_mobile ? item.client_mobile : '暂无'}}</view>
         <view>开台时间：{{item.opened_time}}</view>
         <view v-if="item.opening_status === -1">销台时间：{{item.closed_time}}</view>
         <view>营销人员：{{item.sales_name}}</view>
@@ -15,7 +15,7 @@
         <view v-if="item.pay_status === 0" :class="item.pay_status === 0 ? 'amount': 'tips'">
            待付金额：￥{{item.unpay_price}}
         </view>
-        <view v-if="item.opening_status === -1" class="tips">
+        <view v-if="item.pay_status === 1" class="tips">
             已结清
         </view>
         <view v-else class="amount"></view>

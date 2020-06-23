@@ -159,6 +159,7 @@ export default {
   background: #fff;
   .q{
     color: #333333;
+    font-weight: bold;
   }
   .t{
     text{

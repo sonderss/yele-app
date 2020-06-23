@@ -3,10 +3,9 @@
      <view class="main p-lr-20">
        <view class="top min-border-bottom">
          <view>提现到</view>
-         <view class="methods" @click="toChioce">
+         <view class="methods">
 
-            <text class="m-lr-10 f28">{{info.bank_card_name ? info.bank_card_name :'银行卡相关数据暂无接口'}}</text>
-            <image style="width:24rpx;height:24rpx" src="/static/images/arrow.png" />
+            <text class="m-lr-10 f28">{{info.bank_card_name ? info.bank_card_name :'尚未绑定银行卡'}}</text>
          </view>
        </view>
        <view class="bottom">
@@ -19,7 +18,7 @@
        </view>
 
      </view>
-  <text class="warn">输入金额超出可提现金额</text>
+    <text class="warn">手续费：￥0.5</text>
      <view class="submit" @click="submit">提现</view>
   </view>
 </template>
@@ -125,8 +124,13 @@ export default {
   text-align: center;
 }
 .warn{
+  width: 100%;
+  height: 50rpx;
+  display: block;
   color: red;
   font-size: 22rpx;
-  margin: 20rpx;
+  line-height: 50rpx;
+  text-align: right;
+  padding: 0 20rpx;
 }
 </style>

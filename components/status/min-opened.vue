@@ -29,12 +29,12 @@
       </view>
       <view class="main1 p-top-20">
         <view  class="m-bottom-10" v-for="i in list.order_list" :key="i.order_sn" style="width:100%;display: flex;justify-content: space-between;">
-            <text class="f28">订 单 号 ：{{i.order_sn}}</text>
+            <text class="f28">订 单 号&nbsp;：{{i.order_sn}}</text>
             <text class="f26">{{i.pay_status === 0 ? `￥${i.unpay_price}`:'已支付'}}</text>
         </view>
       </view>
       <view class="min-top-border"></view>
-      <view class="timer min-top-border p-bottom-20">待付合计：￥{{list.payable_total}}</view>
+      <view class="timer min-top-border p-bottom-20" style="font-size:28rpx">待付合计:<text  style="font-size:28rpx;margin-left:15rpx">￥{{list.payable_total}}</text></view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20" style="margin-bottom:200rpx">
       <view class="p-tb-30 min-border-bottom">操作信息</view>
@@ -47,18 +47,18 @@
     </view>
 
     <view class="btns">
-      <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book" v-root="'desk.book'">预约</view>
-      <view :class="index === 1 ? 'btn active' : 'btn' "  @click="changeOrder" v-root="'desk.transfer'" >转台</view>
-      <view  :class="index === 2 ? 'btn active' : 'btn' " @click="goOrder" v-root="'desk.order'">下单</view>
+      <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book">预约</view>
+      <view :class="index === 1 ? 'btn active' : 'btn' "  @click="changeOrder" >转台</view>
+      <view  :class="index === 2 ? 'btn active' : 'btn' " @click="goOrder">下单</view>
       <view class="badge" @click="showToastTxt"  id='testDom'>
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
           <view class="toast anmatiin " v-if="toast">
-              <view class="bag_btn" @click="saveWine" v-root="'desk.saveWine'">存酒</view>
-              <view class="bag_btn" @click="bill" v-root="'desk.bill'">账单</view>
+              <view class="bag_btn" @click="saveWine">存酒</view>
+              <view class="bag_btn" @click="bill">账单</view>
               <view class="bag_btn" @click="order" >订单</view>
-               <view class="bag_btn" @click="getWine" v-root="'desk.fetchWine'">取酒</view>
-              <view class="bag_btn" @click="clear_order" v-root="'desk.clean'">清台</view>
-              <view class="bag_btn"  @click="goGetHistory" v-root="'desk.history'">历史</view>
+               <view class="bag_btn" @click="getWine">取酒</view>
+              <view class="bag_btn" @click="clear_order">清台</view>
+              <view class="bag_btn"  @click="goGetHistory">历史</view>
              <view class="bag"></view>
           </view>
       </view>
@@ -100,18 +100,22 @@ export default {
     //   })
     // },
     // 预约
-    book () {
-      this.$minRouter.push({
-        name: 'order-make',
-        params: { id: this.idNum }
-      })
-    },
+    // book () {
+    //   let a = this.$getRoot('desk.book')
+    //   if(!a) return this.$showToast('抱歉，暂无权限')
+    //   this.$minRouter.push({
+    //     name: 'order-make',
+    //     params: { id: this.idNum }
+    //   })
+    // },
     // 展示剩余按钮
     showToastTxt () {
       this.toast = !this.toast
     },
     // 转台
     changeOrder () {
+       let a = this.$getRoot('desk.transfer')
+      if(!a) return this.$showToast('抱歉，暂无权限')
       this.$minRouter.push({
         name: 'change-platform',
         params: { old_id: this.idNum }
@@ -119,7 +123,9 @@ export default {
     },
     // 账单
     bill () {
-      // 这里需要传开台记录id 台位ID
+       let a = this.$getRoot('desk.bill')
+      if(!a) return this.$showToast('抱歉，暂无权限')
+      // 这里需要传开台记录id 台位ID 
       this.$minRouter.push({
         name: 'desk-bill',
         params: { open_id: this.list.desk_info.opening_id, desk_id: this.idNum }
@@ -134,6 +140,8 @@ export default {
     },
     // 存酒
     saveWine () {
+      let a = this.$getRoot('desk.saveWine')
+      if(!a) return this.$showToast('抱歉，暂无权限')
       // 跳转到选择客户页面（存酒）
       this.$minRouter.push({
         name: 'save-wine',
@@ -142,7 +150,8 @@ export default {
     },
     // 取酒
     getWine () {
-      // 这里将客户信息传过去,暂时写死
+        let a = this.$getRoot('desk.fetchWine')
+      if(!a) return this.$showToast('抱歉，暂无权限')
       this.$minRouter.push({
         name: 'fetch-liquor',
         params: { name: this.list.desk_info.client_name, phone: this.list.desk_info.client_mobile }
@@ -150,6 +159,8 @@ export default {
     },
     // 下单
     goOrder () {
+       let a = this.$getRoot('desk.order')
+      if(!a) return this.$showToast('抱歉，暂无权限')
       this.$minRouter.push({
         name: 'order-entry',
         params: {
@@ -162,6 +173,8 @@ export default {
     },
     // 清台
     clear_order () {
+      let a = this.$getRoot('desk.clean')
+      if(!a) return this.$showToast('抱歉，暂无权限')
       this.$refs.show.handleShow({
         title: '',
         content: '是否确认账单已清，并开始清台',

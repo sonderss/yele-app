@@ -132,6 +132,16 @@ Vue.directive('root', {
   }
 })
 
+Vue.prototype.$getRoot =  function(root){
+  const data = this.$store.state.user.userInfo.access
+  for (const i of data) {
+    if (i === root) {
+      return true
+    }
+  }
+  return false
+}
+
 Vue.prototype.$showToast = (title, icon = 'none', duration = 2000) => {
   uni.showToast({
     title,

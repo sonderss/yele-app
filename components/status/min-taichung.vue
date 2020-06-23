@@ -43,15 +43,15 @@
     </view>
 
      <view class="btns">
-      <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book" v-root="'desk.book'">预约</view>
-      <view :class="index === 1 ? 'btn active' : 'btn' " @click="saveWine" v-root="'desk.saveWine'">存酒</view>
+      <view :class="index === 0 ? 'btn active' : 'btn' "  @click="book">预约</view>
+      <view :class="index === 1 ? 'btn active' : 'btn' " @click="saveWine" >存酒</view>
       <view  :class="index === 2 ? 'btn active' : 'btn' " @click="orderGet" >订单</view>
       <view class="badge" @click="showToastTxt"  id='testDom'>
           <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
           <view class="toast anmatiin " v-if="toast">
-              <view class="bag_btn" @click="bill" v-root="'desk.bill'">账单</view>
-              <view class="bag_btn" @click="del_order" v-root="'desk.close'">销台</view>
-              <view class="bag_btn"  @click="goGetHistory" v-root="'desk.history'">历史</view>
+              <view class="bag_btn" @click="bill">账单</view>
+              <view class="bag_btn" @click="del_order" >销台</view>
+              <view class="bag_btn"  @click="goGetHistory">历史</view>
              <view class="bag"></view>
           </view>
       </view>
@@ -99,15 +99,17 @@ export default {
       })
     },
     // 预约
-    book () {
-      this.index = 0
-      this.$minRouter.push({
-        name: 'order-make',
-        params: { id: this.idNum }
-      })
-    },
+    // book () {
+    //   this.index = 0
+    //   this.$minRouter.push({
+    //     name: 'order-make',
+    //     params: { id: this.idNum }
+    //   })
+    // },
     // 存酒
     saveWine () {
+        let a = this.$getRoot('desk.saveWine')
+      if(!a) return this.$showToast('抱歉，暂无权限')
       this.index = 1
       // 跳转到选择客户页面（存酒）
       this.$minRouter.push({
@@ -117,39 +119,41 @@ export default {
       })
     },
     // 销台
-    del_order () {
-      this.$refs.show.handleShow({
-        title: '',
-        content: '是否销台',
-        contentCenter: true,
-        cancelText: '否',
-        confirmText: '是',
-        confirmColor: 'red',
-        cancelColor: '#0090ff',
-        success: (e) => {
-          if (e.id === 1) {
-            // 销台接口
-            this.$minApi.delOrder({
-              desk_id: this.idNum
-            })
-              .then(res => {
-                if (res.length === 0) {
-                  this.$showToast('销台成功')
-                  setTimeout(() => {
-                    this.$minRouter.push({
-                      name: 'redplatform-detail',
-                      type: 'redirectTo',
-                      params: { id: this.idNum, date: this.date }
-                    })
-                  }, 2000)
-                }
-              })
-          }
-        }
-      })
-    },
+    // del_order () {
+    //   this.$refs.show.handleShow({
+    //     title: '',
+    //     content: '是否销台',
+    //     contentCenter: true,
+    //     cancelText: '否',
+    //     confirmText: '是',
+    //     confirmColor: 'red',
+    //     cancelColor: '#0090ff',
+    //     success: (e) => {
+    //       if (e.id === 1) {
+    //         // 销台接口
+    //         this.$minApi.delOrder({
+    //           desk_id: this.idNum
+    //         })
+    //           .then(res => {
+    //             if (res.length === 0) {
+    //               this.$showToast('销台成功')
+    //               setTimeout(() => {
+    //                 this.$minRouter.push({
+    //                   name: 'redplatform-detail',
+    //                   type: 'redirectTo',
+    //                   params: { id: this.idNum, date: this.date }
+    //                 })
+    //               }, 2000)
+    //             }
+    //           })
+    //       }
+    //     }
+    //   })
+    // },
     // 账单
     bill () {
+      let a = this.$getRoot('desk.bill')
+      if(!a) return this.$showToast('抱歉，暂无权限')
       // 这里需要传开台记录id 台位ID
       this.$minRouter.push({
         name: 'desk-bill',

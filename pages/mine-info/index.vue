@@ -33,7 +33,7 @@
           ></min-cell-item>
         </picker>
         <min-cell-item
-          title="手机" :tail="$minCommon.hideTel(userInfo.mobile ? userInfo.mobile : '15888888888')"
+          title="手机" :tail="$minCommon.hideTel(userInfo.mobile ? userInfo.mobile : '暂无')"
           :border="false" arrow
           @eventParent="setPhone"
         ></min-cell-item>

@@ -27,7 +27,7 @@
                 </view>
             </view>
           </view>
-          <view v-if="item.order_product_list.length > 2 && item.order_product_list.length !== 'undefined'">
+          <view v-if="item.order_product_list.length >= 2 && item.order_product_list.length !== 'undefined'">
             <view class="mid-view min-border-top ">
                 <view class="left-view">
                   <view class="left-photo m-right-20" v-for="(i,n) in item.order_product_list" :key="n">

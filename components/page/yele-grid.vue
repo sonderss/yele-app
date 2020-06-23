@@ -27,6 +27,8 @@ export default {
   },
   methods: {
     goTo (n) {
+      let result = this.$getRoot(this.list[n].root)
+      if(!result) return this.$showToast('抱歉，暂无权限')
       this.$minRouter.push({
         name: this.list[n].name,
         type: 'navigateTo',
