@@ -5,8 +5,10 @@ const minRequest = new MinRequest()
 let deve = Boolean
 if( process.env.NODE_ENV === 'development'){
   deve = true
+  store.dispatch('status/setDev',true)
 }else{
   deve = false
+  store.dispatch('status/setDev',false)
 }
 // 设置默认配置
 minRequest.setConfig((config) => {
@@ -15,7 +17,7 @@ minRequest.setConfig((config) => {
  
   }else{
     // 'https://api.app-store.test.yeleonline.com'
-     config.baseURL = 'http://api.app-store.dev.yeleonline.com/api'
+     config.baseURL = 'https://api.app-store.test.yeleonline.com/api'
   }
   return config
 })

@@ -17,7 +17,7 @@
           </view>
           <view class="left">
             <image src="/static/images/seats.png" />
-            <view class="m-top-20">{{item.transfer_desk_name}}</view>
+            <view class="m-top-20 a">{{item.transfer_desk_name ? item.transfer_desk_name  : "暂无数据"}}</view>
           </view>
         </view>
         <view class="bottm">
@@ -136,7 +136,14 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 100rpx;
+       width: 150rpx;
+      .a{
+        width: 150rpx;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: center;
+      }
       image {
         width: 42rpx;
         height: 42rpx;

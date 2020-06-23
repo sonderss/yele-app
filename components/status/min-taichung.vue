@@ -36,7 +36,7 @@
       <view class="p-tb-30 min-border-bottom">操作信息</view>
       <view class="main p-tb-20">
         <view>营销人员：{{list.desk_info.book_user_name?list.desk_info.book_user_name:"暂无数据"}}</view>
-        <view>预约时间：{{list.desk_info.book_time}}</view>
+        <view>预约时间：{{$minCommon.formatDate(new Date(list.desk_info.book_time *1000),'yyyy-MM-dd hh:mm:ss') }}</view>
         <view>开台人员：{{list.desk_info.open_user_name}}</view>
         <view>开台时间：{{$minCommon.formatDate(new Date(list.desk_info.open_time *1000),'yyyy-MM-dd hh:mm:ss') }}</view>
       </view>

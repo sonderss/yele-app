@@ -112,6 +112,7 @@ export default {
       top: "",
       lastY: "",
       flag: 0,
+      testArr:[],
       grid2: [
         {
           url: "../order-record/index.vue",
@@ -201,11 +202,6 @@ export default {
   },
 
   methods: {
-	  to(){
-		uni.navigateTo({
-			url:'../placean-order/test'
-		})
-	  },
     navigateTo() {
       this.$minRouter.push({
         name: "switch-stores",
@@ -217,9 +213,6 @@ export default {
       this.$nextTick(() => {
         this.$refs.pullScroll.refresh();
       });
-    },
-    pullDown(pullScroll) {
-      pullScroll.finish();
     },
     toCwine() {
       this.$minRouter.push({
@@ -233,18 +226,11 @@ export default {
         path: "/pages/platform-admin/index"
       });
     },
-    goListPages() {
-      uni.navigateTo({
-        url: "../page"
-      });
-    },
     start(e) {
       this.lastY = e.changedTouches[0].pageY;
     },
-
     move(e) {
       let currentY = e.changedTouches[0].pageY;
-
       this.top = currentY - this.lastY;
     },
     end(e) {

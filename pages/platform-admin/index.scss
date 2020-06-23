@@ -48,7 +48,11 @@
         }
         .name{
           font-size: 24rpx;
-          
+          width:100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          padding: 0 10rpx;
         }
         .count{
           font-size: 24rpx;

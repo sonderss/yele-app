@@ -92,14 +92,12 @@ export default {
   },
   onShow () {
     this.getData(this.date)
-    console.log(this.date);
   },
   mounted () {
     // this.getData('2020-3-18')
   },
   onNavigationBarButtonTap () {
     this.show = !this.show
-    console.log( this.show )
   },
   computed: {
     // 返回桌台数组

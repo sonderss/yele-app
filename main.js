@@ -119,7 +119,6 @@ Vue.directive('root', {
    inserted:  (el, bind) => {
     if (!test(bind.value)) {
       // el.parentNode.removeChild(el)
-    }else{
     }
     function test (root) {
       const data = store.state.user.userInfo.access

@@ -38,6 +38,12 @@ export default {
       mobile: '13197669435'
     }
   },
+  onLoad(){
+    if(!this.$store.state.status.dev){
+       this.code = ''
+       this.mobile = ''
+    }
+  },  
   methods: {
     getVerificationCode () { // 获取验证码
       if (!this.$minCommon.checkMobile(this.mobile)) {

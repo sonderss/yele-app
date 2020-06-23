@@ -82,7 +82,8 @@ export default {
           this.$showToast('提交成功')
           setTimeout(() => {
             this.$minRouter.push({
-              name: 'submit-success'
+              name: 'redsubmit-success',
+              type:"redirectTo"
             })
           }, 2000)
         }

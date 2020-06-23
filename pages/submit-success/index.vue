@@ -10,8 +10,8 @@
 
 <script>
 export default {
-  name: 'submit-success',
-  navigate: ['navigateTo'],
+  name: 'redsubmit-success',
+  navigate: ['navigateTo','redirectTo'],
   data () {
     return {
       timer: ''
@@ -23,9 +23,12 @@ export default {
   },
   methods: {
     toAdmin () {
-      this.$minRouter.push({
-        name: 'platform-admin'
-      })
+      // this.$minRouter.push({
+      //   name: 'platform-admin'
+      // })
+      uni.navigateBack({
+          delta: 2
+      });
     }
   }
 }

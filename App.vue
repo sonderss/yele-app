@@ -66,15 +66,13 @@ export default {
                                     }
                                 }
                             });
-                            function setTitie(num){
-                              if(isNaN(num)){
-                                  num = 0
-                              }
-                                showLoading.setTitle("已下载" + num + "%")
-                            }
                             downloadTask.onProgressUpdate((res) => {
                                   console.log('下载进度' + res.progress);
-                                  setTitie(res.progress)
+                                  // setTitie(res.progress)
+                                if(isNaN(res.progress)){
+                                    res.progress = 0
+                                }
+                                showLoading.setTitle("已下载" + res.progress + "%")
                             });
                         } else if (c.cancel) {
                             console.log('用户点击取消');

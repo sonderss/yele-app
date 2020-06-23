@@ -6,10 +6,11 @@
       </view>
       <view class="main " v-for="(item,index) in data.detail" :key="index">
         <view class="img-view">
-           <img :src="item.product_img" style="width:100%"/>
+           <image :src="item.product_img" mode="aspectFill" style="width:100%" />
         </view>
         <view class="content">
            <text class="title f28 min-ellipsis">{{item.product_name}}</text>
+           <text class="title f28 min-ellipsis">数量：{{item.product_num}}</text>
            <text class="desc f24">提成：￥{{item.commission_amount}}</text>
         </view>
       </view>
@@ -21,6 +22,7 @@
       <view class="contxt p-tb-20">
           <view class="item">充公单号：{{data.order_sn}}</view>
           <view class="item">充公人员：{{data.confiscate_user_name}}</view>
+          <view class="item">当前状态：{{data.friend_status}}</view>
           <view class="item">确认人员：{{data.confirm_user_name ? data.confirm_user_name :'暂无数据' }}</view>
           <view class="item">提成合计：￥{{data.total_commission}}</view>
           <view class="item">充公时间：{{data.friend_create_time}}</view>

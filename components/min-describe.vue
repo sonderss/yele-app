@@ -12,7 +12,7 @@
       </view>
       <view class="right-view" @click="chinceSku">
          <view v-if="step">
-              <min-stepper   v-model="count" :isAnimation="false" :max="maxStep" @change="emitEvent"  icon='/static/images/yellow-add.png'></min-stepper>
+              <min-stepper   v-model="count" :isAnimation="Animation" :max="maxStep" @change="emitEvent"  icon='/static/images/yellow-add.png'></min-stepper>
          </view>
 
           <text v-if="num">x {{num}}</text>
@@ -33,7 +33,7 @@ export default {
     },
     leftIconValue: {
       type: String,
-      default: ''
+      default: '/static/images/goods.png'
     },
     leftTxt: {
       type: String,
@@ -74,6 +74,10 @@ export default {
     value:{
        type: [String, Number],
       default: 0
+    },
+    Animation:{
+      type:Boolean,
+      default:false
     }
   },
   data () {

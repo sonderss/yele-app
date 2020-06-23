@@ -4,7 +4,8 @@ export default {
   state: {
     intNet: false,
     a: 1,
-    date:""
+    date:"",
+    dev:false
   },
   mutations: {
     setStatus: (state, data) => {
@@ -12,7 +13,9 @@ export default {
     },
     setDate: (state,data) => {
       state.date = data
-      console.log(state.date)
+    },
+    setDev: (state,data) => {
+      state.dev = data
     }
   },
   actions: {
@@ -21,6 +24,9 @@ export default {
     },
     setDate ({ commit }, data) {
       commit('setDate', data)
+    },
+    setDev ({ commit },data) {
+      commit('setDev',data)
     }
   }
 }

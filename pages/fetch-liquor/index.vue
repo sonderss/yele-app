@@ -50,7 +50,7 @@ export default {
     // 获取存酒记录
     this.$minApi.getWinekeepingrecord()
       .then(res => {
-        this.list = res
+        this.list = res.list
         console.log(this.list)
       })
     this.clentInfo = {

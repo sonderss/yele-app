@@ -37,11 +37,16 @@ export default {
       payType: 1,
       list: { order_info: { minim_charge: '' } },
       buttonText: '',
-      totalAmount: ''
+      totalAmount: '',
+      delArr:[]
     }
   },
   watch: {
-   
+    delArr(a){
+      a.map((item,index) => {
+         this.$store.state.goods.orderSelArr.splice(index,1)
+      })
+    }
   },
   methods: {
     submit () {
@@ -65,9 +70,8 @@ export default {
           desk_id: this.$parseURL().desk_id
         }).then(res => {
           console.log(res)
-          
             this.$showToast('开台成功')
-            this.$store.dispatch('goods/setOrderSelArr', [])
+            // this.$store.dispatch('goods/setOrderSelArr', [])
             setTimeout(() => {
               this.$minRouter.push({
                 name: 'redopen-success',
@@ -89,6 +93,9 @@ export default {
           params: { desk_id: this.$parseURL().desk_id, order_id: this.$parseURL().order_id, open_status: 0 }
         })
       }
+      this.$store.state.goods.orderSelArr.map((item,index) => {
+          this.delArr.push(index)
+      })
     }
   },
   mounted () {
