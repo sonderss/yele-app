@@ -13,7 +13,7 @@ if( process.env.NODE_ENV === 'development'){
 // 设置默认配置
 minRequest.setConfig((config) => {
   if(deve){
-    config.baseURL = 'http://api.app-store.dev.yeleonline.com/api'
+     config.baseURL = 'http://api.app-store.dev.yeleonline.com/api'
  
   }else{
     // 'https://api.app-store.test.yeleonline.com'

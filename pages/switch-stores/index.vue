@@ -64,7 +64,7 @@ export default {
         }).then(res=>{
           console.log(res)
           this.$showToast('切换成功')
-          this.$store.dispatch('user/setUserInfo', res)
+           this.$store.dispatch('user/setUserInfoAuth', res.apiAuth)
           setTimeout(() => {
               this.$minRouter.push({
                 name:'index'
