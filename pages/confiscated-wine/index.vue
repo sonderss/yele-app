@@ -8,12 +8,14 @@
             :class="{ 'active':index==leftIndex }"
             :data-index="index"
             @tap="leftTap(index)"
-          >{{item.cate_name}}</view>
+          >{{item.cate_name ? item.cate_name   : 'null'}}</view>
         </scroll-view>
       </view>
+   
+    <view class="main" >
+      <scroll-view  scroll-y="true" :style="{ 'height':scrollHeight}" @scroll="mainScroll" @scrolltolower='test' :scroll-into-view="scrollInto" scroll-with-animation="true">
+     <view style="height:20rpx"></view>
 
-    <view class="main" style="margin-top:35rpx">
-      <scroll-view  scroll-y="true" :style="{ 'height':scrollHeight }" @scroll="mainScroll" @scrolltolower='test' :scroll-into-view="scrollInto" scroll-with-animation="true">
         <view class="item" v-for="(item,index) in mainArray" :key="index"  :id="'item-'+index" >
               <view class="goods" v-for="(item2,index2) in item.list" :key="index2" >
                 <image :src="item2.product_img" mode=""  @error='imgerr($event,index,index2)'></image>
@@ -29,7 +31,7 @@
                       <text class="f20 t">提成：￥<text  style="color:#FF0000;font-size:30">{{item2.sku.length >= 1 ?  item2.sku[0].amount : item2.min_amount}}</text></text>
                     </view>
                     <view class="steper">
-                      <min-stepper v-if="item2.sku.length <= 1"  :isFlag="item2.isFlag"  v-model="item2.step"  @change="changeChioce(index,index2)"></min-stepper>
+                      <min-stepper v-if="item2.sku.length <= 1"   v-model="item2.step"  @change="changeChioce(index,index2)"></min-stepper>
                       <view class="isSku f24"  v-if="item2.sku.length > 1 "  @click="selSku(index,index2)">选规格</view>
                     </view>
                   </view>
@@ -95,8 +97,8 @@
               </view>
               <!-- sku信息 -->
               <view class="sku-view">
-                <text class="f22">{{skuObj.product_name}}</text>
-                <text class="f22 m-tb-20">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
+                <text class="f22 a">{{skuObj.product_name}}</text>
+                <text class="f22 m-tb-20 a">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
                 <text class="f22 m">提成:￥<text class="money">{{skuObj.sku[chioceIndex].amount}}</text></text>
               </view>
           </view>
@@ -165,9 +167,6 @@ export default {
         this.scrollHeight = `${res.windowHeight}px`
       }
     })
-  },
-  onShow () {
-
   },
   mounted () {
     this.getData()
@@ -339,12 +338,7 @@ export default {
       this.mainArray.map(item => {
         item.list.map(item2 => {
             if(item2.step > 0){
-              console.log('需要更新',item2)
-              item2.isFlag = true
-              // this.$set(item2,"step",0)
-              setTimeout(() => {
-                   item2.isFlag = false
-              },200)
+              this.$set(item2,"step",0)
             }
         })
       })
@@ -478,11 +472,8 @@ export default {
             this.mainArray.map(item => {
               item.list.map(item2 => {
                   if(item2.step > 0){
-                    item2.isFlag = true
-                    // this.$set(item2,"step",0)
-                    setTimeout(() => {
-                        item2.isFlag = false
-                    },200)
+                   this.$set(item2,"step",0)
+                  
                   }
               })
             })

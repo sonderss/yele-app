@@ -34,8 +34,8 @@
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
       <view class="p-tb-30 min-border-bottom">客户信息</view>
       <view class="main p-tb-20">
-        <view>客户姓名：{{list.desk_info.client_name}}</view>
-        <view>联系电话：{{list.desk_info.client_mobile}}</view>
+        <view>客户姓名：{{list.desk_info.client_name ? list.desk_info.client_name : '暂无'}}</view>
+        <view>联系电话：{{list.desk_info.client_mobile ? list.desk_info.client_mobile : '暂无'}}</view>
         <view>当天生日：{{list.desk_info.is_birthday ? '是' : '否'}}</view>
         <view>预抵时间：{{$minCommon.formatDate(new Date(list.desk_info.arrival_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
       </view>
@@ -160,13 +160,15 @@ export default {
           }).then(res => {
             console.log(res);
           })
+          setTimeout(() => {
+                this.$minRouter.push({
+                  name: 'placean-order',
+                  params: { desk_id: this.list.desk_info.desk_id, minim_charge: this.list.desk_info.minim_charge }
+                })
+          },2000)
+      }else{
+        return this.$showToast('该台没有订单')
       }
-      setTimeout(() => {
-            this.$minRouter.push({
-              name: 'placean-order',
-              params: { desk_id: this.list.desk_info.desk_id, minim_charge: this.list.desk_info.minim_charge }
-            })
-      },2000)
     },
     // 申请开台
     applicationopening (n) {

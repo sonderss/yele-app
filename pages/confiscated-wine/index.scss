@@ -12,13 +12,15 @@ uni-page-body {
   align-content: flex-start;
   font-size: 28rpx;
   overflow: hidden;
+  width: 100%;
   .left {
     width: 160rpx;
     background-color: #fff;
     line-height: 80rpx;
     box-sizing: border-box;
     font-size: 32rpx;
-
+    position: fixed;
+    left: 0;
     .item {
       position: relative;
       text-align: center;
@@ -49,9 +51,8 @@ uni-page-body {
     padding-left: 20rpx;
     width: 75%;
     flex-grow: 1;
-    box-sizing: border-box;
     margin-right: 30rpx;
-    width: 100%;
+    margin-left: 160rpx;
     .title {
       line-height: 64rpx;
       font-size: 24rpx;
@@ -110,6 +111,12 @@ uni-page-body {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          .t{
+            width:350rpx;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
         }
 
         .right-view-bottom {
@@ -267,7 +274,13 @@ uni-page-body {
         flex-direction: column;
         justify-content: flex-end;
         align-content: flex-end;
-
+        .a{
+          width:500rpx;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: block;
+        }
         .m {
           color: #ff0000;
 
@@ -302,7 +315,6 @@ uni-page-body {
       width: 100%;
       display: flex;
       flex-wrap: wrap;
-
       .item {
         padding: 0 20rpx;
         word-wrap: none;
@@ -313,6 +325,9 @@ uni-page-body {
         margin-bottom: 20rpx;
         text-align: center;
         line-height: 58rpx;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
 
       .item-active {
@@ -325,6 +340,9 @@ uni-page-body {
         margin-bottom: 20rpx;
         text-align: center;
         line-height: 58rpx;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
     }
   }

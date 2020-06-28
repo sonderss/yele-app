@@ -116,23 +116,23 @@
               </view>
               <!-- sku信息 -->
               <view class="sku-view">
-                <text class="f24">{{skuObj.product_name}}</text>
-                <text class="f24 m-tb-10">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
+                <text class="f24 t">{{skuObj.product_name}}</text>
+                <text class="f24 m-tb-10 t">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
                 <text class="f30 m">￥<text class="money">{{skuObj.sku[chioceIndex].sku_price}}</text></text>
               </view>
           </view>
         </view>
         <view class="min-border-bottom m-lr-30"></view>
         <!-- 可选择规格项 -->
-        <view class="sku-item" style="height:auto">
+        <view class="sku-item" style="height:300rpx;padding-top:10rpx">
             <view class="f26">规格</view>
             <view class="item-view" >
-                <view :class="chioceIndex ===index ?   'item-active' : 'item' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
+                <view :class="chioceIndex ===index ?   'item-active t' : 'item t' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
             </view>
         </view>
         <view class="min-border-bottom m-lr-30"></view>
         <!-- 数量 -->
-        <view class="sku-item sku-item-num" >
+        <view class="sku-item sku-item-num" style="padding-top:10rpx">
             <view class="f26">数量</view>
             <view class="m-tb-30">
                 <min-stepper :isAnimation="false"  v-model="skuObj.step"></min-stepper>
@@ -241,8 +241,8 @@ export default {
               this.mainArray.map(item1 => {
                 if(item1.product && item1.product.length > 0){
                       item1.product.map((item2,index2) => {
-                            if(item2.type === 'product' || item2.step === 0){
-                                 if(item.id || item.id ===  item2.sku[0].id){
+                            if(item2.type === 'product' &&  item2.step === 0){
+                                 if(item.id && item.id ===  item2.sku[0].id){
                                    // 重置多规格商品
                                      item2.isFlag = false
                                  }
@@ -430,7 +430,7 @@ export default {
     selSku (index, index2) {
       this.isSelSku = true
       this.skuObj = this.mainArray[index].product[index2]
-       this.skuObj.step =1
+       this.skuObj.step = 1
       console.log('商品规格弹窗', this.skuObj)
     },
     changesPopNoStep(index, index2,type){
@@ -859,6 +859,12 @@ uni-page-body{overflow: hidden;min-height: 100vh;width: 100%;}
       flex-direction: column;
       justify-content: flex-end;
       align-content: flex-end;
+      .t{
+         width:400rpx;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
       .m{
         color: #FF0000;
         .money{
@@ -885,6 +891,12 @@ uni-page-body{overflow: hidden;min-height: 100vh;width: 100%;}
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
+    .t{
+        width:280rpx;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
     .item {
         padding: 0 18rpx;
         word-wrap: none;

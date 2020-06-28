@@ -42,7 +42,7 @@
           </view>
         </view>
       </view>
-      <yele-grid :list="grid2"></yele-grid>
+      <yele-grid :list="grid2" ></yele-grid>
       <yele-grid :list="grid3"></yele-grid>
     </scroll-view>
   </view>

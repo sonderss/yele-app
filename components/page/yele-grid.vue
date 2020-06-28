@@ -2,7 +2,7 @@
 <view class="yele-grid min-flex min-flex-main-start min-flex-wrap-wrap m-lr-30 m-top-20">
     <view 
      v-for="(item,index) in list" :key="item.name"
-     class="grid-item min-flex min-flex-dir-top"
+     :class="itemNum ? 'grid-item-3 min-flex min-flex-dir-top' : 'grid-item min-flex min-flex-dir-top'"
      @click="goTo(index)"
      v-root="item.root"
     >
@@ -19,6 +19,10 @@ export default {
     list: {
       type: Array,
       default: () => []
+    },
+    itemNum:{
+      type:Boolean,
+      default:false
     }
   },
   data () {
@@ -47,6 +51,10 @@ export default {
   .grid-item {
     padding: 30rpx 0;
     width: 25%;
+  }
+  .grid-item-3 {
+    padding: 20rpx 0;
+    width: 33.3%;
   }
   .img {
     width: 80rpx;
