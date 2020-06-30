@@ -15,7 +15,7 @@
       </swiper-item>
     </swiper>
     <view class="goods-item p-lr-20 m-bottom-20">
-      <view class="top-view f28 m-top-10 f28">{{list.product_name}}</view>
+      <view class="top-view f28  f28">{{list.product_name}}</view>
       <view class="botm-view">
         <view class="f28" style="color:#fe432a;font-weight:700">
           ￥
@@ -342,7 +342,7 @@ export default {
   }
   .goods-item {
     width: 100%;
-    height: 118rpx;
+    height: 130rpx;
     background: #fff;
     display: flex;
     flex-direction: column;
@@ -354,6 +354,8 @@ export default {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          height: 50rpx;
+          line-height: 60rpx;
     }
     .botm-view {
       display: flex;

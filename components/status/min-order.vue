@@ -21,11 +21,11 @@
           当前状态：
           <text style="color: #FF0000;">{{list.order_info.is_can_open === 0 ?  '不满足开台条件' : '已够开台条件'}}</text>
         </view>
-        <view>开台订单：{{list.order_info.order_id === 0 ? '未进行点单':'￥'+list.order_info.order_total}}</view>
+        <view>开台订单：{{list.order_info.order_id === 0 ? '未进行点单':'￥'+list.order_info.order_total}}{{list.order_info.is_can_open === 0 ? '' : '（未支付）' }}</view>
         <view class="card-btns">
-          <min-btn size="xs" @click="reorder">重新下单</min-btn>
+          <min-btn size="xs" v-if="list.order_info.is_can_open !== 1" @click="reorder">重新下单</min-btn>
           <view class="m-left-20"></view>
-          <min-btn size="xs" type="white" border @click="applicationopening(list.order_info.is_can_open)">申请开台</min-btn>
+          <min-btn size="xs" v-if="list.order_info.is_can_open !== 1" type="white" border @click="applicationopening(list.order_info.is_can_open)">申请开台</min-btn>
           <view class="m-left-20"></view>
           <min-btn size="xs" type="white" border class="m-left-20" @click="checkorder(list.order_info.is_can_open)">查看订单</min-btn>
         </view>
@@ -37,7 +37,7 @@
         <view>客户姓名：{{list.desk_info.client_name ? list.desk_info.client_name : '暂无'}}</view>
         <view>联系电话：{{list.desk_info.client_mobile ? list.desk_info.client_mobile : '暂无'}}</view>
         <view>当天生日：{{list.desk_info.is_birthday ? '是' : '否'}}</view>
-        <view>预抵时间：{{$minCommon.formatDate(new Date(list.desk_info.arrival_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
+        <view v-if="list.desk_info.arrival_time">预抵时间：{{$minCommon.formatDate(new Date(list.desk_info.arrival_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
       </view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20" v-if="list.desk_info.booking_id !== 0">

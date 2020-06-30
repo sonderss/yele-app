@@ -1,6 +1,8 @@
 <template>
   <view class="withdrawaldetails p-tb-20 p-lr-30">
-    <view class="view_main p-lr-20">
+  
+    <!--发放详情-->
+    <view class="view_main p-lr-20" v-if="type===1">
       <view class="top_view min-border-bottom">
         <text class="desc">金额</text>
         <text class="money">+{{list.total_amount}}</text>
@@ -12,7 +14,7 @@
         </view>
         <view class="main min-flex min-flex-main-between">
           <text class="c">发放时间</text>
-          <text style="text-align:right">{{list.grant_time}}</text>
+          <text style="text-align:right">{{$minCommon.formatDate(new Date(list.grant_time*1000),"yyyy/MM/dd hh:mm:ss")  }}</text>
         </view>
         <view class="main min-flex min-flex-main-between">
           <text class="c">流水号</text>
@@ -28,7 +30,6 @@
         </view>
       </view>
     </view>
-    <!--发放详情-->
     <view v-if="type===1" class="m-top-20">
       <view v-for="(item,index) in list.grant_list" :key="index" class="m-bottom-20 view_main  p-lr-20 ">
         <view>
@@ -47,6 +48,84 @@
               <text style="text-align:right">详情 ></text>
             </view>
           </view>
+        </view>
+      </view>
+    </view>
+    <!--提现详情-->
+    <view class="view_main p-lr-20" v-if="type=== 2">
+      <view class="top_view min-border-bottom">
+        <text class="desc">金额</text>
+        <text class="money">+{{list.cash_amount}}</text>
+      </view>
+      <view class="bottom-view">
+        <view class="main min-flex min-flex-main-between">
+          <text class="c">类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型</text>
+          <text style="text-align:right">提现</text>
+        </view>
+        <view class="main min-flex min-flex-main-between">
+          <text class="c">提现时间</text>
+          <text style="text-align:right">{{ $minCommon.formatDate(new Date(list.create_time*1000),"yyyy/MM/dd hh:mm:ss") }}</text>
+        </view>
+        <view class="main min-flex min-flex-main-between">
+          <text class="c">提现方式</text>
+          <text style="text-align:right">{{list.transaction_target}}</text>
+        </view>
+        <view class="main min-flex min-flex-main-between">
+          <text class="c">交易流水</text>
+          <text style="text-align:right">{{list.serial_no}}</text>
+        </view>
+        <view class="main min-flex min-flex-main-between">
+          <text class="c">到账金额</text>
+          <text style="text-align:right">{{list.receive_amount}}</text>
+        </view>
+        <view class="main min-flex min-flex-main-between">
+          <text class="c">手续费流水</text>
+          <text style="text-align:right">{{list.transaction_fee_no}}</text>
+        </view>
+        <view class="main min-flex min-flex-main-between">
+          <text class="c">手&nbsp; 续&nbsp; 费</text>
+          <text style="text-align:right">{{list.cash_transaction_fee}}</text>
+        </view>
+        <view class="main min-flex min-flex-main-between">
+          <text class="c">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态</text>
+          <text style="text-align:right"> {{list.status === 1 ? '提现中' : (list.status === 2 ? '提现成功' : '提现失败' )}}</text>
+        </view>
+        <view class="main min-flex min-flex-main-between">
+          <text class="c">提现成功时间</text>
+          <text style="text-align:right">{{ $minCommon.formatDate(new Date(list.update_time*1000),"yyyy/MM/dd hh:mm:ss") }}</text>
+        </view>
+      </view>
+    </view>
+     <!--转账详情-->
+    <view class="view_main p-lr-20" v-if="type=== 3">
+      <view class="top_view min-border-bottom">
+        <text class="desc">金额</text>
+        <text class="money">+{{list.transfer_amount}}</text>
+      </view>
+      <view class="bottom-view">
+        <view class="main min-flex min-flex-main-between">
+          <text class="c">类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型</text>
+          <text style="text-align:right">转账</text>
+        </view>
+        <view class="main min-flex min-flex-main-between">
+          <text class="c">转账时间</text>
+          <text style="text-align:right">{{ $minCommon.formatDate(new Date(list.create_time*1000),"yyyy/MM/dd hh:mm:ss") }}</text>
+        </view>
+        <view class="main min-flex min-flex-main-between">
+          <text class="c">转账来源</text>
+          <text style="text-align:right">{{list.transaction_target}}</text>
+        </view>
+        <view class="main min-flex min-flex-main-between">
+          <text class="c">交易流水</text>
+          <text style="text-align:right">{{list.serial_no}}</text>
+        </view>
+        <view class="main min-flex min-flex-main-between">
+          <text class="c">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态</text>
+          <text style="text-align:right"> {{list.status === 1 ? '等待中' : (list.status === 2 ? '成功' : '失败' )}}</text>
+        </view>
+        <view class="remake">
+          <view class="">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</view>
+          <view class="m-left-20"> {{list.remark}}</view>
         </view>
       </view>
     </view>
@@ -80,6 +159,24 @@ export default {
         console.log(res);
         this.list =res
       })
+    },
+    // 提现详情
+    getTiDetail(){
+      this.$minApi.getTiXianDetail({
+        record_id:this.$parseURL().id
+      }).then(res => {
+        console.log(res);
+        this.list =res
+      })
+    },
+    // 转账详情
+    getBillDetail(){
+      this.$minApi.getZhBillDetail({
+          record_id:this.$parseURL().id
+      }).then(res => {
+        console.log(res);
+         this.list =res
+      })
     }
   },
   onLoad() {
@@ -92,11 +189,16 @@ export default {
         });
         this.getFaDetail()
         break;
+      case 2:
+        // 提现详情
+        this.getTiDetail()
+      break;
       case 3:
         uni.setNavigationBarTitle({
           title: "转账详情"
         });
-        break;
+        this.getBillDetail()
+      break;
     }
   }
 };
@@ -151,5 +253,9 @@ export default {
       display: block;
     }
   }
+}
+.remake{
+  display: flex;
+  justify-content: space-between;
 }
 </style>

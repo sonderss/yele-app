@@ -43,13 +43,14 @@ export default {
     const time = new Date()
     const year = time.getFullYear()
     const month = time.getMonth() + 1
-    this.dayLength = this.getDaysInOneMonth(year, month)
+     this.getDaysInOneMonth(year, month)
     this.getYears()
     this.getMonth()
     this.getDays()
   },
   methods: {
     bindChange: function (e) {
+      this.getDaysInOneMonth(this.years[e.target.value[0]],this.months[e.target.value[1]] )
       this.flag = true
       const val = e.detail.value
       this.year = this.years[val[0]]
@@ -67,14 +68,13 @@ export default {
     // 获取月份
     getMonth () {
       const time = new Date()
-      for (let i = time.getMonth() + 1; i <= 12; i++) {
+      for (let i = 1; i <= 12; i++) {
         this.months.push(i)
       }
     },
     getDays () {
-      //  this.dayLength
-      const time = new Date()
-      for (let i = time.getDate(); i <= this.dayLength; i++) {
+      this.days = []
+      for (let i = 1; i <= this.dayLength; i++) {
         this.days.push(i)
       }
     },
@@ -82,6 +82,8 @@ export default {
     getDaysInOneMonth (year, month) {
       month = parseInt(month, 10)
       var d = new Date(year, month, 0)
+      this.dayLength = d.getDate()
+      this.getDays()
       return d.getDate()
     },
     // 取消

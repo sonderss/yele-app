@@ -36,6 +36,13 @@ export default {
       if(this.list.orders.length <= 0){
         return this.$showToast('暂无此订单')
       }
+      if(this.payType === 1 || this.payType === 2){
+          // 第三方二维码支付
+          this.$minRouter.push({
+            name:"pay-code"
+          })
+          return
+      }
       let obj = {
         payment_id:this.payType,
         target_id:this.$parseURL().billId,

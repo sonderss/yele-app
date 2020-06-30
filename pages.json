@@ -32,6 +32,14 @@
       }
     },
     {
+			"path": "pages/pay-code/index",
+			"style": {
+				"app-plus": {
+					"titleNView": false
+				}
+			}
+		  },
+    {
       "path": "pages/bind-bank-card/index",
       "style": {
         "app-plus":{

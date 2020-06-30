@@ -208,6 +208,15 @@ export default {
   // 绑定银行卡 5edf3db074e13
   postCard: data => minRequest.post('/5edf3db074e13',data),
   // 用户权限 5ee8747279279
-  getApiPross: () => minRequest.get('/5ee8747279279')
-
+  getApiPross: () => minRequest.get('/5ee8747279279'),
+  // 提现记录 5ef8496fdd743?date=2020-06&limit=10&page=1
+  getTiXian: data => minRequest.get('/5ef8496fdd743',data),
+  // 提现详情 5ef997bece0dc?record_id=3
+  getTiXianDetail: data => minRequest.get('/5ef997bece0dc',data),
+  // 转账记录
+  getZhBill: data => minRequest.get('/5ef835cb9a4d3',data),
+  // 转账详情 5ef997b695eb0?record_id=3
+  getZhBillDetail: data => minRequest.get('/5ef997b695eb0',data),
+  // 收支流水 5ef96d39abb97?date=2020-06&limit=10&page=1
+  getShouZ: data => minRequest.get('/5ef96d39abb97',data)
 }

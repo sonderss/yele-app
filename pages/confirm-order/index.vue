@@ -64,6 +64,13 @@ export default {
          return 
        }
       if (this.list.order_info.is_can_open === 1) {
+        if(this.payType === 1 || this.payType === 2){
+            // 第三方二维码支付
+            this.$minRouter.push({
+              name:"pay-code"
+            })
+            return
+        }
         this.$minApi.confirmOrder({
           order_id: this.$parseURL().order_id,
           payment_id: this.payType,

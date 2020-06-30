@@ -141,13 +141,14 @@ export default {
     },
     // 关闭剩余按钮显示
     handleBodyClick (e) {
-      const targetDom = document.getElementById('testDom')
-      if (targetDom) {
-        const flag = targetDom.contains(e.target)
-        if (!flag) {
-          this.toast = false
-        }
-      }
+      console.log(e);
+      // const targetDom = document.getElementById('testDom')
+      // if (targetDom) {
+      //   const flag = targetDom.contains(e.target)
+      //   if (!flag) {
+      //     this.toast = false
+      //   }
+      // }
     }
   },
   beforeDestroy () {

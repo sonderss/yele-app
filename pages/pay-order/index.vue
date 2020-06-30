@@ -177,6 +177,13 @@ export default {
   },
   methods: {
     submit () {
+      if(this.payMethod === 1 || this.payMethod === 2){
+          // 第三方二维码支付
+          this.$minRouter.push({
+            name:"pay-code"
+          })
+          return
+      }
       if (this.list.order_info.can_use_quota) {
         const discountData = { signoff_type: this.discountType }
         if (this.discountType === 1) {

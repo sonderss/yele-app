@@ -22,7 +22,7 @@
               <view class="steper">
                 <min-stepper :isFlag="isFlag" v-if="isFlag"  v-model="count" @change="changeChioce"></min-stepper>
                 <view v-else class="m-right-10" style="width:40rpx;height:40rpx;" @click.stop="changeChioceT">
-                    <image src="/static/images/yellow-add.png"  style="width:100%"/>
+                    <image src="/static/images/yellow-add.png"  style="width:100%" />
                 </view>
                 <!-- <view class="isSku f24" v-if="step" @click="selSku(index,index2)">选规格</view> -->
               </view>
@@ -90,7 +90,6 @@ export default {
   watch: {
     value(a){
        this.count = a
-       console.log(this.count);
     }
   },
   data () {

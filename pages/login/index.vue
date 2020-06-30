@@ -35,7 +35,7 @@ export default {
     return {
       countDown: 0,
       code: '521125',
-      mobile: '13197669435'
+      mobile: '13800138001'
     }
   },
   onLoad(){

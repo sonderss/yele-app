@@ -11,12 +11,12 @@
     >
       <swiper-item v-for="(item1,index) in item" :key="index">
         <view class="swiper-item">
-          <image :src="item1"  @error='imgerra' />
+          <image :src="item1" mode="scaleToFill" @error='imgerra' />
         </view>
       </swiper-item>
     </swiper>
     <view class="goods-item p-lr-20 m-bottom-20"  v-if="!noData">
-      <view class="top-view f28 m-top-10 f28" >{{list.product_name}}</view>
+      <view class="top-view f28  f28" >{{list.product_name}}</view>
       <view class="botm-view" >
         <view class="f22">
           <text class="price" v-if="product_type === 'product' ">￥{{list.sku.length === 0 ? '暂无数据': list.sku[chioceIndex].sku_price}}</text>
@@ -47,12 +47,12 @@
         <view class="skuTop">
           <view class="leftView">
               <view class="img-view">
-                <image :src="errImg ? '/static/images/goods.png': skuObj.product_img" @error="imgerr"></image>
+                <image :src="errImg ? '/static/images/goods.png': skuObj.product_img" @error="imgerr" />
               </view>
               <!-- sku信息 -->
                 <!-- sku信息 -->
               <view class="sku-view">
-                <text class="f24">{{skuObj.product_name}}</text>
+                <text class="f24 a">{{skuObj.product_name}}</text>
                 <text class="f24 m-tb-10">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
                 <text class="f30 m">￥<text class="money">{{skuObj.sku[chioceIndex].sku_price}}</text></text>
               </view>
@@ -61,7 +61,7 @@
         </view>
         <view class="min-border-bottom m-lr-30"></view>
         <!-- 可选择规格项 -->
-        <view class="sku-item">
+        <view class="sku-item"  style="height:300rpx;padding-top:10rpx">
             <view class="f26">规格</view>
             <view class="item-view" >
                 <view :class="chioceIndex ===index ?   'item-active' : 'item' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
@@ -479,7 +479,7 @@ export default {
   }
   .goods-item {
     width: 100%;
-    height: 118rpx;
+    height: 130rpx;
     background: #fff;
     display: flex;
     flex-direction: column;
@@ -492,6 +492,8 @@ export default {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          height: 50rpx;
+          line-height: 60rpx;
     }
     .botm-view {
       display: flex;
@@ -540,13 +542,22 @@ export default {
       width: 180rpx;
       height: 180rpx;
        margin-right: 20rpx;
-      image{ width: 100%;height: 100%; }
+      image{  width: 180rpx;
+      height: 180rpx;}
     }
     .sku-view{
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
       align-content: flex-end;
+      width: 100%;
+      .a{
+
+       width:500rpx;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
       .m{
         color: #FF0000;
         .money{
@@ -585,6 +596,10 @@ export default {
         margin-bottom: 20rpx;
         text-align: center;
         line-height: 58rpx;
+         width:280rpx;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
       }
 
       .item-active {
@@ -598,12 +613,16 @@ export default {
         text-align: center;
         line-height: 58rpx;
         color: #fe432a;
+         width:280rpx;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
       }
     }
   }
 
   .sku-item-num {
-    height: 200rpx;
+    // height: 200rpx;
   }
 
   .btn-sku {
