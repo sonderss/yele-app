@@ -154,11 +154,11 @@ export default {
     // 重新下单
     reorder () {
       // 取消该单
-      if(this.list.order_info.order_id){
           this.$minApi.cancelOrder({
               order_id:this.list.order_info.order_id
           }).then(res => {
             console.log(res);
+            this.$showToast('订单已取消')
           })
           setTimeout(() => {
                 this.$minRouter.push({
@@ -166,15 +166,10 @@ export default {
                   params: { desk_id: this.list.desk_info.desk_id, minim_charge: this.list.desk_info.minim_charge }
                 })
           },2000)
-      }else{
-        return this.$showToast('该台没有订单')
-      }
     },
     // 申请开台
     applicationopening (n) {
-      console.log(this.list.order_info.order_id);
-       
-      if (this.list.order_info.order_id && n === 1) {
+      if (this.list.order_info.order_id) {
         this.$minRouter.push({
           name: 'apply-open',
           params: { desk_id: this.idNum, order_id: this.list.order_info.order_id, open_status: 0 }

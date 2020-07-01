@@ -1003,6 +1003,7 @@
     {
       "path": "pages/apply-stores/index",
       "style": {
+        "enablePullDownRefresh":true,
         "app-plus":{
           "titleNView":{
             "titleText":"申请加入其它门店",

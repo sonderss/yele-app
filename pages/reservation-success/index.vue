@@ -27,6 +27,7 @@ export default {
     }
   },
   onLoad (option) {
+    console.log(option);
     const date = new Date(JSON.parse(option.data).arrival_time * 1000)
     const day = this.$minCommon.getDay(date.getDay())
 

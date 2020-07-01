@@ -26,7 +26,7 @@
 
       </view>
     </view>
-    <min-describe @chincesku="selSku" sku="750ml*2010年/瓶" leftTxt="规格" v-if="product_type === 'product' "></min-describe>
+    <min-describe  @chincesku="selSku"  :sku="list.sku[0].sku_full_name" leftTxt="规格" v-if="product_type === 'product' "></min-describe>
     <view class="introduction m-top-20 p-lr-20"  v-if="!noData">
         <view class="title min-border-bottom m-bottom-30">详细介绍</view>
         <view class="content p-bottom-30" >{{list.info}}</view>
@@ -148,7 +148,7 @@ export default {
       product_id: Number,
       type: Number,
       product_type: 'product',
-      list: { sku: [] },
+      list: { sku: [{ sku_full_name: '' }] },
       isSelSku: false,
       skuObj: { sku: [{ sku_full_name: '' }] },
       chioceIndex: 0,

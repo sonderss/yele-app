@@ -17,11 +17,7 @@
     <min-modal ref="showModal"></min-modal>
     <min-404 v-if="getValue.length === 0"></min-404>
 
-    <!-- <view class="nodata-wrap"  >
-
-      <image class="nodata" src="../../static/images/nodata.png" />
-      <view class="text">暂无</view>
-    </view>-->
+     <min-pulldown :isFlag="falg" :desc="des" :loading="load"/>
   </view>
 </template>
 
@@ -31,11 +27,10 @@ export default {
   navigate: ['navigateTo', 'switchTab'],
   data () {
     return {
-      params: {
-        store_name: '',
-        page: 1,
-        limit: 10
-      },
+      falg:false,
+      nums:2,
+      des:"加载中",
+      load:true,
       keys:'',
       elseStoreList: [],
       total: -1
@@ -57,7 +52,9 @@ export default {
     }
   },
   mounted () {
-    this.getElseStoreList()
+    this.getData(1,10).then(res => {
+      this.elseStoreList = res.list
+    })
   },
   onNavigationBarButtonTap (e) {
     this.$minRouter.push({
@@ -66,32 +63,37 @@ export default {
       path: '/pages/apply-log/index'
     })
   },
-  onReachBottom () {
-    // 下拉翻页
-    this.getElseStoreList()
+  onReachBottom(){
+      this.falg = true
+      this.getData(this.nums,10,true).then(res => {
+        if(res.list.length === 0) {
+          this.load = false
+          this.des = '暂无更多数据'
+          setTimeout(() => {
+            return this.falg = false
+          },1000) 
+        }   
+        this.nums++
+        this.elseStoreList =  this.elseStoreList.concat([...res.list])
+      })
   },
-  onPullDownRefresh () {
-    // 上拉刷新
-    this.params.page = 1
-    this.getElseStoreList('shuaxin')
-    setTimeout(() => {
-      uni.stopPullDownRefresh() // 停止下拉刷新动画
-    }, 2000)
+  onPullDownRefresh() {
+    // console.log('refresh');
+    this.getData(1,10,true).then(res => {
+       this.list =  res.list
+       this.nums = 2
+        uni.stopPullDownRefresh();
+    })
   },
   methods: {
-    getElseStoreList (shuaxin) {
-      if (this.total === this.elseStoreList.length) return // 没有更多数据了
-      this.$minApi.getElseStoreList().then(res => {
-        if (shuaxin) this.elseStoreList = []
-        this.elseStoreList = this.elseStoreList.concat(res.list)
-        this.total = res.list.total
-        this.params.page++
-      })
+    async getData (page,limit,isLoading) {
+      //  if (this.total === this.elseStoreList.length) return // 没有更多数据了
+       return  await  this.$minApi.getElseStoreList({page,limit,isLoading})
     },
     search () {
-      this.params.page = 1
-      this.total = -1
-      this.getElseStoreList('shuaxin')
+      // this.params.page = 1
+      // this.total = -1
+      // this.getElseStoreList('shuaxin')
     },
     // eslint-disable-next-line camelcase
     applyStores ({ id, store_name }, index) {

@@ -82,11 +82,14 @@ export default {
     const pages = getCurrentPages()
     const page = pages[pages.length - 1]
     const currentWebview = page.$getAppWebview()
-    const titleObj = currentWebview.getStyle().titleNView
-    titleObj.buttons[0].text = `${month}月${day}日`
-    currentWebview.setStyle({
-      titleNView: titleObj
-    })
+    currentWebview.setTitleNViewButtonStyle(0, {  
+        text: `${month}月${day}日`,  
+    }); 
+    // const titleObj = currentWebview.getStyle().titleNView
+    // titleObj.buttons[0].text = `${month}月${day}日`
+    // currentWebview.setStyle({
+    //   titleNView: titleObj
+    // })
     // #endif
     // this.getData(this.date)
   },
@@ -190,7 +193,6 @@ export default {
           this.desks = res.desks
           this.mines = res.mines
           this.title = res.title
-          console.log(this.list)
         })
         // eslint-disable-next-line handle-callback-err
         .catch(err => {

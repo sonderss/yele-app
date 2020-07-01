@@ -20,7 +20,7 @@
         <view>客户姓名：{{list.desk_info.client_name?list.desk_info.client_name:'暂无数据'}}</view>
         <view>联系电话：{{list.desk_info.client_mobile?list.desk_info.client_mobile:'暂无数据' }}</view>
         <view>当天生日：{{list.desk_info.is_birthday === 0 ? "否":"是"}}</view>
-        <view>预抵时间：{{$minCommon.formatDate(new Date(list.desk_info.arrival_time * 1000), 'yyyy-MM-dd hh:mm:ss') }}</view>
+        <view v-if="list.desk_info.arrival_time">预抵时间：{{$minCommon.formatDate(new Date(list.desk_info.arrival_time * 1000), 'yyyy-MM-dd hh:mm:ss') }}</view>
       </view>
     </view>
      <view class="card p-lr-20 m-bottom-20">
@@ -29,8 +29,8 @@
       </view>
       <view class="main1 p-top-20">
         <view  class="m-bottom-10" v-for="i in list.order_list" :key="i.order_sn" style="width:100%;display: flex;justify-content: space-between;">
-            <text class="f28">订 单 号&nbsp;：{{i.order_sn}}</text>
-            <text class="f26">{{i.pay_status === 0 ? `￥${i.unpay_price}`:'已支付'}}</text>
+            <text class="f28">{{i.order_sn}}</text>
+            <text class="f26">{{i.pay_status === 0 ? `待付￥${i.unpay_price}`:'已支付'}}</text>
         </view>
       </view>
       <view class="min-top-border"></view>
@@ -40,7 +40,7 @@
       <view class="p-tb-30 min-border-bottom">操作信息</view>
       <view class="main p-tb-20">
         <view>营销人员：{{list.desk_info.book_user_name?list.desk_info.book_user_name:"暂无数据"}}</view>
-        <view>预约时间：{{$minCommon.formatDate(new Date(list.desk_info.book_time * 1000), 'yyyy-MM-dd hh:mm:ss')  }}</view>
+        <view v-if='list.desk_info.book_time'>预约时间：{{$minCommon.formatDate(new Date(list.desk_info.book_time * 1000), 'yyyy-MM-dd hh:mm:ss')  }}</view>
         <view>开台人员：{{list.desk_info.open_user_name}}</view>
         <view>开台时间：{{$minCommon.formatDate(new Date(list.desk_info.open_time *1000),'yyyy-MM-dd hh:mm:ss') }}</view>
       </view>
@@ -175,9 +175,16 @@ export default {
     clear_order () {
       let a = this.$getRoot('desk.clean')
       if(!a) return this.$showToast('抱歉，暂无权限')
+      console.log(this.list.payable_total);
+      let text = ''
+      if(this.list.payable_total > 0){
+          text = '当前仍有订单尚未结清，确定要清台？'
+      }else{
+          text = '是否确认账单已清，并开始清台'
+      }
       this.$refs.show.handleShow({
         title: '',
-        content: '是否确认账单已清，并开始清台',
+        content: text,
         contentCenter: true,
         cancelText: '否',
         confirmText: '是',

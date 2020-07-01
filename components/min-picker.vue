@@ -35,6 +35,8 @@ export default {
       dayLength: 30,
       value: [0, 0, 0],
       visible: false,
+      month:'',
+      year:'',
       flag: false,
       indicatorStyle: `height: ${Math.round(uni.getSystemInfoSync().screenWidth / (750 / 100))}rpx;`
     }
@@ -43,6 +45,8 @@ export default {
     const time = new Date()
     const year = time.getFullYear()
     const month = time.getMonth() + 1
+    this.month  = month
+     this.year  = year
      this.getDaysInOneMonth(year, month)
     this.getYears()
     this.getMonth()
@@ -56,6 +60,7 @@ export default {
       this.year = this.years[val[0]]
       this.month = this.months[val[1]] < 10 ? '0' + this.months[val[1]] : this.months[val[1]]
       this.day = this.days[val[2]] < 10 ? '0' + this.days[val[2]] : this.days[val[2]]
+      this.getDays()
       // })
     },
     // 获得年份
@@ -68,13 +73,24 @@ export default {
     // 获取月份
     getMonth () {
       const time = new Date()
-      for (let i = 1; i <= 12; i++) {
+      for (let i = time.getMonth()+1; i <= 12; i++) {
         this.months.push(i)
       }
     },
     getDays () {
       this.days = []
-      for (let i = 1; i <= this.dayLength; i++) {
+      const time = new Date()
+      let test = ''
+      if(time.getFullYear() === this.year){
+          if(this.month*1 === (time.getMonth()+1)*1 ){
+            test = time.getDate()
+          }else{
+            test = 1
+          }
+      }else{
+        test = 1
+      }
+      for (let i = test; i <= this.dayLength; i++) {
         this.days.push(i)
       }
     },
