@@ -72,7 +72,15 @@ export default {
                                 if(isNaN(res.progress)){
                                     res.progress = 0
                                 }
-                                showLoading.setTitle(`已下载${res.progress}%`)
+                                if( uni.getSystemInfoSync().platform === 'android'){
+                                    if(res.progress % 10 === 0){
+                                      showLoading.setTitle(`已下载${res.progress}%`)
+                                    }else{
+                                      showLoading.setTitle(`已下载${res.progress}%`)
+                                    }
+                                }else{
+                                    showLoading.setTitle(`已下载${res.progress}%`)
+                                } 
                             });
                         } else if (c.cancel) {
                             console.log('用户点击取消');
