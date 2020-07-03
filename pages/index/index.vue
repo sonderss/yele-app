@@ -59,6 +59,9 @@ export default {
     MinAvatar,
     YeleGrid
   },
+  mounted(){
+      this.getPay(true)
+  },
   onShow() {
     uni.request({
       url: "http://api.app-store.dev.yeleonline.com/api/5ee8747279279",
@@ -241,6 +244,11 @@ export default {
     },
     end(e) {
       this.top = 0;
+    },
+    getPay(isLoading){
+      this.$minApi.getPayMethods({isLoading:true}).then(res=>{
+        this.$store.dispatch('status/setPayMethods',res.list)
+      })
     }
   }
 };

@@ -36,7 +36,7 @@
             :class="[direction==='column'?'uni-steps__column-check':'uni-steps__row-check']"
             v-if="index === active"
           >
-            <image style="width:64rpx;height:64rpx;z-index:9999" :src="img"/>
+            <image style="width:64rpx;height:64rpx;z-index:9999" :src="img" />
             <!-- <uni-icons :color="activeColor" type="checkbox-filled" size="14"></uni-icons> -->
           </view>
           <view
@@ -98,14 +98,12 @@ export default {
       img: '/static/images/no_chioce.png'
     }
   },
-  watch: {
-    active (a) {
-      if (a !== this.options.length - 1) {
+  created(){
+     if (this.active !== this.options.length - 1) {
         this.img = '/static/images/no_chioce.png'
       } else {
         this.img = '/static/images/active_.png'
       }
-    }
   }
 }
 </script>

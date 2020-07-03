@@ -47,7 +47,7 @@
         <view class="skuTop">
           <view class="leftView">
               <view class="img-view">
-                <image :src="errImg ? '/static/images/goods.png': skuObj.product_img" @error="imgerr" />
+                <image :src="errImg ? '/static/images/goods.png': skuObj.sku[chioceIndex].sku_img" @error="imgerr" />
               </view>
               <!-- sku信息 -->
                 <!-- sku信息 -->

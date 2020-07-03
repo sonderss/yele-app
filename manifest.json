@@ -2,7 +2,7 @@
     "name" : "Yele Store",
     "appid" : "__UNI__B2E64E2",
     "description" : "",
-    "versionName" : "1.1.4",
+    "versionName" : "1.1.6",
     "versionCode" : "100",
     "transformPx" : false,
     "plus" : {
@@ -95,9 +95,9 @@
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "",
-                    "xhdpi" : "",
-                    "xxhdpi" : ""
+                    "hdpi" : "C:/Users/Administrator/Desktop/splash.9.png",
+                    "xhdpi" : "C:/Users/Administrator/Desktop/splash.9.png",
+                    "xxhdpi" : "C:/Users/Administrator/Desktop/splash.9.png"
                 },
                 "ios" : {
                     "iphone" : {

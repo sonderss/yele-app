@@ -59,6 +59,7 @@ import MinTable from '@/components/t-table/table.vue'
 import MinPay from '@/components/min-pay.vue'
 import MinPullDown from '@/components/min-pulldown.vue'
 import MinRefush from '@/components/min-refush.vue'
+import MinQrcode from '@/components/min-qrcode.vue'
 Vue.component('min-avatar', MinAvatar)
 Vue.component('min-btn', MinBtn)
 Vue.component('min-cell', MinCell)
@@ -106,6 +107,7 @@ Vue.component('min-data-show', MinDataShow)
 Vue.component('min-pay',MinPay)
 Vue.component('min-pulldown',MinPullDown)
 Vue.component('min-refush',MinRefush)
+Vue.component('min-qrcode',MinQrcode)
 Vue.config.productionTip = false
 App.mpType = 'app'
 Vue.use(MinRouter)

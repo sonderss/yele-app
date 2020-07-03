@@ -36,13 +36,13 @@ export default {
       if(this.list.orders.length <= 0){
         return this.$showToast('暂无此订单')
       }
-      if(this.payType === 1 || this.payType === 2){
-          // 第三方二维码支付
-          this.$minRouter.push({
-            name:"pay-code"
-          })
-          return
-      }
+      // if(this.payType === 1 || this.payType === 2){
+      //     // 第三方二维码支付
+      //     this.$minRouter.push({
+      //       name:"pay-code"
+      //     })
+      //     return
+      // }
       let obj = {
         payment_id:this.payType,
         target_id:this.$parseURL().billId,
@@ -66,7 +66,15 @@ export default {
               //   })
               // }, 2000)
             }else{
-              this.$showToast('第三方支付开发中')
+              // this.$showToast('第三方支付开发中')
+              this.$minRouter.push({
+                name:"pay-code",
+                params:{
+                  info:{ payment_id: this.payType,money:this.list.amount,desk_name:this.list.desk.desk_name},
+                  data: res.payParam,
+                  id:res.id
+                }
+              })
             }
       })
     }

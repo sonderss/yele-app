@@ -5,18 +5,21 @@
       <min-steps
         direction="column"
         :options="option"
-        :active="active"
+        :active="actives"
       ></min-steps>
     </view>
     <view class=" min-border-top" style="width:90%;margin:0 auto"></view>
     <view class="botom_view p-lr-30 p-tb-20" >
-        <view class=" p-lr-20  m-bottom-40">
+        <view class="   m-bottom-40">
           <view class="p-tb-20" >
             <view style="color:#666666">提现金额 &nbsp;&nbsp; 刘清清</view>
             <view style="color:#666666" class="m-tb-20">申请时间 &nbsp;&nbsp; 2020年02月15日 16:20:00</view>
             <view style="color:#666666">到账时间 &nbsp;&nbsp; 2020年02月15日 16:20:00</view>
-            <view style="color:#666666" class="m-tb-20">提现方式 &nbsp;&nbsp; 微信</view>
-            <view style="color:#666666">提现单号 &nbsp;&nbsp; 202324964134643416543124164</view>
+            <view style="color:#666666" class="m-tb-20">提现方式 &nbsp;&nbsp; 银行卡</view>
+            <view style="color:#666666">
+              提现单号 &nbsp;&nbsp; 
+              <text style="color:#666666;margin-left:35rpx">202324964134643416543124164</text>
+            </view>
           </view>
         </view>
     </view>
@@ -29,11 +32,11 @@ export default {
   navigate: ['navigateTo','redirectTo'],
   data () {
     return {
-      active: 1,
+      actives: 1,
       option: [
         { title: '发起提现', desc: '2020-03-29 18:06:46' },
-        { title: '系统处理', desc: '2020-03-29 18:06:46' },
-        { title: '到账成功', desc: '' }
+        { title: '系统处理', desc: '' },
+        { title: '到账成功', desc: '2020-03-29 18:06:46' }
       ]
     }
   },
@@ -50,7 +53,6 @@ export default {
 <style lang="scss" scoped>
 .main-view {
   width: 100%;
-  height: 410rpx;
   background: rgba(255, 255, 255, 1);
   border-radius: 10rpx;
   display: flex;

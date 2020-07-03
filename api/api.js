@@ -123,7 +123,7 @@ export default {
   // 订单详情
   getOrderDetailDown: data => minRequest.get('/5ea16648a957f', data),
   // 获取支付方式
-  getPayMethods: () => minRequest.get('/5ea06896a701e'),
+  getPayMethods: data => minRequest.get('/5ea06896a701e',data),
   // 创建订单5e9915d513f53
   setOrder: data => minRequest.post('/5e9915d513f53', data),
   // 预览订单 5e942d8d68ea6 / ?order_id=263&desk_id=13&open_status=0
@@ -132,6 +132,8 @@ export default {
   confirmOrder: data => minRequest.post('/5ea062b985018', data),
   // 取消订单 5ea7f3bce55df
   cancelOrder: data => minRequest.post('/5ea7f3bce55df', data),
+  // 获取支付状态 5ed706dd7e94f?transaction_id=1
+  getPayTStatus: data => minRequest.get('/5ed706dd7e94f',data),
   /**
    * @description post请求
    */
@@ -197,6 +199,8 @@ export default {
   faFangDetail: data => minRequest.get('/5edf04c01ab0c',data),
   // 审核详情 5edf32ee906ea?remuneration_id=60
   getAuditdetails: data => minRequest.get('/5edf32ee906ea',data),
+  // 工资详情 5edf32e863e02?remuneration_id=72
+  getSelaDetail: data => minRequest.get('/5edf32e863e02',data),
   // 设置提现密码 5edf3da4e9599
   setTXpsd: data => minRequest.post('/5edf3da4e9599',data),
   // 解绑银行卡 5ee05bdb90e53

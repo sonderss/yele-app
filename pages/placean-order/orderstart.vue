@@ -8,7 +8,7 @@
               :name="item.product_name"
               :price="item.order_price"
               :icon="item.product_img"
-              :specification="item.unit_name"
+              :specification="item.sku"
               :value="item.quantity"
             >
             </min-goods-item>

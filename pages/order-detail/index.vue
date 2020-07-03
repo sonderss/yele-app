@@ -149,9 +149,10 @@ export default {
       showSubmit: false
     }
   },
-  onLoad () {
+  onShow () {
     console.log(this.$parseURL())
     // this.$parseURL().ordr_id
+    this.showSubmit = false
     this.$minApi
       .getOrderDetailDown({
         order_id: this.$parseURL().ordr_id
@@ -258,10 +259,11 @@ export default {
         target_id:this.list.id,
         target_type:1
       }
+      this.closePayPop()
       this.$minApi.postPay(obj).then(res => {
           console.log(res)
           if(res.paid === 1){
-              this.$showToast('支付成功！！！')
+              this.$showToast('支付成功')
               setTimeout(() => {
                 this.$minRouter.push({
                   name: 'pay-success',
@@ -269,7 +271,16 @@ export default {
                 })
               }, 2000)
             }else{
-              this.$showToast('第三方支付开发中')
+              // this.$showToast('第三方支付开发中')
+              this.$minRouter.push({
+                name:"pay-code",
+                params:{
+                  info:{ payment_id: this.payType,money:this.list.unpay_price,desk_name:this.list.desk_name},
+                  data: res.payParam,
+                  id:res.id,
+                  order_id:this.$parseURL().ordr_id
+                }
+              })
             }
         })
     },

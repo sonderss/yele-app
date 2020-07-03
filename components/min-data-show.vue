@@ -50,7 +50,7 @@
                   <view class="left" >
                     <text class="lefty_">{{i.user_name}}</text>
                     <text class="left_">{{i.booking_count}}</text>
-                    <text  class="lefty_">{{i.opening_count}}</text>
+                    <text  class="lefty_" style="text-align:right;padding-right:20rpx">{{i.opening_count}}</text>
                   </view>
                   <view class="right">
                         <text v-if="right">></text>
@@ -139,7 +139,7 @@
                     <view class="test_ui" v-for="(i,n) in listTest.sales_list" :key="n" @click="toDetail(i.uid)" >
                       <view class="left" >
                         <text class="lefty_" style="textAlign:left">{{i.user_name}}</text>
-                        <text class="left_" >{{i.role_name}}</text>
+                        <text class="left_">{{i.role_name}}</text>
                         <text class="" style="textAlign:right">{{i.performance}}</text>
                       </view>
                       <view class="right">
@@ -152,7 +152,7 @@
                       <view class="left" >
                         <text class="lefty_" style="textAlign:left">{{i.user_name}}</text>
                         <text class="left_" >{{i.role_name}}</text>
-                        <text class="" style="textAlign:right">{{i.performance}}</text>
+                        <text class="" style="textAlign:right">{{i.performance ? i.performance : '暂无数据'}}</text>
                       </view>
                       <view class="right">
                             <text v-if="right">></text>

@@ -5,14 +5,14 @@
          <view>提现到</view>
          <view class="methods">
 
-            <text class="m-lr-10 f28">{{info.bank_card_name ? info.bank_card_name :'尚未绑定银行卡'}}</text>
+            <text class="m-lr-10 f28">{{info.bank_card_name ? `${info.bank_card_name}(${lastString})` :'尚未绑定银行卡'}}</text>
          </view>
        </view>
        <view class="bottom">
          <view class="top f28">提现金额</view>
          <view class="money">
             <text class="icon">￥</text>
-            <input type="number"/>
+            <input type="number" maxlength="10" v-model="money"/>
             <text class="allin">全部提现</text>
          </view>
        </view>
@@ -29,15 +29,17 @@ export default {
   data(){
     return {
        info:{},
-       lastString:''
+       lastString:'',
+       money:''
     }
   },
   onLoad(){
     console.log(this.$store.state.user.userInfo);
     this.$minApi.getUserInfo().then(res => {
       this.info = res
-      this.getCardLast(this.info.bank_card_num)
-      console.log(res);
+      if(this.info.bank_card_num){
+          this.getCardLast(this.info.bank_card_num)
+      }
     })
   },
   methods: {
@@ -55,8 +57,11 @@ export default {
           this.lastString+= card[card.length-item]
       })
     },
-    // 体现
+    // 提现
     submit () {
+      if(!this.lastString) return this.$showToast('你尚未绑定银行卡')
+      if(this.money * 1 < 0.5) return this.$showToast('不能低于手续费')
+      if(this.money * 1 < 1) return this.$showToast('最少提现一块钱')
       this.$minRouter.push({
         name: 'redwithdrawal-success',
         type:"redirectTo"

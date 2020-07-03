@@ -50,9 +50,7 @@ export default {
           const pages = getCurrentPages();//当前页
           const beforePage = pages[pages.length - 2];//上个页面
           const  page = pages[pages.length - 1];//页面
-          console.log(beforePage.route,page.route);
       if (options.from === 'backbutton') {
-        console.log('navigateBack');
           if(beforePage.route !== page.route) {
               this.back(1);  
               return true;  
@@ -66,10 +64,11 @@ export default {
     this.id = this.$parseURL().id
     // 暂时使用获取到的详情状态数据
     // this.status = this.$parseURL().status
-
     this.date = this.$parseURL().date
     this.$store.dispatch('status/setDate',{id:this.id,date:this.date})
-    this.getData()
+  },
+  onShow(){
+     this.getData()
   },
   methods: {
     back(a) {  

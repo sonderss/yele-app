@@ -177,13 +177,13 @@ export default {
   },
   methods: {
     submit () {
-      if(this.payMethod === 1 || this.payMethod === 2){
-          // 第三方二维码支付
-          this.$minRouter.push({
-            name:"pay-code"
-          })
-          return
-      }
+      // if(this.payMethod === 1 || this.payMethod === 2){
+      //     // 第三方二维码支付
+      //     this.$minRouter.push({
+      //       name:"pay-code"
+      //     })
+      //     return
+      // }
       if (this.list.order_info.can_use_quota) {
         const discountData = { signoff_type: this.discountType }
         if (this.discountType === 1) {
@@ -226,7 +226,11 @@ export default {
                 })
               }, 2000)
             }else{
-              this.$showToast('第三方支付开发中')
+              // this.$showToast('第三方支付开发中')
+              this.$minRouter.push({
+                name:"pay-code",
+                params:{info:{ payment_id: this.payMethod,money:this.money,desk_name:this.list.order_info.desk_name},data: res.payParam,id:res.id,order_id:this.$parseURL().data.order_id}
+              })
             }
         })
       } else {
@@ -247,7 +251,11 @@ export default {
                 })
               }, 2000)
             }else{
-              this.$showToast('第三方支付开发中')
+              // this.$showToast('第三方支付开发中')
+               this.$minRouter.push({
+                name:"pay-code",
+                params:{info:{ payment_id: this.payMethod,money:this.money,desk_name:this.list.order_info.desk_name},data: res.payParam,id:res.id,order_id:this.$parseURL().data.order_id}
+              })
             }
         })
       }

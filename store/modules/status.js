@@ -5,7 +5,8 @@ export default {
     intNet: false,
     a: 1,
     date:"",
-    dev:false
+    dev:false,
+    payMethods:[]
   },
   mutations: {
     setStatus: (state, data) => {
@@ -16,6 +17,9 @@ export default {
     },
     setDev: (state,data) => {
       state.dev = data
+    },
+    setPayMethods: (state,data) => {
+      state.payMethods = data
     }
   },
   actions: {
@@ -27,6 +31,9 @@ export default {
     },
     setDev ({ commit },data) {
       commit('setDev',data)
+    },
+    setPayMethods ({ commit }, data) {
+      commit('setPayMethods',data)
     }
   }
 }

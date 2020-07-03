@@ -14,6 +14,11 @@ export default {
     }).then(res => {
       this.list = res.list
       console.log(this.list)
+      this.list.map(item => {
+        if (item.order_product_list.length > 4) {
+          item.order_product_list.splice(4)
+        }
+      })
     })
   },
   data () {

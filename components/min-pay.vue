@@ -36,6 +36,7 @@ export default {
       }
   },
   mounted(){
+    if(this.$store.state.status.payMethods.length >= 1) return this.payM = this.$store.state.status.payMethods
     this.$minApi.getPayMethods().then(res=>{
       this.payM = res.list
     })
