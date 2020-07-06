@@ -109,6 +109,22 @@ export default {
     // #endif
   },
   onShow(){
+    if(!this.$store.state.status.isGetUser){
+         this.userInfo = this.$store.state.user.userInfos
+         console.log('不获取',this.userInfo);
+          this.userInfo.birthday =  this.userInfo.birthday.split('').splice(0,11).join('')
+          if(this.userInfo.bank_card_num){ this.getCardLast(this.userInfo.bank_card_num)}
+          this.minzu.map((item, index) => {
+            if (item === this.userInfo.nation) {
+              this.index1 = index
+            }
+          })
+          this.sex.map((item, index) => {
+            this.index = this.userInfo.sex
+          })
+          this.date = this.userInfo.birthday.replace(/-/g, '/')
+          return 
+    }
         this.$minApi.getUserInfo().then(res => {
           console.log(res)
           this.userInfo = res
@@ -124,6 +140,7 @@ export default {
             this.index = this.userInfo.sex
           })
           this.date = this.userInfo.birthday.replace(/-/g, '/')
+           this.$store.dispatch('status/setisGetUser',false)
         })
   },
   methods: {
@@ -163,6 +180,7 @@ export default {
            console.log(res);
            this.$showToast('修改成功')
            this.$store.dispatch('user/setUserInfoAuth', res.apiAuth)
+            this.$store.dispatch('status/setisGetUser',true)
         })
     },
     bindPickerChange1 (e) {

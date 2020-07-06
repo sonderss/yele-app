@@ -63,6 +63,7 @@ export default {
         if(res) {
           this.$showToast("设置成功")
            this.$store.dispatch('user/setUserInfoAuth', res.apiAuth)
+           this.$store.dispatch('status/setisGetUser',true)
           setTimeout(() => {
                 uni.navigateBack({
                     delta: 1

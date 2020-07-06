@@ -1,7 +1,7 @@
 <template>
   <view class="reserve-success p-lr-30 p-tb-30">
     <image class="icon" src="/static/images/success.png" alt="success" />
-    <view class="title">支付成功</view>
+    <view class="title">{{list.pay_type ? '下单成功' : '支付成功'}} </view>
     <view class="card f28 p-tb-30 p-lr-30">
       <view>台号：<text>{{list.desk_name}}</text></view>
       <view>客户姓名：{{list.client_name}}</view>
@@ -11,7 +11,7 @@
       <view>已付金额：{{list.pay_price}}</view>
       <view>付款类型：{{list.pay_type ? '后付款':'先付款'}}</view>
       <view>支付方式：{{method[list.payment_id]}}</view>
-      <view>支付时间：{{$minCommon.formatDate(new Date(list.pay_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
+      <view v-if="!list.pay_type">支付时间：{{$minCommon.formatDate(new Date(list.pay_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
 
 
     </view>

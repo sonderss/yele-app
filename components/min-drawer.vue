@@ -20,7 +20,8 @@
             :border="idnex === storeList.length - 1 ?false :true" 
             :title_right="nowStoreId === item.store_id ? '当前门店' : '' " 
             :img="item.head_img" 
-            label="可提现金额：￥2005">
+            label="可提现金额：￥2005"
+            >
             </min-cell-item>
           </view>
         </view>

@@ -9,29 +9,28 @@
         <text class="iconfont">&#xe6b2;</text>
       </view>
       <view class="botm">
-        <text class="f26">业绩￥153000.23</text>
-        <text class="f26 m-left-20">业绩￥153000.23</text>
+        <text class="f26">业绩￥{{total}}</text>
       </view>
     </view>
-    <view class="m-top-20 bg">
+    <view class="m-top-20 bg" v-if="list.length > 0">
       <view
-        v-for="index in 5"
+        v-for="(item,index) in list"
         :key="index"
         class="cell-item min-flex min-flex-main-between p-tb-30 p-lr-20 min-border-bottom"
         @click="toDeatil"
       >
         <view class="min-flex">
-          <view class style="width:300rpx">
-            <view class="f28">Simba基础提成</view>
-            <view class="label m-top-10 f24 assist-text min-ellipsis">2019-06-01 16:32:00</view>
+          <view class="" style="width:400rpx">
+            <view class="f28 min-ellipsis">{{item.commission_name}}</view>
+            <view class="label m-top-10 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.create_time*1000),'yyyy/MM/dd hh:mm:ss') }}</view>
           </view>
         </view>
         <view class="min-flex flex-end min-flex-dir-top">
-          <view :class=" index <= 3 ? 'ablack' : 'ared'">-220</view>
-          <view class="bom">业绩2500.00</view>
+          <view :class=" item.commission *1 <= 0 ? 'ablack' : 'ared'"> {{item.commission * 1 > 0 ? '+' + item.commission : '-' + item.commission}}</view>
         </view>
       </view>
     </view>
+    <min-404 v-else></min-404>
     <min-popup :show="show" @close="close">
       <view class="picer-top">
          <view :class="index === 0 ? 'left' : 'none_ac' " @click="start">
@@ -66,6 +65,7 @@
     <min-drawer :visible="showdrawer" mode="right" @close="closedrawer">
        
     </min-drawer>
+    <min-pulldown :isFlag="falg" :desc="des" :loading="load"/>
   </view>
 </template>
 <script>
@@ -89,63 +89,160 @@ export default {
       endTime: (new Date().getMonth() + 1) + '月' + (new Date().getDate() + 1) + '日' + ' ' + new Date().getFullYear(),
       startTime1: '2020年1月2日',
       endTime1: '2020年1月2日',
-      num: Number
+      num: Number,
+      store_id:'',
+      list:[],
+      falg:false,
+      num:2,
+      des:"加载中",
+      load:true,
+      total:""
     }
   },
   onNavigationBarButtonTap () {
     this.showdrawer = !this.showdrawer
   },
+   onReachBottom(){
+      console.log('到底')
+      this.falg = true
+      this.$minApi.getTCList({
+         start_time:this.getDatetre( this.startTime1),
+         end_time:this.getDatetre(this.endTime1),
+         store_id:this.store_id,
+         page: this.num,
+         isLoading:true
+       }).then(res => {
+          if(res.list.length === 0) {
+            this.load = false
+            this.des = '暂无更多数据'
+            setTimeout(() => {
+              return this.falg = false
+            },1000) 
+          }
+         console.log(res);
+         this.num++
+         this.list =  this.list.concat([...res.list])
+       })
+  },
+  // onPullDownRefresh() {
+  //   console.log('refresh');
+  //   // this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),
+  //   this.$minApi.getTCList({
+  //        start_time:this.getDatetre( this.startTime1),
+  //        end_time:this.getDatetre(this.endTime1),
+  //        store_id:this.store_id,
+  //        page:1
+  //      }).then(res => {
+  //        console.log(res);
+  //        this.num = 2
+  //        this.list = res.list
+  //        uni.stopPullDownRefresh();
+  //      })
+  //   // this.getData(1,10,true).then(res => {
+  //   //    this.num = 2
+  //   //    this.list =  res.list
+  //   //     uni.stopPullDownRefresh();
+  //   // })
+  // },
   mounted () {
     const time = new Date()
     const year = time.getFullYear()
-    const month = time.getMonth() + 1
-    this.dayLength = this.getDaysInOneMonth(year, month)
+    let month = time.getMonth() + 1
+    let day = time.getDate()
+    // this.dayLength = this.getDaysInOneMonth(year, month)
+    this.getDaysInOneMonth(year, month)
     this.getYears()
     this.getMonth()
     this.getDays()
+    this.store_id = this.$store.state.user.userInfo.store_id
     for (const va of this.years) {
-      for (const val of this.months) {
         for (const val1 of this.days) {
-          this.data.push(val + '月' + val1 + '日' + ' ' + va)
+          this.data.push( val1 + ' ' + va)
         }
-      }
     }
-    const a = month + '月' + time.getDate() + '日' + ' ' + year
+    if(month <= 9){month = '0' + month}
+    if(day <= 9 ){day = '0' + day}
+    const a = month + '月' + (day) + '日' + ' ' + year
     this.data.map((item, index) => {
       if (item === a) {
         // 起始位置
         this.value.push(index)
       }
     })
+    console.log(this.$store.state.user.userInfo.store_id);
+    this.startTime1 = year + '年' + month + '月' + day+ '日' 
+     this.endTime1 = `${year}年${month}月${day*1 <=9 ? ('0'+(day*1 +1))  : (day*1 +1)}日`
+     this.startTime = `${month}月${day}日 ${year}`
+     this.endTime = `${month}月${day*1 <=9 ? ('0'+(day*1 +1))  : (day*1 +1)}日 ${year}`
+    this.getData(this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),this.store_id,1)
+    this.getTall(this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),this.store_id)
   },
   methods: {
+    // 获取数据
+    getData(start_time,end_time,store_id,page,limit = 10){
+       this.$minApi.getTCList({
+         start_time,
+         end_time,
+         store_id,
+         page,
+         limit
+       }).then(res => {
+         console.log(res);
+         this.list = res.list
+       })
+    },
+    // 获取提成合计
+    getTall(start_time,end_time,store_id){
+      this.$minApi.getTCAll({
+          start_time,
+          end_time,
+          store_id
+      }).then(res => {
+        console.log(res);
+        this.total = res.total
+      })
+    },
     // 获得年份
     getYears () {
       const time = new Date()
-      for (let i = 2019; i <= time.getFullYear(); i++) {
+      for (let i = 2020; i <= time.getFullYear(); i++) {
         this.years.push(i)
       }
     },
     // 获取月份
     getMonth () {
       for (let i = 1; i <= 12; i++) {
+        if(i <= 9){
+            i = '0'+ i
+        }
         this.months.push(i)
       }
     },
     getDays () {
       //  this.dayLength
-      for (let i = 1; i <= this.dayLength; i++) {
-        this.days.push(i)
+      for(let q =1;q <= 12;q++){
+          this.getDaysInOneMonth(2020,q)
+              if(q <= 9){
+                 q = '0'+q
+              }
+            for (let i = 1; i <= this.dayLength; i++) {
+              if(i <= 9){
+                  i = '0'+i
+              }
+              this.days.push(q+'月'+ i + '日')
+            }
       }
     },
     // 获取某年某月多少天
     getDaysInOneMonth (year, month) {
       month = parseInt(month, 10)
       var d = new Date(year, month, 0)
-      return d.getDate()
+      this.dayLength  = d.getDate()
+      // return 
     },
     bindChange: function (e) {
       this.num = e.detail.value[0]
+      // this.getDaysInOneMonth(year, month)
       if (this.index === 0) {
         this.startTime = this.data[e.detail.value[0]]
       }
@@ -178,6 +275,8 @@ export default {
       this.endTime1 = endtime
       this.value = []
       this.value.push(this.num)
+      this.getData(this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),this.$store.state.user.userInfo.store_id,1)
+      this.getTall(this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),this.store_id)
     },
     // 取消
     cancel () {
@@ -191,6 +290,14 @@ export default {
     },
     closedrawer () {
       this.showdrawer = false
+    },
+    // 日期过滤
+    getDatetre(time){
+       time = time.replace('年','-')
+       time = time.replace('月','-')
+       time = time.replace('日','')
+       console.log(time);
+       return time
     }
   }
 }

@@ -3,7 +3,7 @@
 
       <view class="left-view" @click="chinceSku">
         <view class="img-view" v-if="leftIcon">
-          <image :src="leftIconValue" />
+          <image :src="leftIconValue ? leftIconValue : '/static/images/goods.png' " />
         </view>
         <view :class=" leftTxtTwo ? 'txt-view': ''">
           <view class="left-txt" style="color:#333">{{leftTxt}}</view>

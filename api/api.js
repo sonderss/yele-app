@@ -101,7 +101,7 @@ export default {
   // 确认赠送  5e9f9e0ee9a86?order_id=215
   postOrderGet: data => minRequest.get('/5e9f9e0ee9a86', data),
   // 个人资料
-  getUserInfo: () => minRequest.get('/5e9fe880cb610'),
+  getUserInfo: data => minRequest.get('/5e9fe880cb610',data),
   // 编辑个人资料 5ed5bbf54de7a  
   setPersonInfo: data => minRequest.post('/5ed5bbf54de7a',data),
   // 文件上传 5ebdf23feeba7
@@ -222,5 +222,9 @@ export default {
   // 转账详情 5ef997b695eb0?record_id=3
   getZhBillDetail: data => minRequest.get('/5ef997b695eb0',data),
   // 收支流水 5ef96d39abb97?date=2020-06&limit=10&page=1
-  getShouZ: data => minRequest.get('/5ef96d39abb97',data)
+  getShouZ: data => minRequest.get('/5ef96d39abb97',data),
+  // 提成明细 5efdadcdbf005
+  getTCList: data => minRequest.get('/5efdadcdbf005',data),
+  // 获取提成合计 5efef2e1ab099?start_time=2020-06-17&end_time=2020-08-01&store_id=1
+  getTCAll: data => minRequest.get('/5efef2e1ab099',data)
 }

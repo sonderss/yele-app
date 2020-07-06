@@ -27,7 +27,7 @@
       <view class="p-tb-30 min-border-bottom">订单信息</view>
 
       <view  class="m-bottom-10 m-top-20"  v-for="i in list.order_list" :key="i.order_sn" style="width:100%;display: flex;justify-content: space-between;">
-          <text class="f28">订 单 号 ：{{i.order_sn}}</text>
+          <text class="f28">{{i.order_sn}}</text>
           <text class="f26">{{i.pay_status === 0 ? `待付￥${i.unpay_price}`:'已支付'}} </text>
       </view>
 

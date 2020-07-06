@@ -72,6 +72,7 @@ export default {
           this.$showToast('实名成功')
           console.log(res);
           this.$store.dispatch('user/setUserInfoAuth', res.apiAuth)
+           this.$store.dispatch('status/setisGetUser',true)
           setTimeout(() => {
             this.$minRouter.push({
               name: 'redmine-info',

@@ -6,7 +6,8 @@ export default {
     a: 1,
     date:"",
     dev:false,
-    payMethods:[]
+    payMethods:[],
+    isGetUser:false
   },
   mutations: {
     setStatus: (state, data) => {
@@ -20,6 +21,10 @@ export default {
     },
     setPayMethods: (state,data) => {
       state.payMethods = data
+    },
+    setisGetUser: (state,data) => {
+      state.isGetUser = data
+      console.log(state.isGetUser)
     }
   },
   actions: {
@@ -34,6 +39,9 @@ export default {
     },
     setPayMethods ({ commit }, data) {
       commit('setPayMethods',data)
+    },
+    setisGetUser ({ commit }, data) {
+      commit('setisGetUser',data)
     }
   }
 }

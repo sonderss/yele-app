@@ -506,6 +506,7 @@
     {
       "path":"pages/commission-details/index",
       "style": {
+        "enableDownRefresh":true,
         "app-plus":{
           "titleNView":{
             "titleText":"提成明细",

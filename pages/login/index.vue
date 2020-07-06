@@ -1,19 +1,19 @@
 <template>
   <view class="login">
-        <image src="/static/images/login/back.png" class="bg-img"></image>
+        <image src="/static/images/login/back.png" class="bg-img" />
         <view style="height: 50rpx;"></view>
         <view class="m-lr-30 p-lr-30">
           <view class="inp p-left-30 min-flex min-flex-main-start">
-            <image class="icon" src="/static/images/login/user.png"></image>
-            <input type="number" v-model="mobile" placeholder="请输入手机号码" maxlength="11">
+            <image class="icon" src="/static/images/login/user.png" />
+            <input type="number" v-model="mobile" placeholder="请输入手机号码" maxlength="11" />
             <view class="clear-icon" v-show="mobile" @click="mobile = ''">
-              <image src="/static/images/clear.png"></image>
+              <image src="/static/images/clear.png" />
             </view>
           </view>
           <view class="inp p-left-30 min-flex min-flex-main-between">
             <view class="min-flex min-flex-main-start">
-              <image class="icon" src="/static/images/login/lock.png"></image>
-              <input type="number" maxlength="6" v-model="code" placeholder="请输入验证码">
+              <image class="icon" src="/static/images/login/lock.png" />
+              <input type="number" maxlength="6" v-model="code" placeholder="请输入验证码" />
             </view>
             <view class="code" @click="getVerificationCode" v-if="countDown === 0">获取验证码</view>
             <view v-else class="white">{{countDown}} s</view>

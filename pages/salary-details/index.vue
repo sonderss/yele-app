@@ -3,65 +3,79 @@
     <view v-if="id === 0">
       <view class="view_main p-lr-20 m-bottom-20">
         <view class="top_view min-border-bottom">
-          <text class="desc">金额</text>
-          <text class="money">+33.20</text>
+          <text class="desc">工资</text>
+          <text class="money">+{{list.sys_amount}}</text>
         </view>
         <view class="bottom-view p-bottom-20">
           <view class="m-tb-10 min-flex min-flex-main-between">
-            <text class="c">类型</text>
-            <text style="text-align:right">提现</text>
+            <text class="c">门店</text>
+            <text style="text-align:right">{{list.store_name}}</text>
           </view>
           <view class="m-tb-10 min-flex min-flex-main-between">
-            <text class="c">提现方式</text>
-            <text style="text-align:right">支付宝</text>
+            <text class="c">工资周期</text>
+            <text style="text-align:right">{{$minCommon.formatDate(new Date(list.cycle_start_time*1000),"MM/dd") }}至{{$minCommon.formatDate(new Date(list.cycle_end_time*1000),"MM/dd") }}</text>
           </view>
           <view class="m-tb-10 min-flex min-flex-main-between">
-            <text class="c">交易流水</text>
-            <text style="text-align:right">46892346312643123310</text>
+            <text class="c">生成时间</text>
+            <text style="text-align:right">{{$minCommon.formatDate(new Date(list.generate_time*1000),"yyyy/MM/dd hh:mm:ss") }}</text>
           </view>
           <view class="m-tb-10 min-flex min-flex-main-between">
-            <text class="c">支付时间</text>
-            <text style="text-align:right">2019-06-09 16:41:25</text>
+            <text class="c">发放时间</text>
+            <text style="text-align:right">{{$minCommon.formatDate(new Date(list.grant_time*1000),"yyyy/MM/dd hh:mm:ss")}}</text>
           </view>
         </view>
       </view>
-      <view class="view_main p-lr-20 m-bottom-20 p-bottom-20">
+      <view class="view_main p-lr-20 m-bottom-20 p-bottom-20" v-if="list.salary_plans.salary_type === 1">
         <view class="p-tb-20 min-border-bottom">
           <text class="desc">工资方案</text>
         </view>
         <view class="bottom-view">
           <view class="m-tb-10 min-flex min-flex-main-between">
             <text class="c">方案名称</text>
-            <text style="text-align:right">方案名称1235</text>
+            <text style="text-align:right">{{list.salary_plans.plan_name}}</text>
           </view>
           <view class="m-tb-10 min-flex min-flex-main-between">
             <text class="c">工资类型</text>
-            <text style="text-align:right">固定类型</text>
+            <text style="text-align:right">固定工资</text>
           </view>
           <view class="m-tb-10 min-flex min-flex-main-between">
             <text class="c">工资</text>
-            <text style="text-align:right">$4689</text>
+            <text style="text-align:right">￥{{list.salary_plans.salary_basic}}</text>
           </view>
           <view class="m-tb-10 min-flex min-flex-main-between">
             <text class="c">结算周期</text>
-            <text style="text-align:right">周结</text>
+            <text style="text-align:right">{{zhouqi[list.salary_plans.smt_cycle]}}</text>
+          </view>
+          <view class="m-tb-10 min-flex min-flex-main-between">
+            <text class="c">延期发放时长</text>
+            <text style="text-align:right">{{list.salary_plans.delay}}</text>
           </view>
         </view>
       </view>
-      <view class="jion_view">
+      <view class="jion_view" v-if="list.salary_plans.salary_type === 2">
         <view class="title min-border-bottom">工资方案</view>
         <view class="m-tb-10 min-flex min-flex-main-between">
-          <text style="color:#666">结算周期</text>
-          <text style="text-align:right">周结</text>
+            <text class="c">方案名称</text>
+            <text style="text-align:right">{{list.salary_plans.plan_name}}</text>
         </view>
-        <view class="method-view min-border-bottom">
-          <view class="left">基础提成</view>
-          <view class="right">
-            <text>订台人提成</text>
-            <text>下单人提成</text>
-            <text>下线分佣</text>
+        <view class="m-top-10 min-flex min-flex-main-between">
+            <text class="c">工资类型</text>
+            <text style="text-align:right">业绩级别工资</text>
+        </view>
+        <view class="method-view">
+          <view class="">工资</view>
+          <view class="right" v-for="(item,index) in list.salary_plans.levels" :key="index">
+            <text>{{item.low}} > 业绩  ≥ {{item.high}}，工资：{{item.salary}}</text>
           </view>
         </view>
+        <view class="m-tb-10 min-flex min-flex-main-between">
+            <text class="c">结算周期</text>
+            <text style="text-align:right">{{zhouqi[list.salary_plans.smt_cycle]}}</text>
+          </view>
+          <view class="m-top-10 p-bottom-20 min-flex min-flex-main-between">
+            <text class="c">延期发放时长</text>
+            <text style="text-align:right">{{list.salary_plans.delay}}</text>
+          </view>
       </view>
     </view>
     <view v-if="id === 1">
@@ -106,8 +120,10 @@ export default {
   navigate: ["navigateTo"],
   data() {
     return {
+      // 1月结、2周结、3日结、4自定义
+      zhouqi:['','月结','周结','日结','自定义'],
       id: 0,
-      list:{check_info:{before_audit_amount:""},audit_info:{before_audit_amount:""}}
+      list:{salary_plans:{plan_name:''},check_info:{before_audit_amount:""},audit_info:{before_audit_amount:""}}
     };
   },
   methods: {
@@ -119,6 +135,15 @@ export default {
         console.log(res);
         this.list = res
       })
+    },
+    // 工资
+    getGz(){
+      this.$minApi.getSelaDetail({
+         remuneration_id:this.$parseURL().pid
+      }).then(res => {
+        console.log(res);
+         this.list = res
+      })
     }
   },
   onLoad() {
@@ -128,6 +153,9 @@ export default {
     if( this.id === 1){
       uni.setNavigationBarTitle({title: "审核详情"}) 
       this.getShenH()
+    }
+    if(this.id === 0 ){
+      this.getGz()
     }
   }
 };
@@ -189,6 +217,9 @@ export default {
   text {
     color: rgba(51, 51, 51, 1);
   }
+  .c {
+      color: #666666;
+    }
   .title {
     width: 100%;
     height: 98rpx;
@@ -201,7 +232,7 @@ export default {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    margin: 36rpx 0;
+    margin: 16rpx 0;
     .left {
       width: 50%;
       color: #666666;
@@ -212,10 +243,9 @@ export default {
       flex-direction: column;
       justify-content: space-between;
       align-items: flex-end;
-
       text {
         display: block;
-        margin-bottom: 20rpx;
+        margin-bottom: 10rpx;
       }
     }
   }

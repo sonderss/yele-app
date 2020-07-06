@@ -61,6 +61,9 @@ export default {
   },
   mounted(){
       this.getPay(true)
+      this.$minApi.getUserInfo({isLoading:true}).then(res => {
+         this.$store.dispatch('user/setUserInfos',res)
+      })
   },
   onShow() {
     uni.request({

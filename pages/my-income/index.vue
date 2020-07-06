@@ -88,7 +88,7 @@
           <text class="f22" @click="close">取消</text>
         </view>
         <view class="main_">
-          <view :class="index === 49 ? 'item':' item min-border-bottom'"  v-for="(item,index) in storeList" :key="item.id">
+          <view :class="index === 49 ? 'item':' item min-border-bottom'"  v-for="(item,index) in storeList" :key="index">
             <image src="/static/images/goods.png" />
             <view class="right_ m-left-20">
               <view>
