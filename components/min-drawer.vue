@@ -20,7 +20,8 @@
             :border="idnex === storeList.length - 1 ?false :true" 
             :title_right="nowStoreId === item.store_id ? '当前门店' : '' " 
             :img="item.head_img" 
-            label="可提现金额：￥2005"
+            :label="`可提现金额：￥${item.can_cash_amount}`"
+            @eventParent="tochange(item.store_id)"
             >
             </min-cell-item>
           </view>
@@ -109,6 +110,9 @@ export default {
         },
         status ? 50 : 300
       )
+    },
+    tochange(store_id){
+      this.$emit('changeStore',store_id)
     }
   }
 }

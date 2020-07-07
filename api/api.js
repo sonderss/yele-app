@@ -226,5 +226,7 @@ export default {
   // 提成明细 5efdadcdbf005
   getTCList: data => minRequest.get('/5efdadcdbf005',data),
   // 获取提成合计 5efef2e1ab099?start_time=2020-06-17&end_time=2020-08-01&store_id=1
-  getTCAll: data => minRequest.get('/5efef2e1ab099',data)
+  getTCAll: data => minRequest.get('/5efef2e1ab099',data),
+  // 我的收入 5f02c7420e9c6
+  getMyMoney: data => minRequest.get('/5f02c7420e9c6',data)
 }

@@ -5,18 +5,18 @@
         <text class="price">可提现金额</text>
         <view class="money">
           <text class="icon">￥</text>
-          <text class="tr">8888.88</text>
+          <text class="tr">{{myMoneylist.can_cash_amount ? myMoneylist.can_cash_amount : 0}}</text>
         </view>
         <text class="btn" @click="widthdraw">提现</text>
       </view>
       <view class="b-view">
         <view class="left-view">
-          <text class="f22">待发放工资</text>
-          <text class="f28 c">￥1000</text>
+          <text class="f22">冻结金额</text>
+          <text class="f28 c">￥{{myMoneylist.all_freeze_amount ? myMoneylist.all_freeze_amount : 0}}</text>
         </view>
         <view class="right-view">
-          <text class="f22">待发放工资</text>
-          <text class="f28 c">￥1000</text>
+          <text class="f22">待发放金额</text>
+          <text class="f28 c">￥{{myMoneylist.await_grant_amount ?  myMoneylist.await_grant_amount  :  0}}</text>
         </view>
       </view>
     </view>
@@ -49,36 +49,33 @@
       </view>
     </view>
 
-    <view class="jion_view">
-      <view class="title min-border-bottom">
-        <text>我参与的方案（simba）</text>
-        <view class="right" @click="showStore">
-          全部门店
-          <image src="/static/images/downarrow24.png" />
-        </view>
-      </view>
-      <view class="method-view min-border-bottom">
-        <view class="left">工资方案</view>
-        <view class="right">
-          <text>工资方案名称</text>
-        </view>
-      </view>
-      <view class="method-view min-border-bottom">
-        <view class="left">基础提成</view>
-        <view class="right">
-          <text>订台人提成</text>
-          <text>下单人提成</text>
-          <text>下线分佣</text>
-        </view>
-      </view>
-      <view class="method-view">
-        <view class="left">活动方案</view>
-        <view class="right">
-          <text>活动名称1</text>
-          <text>活动名称2</text>
-          <text>活动名称3</text>
-        </view>
-      </view>
+    <view class="jion_view"  >
+             <view class="title min-border-bottom">
+                <text>我参与的方案（{{myMoneylist.store_name}}）</text>
+                <view class="right" @click="showStore">
+                  全部门店
+                  <image src="/static/images/downarrow24.png" />
+                </view>
+              </view>
+              <view class="method-view min-border-bottom">
+                <view class="left">工资方案</view>
+                <view class="right">
+                  <text>{{ myMoneylist.salary_scheme ? myMoneylist.salary_scheme : '暂无数据'}}</text>
+                </view>
+              </view>
+              <view class="method-view min-border-bottom">
+                <view class="left">基础提成</view>
+                <view class="right">
+                  <text>{{myMoneylist.royalty_template ? myMoneylist.royalty_template : '暂无数据'}}</text>
+                </view>
+              </view>
+              <view class="method-view" v-if="myMoneylist.activity_list.length > 0">
+                <view class="left">活动方案</view>
+                <view class="right" v-for="(item2,index2) in myMoneylist.activity_list" :key="index2">
+                  <text>{{item2.activity_name ? item2.activity_name : '暂无数据'}}</text>
+                </view>
+              </view>
+     
     </view>
     <view class="desc">暂不支付在APP直接查看方案详细信息</view>
     <min-popup :show="show" @close="close">
@@ -88,14 +85,14 @@
           <text class="f22" @click="close">取消</text>
         </view>
         <view class="main_">
-          <view :class="index === 49 ? 'item':' item min-border-bottom'"  v-for="(item,index) in storeList" :key="index">
-            <image src="/static/images/goods.png" />
+          <view :class="index === 49 ? 'item':' item min-border-bottom'" @click="toChange(item.store_id)" v-for="(item,index) in storeList" :key="index">
+            <image :src="item.head_img ?  item.head_img : '/static/images/goods.png' " />
             <view class="right_ m-left-20">
               <view>
                 <text class="f30" style="color:#333">{{item.store_name}}</text>
                 <text v-if="item.store_id === $store.state.user.userInfo.store_id" class="active f20">当前门店</text>
               </view>
-              <text class="f26 m-top-10" style="color:#666">可提现金额：￥2005</text>
+              <text class="f26 m-top-10" style="color:#666">可提现金额：￥{{item.can_cash_amount}}</text>
             </view>
           </view>
         </view>
@@ -111,7 +108,8 @@ export default {
     return {
       show: false,
       storeList: [],
-      nowStoreId: ""
+      nowStoreId: "",
+      myMoneylist:{activity_list:[]}
     };
   },
   mounted() {
@@ -122,8 +120,18 @@ export default {
       console.log(res.list);
       this.storeList = res.list;
     });
+    this.getData()
   },
   methods: {
+    // 我的收入
+    getData(id){
+        this.$minApi.getMyMoney({
+        store_id: id ? id : this.nowStoreId
+          }).then(res =>  {
+            console.log(res);
+            this.myMoneylist = res
+        })
+    },
     // 提成明细
     commissiondetails() {
       this.$minRouter.push({
@@ -162,6 +170,12 @@ export default {
     // 展示底部抽屉
     showStore() {
       this.show = true;
+    },
+    // 切换门店
+    toChange(id){
+      console.log(id);
+      this.getData(id)
+      this.close()
     }
   }
 };

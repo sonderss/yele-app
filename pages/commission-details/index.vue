@@ -62,7 +62,7 @@
          <view class="btn" @click="sure">确认</view>
       </view>
     </min-popup>
-    <min-drawer :visible="showdrawer" mode="right" @close="closedrawer">
+    <min-drawer :visible="showdrawer" mode="right" @close="closedrawer" @changeStore="changeStoreId">
        
     </min-drawer>
     <min-pulldown :isFlag="falg" :desc="des" :loading="load"/>
@@ -296,8 +296,13 @@ export default {
        time = time.replace('年','-')
        time = time.replace('月','-')
        time = time.replace('日','')
-       console.log(time);
        return time
+    },
+    // 选择门店
+    changeStoreId(id){
+      this.closedrawer()
+        this.getData(this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),id,1)
+        this.getTall(this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),id)
     }
   }
 }

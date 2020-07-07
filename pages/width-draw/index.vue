@@ -34,13 +34,11 @@ export default {
     }
   },
   onLoad(){
-    console.log(this.$store.state.user.userInfo);
-    this.$minApi.getUserInfo().then(res => {
-      this.info = res
+    console.log(this.$store.state.user.userInfos);
+      this.info = this.$store.state.user.userInfos
       if(this.info.bank_card_num){
           this.getCardLast(this.info.bank_card_num)
       }
-    })
   },
   methods: {
     toChioce () {
