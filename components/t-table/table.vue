@@ -5,16 +5,16 @@
         <tr class="flex">
           <th class="product">商品</th>
           <th class="item2">数量</th>
-          <th class="item2">金额</th>
+          <th class="item2">实收</th>
           <th class="item2">提成比例</th>
           <th class="item2">提成</th>
         </tr>
-        <tr class="flex" v-for="index in 4" :key="index">
-          <td class="product">VSOP*750ML*2010年/瓶</td>
-          <td class="item2">309000</td>
-          <td class="item2">16780</td>
-          <td class="item2">-100%</td>
-          <td class="item2">-1685</td>
+        <tr class="flex" v-for="(item,index) in lists" :key="index">
+          <td class="product">{{item.product_name}}</td>
+          <td class="item2">{{item.quantity}}</td>
+          <td class="item2">{{item.performance ? item.performance : 0}}</td>
+          <td class="item2">{{item.commission_ratio ?  item.commission_ratio  : 0}}%</td>
+          <td class="item2">{{item.commission}}</td>
         </tr>
         <!-- <tr class="flex">
           <td  class="product">VSOP*750ML*2010年/瓶</td>
@@ -37,6 +37,12 @@
 
 <script>
 export default {
+  props:{
+    lists:{
+      type:Array,
+      default:  () => []
+    }
+  },
   data () {
     return {}
   }

@@ -17,7 +17,7 @@
         v-for="(item,index) in list"
         :key="index"
         class="cell-item min-flex min-flex-main-between p-tb-30 p-lr-20 min-border-bottom"
-        @click="toDeatil"
+        @click="toDeatil(item.id)"
       >
         <view class="min-flex">
           <view class="" style="width:400rpx">
@@ -26,7 +26,7 @@
           </view>
         </view>
         <view class="min-flex flex-end min-flex-dir-top">
-          <view :class=" item.commission *1 <= 0 ? 'ablack' : 'ared'"> {{item.commission * 1 > 0 ? '+' + item.commission : '-' + item.commission}}</view>
+          <view :class=" item.commission *1 <= 0 ? 'ablack' : 'ared'"> {{item.commission * 1 > 0 ? '+' + item.commission :  item.commission}}</view>
         </view>
       </view>
     </view>
@@ -63,7 +63,6 @@
       </view>
     </min-popup>
     <min-drawer :visible="showdrawer" mode="right" @close="closedrawer" @changeStore="changeStoreId">
-       
     </min-drawer>
     <min-pulldown :isFlag="falg" :desc="des" :loading="load"/>
   </view>
@@ -282,10 +281,10 @@ export default {
     cancel () {
       this.show = false
     },
-    toDeatil () {
+    toDeatil (id) {
       this.$minRouter.push({
         name: 'commission-deils',
-        params: {}
+        params: {id}
       })
     },
     closedrawer () {

@@ -215,7 +215,7 @@ export default {
   getApiPross: () => minRequest.get('/5ee8747279279'),
   // 提现记录 5ef8496fdd743?date=2020-06&limit=10&page=1
   getTiXian: data => minRequest.get('/5ef8496fdd743',data),
-  // 提现详情 5ef997bece0dc?record_id=3
+  // 提现详情 5ef997bece0dc?record_id=3 
   getTiXianDetail: data => minRequest.get('/5ef997bece0dc',data),
   // 转账记录
   getZhBill: data => minRequest.get('/5ef835cb9a4d3',data),
@@ -228,5 +228,7 @@ export default {
   // 获取提成合计 5efef2e1ab099?start_time=2020-06-17&end_time=2020-08-01&store_id=1
   getTCAll: data => minRequest.get('/5efef2e1ab099',data),
   // 我的收入 5f02c7420e9c6
-  getMyMoney: data => minRequest.get('/5f02c7420e9c6',data)
+  getMyMoney: data => minRequest.get('/5f02c7420e9c6',data),
+  // 提成详情 5efdadd6ef134?commission_id=81
+   getTcDatail: data => minRequest.get('/5efdadd6ef134',data)
 }

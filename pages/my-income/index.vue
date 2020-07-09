@@ -53,7 +53,7 @@
              <view class="title min-border-bottom">
                 <text>我参与的方案（{{myMoneylist.store_name}}）</text>
                 <view class="right" @click="showStore">
-                  全部门店
+                  {{store_name}}
                   <image src="/static/images/downarrow24.png" />
                 </view>
               </view>
@@ -85,7 +85,7 @@
           <text class="f22" @click="close">取消</text>
         </view>
         <view class="main_">
-          <view :class="index === 49 ? 'item':' item min-border-bottom'" @click="toChange(item.store_id)" v-for="(item,index) in storeList" :key="index">
+          <view :class="index === 49 ? 'item':' item min-border-bottom'" @click="toChange(item)" v-for="(item,index) in storeList" :key="index">
             <image :src="item.head_img ?  item.head_img : '/static/images/goods.png' " />
             <view class="right_ m-left-20">
               <view>
@@ -109,7 +109,8 @@ export default {
       show: false,
       storeList: [],
       nowStoreId: "",
-      myMoneylist:{activity_list:[]}
+      myMoneylist:{activity_list:[]},
+      store_name:'全部门店'
     };
   },
   mounted() {
@@ -172,9 +173,10 @@ export default {
       this.show = true;
     },
     // 切换门店
-    toChange(id){
-      console.log(id);
-      this.getData(id)
+    toChange(item){
+      console.log(item);
+      this.store_name = item.store_name
+      this.getData(item.store_id)
       this.close()
     }
   }

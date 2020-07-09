@@ -25,7 +25,6 @@
 							:size="sizeCNM" 
 							makeOnLoad  
           />
-           
         <view class="d m-top-20">请使用{{$parseURL().info.payment_id === 1 ? '支付宝' : '微信'}}扫码支付</view>
       </view>
     </view>
