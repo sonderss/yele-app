@@ -95,9 +95,9 @@
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "C:/Users/Administrator/Desktop/splash.9.png",
-                    "xhdpi" : "C:/Users/Administrator/Desktop/splash.9.png",
-                    "xxhdpi" : "C:/Users/Administrator/Desktop/splash.9.png"
+                    "hdpi" : "C:/Users/Administrator/Desktop/drawable-hdpi/splash.9.png",
+                    "xhdpi" : "C:/Users/Administrator/Desktop/drawable-xhdpi/splash.9.png",
+                    "xxhdpi" : "C:/Users/Administrator/Desktop/drawable-xxhdpi/splash.9.png"
                 },
                 "ios" : {
                     "iphone" : {

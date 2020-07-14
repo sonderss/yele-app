@@ -346,6 +346,7 @@
     {
       "path":"pages/fetch-liquor/index",
       "style": {
+        "enablePullDownRefresh":true,
         "app-plus":{
           "titleNView":{
             "titleText":"取酒",
@@ -644,6 +645,7 @@
     {
       "path": "pages/platform-history/index",
       "style": {
+        "enablePullDownRefresh":true,
         "app-plus":{
           "titleNView":{
             "titleText":"台位历史",
@@ -776,6 +778,7 @@
     {
       "path": "pages/invitation-record/index",
       "style": {
+        "enablePullDownRefresh":true,
         "app-plus":{
           "titleNView":{
             "titleText":"邀请记录",
@@ -788,6 +791,7 @@
     {
       "path": "pages/appointment-record/index",
       "style": {
+        "enablePullDownRefresh":true,
         "app-plus":{
           "titleNView":{
             "titleText":"预约记录",

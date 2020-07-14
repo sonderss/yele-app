@@ -113,7 +113,7 @@ export default {
   // 我的下线 5e9facde8be76?limit=10&page=1
   getMyDownLine: data => minRequest.get('/5e9facde8be76', data),
   // 邀请记录 5e9fbfc58bb01
-  getPlaseList: () => minRequest.get('/5e9fbfc58bb01'),
+  getPlaseList: data => minRequest.get('/5e9fbfc58bb01',data),
   // 邀请下线 Invite offline 5e9fe52f40729
   postInviteOffline: data => minRequest.post('/5e9fe52f40729', data),
   // 可邀请下线列表

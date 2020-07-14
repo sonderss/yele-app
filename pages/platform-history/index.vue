@@ -4,8 +4,8 @@
       <view class="main p-bottom-30" >
         <view>客户姓名：{{item.client_name ? item.client_name : '暂无'}}</view>
         <view>联系电话：{{item.client_mobile ? item.client_mobile : '暂无'}}</view>
-        <view>开台时间：{{item.opened_time}}</view>
-        <view v-if="item.opening_status === -1">销台时间：{{item.closed_time}}</view>
+        <view>开台时间：{{$minCommon.formatDate(new Date(item.opened_time * 1000), 'yyyy-MM-dd hh:mm:ss') }}</view>
+        <view v-if="item.opening_status === -1">销台时间：{{$minCommon.formatDate(new Date(item.closed_time * 1000), 'yyyy-MM-dd hh:mm:ss') }}</view>
         <view>营销人员：{{item.sales_name}}</view>
         <view>账单金额：￥{{item.bill_price}}</view>
         <view>应付金额：￥{{item.receivable_price}}</view>
@@ -27,6 +27,7 @@
       </view>
     </view>
     <min-404 v-if="list.length === 0" id='none'></min-404>
+    <min-pulldown :isFlag="falg" :desc="des" :loading="load"/>
   </view>
 </template>
 
@@ -36,7 +37,11 @@ export default {
   navigate: ['navigateTo'],
   data () {
     return {
-      list: []
+      list: [],
+       falg:false,
+      nums:2,
+      des:"加载中",
+      load:true,
     }
   },
   mounted () {
@@ -44,19 +49,46 @@ export default {
   onLoad () {
     this.getData(this.$parseURL().id)
   },
+   onReachBottom(){
+      console.log('到底')
+      this.falg = true
+      this.$minApi.getStationHistory({
+        desk_id: this.$parseURL().id,
+        page:this.nums,
+        limit:10,
+        isLoading:true
+        }).then(res => {
+           if(res.list.length === 0) {
+          this.load = false
+          this.des = '暂无更多数据'
+          setTimeout(() => {
+            return this.falg = false
+          },1000) 
+        }   
+        this.list =  this.list.concat([...res.list])
+           this.nums++
+     })
+  },
+  onPullDownRefresh() {
+     this.$minApi.getStationHistory({
+        desk_id: this.$parseURL().id,
+        page:1,
+        limit:10,
+        isLoading:true
+        }).then(res => {
+        this.list = res.list
+         
+           this.nums = 2
+            this.falg = false
+           uni.stopPullDownRefresh();
+     })
+  },
   methods: {
     getData (id) {
-      this.$minApi.getStationHistory({ desk_id: id })
+      this.$minApi.getStationHistory({ desk_id: id,  page:1,
+        limit:10, })
         .then(res => {
           this.list = res.list
-          this.list.map(item => {
-            if (item.opened_time !== 0) {
-              item.opened_time = this.$minCommon.formatDate(new Date(item.opened_time * 1000), 'yyyy-MM-dd hh:mm:ss')
-            }
-            if (item.closed_time !== 0) {
-              item.closed_time = this.$minCommon.formatDate(new Date(item.closed_time * 1000), 'yyyy-MM-dd hh:mm:ss')
-            }
-          })
         })
     },
     // 查看订单

@@ -1,7 +1,7 @@
 <template>
   <view class="fetch-liquor p-tb-20 p-lr-30">
     <min-search v-model="search" placeholder="客户姓名/手机号查询"/>
-    <view class="list p-top-20" v-for="(item,index) in getNewData" :key="index">
+    <view class="list p-top-20" v-for="(item,index) in getNewData" :key="item.id">
       <view class="card p-lr-20">
         <view class="top p-tb-30 min-border-bottom">
           <view class="order-num">单号：{{item.deposit_sn}}</view>
@@ -31,8 +31,35 @@ export default {
       search: '',
       list: [],
       clentInfo: {},
-      arr: []
+      arr: [],
+      falg:false,
+      page:2,
+      des:"加载中",
+      load:true
     }
+  },
+  onReachBottom(){
+      console.log('到底')
+      this.falg = true
+      this.getData(this.page,10,true).then(res => {
+        if(res.list.length === 0) {
+          this.load = false
+          this.des = '暂无更多数据'
+          setTimeout(() => {
+            return this.falg = false
+          },1000) 
+        }   
+        this.page++
+        this.list =  this.list.concat([...res.list])
+      })
+  },
+  onPullDownRefresh() {
+    console.log('refresh');
+    this.getData(1,10,true).then(res => {
+       this.list =  res.list
+       this.page = 2
+        uni.stopPullDownRefresh();
+    })
   },
   computed: {
     getNewData () {
@@ -48,18 +75,20 @@ export default {
 
   mounted () {
     // 获取存酒记录
-    this.$minApi.getWinekeepingrecord()
-      .then(res => {
+    this.getData(1,10).then(res => {
         this.list = res.list
         console.log(this.list)
       })
+    // this.$minApi.getWinekeepingrecord()
     this.clentInfo = {
       name: this.$parseURL().name,
       phone: this.$parseURL().phone
     }
   },
   methods: {
-
+    async getData(page,limit,isLoading) {
+      return await this.$minApi.getWinekeepingrecord({page,limit,isLoading})
+    },
     toGetWine (index) {
       this.$minRouter.push({
         name: 'liquor-code',

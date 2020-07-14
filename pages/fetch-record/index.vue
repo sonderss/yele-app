@@ -27,7 +27,7 @@ export default {
       list: [],
       falg:false,
       des:"加载中",
-      page:1,
+      page:2,
       load:true
     }
   },

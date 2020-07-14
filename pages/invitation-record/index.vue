@@ -33,33 +33,49 @@ export default {
   name: 'invitation-record',
   navigate: ['navigateTo', 'switchTab'],
   mounted () {
-    this.$minApi.getPlaseList().then(res => {
-      console.log(res)
-      this.list = res.list
+    this.getData({
+      page:1,
+      limit:10
+    }).then(res => {
+       this.list = res.list
     })
   },
   data () {
     return {
       status,
       list: [],
-      total: -1,
-      params: {
-        page: 1,
-        limit: 10
-      }
+      falg:false,
+      des:"加载中",
+      page:2,
+      load:true
     }
   },
-  onReachBottom () { // 下拉翻页
-    // this.getApplyLog()
+  onReachBottom () { 
+     console.log('到底')
+      this.falg = true
+      this.getData(this.page,10,true).then(res => {
+        if(res.list.length === 0) {
+          this.load = false
+          this.des = '暂无更多数据'
+          setTimeout(() => {
+            return this.falg = false
+          },1000) 
+        }   
+        this.page++
+        this.list =  this.list.concat([...res.list])
+      })
   },
-  onPullDownRefresh () { // 上拉刷新
-    // this.params.page = 1
-    // this.getApplyLog('shuaxin')
-    // setTimeout(() => {
-    //   uni.stopPullDownRefresh() // 停止下拉刷新动画
-    // }, 2000)
+  onPullDownRefresh () { 
+     this.getData(1,10,true).then(res => {
+       this.list =  res.list
+       this.page = 2
+        uni.stopPullDownRefresh();
+    })
   },
   methods: {
+    async getData(page,limit,isLoading) {
+      return await this.$minApi.getPlaseList({page,limit,isLoading})
+    }
     // getApplyLog (shuaxin) {
     //   if (this.total === this.list.length) return // 没有更多数据了
     //   this.$minApi.applyLog(this.params).then(res => {
