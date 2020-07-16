@@ -14,7 +14,7 @@
             <view class="mid-view min-border-top "  v-for="(i,n) in item.order_product_list" :key="n">
                 <view class="left-view">
                   <view class="left-photo">
-                    <image :src="i.product_img"  />
+                    <image  lazy-load :src="i.product_img"  />
                   </view>
                   <view class="mid-desc">
                       <text class="f28 fcolor title min-ellipsis " v-if="i.product_name !== 'undefined'">{{i.product_name}}</text>
@@ -31,7 +31,7 @@
             <view class="mid-view min-border-top ">
                 <view class="left-view" >
                   <view class="left-photo m-right-20" v-for="(i,n) in item.order_product_list" :key="n">
-                    <image :src="i.product_img"  />
+                    <image lazy-load :src="i.product_img"  />
                   </view>
                 </view>
                 <view class="right-price">

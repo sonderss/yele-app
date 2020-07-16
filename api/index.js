@@ -48,6 +48,7 @@ minRequest.interceptors.response((response) => {
     // 登录过期
     if (code === 1000011) {
       store.dispatch('user/setUserInfo', {})
+      uni.clearStorage();
       uni.reLaunch({
         url: '/pages/login/index'
       })

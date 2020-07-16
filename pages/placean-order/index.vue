@@ -41,7 +41,7 @@
             v-model="item2.step"
             @changesPop="changesPopNoStep(index,index2,item2.type)"
             :desc="item2.sku.length >=1 ?item2.sku[0].sku_full_name : item2.info "
-            :price="item2.price "
+            :price="item2.price"
             :isFlag="item2.isFlag"
           ></min-goods-chioce>
         </view>
@@ -77,10 +77,7 @@
       </view>
       <view class="main-sel-view p-lr-30 p-tb-30">
         <view class="item" v-for="(item2,n) in selArr" :key="n">
-          <image
-            :src="errImg ? '/static/images/goods.png': item2.product_img"
-            @error="imageErro"
-          />
+          <image :src="errImg ? '/static/images/goods.png': item2.product_img" @error="imageErro" />
           <view class="content-view">
             <view class="right-view-title">
               <text class="f28 t" style="display:block">{{item2.product_name}}</text>
@@ -106,7 +103,7 @@
                 </text>
               </view>
               <view class="steper">
-                <min-stepper :isAnimation="false" v-model="item2.step"  @change="alDel($event,n)"></min-stepper>
+                <min-stepper :isAnimation="false" v-model="item2.step" @change="alDel($event,n)"></min-stepper>
               </view>
             </view>
           </view>
@@ -266,7 +263,7 @@ export default {
           if (item.step === 0) {
             this.$nextTick(() => {
               a.splice(index, 1);
-            })
+            });
             this.$store.dispatch("goods/setOrderSelArr", a);
             this.mainArray.map(item1 => {
               if (item1.product && item1.product.length > 0) {
@@ -315,15 +312,68 @@ export default {
     },
     /* 获取列表数据 getProductList */
     getListData() {
+      uni.getStorage({
+        key: "images",
+        success: res => {
+          this.b(JSON.parse(res.data));
+        },
+        complete: res => {
+          if (!res.data) {
+            this.a();
+          }
+        }
+      });
+    },
+    b(images) {
       this.$minApi.getOrderProduceList().then(res => {
         this.mainArray = res.list;
-        console.log(this.mainArray);
+        let temp = [];
         for (const val of this.mainArray) {
-          // val.step = 1
-          // val.type === 'setmeal' || item2.sku.length > 1)  ? false : true
-          //    :step="( "
-          // :showBtn=" "
           val.product.map(item2 => {
+            images.map(item3 => {
+              switch (item2.product_img.split("/")[6]) {
+                case item3.split("/")[3]:
+                  this.$set(item2, "product_img", item3);
+                  break;
+              }
+            });
+            if (item2.type === "product" && item2.sku.length > 1) {
+              this.$set(item2, "isFlag", false);
+              this.$set(item2, "isPro", true);
+            } else if (item2.type === "setmeal") {
+              this.$set(item2, "isFlag", false);
+            } else {
+              this.$set(item2, "isFlag", true);
+            }
+          });
+        }
+        this.$nextTick(() => {
+          this.getElementTop();
+        });
+      });
+    },
+    a() {
+      this.$minApi.getOrderProduceList().then(res => {
+        this.mainArray = res.list;
+        let temp = [];
+        for (const val of this.mainArray) {
+          val.product.map(item2 => {
+            // #ifdef APP-PLUS
+            uni.downloadFile({
+              url: item2.product_img,
+              success: res => {
+                temp.push(res.tempFilePath);
+                uni.setStorage({
+                  key: "images",
+                  data: JSON.stringify(temp),
+                  success: function() {
+                    console.log("success");
+                  }
+                });
+                this.$set(item2, "product_img", res.tempFilePath);
+              }
+            });
+            // #endif
             if (item2.type === "product" && item2.sku.length > 1) {
               this.$set(item2, "isFlag", false);
               this.$set(item2, "isPro", true);

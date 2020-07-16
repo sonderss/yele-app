@@ -277,7 +277,7 @@ export default {
                 this.list.type = 'service'
                 console.log(this.list)
                 this.item = []
-                this.item.push(this.list.main_img)
+                this.item.push(this.list.product_img)
               })
               .catch(() => {
                 this.noData = true

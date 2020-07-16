@@ -3,7 +3,7 @@ import store from './store/index'
 export default {
   onLaunch: function () {
     console.log('App Launch')
-    // #ifdef APP-PLUS  	
+    // #ifdef APP-PLUS      
 				const  server = "http://api.app-store.dev.yeleonline.com/api/5ee745d5552d2"; // 检查更新地址  
 				function plusReady(){  
 					// 获取本地应用资源版本号  
@@ -19,7 +19,7 @@ export default {
 				}  
 				function getCheckVersion(req) {
 					// 请求版本升级服务器，判断是否需要更新
-				   	uni.request({
+				    uni.request({
 					    url:server,  
 					    data:req,
               header:{"access-token":"HPkSFqbVhWpCRxVRpOTkyEubusFxBEEd"},
@@ -34,7 +34,7 @@ export default {
                             // 去下载新版本app
                             // 下载wgt文件  
                             const wgtUrl= res.data.data.download_url;
-						            	    console.log(wgtUrl)
+						                    console.log(wgtUrl)
                                var showLoading = plus.nativeUI.showWaiting("正在下载", {back:"none"});
                             const downloadTask = uni.downloadFile({
                                 url: wgtUrl, 

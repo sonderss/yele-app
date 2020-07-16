@@ -15,7 +15,7 @@
           <view class="main p-lr-30" v-if="listItem.product.length > 0" >
             <view class="item">
               <view class="goods" v-for="(item,index) in listItem.product" :key="index" @click.stop="toDetail(item)">
-                <image :src="item.product_img.length>10 ?  item.product_img : '../../static/images/goods.png' "  />
+                <image lazy-load :src="item.product_img.length>10 ?  item.product_img : '../../static/images/goods.png' "  />
                 <view class="content-view">
                   <view class="right-view-title">
                     <text class="f28 t" style="display:block">{{item.product_name}}</text>
@@ -41,7 +41,7 @@
                       >
                       </min-stepper>
                       <view class="m-right-10" v-else style="width:40rpx;height:40rpx;" @click.stop="changeChioceT(item)">
-                          <image src="/static/images/yellow-add.png"  style="width:100%"/>
+                          <image lazy-load src="/static/images/yellow-add.png"  style="width:100%"/>
                       </view>
                       <!-- <view class="isSku f24"  v-if="item2.sku.length > 1 "  @click="selSku(index,index2)">选规格</view> -->
                     </view>

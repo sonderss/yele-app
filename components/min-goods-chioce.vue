@@ -5,7 +5,7 @@
           <!-- @click="goodsAdd(index,index2)" -->
           <view class="image-view-com">
             <view class="badge" v-if="badge">{{badgeTxt}}</view>
-            <image mode="aspectFit" :src="imageSrc === 'error' ? '/static/images/produced.png' : image"  @error='imgerr' />
+            <image mode="aspectFit" lazy-load :src="imageSrc === 'error' ? '/static/images/produced.png' : image"  @error='imgerr' />
           </view>
           <view class="content-view">
             <view class="right-view-title" >
@@ -22,7 +22,7 @@
               <view class="steper">
                 <min-stepper :isFlag="isFlag" v-if="isFlag"  v-model="count" @change="changeChioce"></min-stepper>
                 <view v-else class="m-right-10" style="width:40rpx;height:40rpx;" @click.stop="changeChioceT">
-                    <image src="/static/images/yellow-add.png"  style="width:100%" />
+                    <image lazy-load src="/static/images/yellow-add.png"  style="width:100%" />
                 </view>
                 <!-- <view class="isSku f24" v-if="step" @click="selSku(index,index2)">选规格</view> -->
               </view>

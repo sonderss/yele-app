@@ -11,7 +11,7 @@
       </min-cell>
       <view class="order m-tb-20">
           <view class="view left m-right-30" @click="order">
-              <image src='/static/images/index/order.png' />
+              <image  src='/static/images/index/order.png' />
               <text>下单</text>
           </view>
           <view class="view right" @click="presentation" v-root="'presentation'">
