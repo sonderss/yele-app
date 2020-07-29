@@ -2,7 +2,7 @@
     "name" : "Yele Store",
     "appid" : "__UNI__B2E64E2",
     "description" : "",
-    "versionName" : "1.1.9",
+    "versionName" : "1.2.0",
     "versionCode" : "100",
     "transformPx" : false,
     "plus" : {
@@ -95,9 +95,9 @@
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "C:/Users/Administrator/Desktop/drawable-hdpi/splash.9.png",
-                    "xhdpi" : "C:/Users/Administrator/Desktop/drawable-xhdpi/splash.9.png",
-                    "xxhdpi" : "C:/Users/Administrator/Desktop/drawable-xxhdpi/splash.9.png"
+                    "hdpi" : "static/images/drawable-hdpi/splash.9.png",
+                    "xhdpi" : "static/images/drawable-xhdpi/splash.9.png",
+                    "xxhdpi" : "static/images/drawable-xxhdpi/splash.9.png"
                 },
                 "ios" : {
                     "iphone" : {
@@ -107,8 +107,11 @@
                         "retina55" : "C:/Users/Administrator/Desktop/d/1242_2208.png",
                         "retina47" : "C:/Users/Administrator/Desktop/d/750_1334.png",
                         "retina40" : "C:/Users/Administrator/Desktop/d/640_1136.png"
-                    }
-                }
+                    },
+                    "storyboard" : "C:/Users/Administrator/Desktop/CustomStoryboard.zip"
+                },
+                "androidStyle" : "default",
+                "iosStyle" : "storyboard"
             }
         },
         "compilerVersion" : 3

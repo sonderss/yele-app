@@ -38,6 +38,7 @@
                   <text class="fcolor f28">￥ {{item.order_total}}</text>
                     <text class="allin f22 tcolor">查看全部 >></text>
                 </view>
+                <view v-if="item.order_product_list.length === 0">该订单已变更</view>
             </view>
             <!-- <text class="f20 origin sign" >{{item.sign}}</text> -->
 
@@ -97,6 +98,11 @@ export default {
         }   
         this.page++
         this.list =  this.list.concat([...res.list])
+        this.list.map(item => {
+          if (item.order_product_list.length > 4) {
+            item.order_product_list.splice(4)
+          }
+        })
       })
   },
   onPullDownRefresh() {
@@ -115,6 +121,7 @@ export default {
       this.list.map(item => {
         if (item.order_product_list.length > 4) {
           item.order_product_list.splice(4)
+          console.log(item.desk_name)
         }
       })
     })

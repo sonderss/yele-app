@@ -1,28 +1,28 @@
 <template>
   <view class="release-record p-lr-30 p-tb-20">
-     <view class="top_view">
-        <view class="top" >
-        <text>冻结合计：￥100000</text>
-      </view>
-    </view>
+    
 
       <view
-        v-for="index in 2"
-        :key="index"
+        v-for="(item,index) in list"
+        :key="item.id"
         class="cell-item min-flex min-flex-main-between p-tb-30 p-lr-20 min-border-bottom"
       >
-        <view class="min-flex">
-          <view class style="width:300rpx">
-            <view class="f28">冻结2000元</view>
-            <view class="label m-top-10 f24 assist-text min-ellipsis">2019-06-01  16:32:00</view>
+        <view class="min-flex" >
+          <view>
+            <view class="f28" >冻结{{item.amount}}元</view>
+            <view class="label m-top-20 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.create_time*1000),'yyyy/MM/dd hh:mm:ss')  }}</view>
           </view>
         </view>
-        <view class="min-flex flex-end min-flex-dir-top">
-          <view class="">100元</view>
+        <view class="iii min-flex flex-end min-flex-dir-top">
+          <view class="">{{item.store_name}}</view>
+          <view class="m-top-20" @click="showToast(index)">
+            <image src="/static/images/wen.png" style="width:40rpx;height:40rpx"/>
+          </view>
+          <view class="toast" v-if="showToasts === index">{{item.remark}}</view>
         </view>
       </view>
-    <min-drawer :visible="showdrawer" mode="right" @close="closedrawer">
-    </min-drawer>
+    <!-- <min-drawer :visible="showdrawer" mode="right" @close="closedrawer">
+    </min-drawer> -->
   </view>
 </template>
 <script>
@@ -31,13 +31,24 @@ export default {
   navigate: ['navigateTo'],
   data () {
     return {
-      showdrawer: false
+      showdrawer: false,
+      list:[],
+      showToasts:Number
     }
+  },
+  mounted() {
+    this.getData()
   },
   onNavigationBarButtonTap () {
     this.showdrawer = !this.showdrawer
   },
   methods: {
+    getData(){
+      this.$minApi.getDJlist().then(res => {
+        this.list = res.list
+        console.log(this.list)
+      })
+    },
     toDeatil () {
       this.$minRouter.push({
         name: 'release-details'
@@ -45,6 +56,10 @@ export default {
     },
     closedrawer () {
       this.showdrawer = false
+    },
+    showToast(item){
+      if(this.showToasts === item) return this.showToasts = Number
+      this.showToasts = item
     }
   }
 }
@@ -71,8 +86,9 @@ export default {
 }
 .cell-item {
   background: #fff;
+   position: relative;
+
   .label {
-    width: 410rpx;
   }
   .ablack {
     color: #333;
@@ -106,5 +122,23 @@ export default {
   flex-direction: column;
   padding: 20rpx;
   padding-top: 0;
+}
+.iii{
+  width:600rpx;
+  align-items: flex-end;
+  overflow: hidden;
+  .toast{
+    width: auto;
+    height: auto;
+    padding: 20rpx;
+    background: #000;
+    opacity: 0.5;
+    color: #fff;
+    border-radius: 15rpx;
+    position: absolute;
+    right: 40rpx;
+    top: 130rpx;
+    z-index: 9999;
+  }
 }
 </style>

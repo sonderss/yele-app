@@ -4,6 +4,10 @@
       scroll-y
       :style="{transition: top === 0 ? 'transform 300ms':'',transform: 'translateY('+ top + 'rpx' +')'}"
     >
+      <view class="m-top-20 toasta f26" style="color:#fff;" v-if="top && flag">
+        <text class="iconfont icon-changyongicon_huaban" style="color:#fff;font-weight:blod;f26">&#xe616;</text>
+        {{top >= 300 ? '松开':'下拉'}}查看座位分布图
+      </view>
       <view class="back-img-box">
         <view style="height: 178rpx;"></view>
         <view class="info min-flex min-flex-main-between m-lr-30">
@@ -117,7 +121,7 @@ export default {
       back,
       top: "",
       lastY: "",
-      flag: 0,
+      flag: Boolean,
       testArr:[],
       grid2: [
         {
@@ -243,10 +247,22 @@ export default {
     },
     move(e) {
       let currentY = e.changedTouches[0].pageY;
-      this.top = currentY - this.lastY;
+      if(this.top < currentY - this.lastY){
+          // 像下滚动
+         this.top = currentY - this.lastY;
+          this.flag = true
+      }else  {
+          // 向上滚动
+          //  this.top = 0
+          this.top = currentY - this.lastY;
+          this.flag = false
+      }
     },
     end(e) {
-      this.top = 0;
+      if(this.top >= 300){
+         this.$minRouter.push({ name: "seat",params:{url:'index'}});
+      }
+      return this.top = 0;
     },
     getPay(isLoading){
       this.$minApi.getPayMethods({isLoading:true}).then(res=>{
@@ -395,5 +411,12 @@ export default {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+}
+.toasta{
+    width: 100%;
+    height: 20rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>

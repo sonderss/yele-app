@@ -17,7 +17,7 @@ minRequest.setConfig((config) => {
  
   }else{
     // 'https://api.app-store.test.yeleonline.com'
-     config.baseURL = 'https://api.app-store.test.yeleonline.com/api'
+     config.baseURL = 'http://api.app-store.dev.yeleonline.com/api'
   }
   return config
 })

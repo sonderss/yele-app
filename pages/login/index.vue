@@ -35,7 +35,8 @@ export default {
     return {
       countDown: 0,
       code: '521125',
-      mobile: '13800138001'
+      mobile: '13800138001',
+      flag:true
     }
   },
   onLoad(){
@@ -58,6 +59,8 @@ export default {
       })
     },
     login () {
+      if(!this.flag) return 
+      this.flag = false
       if (!this.$minCommon.checkMobile(this.mobile) || this.code.length !== 6) return this.$showToast('请正确填写信息')
       this.$minApi.login({ mobile: this.mobile, code: this.code }).then(res => {
         this.$showToast('登录成功')
@@ -67,6 +70,9 @@ export default {
             url: '../index/index'
           })
         }, 1000)
+      }).catch(err => {
+        console.log(err)
+        this.flag = true
       })
     }
   }

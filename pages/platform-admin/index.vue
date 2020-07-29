@@ -1,5 +1,15 @@
 <template>
-  <view class="platform-admin p-tb-20 p-lr-30">
+  <view class="platform-admin p-tb-20 p-lr-30" @touchstart="start" @touchmove="move" @touchend="end">
+    <view class="aaaa" :style="{height:`${top}rpx`,width:'100%',lineHeight:`${top}rpx`}" v-if="top">
+        <view class="m-top-20 f26">
+          <text class="iconfont icon-changyongicon_huaban f26" style="font-weight:blod;">&#xe616;</text>
+          {{top >= 300 ? '松开':'下拉'}}查看座位分布图
+        </view>
+    </view> 
+    <scroll-view
+      scroll-y
+      :style="{transition: top === 0 ? 'transform 300ms':'',transform: 'translateY('+ top + 'rpx' +')'}"
+    >
     <view class="btns">
       <view :class="status === item.value ? 'btn active' : 'btn'" @click="chioceItem(item.value)" v-for="(item,index) in title" :key="index">{{item.name}}</view>
 
@@ -39,6 +49,7 @@
       <min-picker  @cancel="cancel" @sure="sure"></min-picker>
     </min-popup>
    <!-- <min-404 id="none" v-if="getDataChange.length === 0"></min-404> -->
+   </scroll-view>
   </view>
 </template>
 
@@ -69,8 +80,30 @@ export default {
       title: [],
       num: 0,
       status: 999,
-      testArrabc: []
+      testArrabc: [],
+       top: "",
+       lastY: "",
+       flag:true
     }
+  },
+   onBackPress(options) {  
+          const pages = getCurrentPages();//当前页
+          const beforePage = pages[pages.length - 2];//上个页面
+          const  page = pages[pages.length - 1];//页面
+      if (options.from === 'backbutton') {
+          if(beforePage.route !== 'pages/seat/index') {
+                this.back(1);  
+              return true;  
+          }else {
+               this.$minRouter.push({
+                 name:'index'
+               })
+              return true;  
+          }
+      }
+  },  
+  onReady(){
+   
   },
   onLoad () {
     const month = new Date().getMonth() + 1
@@ -128,6 +161,11 @@ export default {
     }
   },
   methods: {
+    back(a) {  
+        uni.navigateBack({  
+            delta:a 
+        });  
+    },
     newArr (arr) {
       let brr = {}
       const newArr = []
@@ -233,11 +271,62 @@ export default {
       })
       this.getData(a)
       // #endif
-    }
+    },
+     start(e) {
+      this.lastY = e.changedTouches[0].pageY;
+    },
+    move(e) {
+      let currentY = e.changedTouches[0].pageY;
+      if(this.top < currentY - this.lastY){
+          // 像下滚动
+         this.top = currentY - this.lastY;
+          this.flag = true
+      }else  {
+          // 向上滚动
+          //  this.top = 0
+          console.log('向上')
+          this.flag = false
+      }
+     
+      // console.log(this.top)
+      // var pages = getCurrentPages();
+      // var page = pages[pages.length - 1];
+      // var currentWebview = page.$getAppWebview();
+
+      // var tn = currentWebview.getStyle().titleNView;
+      // console.log(tn)
+    },
+    end(e) {
+      if(this.top >= 300 && this.flag){
+         this.$minRouter.push({ name: "seat",params:{url:'platform-admin'} });
+      }
+      // var pages = getCurrentPages();
+      // var page = pages[pages.length - 1];
+      // var currentWebview = page.$getAppWebview();
+
+      // var tn = currentWebview.getStyle().titleNView;
+      // console.log(tn)
+      // // backgroundColor  titleColor
+      // tn.backgroundColor = "#030313"
+      // tn.titleColor = "#FFE001"
+      // tn.buttons[0].color  = "#FFE001"
+      // currentWebview.setStyle({
+      //     titleNView: tn
+      // });
+      // this.a  = 0.00
+        return  this.top = 0;
+
+    },
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @import './index.scss';
+.aaaa{
+  position: absolute;
+  right: 0;
+  top: 0;
+  text-align: center;
+}
 </style>

@@ -22,7 +22,9 @@
     {
       "path": "pages/set-cardpsd/index",
       "style": {
+        "pageOrientation":"landscape",
         "app-plus":{
+          "bounce":"none",
           "titleNView":{
             "titleText":"设置提现密码",
             "backgroundColor":"#030313",
@@ -431,15 +433,15 @@
           "titleNView":{
             "titleText":"冻结明细",
             "backgroundColor":"#030313",
-            "titleColor":"#FFE001",
-            "buttons":[
-              {
-                "width":"auto",
-                "text": "全部门店\ue6b2",
-                "fontSize":"28rpx",
-                "fontSrc":"/static/font/iconfont.ttf"
-              }
-            ]
+            "titleColor":"#FFE001"
+            // "buttons":[
+            //   {
+            //     "width":"auto",
+            //     "text": "全部门店\ue6b2",
+            //     "fontSize":"28rpx",
+            //     "fontSrc":"/static/font/iconfont.ttf"
+            //   }
+            // ]
           }
         }
       }
@@ -579,6 +581,9 @@
     {
       "path":"pages/platform-admin/index",
       "style": {
+        "app-plus":{
+          "bounce":"none"
+        },
         "titleNView": {
             "titleText":"桌台管理",
             "backgroundColor":"#030313",
@@ -588,7 +593,8 @@
             {
               "text": "选择日期",
               "fontSize": "14px",
-              "width": "70px"
+              "width": "70px",
+              "color":"#FFE001"
             }
           ]
         }
@@ -810,6 +816,14 @@
             "backgroundColor":"#030313",
             "titleColor":"#FFE001"
           }
+        }
+      }
+    },
+    {
+      "path": "pages/seat/index",
+      "style": {
+        "app-plus":{
+          "titleNView":false
         }
       }
     },

@@ -230,5 +230,7 @@ export default {
   // 我的收入 5f02c7420e9c6
   getMyMoney: data => minRequest.get('/5f02c7420e9c6',data),
   // 提成详情 5efdadd6ef134?commission_id=81
-   getTcDatail: data => minRequest.get('/5efdadd6ef134',data)
+   getTcDatail: data => minRequest.get('/5efdadd6ef134',data),
+   // 冻结明细 {{hosts}}5f1bd2065a53d?page=1
+   getDJlist: data => minRequest.get('/5f1bd2065a53d',data)
 }
