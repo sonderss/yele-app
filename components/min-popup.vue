@@ -1,5 +1,5 @@
 <template>
-  <view class="min-popup" v-if="show" :class="[isShow ? 'min-show' : 'min-hide']">
+  <view class="min-popup" v-if="show" :class="[isShow ? 'min-show' : 'min-hide']" @touchmove.stop.prevent="moveHandle">
     <view class="min-overlay" @click="close"></view>
     <view :class="size ?  'min-content-'+size : 'min-content'" :style="{height:heightSize+'rpx'}">
       <slot/>
@@ -42,6 +42,9 @@ export default {
       setTimeout(() => {
         this.$emit('close')
       }, 400)
+    },
+    moveHandle(){
+       // To Do Something
     }
   }
 }

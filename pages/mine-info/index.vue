@@ -12,7 +12,7 @@
         ></min-cell-item>
         <min-cell-item
           title="名字" :tail="userInfo.user_name"
-          :border="true" arrow
+          :border="true" 
         ></min-cell-item>
         <picker @change="bindPickerChange" :value="index" :range="sex">
         <min-cell-item
@@ -34,7 +34,7 @@
         </picker>
         <min-cell-item
           title="手机" :tail="$minCommon.hideTel(userInfo.mobile ? userInfo.mobile : '暂无')"
-          :border="false" arrow
+          :border="false" 
           @eventParent="setPhone"
         ></min-cell-item>
       </min-cell>
@@ -105,7 +105,8 @@ export default {
 					// 获取本地应用资源版本号
 					plus.runtime.getProperty(plus.runtime.appid,  inf => {
             this.version = inf.version
-					});
+            console.log(inf)
+          })
     // #endif
   },
   onShow(){
@@ -228,7 +229,8 @@ export default {
     },
     toSetPsd () {
       this.$minRouter.push({
-        name: 'set-cardpsd'
+        name: 'set-cardpsd',
+        params:{phone: this.userInfo.mobile}
       })
     },
     quit () {

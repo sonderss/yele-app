@@ -123,26 +123,42 @@ export default {
          this.list =  this.list.concat([...res.list])
        })
   },
-  // onPullDownRefresh() {
-  //   console.log('refresh');
-  //   // this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),
-  //   this.$minApi.getTCList({
-  //        start_time:this.getDatetre( this.startTime1),
-  //        end_time:this.getDatetre(this.endTime1),
-  //        store_id:this.store_id,
-  //        page:1
-  //      }).then(res => {
-  //        console.log(res);
-  //        this.num = 2
-  //        this.list = res.list
-  //        uni.stopPullDownRefresh();
-  //      })
-  //   // this.getData(1,10,true).then(res => {
-  //   //    this.num = 2
-  //   //    this.list =  res.list
-  //   //     uni.stopPullDownRefresh();
-  //   // })
-  // },
+  onPullDownRefresh() {
+    console.log('refresh');
+    // this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),
+    this.$minApi.getTCList({
+         start_time:this.getDatetre( this.startTime1),
+         end_time:this.getDatetre(this.endTime1),
+         store_id:this.store_id,
+         page:1,
+         isLoading:true
+       }).then(res => {
+         console.log(res);
+         this.num = 2
+         this.list = res.list
+       })
+    this.$minApi.getTCAll({
+         start_time:this.getDatetre( this.startTime1),
+         end_time:this.getDatetre(this.endTime1),
+         store_id:this.store_id,
+         isLoading:true
+      }).then(res => {
+        console.log(res);
+        this.total = res.total
+         uni.stopPullDownRefresh();
+      })
+    // this.getData(1,10,true).then(res => {
+    //    this.num = 2
+    //    this.list =  res.list
+    //     uni.stopPullDownRefresh();
+    // })
+  },
+  onLoad(){
+
+      // 当前门店名称
+      console.log(this.$store.state.user.userInfo.store_name)
+      this.setContent(this.$store.state.user.userInfo.store_name)
+  },
   mounted () {
     const time = new Date()
     const year = time.getFullYear()
@@ -249,6 +265,20 @@ export default {
         this.endTime = this.data[e.detail.value[0]]
       }
     },
+    // 修改右上角内容
+    setContent(content){
+      // #ifdef APP-PLUS
+      const pages = getCurrentPages()
+      const page = pages[pages.length - 1]
+      const currentWebview = page.$getAppWebview()
+      const titleObj = currentWebview.getStyle().titleNView
+      titleObj.buttons[0].text = ''
+      titleObj.buttons[0].text = content
+      currentWebview.setStyle({
+        titleNView: titleObj
+      })
+      // #endif
+    },
     showPop () {
       this.show = !this.show
     },
@@ -298,8 +328,10 @@ export default {
        return time
     },
     // 选择门店
-    changeStoreId(id){
-      this.closedrawer()
+    changeStoreId(id,store_name){
+        // 修改右上角内容
+        this.setContent(store_name)
+        this.closedrawer()
         this.getData(this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),id,1)
         this.getTall(this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),id)
     }

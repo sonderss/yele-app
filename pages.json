@@ -385,6 +385,7 @@
     {
       "path":"pages/withdrawals-record/index",
       "style": {
+        "enablePullDownRefresh":true,
         "app-plus":{
           "titleNView":{
             "titleText":"提现记录",
@@ -429,6 +430,7 @@
     {
       "path":"pages/release-record/index",
       "style": {
+        "enablePullDownRefresh":true,
         "app-plus":{
           "titleNView":{
             "titleText":"冻结明细",
@@ -509,7 +511,7 @@
     {
       "path":"pages/commission-details/index",
       "style": {
-        "enableDownRefresh":true,
+        "enablePullDownRefresh":true,
         "app-plus":{
           "titleNView":{
             "titleText":"提成明细",

@@ -7,7 +7,8 @@ export default {
     date:"",
     dev:false,
     payMethods:[],
-    isGetUser:false
+    isGetUser:false,
+    bookTime:[]
   },
   mutations: {
     setStatus: (state, data) => {
@@ -25,6 +26,9 @@ export default {
     setisGetUser: (state,data) => {
       state.isGetUser = data
       console.log(state.isGetUser)
+    },
+    setBookTime: (state,data) => {
+      state.bookTime = data
     }
   },
   actions: {
@@ -42,6 +46,9 @@ export default {
     },
     setisGetUser ({ commit }, data) {
       commit('setisGetUser',data)
+    },
+    setBookTime ({ commit },data) {
+      commit('setBookTime',data)
     }
   }
 }

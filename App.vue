@@ -2,8 +2,14 @@
 import store from './store/index'
 export default {
   onLaunch: function () {
+    
     console.log('App Launch')
-    // #ifdef APP-PLUS      
+    // #ifdef APP-PLUS
+        if(!plus.runtime.isAgreePrivacy()){
+            alert("laji")
+        }
+    // #endif  
+    // #ifdef APP-PLUS
 				const  server = "http://api.app-store.dev.yeleonline.com/api/5ee745d5552d2"; // 检查更新地址  
 				function plusReady(){  
 					// 获取本地应用资源版本号  
@@ -95,7 +101,8 @@ export default {
 					}) 
 				}
 			   plusReady(); 
-		// #endif  
+    // #endif  
+    
   },
   onShow: () => {
     console.log('App Show')

@@ -4,7 +4,7 @@
       <view class="view_main p-lr-20 m-bottom-20">
         <view class="top_view min-border-bottom">
           <text class="desc">工资</text>
-          <text class="money">+{{list.sys_amount}}</text>
+          <text class="money">{{list.sys_amount}}</text>
         </view>
         <view class="bottom-view p-bottom-20">
           <view class="m-tb-10 min-flex min-flex-main-between">
@@ -82,7 +82,7 @@
       <view class="top p-lr-20">
         <view class="top_view">
           <text class="desc">金额</text>
-          <text class="money">+{{list.total_amount}}</text>
+          <text class="money">{{list.total_amount}}</text>
         </view>
       </view>
       <view class="card p-lr-20 p-bottom-10 m-bottom-20">

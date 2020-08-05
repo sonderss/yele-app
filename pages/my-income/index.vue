@@ -81,7 +81,7 @@
     <min-popup :show="show" @close="close">
       <view class="p-lr-20 p-bottom-20 content_pop">
         <view class="top_pop_view min-border-bottom">
-          <text class="f26">全部门店</text>
+          <text class="f26" @click="allIN">全部门店</text>
           <text class="f22" @click="close">取消</text>
         </view>
         <view class="main_">
@@ -90,7 +90,7 @@
             <view class="right_ m-left-20">
               <view>
                 <text class="f30" style="color:#333">{{item.store_name}}</text>
-                <text v-if="item.store_id === $store.state.user.userInfo.store_id" class="active f20">当前门店</text>
+                <text v-if="item.store_id === nowStoreId" class="active f20">当前门店</text>
               </view>
               <text class="f26 m-top-10" style="color:#666">可提现金额：￥{{item.can_cash_amount}}</text>
             </view>
@@ -110,7 +110,8 @@ export default {
       storeList: [],
       nowStoreId: "",
       myMoneylist:{activity_list:[]},
-      store_name:'全部门店'
+      store_name:'全部门店',
+      nowId:""
     };
   },
   mounted() {
@@ -121,13 +122,13 @@ export default {
       console.log(res.list);
       this.storeList = res.list;
     });
-    this.getData()
+    this.getData( this.nowStoreId)
   },
   methods: {
     // 我的收入
     getData(id){
         this.$minApi.getMyMoney({
-        store_id: id ? id : this.nowStoreId
+           store_id: id
           }).then(res =>  {
             console.log(res);
             this.myMoneylist = res
@@ -176,8 +177,15 @@ export default {
     toChange(item){
       console.log(item);
       this.store_name = item.store_name
+       this.nowStoreId = item.store_id
       this.getData(item.store_id)
       this.close()
+    },
+    // 全部门店
+    allIN(){
+      this.getData(0)
+      this.close()
+      this.store_name = "全部门店"
     }
   }
 };

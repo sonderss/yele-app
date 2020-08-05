@@ -140,7 +140,8 @@ export default {
   puniapp (data) {
     return minRequest.post('/s', data)
   },
-
+  // 获取门店配置 5f28c78bdd3c8
+  getStoreSet: data => minRequest.get('/5f28c78bdd3c8',data),
   // 获取门店列表
   getStoreList: data => minRequest.get('/5e5e2a5b3c50a', data),
   // 获取其他门店列表

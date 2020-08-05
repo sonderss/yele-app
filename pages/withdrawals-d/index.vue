@@ -5,7 +5,7 @@
     <view class="view_main p-lr-20" v-if="type===1">
       <view class="top_view min-border-bottom">
         <text class="desc">金额</text>
-        <text class="money">+{{list.total_amount}}</text>
+        <text class="money">{{list.total_amount}}</text>
       </view>
       <view class="bottom-view">
         <view class="main min-flex min-flex-main-between">
@@ -18,7 +18,7 @@
         </view>
         <view class="main min-flex min-flex-main-between">
           <text class="c">流水号</text>
-          <text style="text-align:right">{{list.serial_number}}</text>
+          <text style="text-align:right">{{list.serial_number ? list.serial_number :'暂无'}}</text>
         </view>
         <view class="main min-flex min-flex-main-between">
           <text class="c">状态</text>
@@ -55,7 +55,7 @@
     <view class="view_main p-lr-20" v-if="type=== 2">
       <view class="top_view min-border-bottom">
         <text class="desc">金额</text>
-        <text class="money">+{{list.cash_amount}}</text>
+        <text class="money">{{list.amount}}元</text>
       </view>
       <view class="bottom-view">
         <view class="main min-flex min-flex-main-between">
@@ -68,31 +68,35 @@
         </view>
         <view class="main min-flex min-flex-main-between">
           <text class="c">提现方式</text>
-          <text style="text-align:right">{{list.transaction_target}}</text>
+          <text style="text-align:right">银行卡</text>
         </view>
-        <view class="main min-flex min-flex-main-between">
+        <view class="main min-flex min-flex-main-between" v-if="list.transaction_status !== 2 && list.transaction_status !== 0">
           <text class="c">交易流水</text>
-          <text style="text-align:right">{{list.serial_no}}</text>
+          <text style="text-align:right;flex:1">{{list.transaction_no}}</text>
         </view>
-        <view class="main min-flex min-flex-main-between">
+        <view class="main min-flex min-flex-main-between"  v-if="list.transaction_status !== 2 && list.transaction_status !== 0">
           <text class="c">到账金额</text>
-          <text style="text-align:right">{{list.receive_amount}}</text>
+          <text style="text-align:right">{{list.withdraw.amount}}元</text>
         </view>
-        <view class="main min-flex min-flex-main-between">
+        <view class="main min-flex min-flex-main-between"  v-if="list.transaction_status !== 2 && list.transaction_status !== 0">
           <text class="c">手续费流水</text>
-          <text style="text-align:right">{{list.transaction_fee_no}}</text>
+          <text style="text-align:right">{{list.withdraw_fee.serial_no}}</text>
         </view>
-        <view class="main min-flex min-flex-main-between">
+        <view class="main min-flex min-flex-main-between" v-if="list.transaction_status !== 2 && list.transaction_status !== 0">
           <text class="c">手&nbsp; 续&nbsp; 费</text>
-          <text style="text-align:right">{{list.cash_transaction_fee}}</text>
+          <text style="text-align:right">{{list.withdraw_fee.amount}}元</text>
         </view>
         <view class="main min-flex min-flex-main-between">
           <text class="c">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态</text>
-          <text style="text-align:right"> {{list.status === 1 ? '提现中' : (list.status === 2 ? '提现成功' : '提现失败' )}}</text>
+          <text style="text-align:right"> {{list.transaction_status === 0 ? '提现中' : (list.transaction_status === 1 ? '提现成功' : '提现失败' )}}</text>
         </view>
-        <view class="main min-flex min-flex-main-between">
+        <view class="main min-flex min-flex-main-between" v-if="list.transaction_status === 1">
           <text class="c">提现成功时间</text>
-          <text style="text-align:right">{{ $minCommon.formatDate(new Date(list.update_time*1000),"yyyy/MM/dd hh:mm:ss") }}</text>
+          <text style="text-align:right">{{ $minCommon.formatDate(new Date(list.arrive_time*1000),"yyyy/MM/dd hh:mm:ss") }}</text>
+        </view>
+        <view class="main min-flex min-flex-main-between" v-if="list.transaction_status === 2">
+          <text class="c">失败原因</text>
+          <text style="text-align:right">{{ list.fail_reason ? list.fail_reason :'暂无'}}</text>
         </view>
       </view>
     </view>
@@ -100,7 +104,7 @@
     <view class="view_main p-lr-20" v-if="type=== 3">
       <view class="top_view min-border-bottom">
         <text class="desc">金额</text>
-        <text class="money">+{{list.transfer_amount}}</text>
+        <text class="money">{{list.amount}}</text>
       </view>
       <view class="bottom-view">
         <view class="main min-flex min-flex-main-between">
@@ -113,7 +117,7 @@
         </view>
         <view class="main min-flex min-flex-main-between">
           <text class="c">转账来源</text>
-          <text style="text-align:right">{{list.transaction_target}}</text>
+          <text style="text-align:right">{{list.account_name}}</text>
         </view>
         <view class="main min-flex min-flex-main-between">
           <text class="c">交易流水</text>
@@ -121,7 +125,15 @@
         </view>
         <view class="main min-flex min-flex-main-between">
           <text class="c">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态</text>
-          <text style="text-align:right"> {{list.status === 1 ? '等待中' : (list.status === 2 ? '成功' : '失败' )}}</text>
+          <text style="text-align:right"> {{list.transaction_status === 0 ? '入账中' : (list.transaction_status === 1 ? '已到账' : '入账失败' )}}</text>
+        </view> 
+        <view class="main min-flex min-flex-main-between" v-if="list.transaction_status === 1">
+          <view class="c">到账时间</view>
+          <view class="m-left-20"> {{$minCommon.formatDate(new Date(list.arrive_time*1000),"yyyy/MM/dd hh:mm:ss") }}</view>
+        </view>
+        <view class="main min-flex min-flex-main-between" v-if="list.transaction_status === 2">
+          <view class="c">失败原因</view>
+          <view class="m-left-20"> {{list.fail_reason}}</view>
         </view>
         <view class="remake">
           <view class="">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</view>
@@ -141,7 +153,7 @@ export default {
     return {
       type: 0,
       faStatus,
-      list:{}
+      list:{withdraw:{amount:''},withdraw_fee:{serial_no:''}}
     };
   },
   methods: {
@@ -246,6 +258,7 @@ export default {
     }
     .c {
       color: #666666;
+      width: auto;
     }
     text {
       width: 50%;

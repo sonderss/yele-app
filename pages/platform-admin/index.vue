@@ -1,5 +1,5 @@
 <template>
-  <view class="platform-admin p-tb-20 p-lr-30" @touchstart="start" @touchmove="move" @touchend="end">
+  <view class="platform-admin" @touchstart="start" @touchmove="move" @touchend="end">
     <view class="aaaa" :style="{height:`${top}rpx`,width:'100%',lineHeight:`${top}rpx`}" v-if="top">
         <view class="m-top-20 f26">
           <text class="iconfont icon-changyongicon_huaban f26" style="font-weight:blod;">&#xe616;</text>
@@ -9,6 +9,7 @@
     <scroll-view
       scroll-y
       :style="{transition: top === 0 ? 'transform 300ms':'',transform: 'translateY('+ top + 'rpx' +')'}"
+      class=" p-tb-20 p-lr-30"
     >
     <view class="btns">
       <view :class="status === item.value ? 'btn active' : 'btn'" @click="chioceItem(item.value)" v-for="(item,index) in title" :key="index">{{item.name}}</view>
@@ -45,11 +46,28 @@
     <!-- <picker mode="date" id='abc' ref='test'  :value="date" start="2020-03-13" :end="endDate" @change="bindDateChange">
 
     </picker> -->
-    <min-popup size="height" :show="show" @close='close'>
+    <!-- <min-popup size="height" :show="show" @close='close'>
       <min-picker  @cancel="cancel" @sure="sure"></min-picker>
-    </min-popup>
-   <!-- <min-404 id="none" v-if="getDataChange.length === 0"></min-404> -->
+    </min-popup> -->
+    <min-404 id="none" v-if="getDataChange.length === 0"></min-404>
    </scroll-view>
+   
+    <min-popup :show="show" @close="close" heightSize="600">
+      <picker-view
+        :indicator-style="indicatorStyle"
+        @change="bindChange"
+        :value="value"
+        style="height:400rpx;"
+      >
+        <picker-view-column>
+          <view class="pickers item" v-for="(item,index) in datas" :key="index">{{item}}</view>
+        </picker-view-column>
+      </picker-view>
+      <view class="btn_viewcjq">
+        <text @click="cancel">取消</text>
+        <view class="btn" @click.stop="sures">确认</view>
+      </view>
+    </min-popup>
   </view>
 </template>
 
@@ -83,7 +101,10 @@ export default {
       testArrabc: [],
        top: "",
        lastY: "",
-       flag:true
+       flag:true,
+       datas:[],
+       value: [],
+      indicatorStyle: `height: ${Math.round(uni.getSystemInfoSync().screenWidth/(750/100))}rpx;`
     }
   },
    onBackPress(options) {  
@@ -102,9 +123,6 @@ export default {
           }
       }
   },  
-  onReady(){
-   
-  },
   onLoad () {
     const month = new Date().getMonth() + 1
     const day = new Date().getDate()
@@ -125,6 +143,14 @@ export default {
     // })
     // #endif
     // this.getData(this.date)
+    if(this.$store.state.status.bookTime){
+      console.log(this.$store.state.status.bookTime)
+      return this.datas = this.$store.state.status.bookTime
+    }
+    this.$minApi.getStoreSet({isLoading:true}).then(res => {
+      this.datas = res.book.date
+      this.$store.dispatch('status/setBookTime',res.book.date)
+    })
   },
   onShow () {
     this.getData(this.date)
@@ -138,7 +164,7 @@ export default {
   computed: {
     // 返回桌台数组
     getDataChange () {
-      const a = this.filterData((this.list.desks))
+      const a = this.filterData((this.list.desks ? this.list.desks  : []))
       return a
     },
     // 我的桌台
@@ -252,25 +278,33 @@ export default {
     cancel () {
       this.close()
     },
+    bindChange (e) {
+      this.num = e.detail.value[0]
+      console.log(this.num )
+    },
     // 日期选择器确认
-    sure (e) {
+    sures () {
       // 2020-05-29
-      let a = e.a + '-'+e.b+'-'+e.c
+      let a = this.datas[this.num] 
       this.date = a
-      let ti = e.b + '月' + e.c + '日'
-       this.getData(a)
+      let ti =  this.date.split("-")
+      
+      let t = ti[1] + '月' + ti[2] + '日'
+        this.value = []
+      this.value.push(this.num)
+        this.show = false
       // #ifdef APP-PLUS
       const pages = getCurrentPages()
       const page = pages[pages.length - 1]
       const currentWebview = page.$getAppWebview()
       const titleObj = currentWebview.getStyle().titleNView
       titleObj.buttons[0].text = ''
-      titleObj.buttons[0].text =  ti 
+      titleObj.buttons[0].text =  t 
       currentWebview.setStyle({
         titleNView: titleObj
       })
-      this.getData(a)
       // #endif
+       this.getData( this.date )
     },
      start(e) {
       this.lastY = e.changedTouches[0].pageY;
@@ -329,4 +363,5 @@ export default {
   top: 0;
   text-align: center;
 }
+
 </style>

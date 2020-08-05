@@ -1,7 +1,7 @@
 <template>
   <view class="seat">
     <movable-area class="mains">
-      <movable-view class="max" direction="all" scale inertia :out-of-bounds="true" x="-150" y="400">
+      <movable-view class="max" direction="all" scale inertia :out-of-bounds="true" x="-150" y="150">
         <!-- <view class="max" v-for="(item2,index2) in back" :key="index2" :style="{backgroundImage:url(`${item2}`)}"></view> -->
         <view class="main">
           <view

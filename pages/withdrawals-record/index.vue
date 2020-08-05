@@ -26,38 +26,38 @@
         </view>
         <!---->
         <!--提现记录-->
-         <view class="min-flex"  v-if="type === 2">
+         <view class="min-flex" v-if="type === 2">
           <view >
             <view class="f28">银行卡提现</view>
             <view class="label m-top-10 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.create_time*1000),"yyyy/MM/dd hh:mm:ss")  }}</view>
           </view>
         </view>
-        <view class="min-flex flex-end min-flex-dir-top"  v-if="type === 2"> 
-          <view :class="item.cash_amount *1 > 0 ? 'ared' : 'ablack'">{{item.cash_amount}}</view>
-          <view class="bom f24 m-top-10">{{item.status === 1 ? '提现中' : (item.status === 2 ? '提现成功' : '提现失败' )}}</view>
+        <view class="min-flex flex-end min-flex-dir-top bpa"  v-if="type === 2"> 
+          <view :class="item.cash_amount *1 > 0 ? 'ared' : 'ablack'">-{{item.amount}}</view>
+          <view class="bom f24 m-top-10">{{item.transaction_status === 0 ? '提现中' : (item.transaction_status === 1 ? '提现成功' : '提现失败' )}}</view>
         </view>
         <!---->
         <!--转账记录-->
          <view class="min-flex"  v-if="type === 3">
           <view >
-            <view class="f28">{{item.store_name}}转账</view>
+            <view class="f28">{{item.account_name}}转账</view>
             <view class="label m-top-10 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.create_time*1000),"yyyy/MM/dd hh:mm:ss")  }}</view>
           </view>
         </view>
         <view class="min-flex flex-end min-flex-dir-top"  v-if="type === 3"> 
-          <view :class="item.transfer_amount *1 > 0 ? 'ared' : 'ablack'">{{item.transfer_amount *1 > 0 ?  `+${item.transfer_amount}`: `-${item.transfer_amount}` }}</view>
-          <view class="bom f24 m-top-10">{{item.status === 1 ? '入账中' : (item.status === 2 ? '已到账' : '入账失败' )}}</view>
+          <view :class="item.amount *1 > 0 ? 'ared' : 'ablack'">{{item.amount *1 > 0 ?  `+${item.amount}`: `-${item.amount}` }}</view>
+          <view class="bom f24 m-top-10">{{item.transaction_status === 0 ? '入账中' : (item.transaction_status === 1 ? '已到账' : '入账失败' )}}</view>
         </view>
         <!---->
         <!--收支流水-->
          <view class="min-flex"  v-if="type === 0">
           <view >
-            <view class="f28">{{getType(item.type)}}转账</view>
+            <view class="f28">{{item.item_name}}</view>
             <view class="label m-top-10 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.create_time*1000),"yyyy/MM/dd hh:mm:ss")  }}</view>
           </view>
         </view>
         <view class="min-flex flex-end min-flex-dir-top"  v-if="type === 0"> 
-          <view :class="item.record_transaction_amount *1 > 0 ? 'ared' : 'ablack'">{{item.record_transaction_amount *1 > 0 ?  `+${item.record_transaction_amount}`: `-${item.record_transaction_amount}` }}</view>
+          <view :class="item.fund_direction ===  2 ? 'ared' : 'ablack'">{{item.fund_direction ===  1  ?  `-${item.amount}`: `+${item.amount}` }}元</view>
         </view>
         <!---->
       </view>
@@ -108,6 +108,10 @@ export default {
       type:0,
       list:[]
     }
+  },
+  onPullDownRefresh() {
+    console.log('refresh');
+     this.getData()
   },
   onReachBottom(){
       console.log('到底')
@@ -193,13 +197,13 @@ export default {
           uni.setNavigationBarTitle({
               title: '收支流水'
           });
-          this.getShouS(this.getTime())
+          this.getShouS(this.getTime(),1)
         break;
         case 1:
           uni.setNavigationBarTitle({
               title: '发放记录'
           });
-          this.getFaFangList(this.getTime())
+          this.getFaFangList(this.getTime(),1)
         break;
         case 2:
           // 提现记录
@@ -227,6 +231,64 @@ export default {
     }
   },
   methods: {
+    // 自定义方法
+    getData(){
+      switch(this.$parseURL().type){
+        case 0:
+          this.$minApi.getShouZ({
+            date:this.getTime(this.time),
+            page:1,
+            limit:10,
+            isLoading:true
+          }).then(res => {
+            console.log(res)
+            this.list = res.list
+            this.nums = 2
+            uni.stopPullDownRefresh();
+          })
+        break;
+        case 1:
+          this.$minApi.faFangList({
+            date:this.getTime(this.time),
+            page:1,
+            limit:10,
+            isLoading:true
+          }).then(res => {
+            console.log(res)
+            this.list = res.list
+            this.nums = 2
+            uni.stopPullDownRefresh();
+          })
+        break;
+        case 2:
+          // 提现记录
+         this.$minApi.getTiXian({
+            date:this.getTime(this.time),
+            page:1,
+            limit:10,
+            isLoading:true
+          }).then(res => {
+            console.log(res)
+            this.list = res.list
+            this.nums = 2
+            uni.stopPullDownRefresh();
+          })
+        break;
+        case 3:
+            this.$minApi.getZhBill({
+                date:this.getTime(this.time),
+                page:1,
+                limit:10,
+                isLoading:true
+            }).then(res => {
+            console.log(res)
+            this.list = res.list
+            this.nums = 2
+            uni.stopPullDownRefresh();
+          })
+        break;
+      }
+    },
     getTime(time){
       // 获取时间
       if(!time) return this.$minCommon.formatDate(new Date(),'yyyy-MM')
@@ -260,9 +322,11 @@ export default {
       }
     },
     // 获取发放记录
-    getFaFangList(date){
+    getFaFangList(date,page,limit = 10){
       this.$minApi.faFangList({
-        date
+        date,
+        page,
+        limit
       }).then(res=>{
         console.log('发放记录',res);
         this.list = res.list
@@ -336,13 +400,13 @@ export default {
       switch (this.type) {
         // 收支流水
         case 0:
-         this.getShouS(this.getTime(this.time))
+         this.getShouS(this.getTime(this.time),1)
          this.nums = 2
         break;
         // 发放记录详情
         case 1:
               // 发放记录
-              this.getFaFangList(this.getTime(this.time ))
+              this.getFaFangList(this.getTime(this.time ),1)
         break;
         // 提现记录
         case 2:
@@ -395,7 +459,7 @@ export default {
 .cell-item {
   background: #fff;
   .label {
-    width: 410rpx;
+    width: auto;
   }
   .ablack {
     color: #333;
@@ -438,5 +502,10 @@ export default {
     color: #333;
     font-size: 36rpx;
   }
+}
+.bpa{
+  flex: 1;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 </style>

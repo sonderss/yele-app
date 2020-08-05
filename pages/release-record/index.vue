@@ -1,7 +1,5 @@
 <template>
   <view class="release-record p-lr-30 p-tb-20">
-    
-
       <view
         v-for="(item,index) in list"
         :key="item.id"
@@ -21,8 +19,8 @@
           <view class="toast" v-if="showToasts === index">{{item.remark}}</view>
         </view>
       </view>
-    <!-- <min-drawer :visible="showdrawer" mode="right" @close="closedrawer">
-    </min-drawer> -->
+     <min-404 v-if="list.length === 0" />
+     <min-pulldown :isFlag="falg" :desc="des" :loading="load"/>
   </view>
 </template>
 <script>
@@ -31,20 +29,53 @@ export default {
   navigate: ['navigateTo'],
   data () {
     return {
-      showdrawer: false,
       list:[],
-      showToasts:Number
+      showToasts:Number,
+      falg:false,
+      nums:2,
+      des:"加载中",
+      load:true
     }
   },
   mounted() {
-    this.getData()
+    this.getData(1)
   },
-  onNavigationBarButtonTap () {
-    this.showdrawer = !this.showdrawer
+  onPullDownRefresh() {
+    console.log('refresh');
+       this.$minApi.getDJlist({
+        page:1,
+        limit:10,
+        isLoading:true
+      }).then(res => {
+        this.list = res.list
+        uni.stopPullDownRefresh();
+      })
+  },
+  onReachBottom(){
+      console.log('到底')
+      this.$minApi.getDJlist({
+        page:this.nums,
+        limit:10,
+        isLoading:true
+      }).then(res => {
+          if(res.list.length === 0) {
+            this.load = false
+            this.des = '暂无更多数据'
+            setTimeout(() => {
+              return this.falg = false
+            },1000) 
+          }   
+          this.list = this.list.concat([...res.list])
+          this.nums++
+      })
   },
   methods: {
-    getData(){
-      this.$minApi.getDJlist().then(res => {
+    getData(page, isLoading = false,limit = 10){
+      this.$minApi.getDJlist({
+        page,
+        limit,
+        isLoading
+      }).then(res => {
         this.list = res.list
         console.log(this.list)
       })
@@ -107,21 +138,6 @@ export default {
     font-size: 24rpx;
     color: rgba(102, 102, 102, 1);
   }
-}
-// 抽屉
-.top_view_drawer{
-  padding: 30rpx;
-  background: #ffe001;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.main_drawer{
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  padding: 20rpx;
-  padding-top: 0;
 }
 .iii{
   width:600rpx;

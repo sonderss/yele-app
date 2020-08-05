@@ -13,6 +13,9 @@
         "compatible" : {
             "ignoreVersion" : true
         },
+        "privacy" : {
+            "prompt" : "custom"
+        },
         // "renderer": "native",
         "usingComponents" : true,
         "splashscreen" : {
