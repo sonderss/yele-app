@@ -286,7 +286,7 @@ export default {
   .chioce-date {
     display: flex;
     flex-wrap: wrap;
-    justify-content: start;
+    justify-content: flex-start;
     .chioce-date-item {
       width: 112rpx;
       height: 58rpx;

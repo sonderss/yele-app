@@ -8,7 +8,9 @@ export default {
     dev:false,
     payMethods:[],
     isGetUser:false,
-    bookTime:[]
+    bookTime:[],
+    vipUser:false,
+    vipUrl:''
   },
   mutations: {
     setStatus: (state, data) => {
@@ -29,6 +31,12 @@ export default {
     },
     setBookTime: (state,data) => {
       state.bookTime = data
+    },
+    setvipUser: (state,data) => {
+      state.vipUser = data
+    },
+    setvipUrl: (state,data) => {
+      state.vipUrl = data
     }
   },
   actions: {
@@ -49,6 +57,12 @@ export default {
     },
     setBookTime ({ commit },data) {
       commit('setBookTime',data)
+    },
+    setvipUser ({ commit }, data) {
+      commit('setvipUser',data)
+    },
+    setvipUrl ({ commit }, data) {
+      commit('setvipUrl',data)
     }
   }
 }

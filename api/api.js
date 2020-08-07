@@ -233,5 +233,7 @@ export default {
   // 提成详情 5efdadd6ef134?commission_id=81
    getTcDatail: data => minRequest.get('/5efdadd6ef134',data),
    // 冻结明细 {{hosts}}5f1bd2065a53d?page=1
-   getDJlist: data => minRequest.get('/5f1bd2065a53d',data)
+   getDJlist: data => minRequest.get('/5f1bd2065a53d',data),
+   //  会员协议 5f2a30778aafd
+   getUserVip: data =>  minRequest.get('/5f2a30778aafd',data)
 }

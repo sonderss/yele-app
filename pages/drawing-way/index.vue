@@ -14,6 +14,7 @@
           <view class="btn" @click="toBangding">绑定银行卡</view>
       </view>
     </view>
+    <web-view :src="url" v-if="url"></web-view>
   </view>
 </template>
 
@@ -24,7 +25,8 @@ export default {
   data () {
     return {
       userInfo:{},
-      lastString:""
+      lastString:"",
+      url:''
     }
   },
   onShow(){
@@ -36,6 +38,8 @@ export default {
          this.getCardLast(this.userInfo.bank_card_num)
        }
     })
+    // console.log(this.$store.state.status.vipUser)
+    
   },
   methods: {
      // 获取银行卡后四位
@@ -50,14 +54,34 @@ export default {
       
     },
     toBangding () {
-      this.$minRouter.push({
-        name: 'authentication',
-        params:{isBind:true}
-      })
+      // 是否已经设置了支付密码  实名认证  弹窗
+       if(!this.userInfo.is_cash_pwd) return this.$showToast('请先设置支付密码')
+      if(this.userInfo.is_certify !== 1) return this.$showToast('请先进行实名认证')
+      this.getVipInfo()
+
+      
     },
     jiebang(){
       this.$minRouter.push({
         name:"authentication"
+      })
+    },
+    getVipInfo(){
+      this.$minApi.getUserVip().then(res =>{
+        console.log(res)
+        if(res.url){
+          this.$store.dispatch('status/setvipUrl',res.url)
+          this.url = res.url
+          //  plus.runtime.openURL(res.url)
+          // this.$minRouter.push({
+          //   name:'webview'
+          // })
+        }else{
+          this.$minRouter.push({
+            name: 'authentication',
+            params:{isBind:true}
+          })
+        }
       })
     }
   }

@@ -40,10 +40,10 @@ export default {
     }
   },
   onLoad(){
-    if(!this.$store.state.status.dev){
-       this.code = ''
-       this.mobile = ''
-    }
+    // if(!this.$store.state.status.dev){
+    //    this.code = ''
+    //    this.mobile = ''
+    // }
   },  
   methods: {
     getVerificationCode () { // 获取验证码

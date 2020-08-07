@@ -40,7 +40,7 @@
     </view>
     <view class="btn-view m-bottom-20" style="padding-top:0">
       <view class="btn" @click="withdrawalsrecord(3)">
-        <image class="m-bottom-10" src="/static/images/mon.png" />
+        <image class="m-bottom-10" src="/static/images/jixiao.png" />
         <text>转账记录</text>
       </view>
       <view class="btn m-left-25" @click="releaserecord">

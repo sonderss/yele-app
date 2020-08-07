@@ -53,7 +53,10 @@ minRequest.interceptors.response((response) => {
         url: '/pages/login/index'
       })
     }
-    
+    // 是否签约
+    if (code === 1300000) {
+      store.dispatch('status/setvipUser', true)
+    }
     return Promise.reject(data)
   }
   return data

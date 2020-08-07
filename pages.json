@@ -436,14 +436,6 @@
             "titleText":"冻结明细",
             "backgroundColor":"#030313",
             "titleColor":"#FFE001"
-            // "buttons":[
-            //   {
-            //     "width":"auto",
-            //     "text": "全部门店\ue6b2",
-            //     "fontSize":"28rpx",
-            //     "fontSrc":"/static/font/iconfont.ttf"
-            //   }
-            // ]
           }
         }
       }
@@ -478,6 +470,18 @@
         "app-plus":{
           "titleNView":{
             "titleText":"工资详情",
+            "backgroundColor":"#030313",
+            "titleColor":"#FFE001"
+          }
+        }
+      }
+    },
+    {
+      "path":"pages/webview/index",
+      "style": {
+        "app-plus":{
+          "titleNView":{
+            "titleText":"通联",
             "backgroundColor":"#030313",
             "titleColor":"#FFE001"
           }

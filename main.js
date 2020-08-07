@@ -151,7 +151,6 @@ Vue.prototype.$showToast = (title, icon = 'none', duration = 2000) => {
     duration
   })
 }
-
 const app = new Vue({
   ...App,
   minRouter,
