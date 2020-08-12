@@ -70,51 +70,51 @@ export default {
       })
   },
   onShow() {
-    uni.request({
-      url: "http://api.app-store.dev.yeleonline.com/api/5ee8747279279",
-      header: {
-        "access-token": "HPkSFqbVhWpCRxVRpOTkyEubusFxBEEd",
-        "api-auth": this.$store.state.user.userInfo.apiAuth
-      },
-      success: res => {
-        const { code, data, msg } = res.data;
-        // 统一处理响应请求，后续完善
-        if (code !== 1) {
-          uni.showToast({
-            title: msg,
-            duration: 2000,
-            icon: "none"
-          });
-          // 登录过期
-          if (code === 1000011) {
-            this.$store.dispatch("user/setUserInfo", {});
-            uni.reLaunch({
-              url: "/pages/login/index"
-            });
-          }
-          return;
-        }
-        if (
-          this.$store.state.user.userInfo.access.length !==
-          res.data.data.permission.length
-        ) {
-          this.$showToast("权限有变更，请重新登录");
-          setTimeout(() => {
-            uni.reLaunch({
-              url: "../login/index"
-            });
-          }, 2000);
-        }
-        if (res.data.data.permission.length === 0) {
-          this.$showToast("没有任何权限，请联系管理员");
-          setTimeout(() => {
-            uni.reLaunch({
-              url: "../login/index"
-            });
-          }, 2000);
-        }
-      }
-    });
+    // uni.request({
+    //   url: "http://api.app-store.dev.yeleonline.com/api/5ee8747279279",
+    //   header: {
+    //     "access-token": "HPkSFqbVhWpCRxVRpOTkyEubusFxBEEd",
+    //     "api-auth": this.$store.state.user.userInfo.apiAuth
+    //   },
+    //   success: res => {
+    //     const { code, data, msg } = res.data;
+    //     // 统一处理响应请求，后续完善
+    //     if (code !== 1) {
+    //       uni.showToast({
+    //         title: msg,
+    //         duration: 2000,
+    //         icon: "none"
+    //       });
+    //       // 登录过期
+    //       if (code === 1000011) {
+    //         this.$store.dispatch("user/setUserInfo", {});
+    //         uni.reLaunch({
+    //           url: "/pages/login/index"
+    //         });
+    //       }
+    //       return;
+    //     }
+    //     if (
+    //       this.$store.state.user.userInfo.access.length !==
+    //       res.data.data.permission.length
+    //     ) {
+    //       this.$showToast("权限有变更，请重新登录");
+    //       setTimeout(() => {
+    //         uni.reLaunch({
+    //           url: "../login/index"
+    //         });
+    //       }, 2000);
+    //     }
+    //     if (res.data.data.permission.length === 0) {
+    //       this.$showToast("没有任何权限，请联系管理员");
+    //       setTimeout(() => {
+    //         uni.reLaunch({
+    //           url: "../login/index"
+    //         });
+    //       }, 2000);
+    //     }
+    //   }
+    // });
   },
   data() {
     return {

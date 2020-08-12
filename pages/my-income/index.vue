@@ -16,7 +16,9 @@
         </view>
         <view class="right-view">
           <text class="f22">待发放金额</text>
-          <text class="f28 c">￥{{myMoneylist.await_grant_amount ?  myMoneylist.await_grant_amount  :  0}}</text>
+          <text
+            class="f28 c"
+          >￥{{myMoneylist.await_grant_amount ? myMoneylist.await_grant_amount : 0}}</text>
         </view>
       </view>
     </view>
@@ -49,35 +51,39 @@
       </view>
     </view>
 
-    <view class="jion_view"  >
-             <view class="title min-border-bottom">
-                <text>我参与的方案（{{myMoneylist.store_name}}）</text>
-                <view class="right" @click="showStore">
-                  {{store_name}}
-                  <image src="/static/images/downarrow24.png" />
-                </view>
-              </view>
-              <view class="method-view min-border-bottom">
-                <view class="left">工资方案</view>
-                <view class="right">
-                  <text>{{ myMoneylist.salary_scheme ? myMoneylist.salary_scheme : '暂无数据'}}</text>
-                </view>
-              </view>
-              <view class="method-view min-border-bottom">
-                <view class="left">基础提成</view>
-                <view class="right">
-                  <text>{{myMoneylist.royalty_template ? myMoneylist.royalty_template : '暂无数据'}}</text>
-                </view>
-              </view>
-              <view class="method-view" v-if="myMoneylist.activity_list.length > 0">
-                <view class="left">活动方案</view>
-                <view class="right" v-for="(item2,index2) in myMoneylist.activity_list" :key="index2">
-                  <text>{{item2.activity_name ? item2.activity_name : '暂无数据'}}</text>
-                </view>
-              </view>
-     
+    <view class="jion_view">
+      <view class="title min-border-bottom">
+        <text>我参与的方案（{{myMoneylist.store_name}}）</text>
+        <view class="right" @click="showStore">
+          {{store_name}}
+          <image src="/static/images/downarrow24.png" />
+        </view>
+      </view>
+      <view class="method-view min-border-bottom">
+        <view class="left">工资方案</view>
+        <view class="right">
+          <text>{{ myMoneylist.salary_scheme ? myMoneylist.salary_scheme : '暂无数据'}}</text>
+        </view>
+      </view>
+      <view class="method-view min-border-bottom">
+        <view class="left">基础提成</view>
+        <view class="right">
+          <text>{{myMoneylist.royalty_template ? myMoneylist.royalty_template : '暂无数据'}}</text>
+        </view>
+      </view>
+      <view class="method-viewaaa" v-if="myMoneylist.activity_list.length > 0">
+        <view class="left">活动方案</view>
+        <view class="rightaaa">
+          <view
+            v-for="(item2,index2) in myMoneylist.activity_list"
+            :key="index2"
+            class="i f28"
+          >{{item2.activity_name ? item2.activity_name : '暂无数据'}}</view>
+        </view>
+      </view>
     </view>
-    <view class="desc">暂不支付在APP直接查看方案详细信息</view>
+    <view class="desc">暂不支持在APP直接查看方案详细信息</view>
+    <view style="height:50rpx"></view>
     <min-popup :show="show" @close="close">
       <view class="p-lr-20 p-bottom-20 content_pop">
         <view class="top_pop_view min-border-bottom">
@@ -85,7 +91,12 @@
           <text class="f22" @click="close">取消</text>
         </view>
         <view class="main_">
-          <view :class="index === 49 ? 'item':' item min-border-bottom'" @click="toChange(item)" v-for="(item,index) in storeList" :key="index">
+          <view
+            :class="index === 49 ? 'item':' item min-border-bottom'"
+            @click="toChange(item)"
+            v-for="(item,index) in storeList"
+            :key="index"
+          >
             <image :src="item.head_img ?  item.head_img : '/static/images/goods.png' " />
             <view class="right_ m-left-20">
               <view>
@@ -102,93 +113,95 @@
 </template>
 <script>
 export default {
-  name: "redmy-income",
-  navigate: ["navigateTo", "redirectTo"],
+  name: 'redmy-income',
+  navigate: ['navigateTo', 'redirectTo'],
   data() {
     return {
       show: false,
       storeList: [],
-      nowStoreId: "",
-      myMoneylist:{activity_list:[]},
-      store_name:'全部门店',
-      nowId:""
-    };
+      nowStoreId: '',
+      myMoneylist: { activity_list: [] },
+      store_name: '全部门店',
+      nowId: '',
+    }
   },
   mounted() {
     // 当前门店ID
-    this.nowStoreId = this.$store.state.user.userInfo.store_id;
+    this.nowStoreId = this.$store.state.user.userInfo.store_id
     this.$minApi.getStoreList().then(res => {
       // 门店列表  暂时获取门店列表
-      console.log(res.list);
-      this.storeList = res.list;
-    });
-    this.getData( this.nowStoreId)
+      console.log(res.list)
+      this.storeList = res.list
+    })
+    this.getData(this.nowStoreId)
   },
   methods: {
     // 我的收入
-    getData(id){
-        this.$minApi.getMyMoney({
-           store_id: id
-          }).then(res =>  {
-            console.log(res);
-            this.myMoneylist = res
+    getData(id) {
+      this.$minApi
+        .getMyMoney({
+          store_id: id,
+        })
+        .then(res => {
+          console.log(res)
+          this.myMoneylist = res
         })
     },
     // 提成明细
     commissiondetails() {
       this.$minRouter.push({
-        name: "commission-details"
-      });
+        name: 'commission-details',
+      })
     },
     // 工资明细
     salary() {
       this.$minRouter.push({
-        name: "salary-breakdown"
-      });
+        name: 'salary-breakdown',
+      })
     },
     // 提现记录
     withdrawalsrecord(n) {
       this.$minRouter.push({
-        name: "withdrawals-record",
-        params: { type: n }
-      });
+        name: 'withdrawals-record',
+        params: { type: n },
+      })
     },
     // 冻结记录
     releaserecord() {
       this.$minRouter.push({
-        name: "release-record"
-      });
+        name: 'release-record',
+      })
     },
     // 提现
     widthdraw() {
       this.$minRouter.push({
-        name: "redwidth-draw",
-        type: "redirectTo"
-      });
+        name: 'redwidth-draw',
+        type: 'redirectTo',
+      })
     },
     close() {
-      this.show = false;
+      this.show = false
     },
     // 展示底部抽屉
     showStore() {
-      this.show = true;
+      this.show = true
     },
     // 切换门店
-    toChange(item){
-      console.log(item);
+    toChange(item) {
+      console.log(item)
       this.store_name = item.store_name
-       this.nowStoreId = item.store_id
+      this.nowStoreId = item.store_id
       this.getData(item.store_id)
       this.close()
     },
     // 全部门店
-    allIN(){
+    allIN() {
       this.getData(0)
       this.close()
-      this.store_name = "全部门店"
-    }
-  }
-};
+      this.store_name = '全部门店'
+    },
+  },
+}
 </script>
 <style lang="scss" scoped>
 .top-view {
@@ -363,6 +376,7 @@ export default {
   color: rgba(102, 102, 102, 1);
   line-height: 9rpx;
   padding-left: 30rpx;
+  padding-top: 20rpx;
 }
 .view_main {
   width: 100%;
@@ -381,7 +395,7 @@ export default {
     align-items: center;
   }
 }
-.content_pop{
+.content_pop {
   display: flex;
   flex-direction: column;
   .top_pop_view {
@@ -392,34 +406,50 @@ export default {
     align-items: center;
   }
   .item {
-  width: 100%;
-  height: 120rpx;
-  margin: 30rpx 0;
-  padding-bottom: 30rpx;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  image {
-    width: 80rpx;
-    height: 80rpx;
-  }
-  .right_ {
-    flex: 1;
+    width: 100%;
+    height: 120rpx;
+    margin: 30rpx 0;
+    padding-bottom: 30rpx;
     display: flex;
-    flex-direction: column;
-    .active {
-      padding: 2rpx;
-      background: #fff100;
-      border-radius: 10rpx;
-      display: inline-block;
-      margin-left: 20rpx;
+    justify-content: flex-start;
+    align-items: center;
+    image {
+      width: 80rpx;
+      height: 80rpx;
+    }
+    .right_ {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      .active {
+        padding: 2rpx;
+        background: #fff100;
+        border-radius: 10rpx;
+        display: inline-block;
+        margin-left: 20rpx;
+      }
     }
   }
-}
- .main_{
-    height:716rpx;
+  .main_ {
+    height: 716rpx;
     overflow: auto;
   }
 }
-
+.method-viewaaa {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 20rpx;
+  .left {
+    width: auto;
+  }
+  .rightaaa {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    .i {
+      margin: 5rpx 0;
+    }
+  }
+}
 </style>

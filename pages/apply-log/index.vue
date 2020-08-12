@@ -2,7 +2,8 @@
   <view class="apply-log p-lr-30 p-tb-30">
     <min-cell :card="false">
       <min-cell-item
-        v-for="(item, index) in list" :key="index"
+        v-for="(item, index) in list"
+        :key="index"
         :img="item.head_img"
         :title="item.store_name"
         :label="`申请时间：${$minCommon.formatDate(new Date(item.create_time * 1000), 'yyyy-MM-dd hh:mm:ss')}`"
@@ -21,40 +22,42 @@
 
 <script>
 const status = {
- 1: { statusText: '待审核', color: 'green' },
+  1: { statusText: '待审核', color: 'green' },
   2: { statusText: '已通过', color: 'blue' },
-  3: { statusText: '未通过', color: 'red' }
+  3: { statusText: '未通过', color: 'red' },
 }
 
 export default {
   name: 'apply-log',
   navigate: ['navigateTo', 'switchTab'],
-  data () {
+  data() {
     return {
       status,
       list: [],
       total: -1,
       params: {
         page: 1,
-        limit: 10
-      }
+        limit: 10,
+      },
     }
   },
-  onReachBottom () { // 下拉翻页
+  onReachBottom() {
+    // 下拉翻页
     this.getApplyLog()
   },
-  onPullDownRefresh () { // 上拉刷新
+  onPullDownRefresh() {
+    // 上拉刷新
     this.params.page = 1
     this.getApplyLog('shuaxin')
     setTimeout(() => {
       uni.stopPullDownRefresh() // 停止下拉刷新动画
     }, 2000)
   },
-  mounted () {
+  mounted() {
     this.getApplyLog()
   },
   methods: {
-    getApplyLog (shuaxin) {
+    getApplyLog(shuaxin) {
       if (this.total === this.list.length) return // 没有更多数据了
       this.$minApi.applyLog(this.params).then(res => {
         if (shuaxin) this.list = []
@@ -62,16 +65,16 @@ export default {
         this.total = res.list.total
         this.params.page++
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-.green{
+.green {
   color: green;
 }
-.red{
+.red {
   color: red;
 }
 </style>

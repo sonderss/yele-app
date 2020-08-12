@@ -3,14 +3,17 @@
     <view class="left" :style="{marginTop: '0' }" v-if="mainArray.length !== 0">
       <view class="left_view">
         <scroll-view scroll-y="true" :style="{height:scrollHeight}">
-          <view
-            class="item"
-            v-for="(item,index) in mainArray"
-            :key="index"
-            :class="{ 'active':index==leftIndex }"
-            :data-index="index"
-            @tap="leftTap(index)"
-          >{{item.cate_name}}</view>
+          <template v-for="(item,index) in mainArray">
+            <view
+              class="item"
+              @tap="leftTap(index)"
+              :class="{ 'active':index==leftIndex }"
+              :key="item.id"
+              :data-index="index"
+              v-if="item.product && item.product.length >0"
+            >{{item.cate_name}}</view>
+          </template>
+
           <view style="height:200rpx"></view>
         </scroll-view>
       </view>
@@ -29,6 +32,7 @@
         <view
           v-for="(item2,index2) in item.product"
           :key="index2"
+          :isFlag="item2.isFlag"
           @click.stop="goDetails(index,index2)"
         >
           <min-goods-chioce
@@ -91,7 +95,9 @@
               <view class="right-view-bottom-desc">
                 <text class="f20 t" v-if="item2.type === 'product'">
                   ￥
-                  <text style="color:#FF0000;font-size:30">{{item2.sku.sku_price}}</text>
+                  <text
+                    style="color:#FF0000;font-size:30"
+                  >{{item2.is_limited ? item2.price : item2.sku.sku_price}}</text>
                 </text>
                 <text class="f20 t" v-if="item2.type === 'service'">
                   ￥
@@ -176,75 +182,83 @@
 
 <script>
 export default {
-  name: "redplacean-order",
-  navigate: ["navigateTo", "redirectTo"],
+  name: 'redplacean-order',
+  navigate: ['navigateTo', 'redirectTo'],
   data() {
     return {
-      scrollHeight: "1000px",
+      scrollHeight: '1000px',
       leftArray: [],
       mainArray: [],
       topArr: [],
       leftIndex: 0,
       chioceIndex: 0,
-      buttonLabel: "", // 已开台
-      totalLabel: "", // 台位低消
-      scrollInto: "",
-      skuObj: { sku: [{ sku_full_name: "" }] }, // 选择规格项
+      buttonLabel: '', // 已开台
+      totalLabel: '', // 台位低消
+      scrollInto: '',
+      skuObj: { sku: [{ sku_full_name: '' }] }, // 选择规格项
       isDel: true, //  所需删除的已选列表中对应项
       errImg: false,
       isSkuNum: 0, // 选择规格弹出层的数量
       isSelSku: false, // 选择规格
       // indexDel: Number, // 所需删除的已选列表中的索引
       selArr: [], // 已选商品列表
-      android: "",
+      android: '',
       testIndex: Number,
       delArr: [], // 所需删除索引
       selected: false, // 已选商品弹出层
-      tempId: { index: "", index2: "" },
-      load: ""
-    };
+      tempId: { index: '', index2: '' },
+      load: '',
+    }
   },
   onLoad() {
     uni.getSystemInfo({
       success: res => {
         /* 设置当前滚动容器的高，若非窗口的高度，请自行修改 */
-        this.scrollHeight = `${res.windowHeight}px`;
-      }
-    });
-    this.android = uni.getSystemInfoSync().platform;
-    console.log(this.android);
+        this.scrollHeight = `${res.windowHeight}px`
+      },
+    })
+    this.android = uni.getSystemInfoSync().platform
+    console.log(this.android)
     this.$nextTick(() => {
-      this.getListData();
-    });
-    console.log("下单路由参数", this.$parseURL());
-    this.buttonLabel = this.$parseURL().is_open_desk ? "(已开台)" : "(未开台)";
-    this.totalLabel = `台位低消：${this.$parseURL().minim_charge}`;
+      this.getListData()
+    })
+    console.log('下单路由参数', this.$parseURL())
+    this.buttonLabel = this.$parseURL().is_open_desk ? '(已开台)' : '(未开台)'
+    this.totalLabel = `台位低消：${this.$parseURL().minim_charge}`
+  },
+  onBackPress() {
+    this.selArr = []
+    this.$store.dispatch('goods/setOrderSelArr', [])
   },
   computed: {
     // 合计金额
     totalAmountE() {
-      let sum = 0;
+      let sum = 0
       this.selArr.map(item => {
-        if (item.type === "product") {
-          sum += item.step * item.sku.sku_price;
+        if (item.type === 'product') {
+          if (item.is_limited) {
+            sum += item.step * item.price
+          } else {
+            sum += item.step * item.sku.sku_price
+          }
         } else {
-          sum += item.step * item.price;
+          sum += item.step * item.price
         }
-        this.$store.dispatch("goods/setOrderSelArr", this.selArr);
-      });
-      return sum.toFixed(2);
+        this.$store.dispatch('goods/setOrderSelArr', this.selArr)
+      })
+      return sum.toFixed(2)
     },
     // 监听所选数量
     countNums() {
-      let num = 0;
+      let num = 0
       for (let i = 0; i < this.selArr.length; i++) {
-        num += this.selArr[i].step;
+        num += this.selArr[i].step
       }
-      return num;
-    }
+      return num
+    },
   },
   onShow() {
-    this.selArr = this.$store.state.goods.orderSelArr;
+    this.selArr = this.$store.state.goods.orderSelArr
   },
   watch: {
     selArr: {
@@ -253,37 +267,37 @@ export default {
           this.mainArray.map(item => {
             if (item.product && item.product.length > 0) {
               item.product.map((item2, index2) => {
-                item2.step = 0;
-              });
+                item2.step = 0
+              })
             }
-          });
-          return;
+          })
+          return
         }
         a.map((item, index) => {
           if (item.step === 0) {
             this.$nextTick(() => {
-              a.splice(index, 1);
-            });
-            this.$store.dispatch("goods/setOrderSelArr", a);
+              a.splice(index, 1)
+            })
+            this.$store.dispatch('goods/setOrderSelArr', a)
             this.mainArray.map(item1 => {
               if (item1.product && item1.product.length > 0) {
                 item1.product.map((item2, index2) => {
-                  if (item2.type === "product" && item2.step === 0) {
+                  if (item2.type === 'product' && item2.step === 0) {
                     if (item.id && item.id === item2.sku[0].id) {
                       // 重置多规格商品
-                      item2.isFlag = false;
+                      item2.isFlag = false
                     }
                   }
-                });
+                })
               }
-            });
+            })
           } else {
-            this.test(item.step, item.id, item.type);
+            this.test(item.step, item.id, item.type)
           }
-        });
+        })
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     test(step, id, type) {
@@ -291,336 +305,338 @@ export default {
         if (item.product && item.product.length > 0) {
           item.product.map((item2, index2) => {
             if (
-              item2.type === "product" &&
-              type === "product" &&
+              item2.type === 'product' &&
+              type === 'product' &&
               item2.sku.length > 0 &&
               id == item2.id
             ) {
-              item2.isFlag = true;
-              item2.step = step;
+              item2.isFlag = true
+              item2.step = step
             }
             if (
-              item2.type === "service" &&
-              type === "service" &&
+              item2.type === 'service' &&
+              type === 'service' &&
               id == item2.id
             ) {
-              item2.step = step;
+              item2.step = step
             }
-          });
+          })
         }
-      });
+      })
     },
     /* 获取列表数据 getProductList */
     getListData() {
       uni.getStorage({
-        key: "images",
+        key: 'images',
         success: res => {
-          this.b(JSON.parse(res.data));
+          this.b(JSON.parse(res.data))
         },
         complete: res => {
           if (!res.data) {
-            this.a();
+            this.a()
           }
-        }
-      });
+        },
+      })
     },
     b(images) {
       this.$minApi.getOrderProduceList().then(res => {
-        this.mainArray = res.list;
-        let temp = [];
+        this.mainArray = res.list
+        let temp = []
         for (const val of this.mainArray) {
           val.product.map(item2 => {
             images.map(item3 => {
-              switch (item2.product_img.split("/")[6]) {
-                case item3.split("/")[3]:
-                  this.$set(item2, "product_img", item3);
-                  break;
+              switch (item2.product_img.split('/')[6]) {
+                case item3.split('/')[3]:
+                  this.$set(item2, 'product_img', item3)
+                  break
               }
-            });
-            if (item2.type === "product" && item2.sku.length > 1) {
-              this.$set(item2, "isFlag", false);
-              this.$set(item2, "isPro", true);
-            } else if (item2.type === "setmeal") {
-              this.$set(item2, "isFlag", false);
+            })
+            if (item2.type === 'product' && item2.sku.length > 1) {
+              this.$set(item2, 'isFlag', false)
+              this.$set(item2, 'isPro', true)
+            } else if (item2.type === 'setmeal') {
+              this.$set(item2, 'isFlag', false)
             } else {
-              this.$set(item2, "isFlag", true);
+              this.$set(item2, 'isFlag', true)
             }
-          });
+          })
         }
         this.$nextTick(() => {
-          this.getElementTop();
-        });
-      });
+          this.getElementTop()
+        })
+      })
     },
     a() {
       this.$minApi.getOrderProduceList().then(res => {
-        this.mainArray = res.list;
-        let temp = [];
+        this.mainArray = res.list
+        let temp = []
         for (const val of this.mainArray) {
           val.product.map(item2 => {
             // #ifdef APP-PLUS
             uni.downloadFile({
               url: item2.product_img,
               success: res => {
-                temp.push(res.tempFilePath);
+                temp.push(res.tempFilePath)
                 uni.setStorage({
-                  key: "images",
+                  key: 'images',
                   data: JSON.stringify(temp),
-                  success: function() {
-                    console.log("success");
-                  }
-                });
-                this.$set(item2, "product_img", res.tempFilePath);
-              }
-            });
+                  success: function () {
+                    console.log('success')
+                  },
+                })
+                this.$set(item2, 'product_img', res.tempFilePath)
+              },
+            })
             // #endif
-            if (item2.type === "product" && item2.sku.length > 1) {
-              this.$set(item2, "isFlag", false);
-              this.$set(item2, "isPro", true);
-            } else if (item2.type === "setmeal") {
-              this.$set(item2, "isFlag", false);
+            if (item2.type === 'product' && item2.sku.length > 1) {
+              this.$set(item2, 'isFlag', false)
+              this.$set(item2, 'isPro', true)
+            } else if (item2.type === 'setmeal') {
+              this.$set(item2, 'isFlag', false)
             } else {
-              this.$set(item2, "isFlag", true);
+              this.$set(item2, 'isFlag', true)
             }
-          });
+          })
         }
         this.$nextTick(() => {
-          this.getElementTop();
-        });
-      });
+          this.getElementTop()
+        })
+      })
     },
     /* 获取元素顶部信息 */
     getElementTop() {
       /* Promise 对象数组 */
       // eslint-disable-next-line camelcase
-      const p_arr = [];
+      const p_arr = []
 
       /* 新建 Promise 方法 */
       // eslint-disable-next-line camelcase
       const new_p = selector => {
         return new Promise((resolve, reject) => {
-          const view = uni.createSelectorQuery().select(selector);
+          const view = uni.createSelectorQuery().select(selector)
           view
             .boundingClientRect(data => {
-              resolve(data.top);
+              resolve(data.top)
             })
-            .exec();
-        });
-      };
+            .exec()
+        })
+      }
       /* 遍历数据，创建相应的 Promise 数组数据 */
       this.mainArray.forEach((item, index) => {
-        p_arr.push(new_p(`#item-${index}`));
-      });
+        p_arr.push(new_p(`#item-${index}`))
+      })
 
       /* 所有节点信息返回后调用该方法 */
       Promise.all(p_arr).then(data => {
-        this.topArr = data;
-      });
+        this.topArr = data
+      })
     },
     /* 主区域滚动监听 */
     mainScroll(e) {
-      this.$minCommon.debounce(this.testHua(e));
+      this.$minCommon.debounce(this.testHua(e))
     },
     // 测试滑动
     testHua(e) {
-      const top = e.detail.scrollTop;
+      const top = e.detail.scrollTop
       if (top === 0) {
-        this.leftIndex = 0;
-        return;
+        this.leftIndex = 0
+        return
       }
-      let index = 0;
+      let index = 0
       /* 查找当前滚动距离 */
       for (let i = this.topArr.length - 1; i >= 0; i--) {
         /* 在部分安卓设备上，因手机逻辑分辨率与rpx单位计算不是整数，滚动距离与有误差，增加2px来完善该问题 */
         if (top + 2 >= this.topArr[i]) {
-          index = i + 1;
+          index = i + 1
         }
       }
-      this.leftIndex = index < 0 ? 0 : index;
+      this.leftIndex = index < 0 ? 0 : index
     },
     /* 左侧导航点击 */
     leftTap(index) {
-      this.$minCommon.debounce(this.testLH(index));
+      this.$minCommon.debounce(this.testLH(index))
     },
     testLH(index) {
-      this.scrollInto = `item-${index}`;
-      this.leftIndex = index;
+      this.scrollInto = `item-${index}`
+      this.leftIndex = index
     },
     /** 已选商品弹出事件 */
     selectedEvent() {
-      this.selected = true;
+      this.selected = true
     },
     // 图片错误
     imageErro(e) {
-      if (e.type === "error") {
-        this.skuObj.product_img = "/static/images/goods.png";
-        this.errImg = true;
+      if (e.type === 'error') {
+        this.skuObj.product_img = '/static/images/goods.png'
+        this.errImg = true
       }
     },
     /** 清空已选商品 */
     delAll() {
       for (let i = 0; i < this.selArr.length; i++) {
-        this.selArr.splice(i, 1);
+        this.selArr.splice(i, 1)
       }
-      this.selArr = [];
-      this.selected = false;
-      this.getListData();
+      this.selArr = []
+      this.selected = false
+      this.getListData()
     },
     /** 关闭已选商品弹出层 */
     closeSelectedPop() {
-      this.selected = false;
+      this.selected = false
     },
     /**  关闭选择规格弹出层 */
     closeSelectedSkuPop() {
-      this.isSelSku = false;
+      this.isSelSku = false
     },
     // 删除选择项
     delItem(n) {
-      this.selArr.splice(n, 1);
-      this.isDel = true;
-      this.$store.dispatch("goods/setOrderSelArr", this.selArr);
+      this.selArr.splice(n, 1)
+      this.isDel = true
+      this.$store.dispatch('goods/setOrderSelArr', this.selArr)
     },
     // 已选弹出层删除事件
     alDel(n, index) {
-      let id = Number;
-      if (this.selArr[index].type === "service") {
-        id = this.selArr[index].id;
+      let id = Number
+      if (this.selArr[index].type === 'service') {
+        id = this.selArr[index].id
       }
-      if (this.selArr[index].type === "product") {
-        id = this.selArr[index].sku.id;
+      if (this.selArr[index].type === 'product') {
+        id = this.selArr[index].sku.id
       }
       this.mainArray.map(item_m => {
         if (item_m.product && item_m.product.length > 0) {
           item_m.product.map(item2 => {
-            if (this.selArr[index].type === "service" && id === item2.id) {
-              this.$set(item2, "step", n);
+            if (this.selArr[index].type === 'service' && id === item2.id) {
+              this.$set(item2, 'step', n)
             }
             if (
-              this.selArr[index].type === "product" &&
+              this.selArr[index].type === 'product' &&
               item2.sku.length === 1 &&
               id === item2.sku[0].id
             ) {
-              this.$set(item2, "step", n);
+              this.$set(item2, 'step', n)
             }
             if (
-              this.selArr[index].type === "product" &&
+              this.selArr[index].type === 'product' &&
               item2.sku.length > 1 &&
               id === item2.sku[this.chioceIndex].id
             ) {
-              this.$set(item2, "step", n);
+              this.$set(item2, 'step', n)
             }
-          });
+          })
         }
-      });
+      })
     },
     // 选择规格事件
     selSku(index, index2) {
-      this.isSelSku = true;
-      this.skuObj = this.mainArray[index].product[index2];
-      this.skuObj.step = 1;
+      this.isSelSku = true
+      this.skuObj = this.mainArray[index].product[index2]
+      this.skuObj.step = 1
     },
     changesPopNoStep(index, index2, type) {
-      this.tempId.index = index;
-      this.tempId.index2 = index2;
-      if (type === "product") {
-        this.selSku(index, index2);
-      } else if (type === "setmeal") {
+      this.tempId.index = index
+      this.tempId.index2 = index2
+      if (type === 'product') {
+        this.selSku(index, index2)
+      } else if (type === 'setmeal') {
         // 进入商品套餐详情
         this.$minRouter.push({
-          name: "package-details",
+          name: 'package-details',
           params: {
-            page_type: "order",
+            page_type: 'order',
             is_open_desk: this.$parseURL().is_open_desk,
             desk_id: this.$parseURL().desk_id,
             minim_charge: this.$parseURL().minim_charge,
             product_id: this.mainArray[index].product[index2].id,
-            product_type: this.mainArray[index].product[index2].type
-          }
-        });
+            product_type: this.mainArray[index].product[index2].type,
+          },
+        })
+      } else {
+        console.log('fuwu ', type)
       }
     },
     changeChioce(index, index2) {
       // 服务商品
-      if (this.mainArray[index].product[index2].type === "service") {
+      if (this.mainArray[index].product[index2].type === 'service') {
         // 直接放入已选商品
-        console.log("服务商品", this.mainArray[index].product[index2]);
-        this.addGoods(this.mainArray[index].product[index2]);
-        return;
+        console.log('服务商品', this.mainArray[index].product[index2])
+        this.addGoods(this.mainArray[index].product[index2])
+        return
       }
       // 套餐
-      if (this.mainArray[index].product[index2].type === "setmeal") {
+      if (this.mainArray[index].product[index2].type === 'setmeal') {
         // 进入套餐详情页
         // 进入商品套餐详情
         this.$minRouter.push({
-          name: "package-details",
+          name: 'package-details',
           params: {
-            page_type: "order",
+            page_type: 'order',
             is_open_desk: this.$parseURL().is_open_desk,
             desk_id: this.$parseURL().desk_id,
             minim_charge: this.$parseURL().minim_charge,
             product_id: this.mainArray[index].product[index2].id,
-            product_type: this.mainArray[index].product[index2].type
-          }
-        });
-        return;
+            product_type: this.mainArray[index].product[index2].type,
+          },
+        })
+        return
       }
-      if (this.mainArray[index].product[index2].type === "product") {
+      if (this.mainArray[index].product[index2].type === 'product') {
         if (
           !this.mainArray[index].product[index2].isFlag ||
           this.mainArray[index].product[index2].sku.length > 1
         ) {
-          const obj = {};
+          const obj = {}
           const skuOne = this.mainArray[index].product[index2].sku[
             this.chioceIndex
-          ];
-          Object.assign(obj, this.mainArray[index].product[index2]);
-          obj.sku = skuOne;
-          this.addGoods(obj);
+          ]
+          Object.assign(obj, this.mainArray[index].product[index2])
+          obj.sku = skuOne
+          this.addGoods(obj)
         } else {
           if (this.mainArray[index].product[index2].sku.length > 1) {
-            return this.selSku(index, index2);
+            return this.selSku(index, index2)
           } else {
-            const obj = {};
-            const skuOne = this.mainArray[index].product[index2].sku[0];
-            Object.assign(obj, this.mainArray[index].product[index2]);
-            obj.sku = skuOne;
-            this.addGoods(obj);
+            const obj = {}
+            const skuOne = this.mainArray[index].product[index2].sku[0]
+            Object.assign(obj, this.mainArray[index].product[index2])
+            obj.sku = skuOne
+            this.addGoods(obj)
           }
         }
       }
     },
     // 选择规格
     chioceO(index) {
-      this.chioceIndex = index;
+      this.chioceIndex = index
     },
     // 已选商品统一列表方法
     addGoods(obj) {
       const result = this.selArr.some(item => {
-        if (obj.type === "service" && item.type === "service") {
+        if (obj.type === 'service' && item.type === 'service') {
           if (item.id === obj.id) {
-            item.step = obj.step;
-            return true;
+            item.step = obj.step
+            return true
           }
-        } else if (obj.type === "product" && item.type === "product") {
+        } else if (obj.type === 'product' && item.type === 'product') {
           if (item.sku.id === obj.sku.id) {
-            item.step = obj.step;
-            return true;
+            item.step = obj.step
+            return true
           }
         }
-      });
+      })
       if (!result) {
-        this.selArr.push(obj);
-        this.$store.dispatch("goods/setOrderSelArr", this.selArr);
+        this.selArr.push(obj)
+        this.$store.dispatch('goods/setOrderSelArr', this.selArr)
       }
     },
     // 选择规格确定
     skuChioce() {
-      const obj = {};
-      Object.assign(obj, this.skuObj);
-      obj.sku = this.skuObj.sku[this.chioceIndex];
-      this.addGoods(obj);
+      const obj = {}
+      Object.assign(obj, this.skuObj)
+      obj.sku = this.skuObj.sku[this.chioceIndex]
+      this.addGoods(obj)
       // this.mainArray[this.tempId.index].product[ this.tempId.index2].sku = this.mainArray[this.tempId.index].product[ this.tempId.index2].sku[this.chioceIndex]
-      this.closeSelectedSkuPop();
+      this.closeSelectedSkuPop()
       // console.log('选择规格确定', this.selArr)
       //     let skuo = this.mainArray[this.tempId.index].product[ this.tempId.index2].sku[this.chioceIndex]
       //     this.mainArray[this.tempId.index].product[ this.tempId.index2].sku = []
@@ -628,48 +644,48 @@ export default {
     },
     // 提交
     submit() {
-      console.log("已选商品");
-      console.log(this.$parseURL());
-      if (this.selArr.length === 0) return this.$showToast("请选择商品");
-      console.log("准备提交", this.selArr);
+      console.log('已选商品')
+      console.log(this.$parseURL())
+      if (this.selArr.length === 0) return this.$showToast('请选择商品')
+      console.log('准备提交', this.selArr)
       // [{"id":1,"type":"service","quantity":1,"sku_id":0,"combination":[]}
-      const products = [];
+      const products = []
       this.selArr.map(item => {
-        const obj = {};
+        const obj = {}
         // 类型为商品
-        if (item.type === "product") {
-          obj.id = item.id;
-          obj.type = item.type;
-          obj.quantity = item.step;
-          obj.combination = [];
-          obj.sku_id = item.sku.id;
+        if (item.type === 'product') {
+          obj.id = item.id
+          obj.type = item.type
+          obj.quantity = item.step
+          obj.combination = []
+          obj.sku_id = item.sku.id
         }
         // 类型为服务商品
-        if (item.type === "service") {
-          obj.id = item.id;
-          obj.type = item.type;
-          obj.quantity = item.step;
-          obj.combination = [];
+        if (item.type === 'service') {
+          obj.id = item.id
+          obj.type = item.type
+          obj.quantity = item.step
+          obj.combination = []
         }
         // 类型为套餐
-        if (item.type === "setmeal") {
-          obj.id = item.id;
-          obj.type = item.type;
-          obj.quantity = item.step;
-          obj.combination = item.combination;
+        if (item.type === 'setmeal') {
+          obj.id = item.id
+          obj.type = item.type
+          obj.quantity = item.step
+          obj.combination = item.combination
         }
-        products.push(obj);
-      });
+        products.push(obj)
+      })
       this.$minApi
         .setOrder({
           desk_id: this.$parseURL().desk_id,
-          products: JSON.stringify(products)
+          products: JSON.stringify(products),
         })
         .then(res => {
-          // this.selArr = []
-          // this.$store.dispatch('goods/setOrderSelArr', [])
+          this.selArr = []
+          this.$store.dispatch('goods/setOrderSelArr', [])
           if (res.orderId) {
-            this.$showToast("提交成功");
+            this.$showToast('提交成功')
             setTimeout(() => {
               // 判断是否为已开台，已开台有签折信息
               if (this.$parseURL().is_open_desk) {
@@ -678,56 +694,56 @@ export default {
                   res.orderId,
                   this.$parseURL().desk_id,
                   this.$parseURL().is_open_desk
-                );
+                )
 
                 uni.navigateTo({
                   url:
-                    "./orderstart?order_id=" +
+                    './orderstart?order_id=' +
                     res.orderId +
-                    "&desk_id=" +
+                    '&desk_id=' +
                     this.$parseURL().desk_id +
-                    "&open_status=" +
-                    1
-                });
+                    '&open_status=' +
+                    1,
+                })
 
-                return;
+                return
               }
               this.$minRouter.push(
                 {
-                  name: "redconfirm-order",
-                  type: "redirectTo",
+                  name: 'redconfirm-order',
+                  type: 'redirectTo',
                   params: {
                     order_id: res.orderId,
                     desk_id: this.$parseURL().desk_id,
-                    open_status: this.$parseURL().is_open_desk ? 1 : 0
-                  }
+                    open_status: this.$parseURL().is_open_desk ? 1 : 0,
+                  },
                 },
                 2000
-              );
-            });
+              )
+            })
           }
-        });
+        })
     },
     // 商品详情
     goDetails(index, index2) {
-      const _self = this;
+      const _self = this
       // let type
-      if (_self.mainArray[index].product[index2].type === "setmeal") {
-        console.log(_self.$store.state.goods.orderSelArr);
-        console.log(_self.mainArray);
+      if (_self.mainArray[index].product[index2].type === 'setmeal') {
+        console.log(_self.$store.state.goods.orderSelArr)
+        console.log(_self.mainArray)
         // 进入商品套餐详情
         _self.$minRouter.push({
-          name: "package-details",
+          name: 'package-details',
           params: {
-            page_type: "order",
+            page_type: 'order',
             is_open_desk: _self.$parseURL().is_open_desk,
             desk_id: _self.$parseURL().desk_id,
             minim_charge: _self.$parseURL().minim_charge,
             product_id: _self.mainArray[index].product[index2].id,
-            product_type: _self.mainArray[index].product[index2].type
-          }
-        });
-        return;
+            product_type: _self.mainArray[index].product[index2].type,
+          },
+        })
+        return
       }
       // if (this.mainArray[index].product[index2].type === 'product') {
       //   //  代表商品详情
@@ -737,19 +753,19 @@ export default {
       //   type = 'service'
       // }
       this.$minRouter.push({
-        name: "product-details",
+        name: 'product-details',
         params: {
-          page_type: "order",
+          page_type: 'order',
           is_open_desk: this.$parseURL().is_open_desk,
           desk_id: this.$parseURL().desk_id,
           minim_charge: this.$parseURL().minim_charge,
           product_id: this.mainArray[index].product[index2].id,
-          product_type: this.mainArray[index].product[index2].type
-        }
-      });
-    }
-  }
-};
+          product_type: this.mainArray[index].product[index2].type,
+        },
+      })
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -797,7 +813,7 @@ uni-page-body {
         font-weight: bold;
 
         &::after {
-          content: "";
+          content: '';
           width: 6rpx;
           height: 50rpx;
           background: #030313;
@@ -1050,5 +1066,14 @@ uni-page-body {
     top: 0;
     left: 0;
   }
+}
+.do {
+  position: absolute;
+  width: 100rpx;
+  height: 50rpx;
+  background: red;
+  z-index: 9999;
+  right: 100rpx;
+  top: 10rpx;
 }
 </style>

@@ -98,9 +98,9 @@
             },
             "splashscreen" : {
                 "android" : {
-                    "hdpi" : "static/images/drawable-hdpi/splash.9.png",
-                    "xhdpi" : "static/images/drawable-xhdpi/splash.9.png",
-                    "xxhdpi" : "static/images/drawable-xxhdpi/splash.9.png"
+                    "hdpi" : "unpackage/res/drawable-hdpi/splash.9.png",
+                    "xhdpi" : "unpackage/res/drawable-xhdpi/splash.9.png",
+                    "xxhdpi" : "unpackage/res/drawable-xxhdpi/splash.9.png"
                 },
                 "ios" : {
                     "iphone" : {
@@ -114,7 +114,7 @@
                     "storyboard" : "C:/Users/Administrator/Desktop/CustomStoryboard.zip"
                 },
                 "androidStyle" : "default",
-                "iosStyle" : "storyboard"
+                "iosStyle" : "common"
             }
         },
         "compilerVersion" : 3
