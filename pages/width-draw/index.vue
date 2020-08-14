@@ -94,6 +94,7 @@ export default {
     },
     // 全部
     tixian() {
+      if (!this.lastString) return this.$showToast('你尚未绑定银行卡')
       this.money = this.tixianInfo.can_cash_withdraw
     },
   },

@@ -110,6 +110,10 @@ export default {
   setPhone: data => minRequest.post('/5ea00df607233', data),
   // 实名认证 5ea01b1597aa8
   postNameTrue: data => minRequest.post('/5ea01b1597aa8', data),
+  // 我的下线信息
+  getMyDownLineInfo: data => minRequest.get('/5f350503a283f', data),
+  // 返佣记录 5f1ba83c1e066?rebate_uid=6&limit=10&page=1
+  getRecode: data => minRequest.get('/5f1ba83c1e066', data),
   // 我的下线 5e9facde8be76?limit=10&page=1
   getMyDownLine: data => minRequest.get('/5e9facde8be76', data),
   // 邀请记录 5e9fbfc58bb01

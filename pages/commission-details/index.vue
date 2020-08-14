@@ -20,32 +20,36 @@
         @click="toDeatil(item.id)"
       >
         <view class="min-flex">
-          <view class="" style="width:400rpx">
+          <view class style="width:400rpx">
             <view class="f28 min-ellipsis">{{item.commission_name}}</view>
-            <view class="label m-top-10 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.create_time*1000),'yyyy/MM/dd hh:mm:ss') }}</view>
+            <view
+              class="label m-top-10 f24 assist-text min-ellipsis"
+            >{{$minCommon.formatDate(new Date(item.create_time*1000),'yyyy/MM/dd hh:mm:ss') }}</view>
           </view>
         </view>
         <view class="min-flex flex-end min-flex-dir-top">
-          <view :class=" item.commission *1 <= 0 ? 'ablack' : 'ared'"> {{item.commission * 1 > 0 ? '+' + item.commission :  item.commission}}</view>
+          <view
+            :class=" item.commission *1 <= 0 ? 'ablack' : 'ared'"
+          >{{item.commission * 1 > 0 ? '+' + item.commission : item.commission}}</view>
         </view>
       </view>
     </view>
     <min-404 v-else></min-404>
     <min-popup :show="show" @close="close">
       <view class="picer-top">
-         <view :class="index === 0 ? 'left' : 'none_ac' " @click="start">
-            <view class="main">
-             <text class="f24 m-bottom-30">开始日期</text>
-             <text style="font-size:32rpx;color:#000">{{startTime}}</text>
-            </view>
-         </view>
-         <view style="width:2rpx;height:118rpx;background:#979797;opacity:0.24;"></view>
-         <view :class="index === 1 ? 'right' : ' none_ac' "  @click="end">
-            <view class="main">
-             <text class="f24 m-bottom-30">结束日期</text>
-             <text style="font-size:32rpx;color:#000">{{endTime}}</text>
-            </view>
-         </view>
+        <view :class="index === 0 ? 'left' : 'none_ac' " @click="start">
+          <view class="main">
+            <text class="f24 m-bottom-30">开始日期</text>
+            <text style="font-size:32rpx;color:#000">{{startTime}}</text>
+          </view>
+        </view>
+        <view style="width:2rpx;height:118rpx;background:#979797;opacity:0.24;"></view>
+        <view :class="index === 1 ? 'right' : ' none_ac' " @click="end">
+          <view class="main">
+            <text class="f24 m-bottom-30">结束日期</text>
+            <text style="font-size:32rpx;color:#000">{{endTime}}</text>
+          </view>
+        </view>
       </view>
       <picker-view
         :indicator-style="indicatorStyle"
@@ -53,99 +57,125 @@
         @change="bindChange"
         style="height:400rpx;margin-bottom:50rpx"
       >
-      <picker-view-column >
-           <view class="picker item" v-for="(item,index) in data" :key="index">{{item}}</view>
-      </picker-view-column>
+        <picker-view-column>
+          <view class="picker item" v-for="(item,index) in data" :key="index">{{item}}</view>
+        </picker-view-column>
       </picker-view>
       <view class="btn_view">
-         <text @click="cancel">取消</text>
-         <view class="btn" @click="sure">确认</view>
+        <text @click="cancel">取消</text>
+        <view class="btn" @click="sure">确认</view>
       </view>
     </min-popup>
-    <min-drawer :visible="showdrawer" mode="right" @close="closedrawer" @changeStore="changeStoreId">
-    </min-drawer>
-    <min-pulldown :isFlag="falg" :desc="des" :loading="load"/>
+    <min-drawer
+      :visible="showdrawer"
+      mode="right"
+      @close="closedrawer"
+      @changeStore="changeStoreId"
+    ></min-drawer>
+    <min-pulldown :isFlag="falg" :desc="des" :loading="load" />
   </view>
 </template>
 <script>
 export default {
   name: 'commission-details',
   navigate: ['navigateTo'],
-  data () {
+  data() {
     return {
       showdrawer: false,
       show: false,
       date: '2020-10-2',
       index: 0,
       value: [],
-      indicatorStyle: `height: ${Math.round(uni.getSystemInfoSync().screenWidth / (750 / 100))}rpx;`,
+      indicatorStyle: `height: ${Math.round(
+        uni.getSystemInfoSync().screenWidth / (750 / 100)
+      )}rpx;`,
       years: [],
       months: [],
       days: [],
       dayLength: Number,
       data: [],
-      startTime: (new Date().getMonth() + 1) + '月' + new Date().getDate() + '日' + ' ' + new Date().getFullYear(),
-      endTime: (new Date().getMonth() + 1) + '月' + (new Date().getDate() + 1) + '日' + ' ' + new Date().getFullYear(),
+      startTime:
+        new Date().getMonth() +
+        1 +
+        '月' +
+        new Date().getDate() +
+        '日' +
+        ' ' +
+        new Date().getFullYear(),
+      endTime:
+        new Date().getMonth() +
+        1 +
+        '月' +
+        (new Date().getDate() + 1) +
+        '日' +
+        ' ' +
+        new Date().getFullYear(),
       startTime1: '2020年1月2日',
       endTime1: '2020年1月2日',
       num: Number,
-      store_id:'',
-      list:[],
-      falg:false,
-      num:2,
-      des:"加载中",
-      load:true,
-      total:""
+      store_id: '',
+      list: [],
+      falg: false,
+      num: 2,
+      des: '加载中',
+      load: true,
+      total: '',
     }
   },
-  onNavigationBarButtonTap () {
+  onNavigationBarButtonTap() {
     this.showdrawer = !this.showdrawer
   },
-   onReachBottom(){
-      console.log('到底')
-      this.falg = true
-      this.$minApi.getTCList({
-         start_time:this.getDatetre( this.startTime1),
-         end_time:this.getDatetre(this.endTime1),
-         store_id:this.store_id,
-         page: this.num,
-         isLoading:true
-       }).then(res => {
-          if(res.list.length === 0) {
-            this.load = false
-            this.des = '暂无更多数据'
-            setTimeout(() => {
-              return this.falg = false
-            },1000) 
-          }
-         console.log(res);
-         this.num++
-         this.list =  this.list.concat([...res.list])
-       })
+  onReachBottom() {
+    console.log('到底')
+    this.falg = true
+    this.$minApi
+      .getTCList({
+        start_time: this.getDatetre(this.startTime1),
+        end_time: this.getDatetre(this.endTime1),
+        store_id: this.store_id,
+        page: this.num,
+        isLoading: true,
+      })
+      .then(res => {
+        if (res.list.length === 0) {
+          this.load = false
+          this.des = '暂无更多数据'
+          setTimeout(() => {
+            return (this.falg = false)
+          }, 1000)
+        }
+        console.log(res)
+        this.num++
+        this.list = this.list.concat([...res.list])
+      })
   },
   onPullDownRefresh() {
-    console.log('refresh');
+    console.log('refresh')
     // this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),
-    this.$minApi.getTCList({
-         start_time:this.getDatetre( this.startTime1),
-         end_time:this.getDatetre(this.endTime1),
-         store_id:this.store_id,
-         page:1,
-         isLoading:true
-       }).then(res => {
-         console.log(res);
-         this.num = 2
-         this.list = res.list
-       })
-    this.$minApi.getTCAll({
-         start_time:this.getDatetre( this.startTime1),
-         end_time:this.getDatetre(this.endTime1),
-         store_id:this.store_id,
-         isLoading:true
-      }).then(res => {
-        console.log(res);
+    this.$minApi
+      .getTCList({
+        start_time: this.getDatetre(this.startTime1),
+        end_time: this.getDatetre(this.endTime1),
+        store_id: this.store_id,
+        page: 1,
+        isLoading: true,
+      })
+      .then(res => {
+        console.log(res)
+        this.num = 2
+        this.list = res.list
+      })
+    this.$minApi
+      .getTCAll({
+        start_time: this.getDatetre(this.startTime1),
+        end_time: this.getDatetre(this.endTime1),
+        store_id: this.store_id,
+        isLoading: true,
+      })
+      .then(res => {
+        console.log(res)
         this.total = res.total
-         uni.stopPullDownRefresh();
+        uni.stopPullDownRefresh()
       })
     // this.getData(1,10,true).then(res => {
     //    this.num = 2
@@ -153,13 +183,14 @@ export default {
     //     uni.stopPullDownRefresh();
     // })
   },
-  onLoad(){
-
-      // 当前门店名称
-      console.log(this.$store.state.user.userInfo.store_name)
-      this.setContent(this.$store.state.user.userInfo.store_name)
+  onLoad() {
+    // 当前门店名称
+    console.log(this.$store.state.user.userInfo.store_name)
+    this.setContent(this.$store.state.user.userInfo.store_name)
   },
-  mounted () {
+  mounted() {
+    console.log(this.$parseURL())
+
     const time = new Date()
     const year = time.getFullYear()
     let month = time.getMonth() + 1
@@ -171,89 +202,124 @@ export default {
     this.getDays()
     this.store_id = this.$store.state.user.userInfo.store_id
     for (const va of this.years) {
-        for (const val1 of this.days) {
-          this.data.push( val1 + ' ' + va)
-        }
+      for (const val1 of this.days) {
+        this.data.push(val1 + ' ' + va)
+      }
     }
-    if(month <= 9){month = '0' + month}
-    if(day <= 9 ){day = '0' + day}
-    const a = month + '月' + (day) + '日' + ' ' + year
+    if (month <= 9) {
+      month = '0' + month
+    }
+    if (day <= 9) {
+      day = '0' + day
+    }
+    const a = month + '月' + day + '日' + ' ' + year
     this.data.map((item, index) => {
       if (item === a) {
         // 起始位置
         this.value.push(index)
       }
     })
-    console.log(this.$store.state.user.userInfo.store_id);
-    this.startTime1 = year + '年' + month + '月' + day+ '日' 
-     this.endTime1 = `${year}年${month}月${day*1 <=9 ? ('0'+(day*1 +1))  : (day*1 +1)}日`
-     this.startTime = `${month}月${day}日 ${year}`
-     this.endTime = `${month}月${day*1 <=9 ? ('0'+(day*1 +1))  : (day*1 +1)}日 ${year}`
-    this.getData(this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),this.store_id,1)
-    this.getTall(this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),this.store_id)
+    console.log(this.$store.state.user.userInfo.store_id)
+
+    this.startTime1 = year + '年' + month + '月' + day + '日'
+    this.endTime1 = `${year}年${month}月${
+      day * 1 <= 9 ? '0' + (day * 1 + 1) : day * 1 + 1
+    }日`
+    this.startTime = `${month}月${day}日 ${year}`
+    this.endTime = `${month}月${
+      day * 1 <= 9 ? '0' + (day * 1 + 1) : day * 1 + 1
+    }日 ${year}`
+    if (this.$parseURL().type === 'commission') {
+      let a = this.$parseURL().start_time.split('-')
+      let b = this.$parseURL().end_time.split('-')
+      console.log(a)
+      this.startTime1 = `${a[0]}年${a[1]}月${a[2]}日`
+      this.endTime1 = `${b[0]}年${b[1]}月${b[2]}日`
+      this.store_id = this.$parseURL().store_id
+
+      //    this.startTime = `${month}月${day}日 ${year}`
+      // this.endTime = `${month}月${
+      //   day * 1 <= 9 ? '0' + (day * 1 + 1) : day * 1 + 1
+      // }日 ${year}`
+    }
+    this.getData(
+      this.getDatetre(this.startTime1),
+      this.getDatetre(this.endTime1),
+      this.store_id,
+      1
+    )
+    this.getTall(
+      this.getDatetre(this.startTime1),
+      this.getDatetre(this.endTime1),
+      this.store_id
+    )
   },
   methods: {
     // 获取数据
-    getData(start_time,end_time,store_id,page,limit = 10){
-       this.$minApi.getTCList({
-         start_time,
-         end_time,
-         store_id,
-         page,
-         limit
-       }).then(res => {
-         console.log(res);
-         this.list = res.list
-       })
-    },
-    // 获取提成合计
-    getTall(start_time,end_time,store_id){
-      this.$minApi.getTCAll({
+    getData(start_time, end_time, store_id, page, limit = 10) {
+      this.$minApi
+        .getTCList({
           start_time,
           end_time,
-          store_id
-      }).then(res => {
-        console.log(res);
-        this.total = res.total
-      })
+          store_id,
+          page,
+          limit,
+        })
+        .then(res => {
+          console.log(res)
+          this.list = res.list
+        })
+    },
+    // 获取提成合计
+    getTall(start_time, end_time, store_id) {
+      this.$minApi
+        .getTCAll({
+          start_time,
+          end_time,
+          store_id,
+        })
+        .then(res => {
+          console.log(res)
+          this.total = res.total
+        })
     },
     // 获得年份
-    getYears () {
+    getYears() {
       const time = new Date()
       for (let i = 2020; i <= time.getFullYear(); i++) {
         this.years.push(i)
       }
     },
     // 获取月份
-    getMonth () {
+    getMonth() {
       for (let i = 1; i <= 12; i++) {
-        if(i <= 9){
-            i = '0'+ i
+        if (i <= 9) {
+          i = '0' + i
         }
         this.months.push(i)
       }
     },
-    getDays () {
+    getDays() {
       //  this.dayLength
-      for(let q =1;q <= 12;q++){
-          this.getDaysInOneMonth(2020,q)
-              if(q <= 9){
-                 q = '0'+q
-              }
-            for (let i = 1; i <= this.dayLength; i++) {
-              if(i <= 9){
-                  i = '0'+i
-              }
-              this.days.push(q+'月'+ i + '日')
-            }
+      for (let q = 1; q <= 12; q++) {
+        this.getDaysInOneMonth(2020, q)
+        if (q <= 9) {
+          q = '0' + q
+        }
+        for (let i = 1; i <= this.dayLength; i++) {
+          if (i <= 9) {
+            i = '0' + i
+          }
+          this.days.push(q + '月' + i + '日')
+        }
       }
     },
     // 获取某年某月多少天
-    getDaysInOneMonth (year, month) {
+    getDaysInOneMonth(year, month) {
       month = parseInt(month, 10)
       var d = new Date(year, month, 0)
-      this.dayLength  = d.getDate()
-      // return 
+      this.dayLength = d.getDate()
+      // return
     },
     bindChange: function (e) {
       this.num = e.detail.value[0]
@@ -266,7 +332,7 @@ export default {
       }
     },
     // 修改右上角内容
-    setContent(content){
+    setContent(content) {
       // #ifdef APP-PLUS
       const pages = getCurrentPages()
       const page = pages[pages.length - 1]
@@ -275,24 +341,24 @@ export default {
       titleObj.buttons[0].text = ''
       titleObj.buttons[0].text = content
       currentWebview.setStyle({
-        titleNView: titleObj
+        titleNView: titleObj,
       })
       // #endif
     },
-    showPop () {
+    showPop() {
       this.show = !this.show
     },
-    close () {
+    close() {
       this.show = false
     },
-    start () {
+    start() {
       this.index = 0
     },
-    end () {
+    end() {
       this.index = 1
     },
     // 确认日期
-    sure () {
+    sure() {
       this.show = false
       const stTime = this.startTime.split(' ')
       const enTime = this.endTime.split(' ')
@@ -304,38 +370,56 @@ export default {
       this.endTime1 = endtime
       this.value = []
       this.value.push(this.num)
-      this.getData(this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),this.$store.state.user.userInfo.store_id,1)
-      this.getTall(this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),this.store_id)
+      this.getData(
+        this.getDatetre(this.startTime1),
+        this.getDatetre(this.endTime1),
+        this.$store.state.user.userInfo.store_id,
+        1
+      )
+      this.getTall(
+        this.getDatetre(this.startTime1),
+        this.getDatetre(this.endTime1),
+        this.store_id
+      )
     },
     // 取消
-    cancel () {
+    cancel() {
       this.show = false
     },
-    toDeatil (id) {
+    toDeatil(id) {
       this.$minRouter.push({
         name: 'commission-deils',
-        params: {id}
+        params: { id },
       })
     },
-    closedrawer () {
+    closedrawer() {
       this.showdrawer = false
     },
     // 日期过滤
-    getDatetre(time){
-       time = time.replace('年','-')
-       time = time.replace('月','-')
-       time = time.replace('日','')
-       return time
+    getDatetre(time) {
+      time = time.replace('年', '-')
+      time = time.replace('月', '-')
+      time = time.replace('日', '')
+      return time
     },
     // 选择门店
-    changeStoreId(id,store_name){
-        // 修改右上角内容
-        this.setContent(store_name)
-        this.closedrawer()
-        this.getData(this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),id,1)
-        this.getTall(this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),id)
-    }
-  }
+    changeStoreId(id, store_name) {
+      // 修改右上角内容
+      this.setContent(store_name)
+      this.closedrawer()
+      this.getData(
+        this.getDatetre(this.startTime1),
+        this.getDatetre(this.endTime1),
+        id,
+        1
+      )
+      this.getTall(
+        this.getDatetre(this.startTime1),
+        this.getDatetre(this.endTime1),
+        id
+      )
+    },
+  },
 }
 </script>
 <style lang="scss" scoped>
@@ -386,97 +470,97 @@ export default {
     color: rgba(102, 102, 102, 1);
   }
 }
-.picer-top{
-    width: 100%;
-    height: 200rpx;
+.picer-top {
+  width: 100%;
+  height: 200rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30rpx;
+  .left {
+    width: 50%;
+    height: 100%;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    padding: 0 30rpx;
-    .left{
-      width: 50%;
-      height: 100%;
+    position: relative;
+    .main {
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      .main{
-        display: flex;
-        flex-direction: column;
-      }
     }
-    .right{
-       width: 50%;
-       height: 100%;
-       display: flex;
-       flex-direction: column;
-       justify-content: center;
-       align-items: center;
-      position: relative;
-
-      .main{
-        display: flex;
-        flex-direction: column;
-      }
-    }
-    .none_ac{
-       width: 50%;
-       height: 100%;
-       display: flex;
-       flex-direction: column;
-       justify-content: center;
-       align-items: center;
-       font-size:32rpx;
-        font-family:Microsoft YaHei;
-        font-weight:400;
-        color:rgba(153,153,153,1);
-        opacity:0.36;
-        position: relative;
-      .main{
-        display: flex;
-        flex-direction: column;
-      }
-    }
-    .sure{
-     color: #007aff;
-    }
-    }
-  .picker{
-    text-align: center;
-    line-height: 50rpx;
-    width: auto;
   }
-  .btn_view{
-    width: 100%;
-    height: 100rpx;
+  .right {
+    width: 50%;
+    height: 100%;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    text{
-      font-size:36rpx;
-      color:rgba(190,190,190,1);
-    }
-    .btn{
-      width:394rpx;
-      height:100rpx;
-      background:rgba(255,224,1,1);
-      border-radius:16rpx 16rpx 16rpx 16rpx;
-      line-height: 100rpx;
-      text-align: center;
-      color: #333;
-      font-size:36rpx;
+    position: relative;
+
+    .main {
+      display: flex;
+      flex-direction: column;
     }
   }
+  .none_ac {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 32rpx;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: rgba(153, 153, 153, 1);
+    opacity: 0.36;
+    position: relative;
+    .main {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  .sure {
+    color: #007aff;
+  }
+}
+.picker {
+  text-align: center;
+  line-height: 50rpx;
+  width: auto;
+}
+.btn_view {
+  width: 100%;
+  height: 100rpx;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text {
+    font-size: 36rpx;
+    color: rgba(190, 190, 190, 1);
+  }
+  .btn {
+    width: 394rpx;
+    height: 100rpx;
+    background: rgba(255, 224, 1, 1);
+    border-radius: 16rpx 16rpx 16rpx 16rpx;
+    line-height: 100rpx;
+    text-align: center;
+    color: #333;
+    font-size: 36rpx;
+  }
+}
 // 抽屉
-.top_view_drawer{
+.top_view_drawer {
   padding: 30rpx;
   background: #ffe001;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.main_drawer{
+.main_drawer {
   display: flex;
   justify-content: center;
   flex-direction: column;

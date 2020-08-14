@@ -1,8 +1,13 @@
 <template>
-  <view class="min-popup" v-if="show" :class="[isShow ? 'min-show' : 'min-hide']" @touchmove.stop.prevent="moveHandle">
+  <view
+    class="min-popup"
+    v-if="show"
+    :class="[isShow ? 'min-show' : 'min-hide']"
+    @touchmove.stop.prevent="moveHandle"
+  >
     <view class="min-overlay" @click="close"></view>
     <view :class="size ?  'min-content-'+size : 'min-content'" :style="{height:heightSize+'rpx'}">
-      <slot/>
+      <slot />
     </view>
   </view>
 </template>
@@ -11,96 +16,99 @@
 export default {
   props: {
     show: {
-      type: Boolean
+      type: Boolean,
     },
     size: {
-      type: String
+      type: String,
     },
     heightSize: {
-      type: String
-    }
+      type: String,
+    },
   },
-  data () {
+  data() {
     return {
-      isShow: Boolean
+      isShow: Boolean,
     }
   },
-  created () {
+  created() {
     this.isShow = this.show
   },
   watch: {
-    show () {
+    show() {
       this.isShow = this.show
       if (!this.show) {
         this.close()
       }
-    }
+    },
   },
   methods: {
-    close () {
+    close() {
       this.isShow = false
       setTimeout(() => {
         this.$emit('close')
       }, 400)
     },
-    moveHandle(){
-       // To Do Something
-    }
-  }
+    moveHandle() {
+      // To Do Something
+    },
+  },
 }
-
 </script>
 
 <style lang="scss" scoped>
-.min-popup{
+.min-popup {
   width: 100vw;
   height: 100vh;
   position: fixed;
-  top:0;
+  top: 0;
   left: 0;
   z-index: 100;
-  &.min-hide{
-    .min-content{
-      animation: hide .5s linear forwards;
+  &.min-hide {
+    .min-content {
+      animation: hide 0.5s linear forwards;
     }
-    .min-content-height{ animation: hide .5s linear forwards;}
-    .min-overlay{
+    .min-content-height {
+      animation: hide 0.5s linear forwards;
+    }
+    .min-overlay {
       opacity: 0;
     }
   }
-  &.min-show{
-    .min-content{
-      animation: show .5s linear forwards;
+  &.min-show {
+    .min-content {
+      animation: show 0.5s linear forwards;
     }
-    .min-content-height{ animation: show .5s linear forwards;}
-    .min-overlay{
+    .min-content-height {
+      animation: show 0.5s linear forwards;
+    }
+    .min-overlay {
       opacity: 1;
     }
   }
-  .min-overlay{
+  .min-overlay {
     width: 100%;
     height: 100%;
     position: absolute;
-    top:0;
+    top: 0;
     left: 0;
     background-color: rgba(0, 0, 0, 0.6);
     z-index: 200;
-    transition: .5s;
+    transition: 0.5s;
   }
-  .min-content{
+  .min-content {
     width: 100%;
-    height:800rpx;
+    height: 800rpx;
     background: #fff;
     position: absolute;
     left: 0;
     bottom: 0;
     z-index: 9999;
     overflow: hidden;
-    border-radius: 20rpx 20rpx  0  0;
+    border-radius: 20rpx 20rpx 0 0;
   }
-  .min-content-height{
+  .min-content-height {
     width: 100%;
-    height:600rpx;
+    height: 600rpx;
     background: #fff;
     position: absolute;
     left: 0;
