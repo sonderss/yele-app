@@ -41,6 +41,15 @@ export default {
       flag: true,
     };
   },
+  onLoad() {
+    uni.getStorage({
+      key: 'userInfo',
+      success: (res) => {
+        console.log(JSON.parse(res.data));
+        this.mobile = JSON.parse(res.data).phone;
+      },
+    });
+  },
   methods: {
     getVerificationCode() {
       // 获取验证码
@@ -65,6 +74,15 @@ export default {
         .login({ mobile: this.mobile, code: this.code })
         .then((res) => {
           this.$showToast('登录成功');
+          uni.setStorage({
+            key: 'userInfo',
+            data: JSON.stringify({
+              phone: this.mobile,
+            }),
+            success: function () {
+              console.log('success');
+            },
+          });
           setTimeout(() => {
             this.$store.dispatch('user/setUserInfo', res);
             uni.redirectTo({

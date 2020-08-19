@@ -128,13 +128,19 @@ export default {
     const beforePage = pages[pages.length - 2] //上个页面
     const page = pages[pages.length - 1] //页面
     if (options.from === 'backbutton') {
-      if (beforePage.route !== 'pages/seat/index') {
+      if (beforePage.route !== 'pages/platform-admin/index') {
         this.back(1)
         return true
       } else {
-        this.$minRouter.push({
-          name: 'index',
+        uni.navigateBack({
+          delta: 2,
         })
+        // uni.redirectTo({
+        //   url: '../index/index',
+        // })
+        // this.$minRouter.push({
+        //   name: 'index',
+        // })
         return true
       }
     }
@@ -145,6 +151,7 @@ export default {
     // const year = new Date().getFullYear()
     // this.date = year + '-' + month + '-' + day
     this.date = this.$minCommon.formatDate(new Date(), 'yyyy-MM-dd')
+    this.$store.dispatch('status/setMyDate', this.date)
     // #ifdef APP-PLUS
     const pages = getCurrentPages()
     const page = pages[pages.length - 1]
@@ -159,7 +166,7 @@ export default {
     // })
     // #endif
     // this.getData(this.date)
-    if (this.$store.state.status.bookTime) {
+    if (this.$store.state.status.bookTime.length > 0) {
       console.log(this.$store.state.status.bookTime)
       return (this.datas = this.$store.state.status.bookTime)
     }
@@ -174,6 +181,7 @@ export default {
   mounted() {
     // this.getData('2020-3-18')
   },
+  updated() {},
   onNavigationBarButtonTap() {
     this.show = !this.show
   },
@@ -278,11 +286,34 @@ export default {
           this.desks = res.desks
           this.mines = res.mines
           this.title = res.title
+          this.getSeatData()
         })
         // eslint-disable-next-line handle-callback-err
         .catch(err => {
           console.log('桌台列表获取失败')
         })
+    },
+    getSeatData() {
+      let arr = []
+      let brr = []
+      this.$minApi.getSeatList({ isLoading: true }).then(res => {
+        this.list.desks.map(item => {
+          item.desk_lists.map(item2 => {
+            arr.push({ id: item2.id, desk_status: item2.desk_status })
+          })
+        })
+        JSON.parse(res.desk_coordinate).map(item => {
+          arr.map(item2 => {
+            if (item.id === item2.id) {
+              item.status = item2.desk_status
+              return brr.push(item)
+            }
+          })
+        })
+        console.log('JSON.parse(res.desk_coordinate)', brr)
+        res.desk_coordinate = JSON.stringify(brr)
+        this.$store.dispatch('status/setSeatList', res)
+      })
     },
     // 台详情
     goDetail(id, status) {
@@ -307,6 +338,7 @@ export default {
     sures() {
       // 2020-05-29
       let a = this.datas[this.num]
+      this.$store.dispatch('status/setMyDate', this.date)
       this.date = a
       let ti = this.date.split('-')
 

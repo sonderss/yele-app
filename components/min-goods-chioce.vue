@@ -27,7 +27,7 @@
                 <text style="color:#FF0000;font-size:30">{{price}}</text>
               </text>
             </view>
-            <view class="steper">
+            <view class="steper" @click.stop="ads">
               <min-stepper :isFlag="isFlag" v-if="isFlag" v-model="count" @change="changeChioce"></min-stepper>
               <view
                 v-else

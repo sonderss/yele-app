@@ -5,7 +5,10 @@
       :style="{transition: top === 0 ? 'transform 300ms':'',transform: 'translateY('+ top + 'rpx' +')'}"
     >
       <view class="m-top-20 toasta f26" style="color:#fff;" v-if="top && flag">
-        <text class="iconfont icon-changyongicon_huaban" style="color:#fff;font-weight:blod;f26">&#xe616;</text>
+        <text
+          class="iconfont icon-changyongicon_huaban"
+          style="color:#fff;font-weight:blod;f26"
+        >&#xe616;</text>
         {{top >= 300 ? '松开':'下拉'}}查看座位分布图
       </view>
       <view class="back-img-box">
@@ -18,7 +21,7 @@
               <view class="f24 m-top-20">{{ userInfo.store_name }} | {{ userInfo.position_name }}</view>
             </view>
           </view>
-          <view class="min-flex min-flex-main-center" @click="navigateTo('changeStore')" >
+          <view class="min-flex min-flex-main-center" @click="navigateTo('changeStore')">
             <view class="f24">切换门店</view>
             <view class="right_arrow"></view>
           </view>
@@ -46,28 +49,32 @@
           </view>
         </view>
       </view>
-      <yele-grid :list="grid2" ></yele-grid>
+      <yele-grid :list="grid2"></yele-grid>
       <yele-grid :list="grid3"></yele-grid>
     </scroll-view>
   </view>
 </template>
 
 <script>
-import back from "@/static/images/index/back.png";
-import MinAvatar from "@/components/min-avatar";
-import YeleGrid from "@/components/page/yele-grid";
+import back from '@/static/images/index/back.png'
+import MinAvatar from '@/components/min-avatar'
+import YeleGrid from '@/components/page/yele-grid'
 export default {
-  navigate: ["navigateTo", "reLaunch"],
-  name: "index",
+  navigate: ['navigateTo', 'reLaunch'],
+  name: 'index',
   components: {
     MinAvatar,
-    YeleGrid
+    YeleGrid,
   },
-  mounted(){
-      this.getPay(true)
-      this.$minApi.getUserInfo({isLoading:true}).then(res => {
-         this.$store.dispatch('user/setUserInfos',res)
-      })
+  mounted() {
+    this.getPay(true)
+    this.$minApi.getUserInfo({ isLoading: true }).then(res => {
+      this.$store.dispatch('user/setUserInfos', res)
+    })
+    this.$store.dispatch(
+      'status/setMyDate',
+      this.$minCommon.formatDate(new Date(Date.now()), 'yyyy-MM-dd')
+    )
   },
   onShow() {
     // uni.request({
@@ -119,158 +126,158 @@ export default {
   data() {
     return {
       back,
-      top: "",
-      lastY: "",
+      top: '',
+      lastY: '',
       flag: Boolean,
-      testArr:[],
+      testArr: [],
       grid2: [
         {
-          url: "../order-record/index.vue",
-          name: "order-record",
-          img: "/static/images/index/order.png",
-          text: "下单记录",
-          root: "orderRecord"
+          url: '../order-record/index.vue',
+          name: 'order-record',
+          img: '/static/images/index/order.png',
+          text: '下单记录',
+          root: 'orderRecord',
         },
         {
-          url: "../appointment-record/index.vue",
-          name: "appointment-record",
-          img: "/static/images/index/station.png",
-          text: "订台记录",
-          root: "bookRecord"
+          url: '../appointment-record/index.vue',
+          name: 'appointment-record',
+          img: '/static/images/index/station.png',
+          text: '订台记录',
+          root: 'bookRecord',
         },
         {
-          url: "../presentation-records/index.vue",
-          name: "presentation-records",
-          img: "/static/images/index/gift.png",
-          text: "赠送记录",
-          root: "presentationRecord"
+          url: '../presentation-records/index.vue',
+          name: 'presentation-records',
+          img: '/static/images/index/gift.png',
+          text: '赠送记录',
+          root: 'presentationRecord',
         },
         {
-          name: "wine-record",
-          url: "../wine-record/index.vue",
-          img: "/static/images/index/bar2.png",
-          text: "存酒记录",
-          root: "saveWineRecord"
+          name: 'wine-record',
+          url: '../wine-record/index.vue',
+          img: '/static/images/index/bar2.png',
+          text: '存酒记录',
+          root: 'saveWineRecord',
         },
         {
-          name: "fetch-record",
-          url: "../fetch-record/index.vue",
-          img: "/static/images/index/take.png",
-          text: "取酒记录",
-          root: "fetchWineRecord"
+          name: 'fetch-record',
+          url: '../fetch-record/index.vue',
+          img: '/static/images/index/take.png',
+          text: '取酒记录',
+          root: 'fetchWineRecord',
         },
         {
-          name: "forfeiture-record",
-          url: "../forfeiture-record/index.vue",
-          img: "/static/images/index/confiscated.png",
-          text: "充公记录",
-          root: "confiscateRecord"
+          name: 'forfeiture-record',
+          url: '../forfeiture-record/index.vue',
+          img: '/static/images/index/confiscated.png',
+          text: '充公记录',
+          root: 'confiscateRecord',
         },
         {
-          img: "/static/images/index/seat.png",
-          text: "转台记录",
-          name: "turntable-record",
-          root: "transferRecord"
-        }
+          img: '/static/images/index/seat.png',
+          text: '转台记录',
+          name: 'turntable-record',
+          root: 'transferRecord',
+        },
       ],
       grid3: [
         {
-          name: "my-downline",
-          img: "/static/images/index/my_d.png",
-          text: "我的下线",
-          root: "myOffline"
+          name: 'my-downline',
+          img: '/static/images/index/my_d.png',
+          text: '我的下线',
+          root: 'myOffline',
         },
         {
-          img: "/static/images/index/chart.png",
-          name: "statistics",
-          url: "statistics",
-          text: "数据统计",
-          root: "statistics"
+          img: '/static/images/index/chart.png',
+          name: 'statistics',
+          url: 'statistics',
+          text: '数据统计',
+          root: 'statistics',
         },
         {
-          name: "my-income",
-          img: "/static/images/index/wallet.png",
-          text: "我的收入",
-          root: "finance",
-          url: "my-income"
+          name: 'my-income',
+          img: '/static/images/index/wallet.png',
+          text: '我的收入',
+          root: 'finance',
+          url: 'my-income',
         },
         {
-          url: "../mine-info/index",
-          name: "mine-info",
-          img: "/static/images/index/people.png",
-          text: "个人资料",
-          root: "userInfo"
-        }
-      ]
-    };
+          url: '../mine-info/index',
+          name: 'mine-info',
+          img: '/static/images/index/people.png',
+          text: '个人资料',
+          root: 'userInfo',
+        },
+      ],
+    }
   },
   computed: {
     userInfo() {
       // 用户信息
-      return this.$store.state.user.userInfo;
-    }
+      return this.$store.state.user.userInfo
+    },
   },
 
   methods: {
     navigateTo(root) {
       let result = this.$getRoot(root)
-      if(!result) return this.$showToast('抱歉，暂无权限')
+      if (!result) return this.$showToast('抱歉，暂无权限')
       this.$minRouter.push({
-        name: "switch-stores",
-        type: "navigateTo",
-        path: "/pages/switch-stores/index"
-      });
+        name: 'switch-stores',
+        type: 'navigateTo',
+        path: '/pages/switch-stores/index',
+      })
     },
     refresh() {
       this.$nextTick(() => {
-        this.$refs.pullScroll.refresh();
-      });
+        this.$refs.pullScroll.refresh()
+      })
     },
     toCwine(root) {
-       let result = this.$getRoot(root)
-      if(!result) return this.$showToast('抱歉，暂无权限')
+      let result = this.$getRoot(root)
+      if (!result) return this.$showToast('抱歉，暂无权限')
       this.$minRouter.push({
-        name: "confiscated-wine"
-      });
+        name: 'confiscated-wine',
+      })
     },
     toPlatform(root) {
-       let result = this.$getRoot(root)
-      if(!result) return this.$showToast('抱歉，暂无权限')
+      let result = this.$getRoot(root)
+      if (!result) return this.$showToast('抱歉，暂无权限')
       this.$minRouter.push({
-        name: "platform-admin",
-        type: "navigateTo",
-        path: "/pages/platform-admin/index"
-      });
+        name: 'platform-admin',
+        type: 'navigateTo',
+        path: '/pages/platform-admin/index',
+      })
     },
     start(e) {
-      this.lastY = e.changedTouches[0].pageY;
+      this.lastY = e.changedTouches[0].pageY
     },
     move(e) {
-      let currentY = e.changedTouches[0].pageY;
-      if(this.top < currentY - this.lastY){
-          // 像下滚动
-         this.top = currentY - this.lastY;
-          this.flag = true
-      }else  {
-          // 向上滚动
-          //  this.top = 0
-          this.top = currentY - this.lastY;
-          this.flag = false
+      let currentY = e.changedTouches[0].pageY
+      if (this.top < currentY - this.lastY) {
+        // 像下滚动
+        this.top = currentY - this.lastY
+        this.flag = true
+      } else {
+        // 向上滚动
+        //  this.top = 0
+        this.top = currentY - this.lastY
+        this.flag = false
       }
     },
     end(e) {
-      if(this.top >= 300){
-         this.$minRouter.push({ name: "seat",params:{url:'index'}});
+      if (this.top >= 300) {
+        this.$minRouter.push({ name: 'seat', params: { url: 'index' } })
       }
-      return this.top = 0;
+      return (this.top = 0)
     },
-    getPay(isLoading){
-      this.$minApi.getPayMethods({isLoading:true}).then(res=>{
-        this.$store.dispatch('status/setPayMethods',res.list)
+    getPay(isLoading) {
+      this.$minApi.getPayMethods({ isLoading: true }).then(res => {
+        this.$store.dispatch('status/setPayMethods', res.list)
       })
-    }
-  }
-};
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -345,7 +352,7 @@ export default {
   min-height: 100vh;
   padding-bottom: 20rpx;
   overflow: hidden;
-  background-image: url("/static/images/index/back.png");
+  background-image: url('/static/images/index/back.png');
   background-position: top center;
   background-size: 100% 490rpx;
   background-repeat: no-repeat;
@@ -354,7 +361,7 @@ export default {
 .right_arrow {
   width: 23rpx;
   height: 23rpx;
-  background-image: url("../../static/images/right-white-arrow.png");
+  background-image: url('../../static/images/right-white-arrow.png');
   background-repeat: no-repeat;
   background-size: cover;
   float: right;
@@ -397,7 +404,7 @@ export default {
 .min-refush {
   width: 100%;
   height: 490rpx;
-  background-image: url("/static/images/index/back.png");
+  background-image: url('/static/images/index/back.png');
   background-position: top center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -412,11 +419,11 @@ export default {
   height: 100vh;
   overflow: hidden;
 }
-.toasta{
-    width: 100%;
-    height: 20rpx;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.toasta {
+  width: 100%;
+  height: 20rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
