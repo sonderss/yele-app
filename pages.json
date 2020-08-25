@@ -930,6 +930,7 @@
     {
       "path": "pages/order-list/index",
       "style": {
+        "enablePullDownRefresh": true,
         "app-plus": {
           "titleNView": {
             "titleText": "订单列表",

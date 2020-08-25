@@ -245,5 +245,7 @@ export default {
   // 提现  5f2d17be7ff89
   getTxian: data => minRequest.get('/5f2d17be7ff89', data),
   // 提现申请 5f2d17e1695b5
-  tixianshenqing: data => minRequest.post('/5f2d17e1695b5', data)
+  tixianshenqing: data => minRequest.post('/5f2d17e1695b5', data),
+  //  获取座位分布图 5f3b9b2999739
+  getSeatList: data => minRequest.get('/5f3b9b2999739', data)
 }

@@ -153,7 +153,7 @@
       </view>
       <view class="min-border-bottom m-lr-30"></view>
       <!-- 可选择规格项 -->
-      <view class="sku-item" style="height:300rpx;padding-top:10rpx">
+      <view :class=" skuObj.sku.length <=3 ? 'sku-item-num' : 'sku-item'">
         <view class="f26">规格</view>
         <view class="item-view">
           <view
@@ -166,7 +166,7 @@
       </view>
       <view class="min-border-bottom m-lr-30"></view>
       <!-- 数量 -->
-      <view class="sku-item sku-item-num" style="padding-top:10rpx">
+      <view class="sku-item" style="padding-top:10rpx">
         <view class="f26">数量</view>
         <view class="m-tb-30">
           <min-stepper :isAnimation="false" v-model="skuObj.step"></min-stepper>
@@ -1041,9 +1041,42 @@ uni-page-body {
       }
     }
   }
-  // .sku-item-num{
-  //   height: 200rpx;
-  // }
+  .sku-item-num {
+    margin: 0 30rpx;
+    padding: 30rpx 0;
+    padding-bottom: 10rpx;
+    height: 160rpx;
+    .item-view {
+      margin-top: 20rpx;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+
+      .item {
+        padding: 0 10rpx;
+        word-wrap: none;
+        height: 58rpx;
+        border: 1px solid rgba(51, 51, 51, 1);
+        border-radius: 10rpx;
+        margin-right: 20rpx;
+        margin-bottom: 20rpx;
+        text-align: center;
+        line-height: 58rpx;
+      }
+
+      .item-active {
+        padding: 0 10rpx;
+        word-wrap: none;
+        height: 58rpx;
+        border: 1px solid #fe432a;
+        border-radius: 10rpx;
+        margin-right: 20rpx;
+        margin-bottom: 20rpx;
+        text-align: center;
+        line-height: 58rpx;
+      }
+    }
+  }
   .btn-sku {
     width: 100%;
     height: 98rpx;

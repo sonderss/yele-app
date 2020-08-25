@@ -2,14 +2,16 @@
   <view class="index" @touchstart="start" @touchmove="move" @touchend="end">
     <scroll-view
       scroll-y
-      :style="{transition: top === 0 ? 'transform 300ms':'',transform: 'translateY('+ top + 'rpx' +')'}"
+      :style="{
+        transition: top === 0 ? 'transform 300ms' : '',
+        transform: 'translateY(' + top + 'rpx' + ')'
+      }"
     >
       <view class="m-top-20 toasta f26" style="color:#fff;" v-if="top && flag">
-        <text
-          class="iconfont icon-changyongicon_huaban"
-          style="color:#fff;font-weight:blod;f26"
-        >&#xe616;</text>
-        {{top >= 300 ? '松开':'下拉'}}查看座位分布图
+        <text class="iconfont icon-changyongicon_huaban" style="color:#fff;font-weight:blod;f26"
+          >&#xe616;</text
+        >
+        {{ top >= 300 ? '松开' : '下拉' }}查看座位分布图
       </view>
       <view class="back-img-box">
         <view style="height: 178rpx;"></view>
@@ -18,7 +20,9 @@
             <min-avatar size="md" :url="userInfo.head_img"></min-avatar>
             <view class="m-left-20">
               <view class="f30" style="font-weight:bold">{{ userInfo.username }}</view>
-              <view class="f24 m-top-20">{{ userInfo.store_name }} | {{ userInfo.position_name }}</view>
+              <view class="f24 m-top-20"
+                >{{ userInfo.store_name }} | {{ userInfo.position_name }}</view
+              >
             </view>
           </view>
           <view class="min-flex min-flex-main-center" @click="navigateTo('changeStore')">
@@ -64,7 +68,7 @@ export default {
   name: 'index',
   components: {
     MinAvatar,
-    YeleGrid,
+    YeleGrid
   },
   mounted() {
     this.getPay(true)
@@ -136,86 +140,86 @@ export default {
           name: 'order-record',
           img: '/static/images/index/order.png',
           text: '下单记录',
-          root: 'orderRecord',
+          root: 'orderRecord'
         },
         {
           url: '../appointment-record/index.vue',
           name: 'appointment-record',
           img: '/static/images/index/station.png',
           text: '订台记录',
-          root: 'bookRecord',
+          root: 'bookRecord'
         },
         {
           url: '../presentation-records/index.vue',
           name: 'presentation-records',
           img: '/static/images/index/gift.png',
           text: '赠送记录',
-          root: 'presentationRecord',
+          root: 'presentationRecord'
         },
         {
           name: 'wine-record',
           url: '../wine-record/index.vue',
           img: '/static/images/index/bar2.png',
           text: '存酒记录',
-          root: 'saveWineRecord',
+          root: 'saveWineRecord'
         },
         {
           name: 'fetch-record',
           url: '../fetch-record/index.vue',
           img: '/static/images/index/take.png',
           text: '取酒记录',
-          root: 'fetchWineRecord',
+          root: 'fetchWineRecord'
         },
         {
           name: 'forfeiture-record',
           url: '../forfeiture-record/index.vue',
           img: '/static/images/index/confiscated.png',
           text: '充公记录',
-          root: 'confiscateRecord',
+          root: 'confiscateRecord'
         },
         {
           img: '/static/images/index/seat.png',
           text: '转台记录',
           name: 'turntable-record',
-          root: 'transferRecord',
-        },
+          root: 'transferRecord'
+        }
       ],
       grid3: [
         {
           name: 'my-downline',
           img: '/static/images/index/my_d.png',
           text: '我的下线',
-          root: 'myOffline',
+          root: 'myOffline'
         },
         {
           img: '/static/images/index/chart.png',
           name: 'statistics',
           url: 'statistics',
           text: '数据统计',
-          root: 'statistics',
+          root: 'statistics'
         },
         {
           name: 'my-income',
           img: '/static/images/index/wallet.png',
           text: '我的收入',
           root: 'finance',
-          url: 'my-income',
+          url: 'my-income'
         },
         {
           url: '../mine-info/index',
           name: 'mine-info',
           img: '/static/images/index/people.png',
           text: '个人资料',
-          root: 'userInfo',
-        },
-      ],
+          root: 'userInfo'
+        }
+      ]
     }
   },
   computed: {
     userInfo() {
       // 用户信息
       return this.$store.state.user.userInfo
-    },
+    }
   },
 
   methods: {
@@ -225,7 +229,7 @@ export default {
       this.$minRouter.push({
         name: 'switch-stores',
         type: 'navigateTo',
-        path: '/pages/switch-stores/index',
+        path: '/pages/switch-stores/index'
       })
     },
     refresh() {
@@ -237,7 +241,7 @@ export default {
       let result = this.$getRoot(root)
       if (!result) return this.$showToast('抱歉，暂无权限')
       this.$minRouter.push({
-        name: 'confiscated-wine',
+        name: 'confiscated-wine'
       })
     },
     toPlatform(root) {
@@ -246,7 +250,40 @@ export default {
       this.$minRouter.push({
         name: 'platform-admin',
         type: 'navigateTo',
-        path: '/pages/platform-admin/index',
+        path: '/pages/platform-admin/index'
+      })
+    },
+    // 获取数据
+    getData() {
+      this.$minApi
+        .GetTableList({ date: this.$minCommon.formatDate(new Date(), 'yyyy-MM-dd') })
+        .then(res => {
+          this.getSeatData(res)
+        })
+        // eslint-disable-next-line handle-callback-err
+        .catch(err => {
+          console.log('桌台列表获取失败')
+        })
+    },
+    getSeatData(list) {
+      let arr = []
+      let brr = []
+      this.$minApi.getSeatList({ isLoading: true }).then(res => {
+        list.desks.map(item => {
+          item.desk_lists.map(item2 => {
+            arr.push({ id: item2.id, desk_status: item2.desk_status })
+          })
+        })
+        JSON.parse(res.desk_coordinate).map(item => {
+          arr.map(item2 => {
+            if (item.id === item2.id) {
+              item.status = item2.desk_status
+              return brr.push(item)
+            }
+          })
+        })
+        res.desk_coordinate = JSON.stringify(brr)
+        this.$store.dispatch('status/setSeatList', res)
       })
     },
     start(e) {
@@ -267,6 +304,7 @@ export default {
     },
     end(e) {
       if (this.top >= 300) {
+        this.getData()
         this.$minRouter.push({ name: 'seat', params: { url: 'index' } })
       }
       return (this.top = 0)
@@ -275,8 +313,8 @@ export default {
       this.$minApi.getPayMethods({ isLoading: true }).then(res => {
         this.$store.dispatch('status/setPayMethods', res.list)
       })
-    },
-  },
+    }
+  }
 }
 </script>
 

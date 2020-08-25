@@ -20,14 +20,14 @@
             </view>
             <text class="f26 abc" v-if="isSku" style="color:#666666">{{desc}}</text>
           </view>
-          <view class="right-view-bottom">
-            <view class="right-view-bottom-desc" @click.stop="ads">
+          <view class="right-view-bottom" @click.stop="ads">
+            <view class="right-view-bottom-desc">
               <text v-if="price != 'null'" class="f20 t">
                 ￥
                 <text style="color:#FF0000;font-size:30">{{price}}</text>
               </text>
             </view>
-            <view class="steper" @click.stop="ads">
+            <view class="steper">
               <min-stepper :isFlag="isFlag" v-if="isFlag" v-model="count" @change="changeChioce"></min-stepper>
               <view
                 v-else
@@ -183,7 +183,6 @@ export default {
 
     .content-view {
       flex: 1;
-
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -191,8 +190,8 @@ export default {
       align-items: space-between;
       color: #333333;
       .right-view-title {
+        width: 300rpx;
         .abc {
-          width: 300rpx;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -200,7 +199,6 @@ export default {
         }
         .t {
           font-weight: bold;
-          width: 300rpx;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -220,12 +218,11 @@ export default {
       .right-view-bottom {
         height: 48rpx;
         display: flex;
-        width: 300rpx;
         // position: relative;
         justify-content: space-between;
         .right-view-bottom-desc {
           display: flex;
-          width: 200rpx;
+          // width: 200rpx;
           .t {
             font-weight: bold;
             color: #f80409;
