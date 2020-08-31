@@ -152,11 +152,6 @@ Vue.prototype.$showToast = (title, icon = 'none', duration = 2000) => {
   })
 }
 
-Vue.prototype.SetDevDefault = (node, property, value) => {
-  console.log('Vue.SetDevDefault > ', { component: node.$options.name, property, value });
-  Vue.set(node, property, value);
-};
-
 const app = new Vue({
   ...App,
   minRouter,
