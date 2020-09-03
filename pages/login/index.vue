@@ -5,15 +5,15 @@
     <view class="m-lr-30 p-lr-30">
         <view class="inp p-left-30 min-flex min-flex-main-start">
             <image class="icon" src="/static/images/login/user.png" />
-            <input type="number" v-model="mobile" placeholder="请输入手机号码" maxlength="11" />
-            <view class="clear-icon" v-show="mobile" @click="mobile = ''">
-                <image src="/static/images/clear.png" />
+            <input type="number" v-model="mobile" placeholder="请输入手机号码" :focus="isFouce" @focus="cnmd" maxlength="11" @blur="gnm" :adjust-position="false" />
+            <view :class="isFouce && mobile ? 'clear-icon-bg  clear-icon' : 'clear-icon'" @click="aa">
+                <!-- <image src="/static/images/clear.png" v-if="isFouce && mobile" /> -->
             </view>
         </view>
         <view class="inp p-left-30 min-flex min-flex-main-between">
             <view class="min-flex min-flex-main-start">
                 <image class="icon" src="/static/images/login/lock.png" />
-                <input type="number" maxlength="6" v-model="code" placeholder="请输入验证码" />
+                <input type="number" maxlength="6" v-model="code" placeholder="请输入验证码" :adjust-position="false" />
             </view>
             <view class="code" @click="getVerificationCode" v-if="countDown === 0">获取验证码</view>
             <view v-else class="white">{{ countDown }} s</view>
@@ -38,7 +38,10 @@ export default {
             countDown: 0,
             code: '',
             mobile: '',
-            flag: true
+            flag: true,
+            isFouce: false,
+            test: false,
+            ndsl: false
         }
     },
     onLoad() {
@@ -56,6 +59,17 @@ export default {
         }
     },
     methods: {
+        gnm() {
+            this.isFouce = false
+
+        },
+        cnmd() {
+            this.isFouce = true
+        },
+        aa() {
+            this.isFouce = false
+            this.mobile = ''
+        },
         getVerificationCode() {
             // 获取验证码
             if (!this.$minCommon.checkMobile(this.mobile)) {
@@ -73,37 +87,43 @@ export default {
             })
         },
         login() {
-            if (!this.flag) return
-            this.flag = false
-            if (!this.$minCommon.checkMobile(this.mobile) || this.code.length !== 6)
-                return this.$showToast('请正确填写信息')
-            this.$minApi
-                .login({
-                    mobile: this.mobile,
-                    code: this.code
-                })
-                .then(res => {
-                    this.$showToast('登录成功')
-                    uni.setStorage({
-                        key: 'userInfo',
-                        data: JSON.stringify({
-                            phone: this.mobile
-                        }),
-                        success: function () {
-                            console.log('success')
-                        }
+            if (!this.$minCommon.checkMobile(this.mobile) || this.code.length !== 6) return this.$showToast('请正确填写信息')
+            console.log(this.flag)
+
+            if (this.flag) {
+                this.flag = false
+                this.$minApi
+                    .login({
+                        mobile: this.mobile,
+                        code: this.code
                     })
-                    setTimeout(() => {
-                        this.$store.dispatch('user/setUserInfo', res)
-                        uni.redirectTo({
-                            url: '../index/index'
+                    .then(res => {
+                        this.$showToast('登录成功')
+                        uni.setStorage({
+                            key: 'userInfo',
+                            data: JSON.stringify({
+                                phone: this.mobile
+                            }),
+                            success: function () {
+                                console.log('success')
+                            }
                         })
-                    }, 1000)
-                })
-                .catch(err => {
-                    console.log(err)
+                        setTimeout(() => {
+                            this.$store.dispatch('user/setUserInfo', res)
+                            uni.redirectTo({
+                                url: '../index/index'
+                            })
+                        }, 1000)
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        this.flag = true
+                    })
+                setTimeout(() => {
                     this.flag = true
-                })
+                }, 3000)
+            }
+
         }
     }
 }
@@ -144,6 +164,13 @@ export default {
             position: absolute;
             right: 0rpx;
             top: -4rpx;
+            background-repeat: no-repeat;
+            background-size: 50%;
+            background-position: center;
+        }
+
+        .clear-icon-bg {
+            background-image: url('/static/images/clear.png');
         }
     }
 

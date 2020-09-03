@@ -86,7 +86,7 @@
         </view>
     </min-popup>
     <!-- 选择规格 -->
-    <min-popup :show="isSelSku" @close="closeSelectedSkuPop" heightSize="830">
+    <min-popup :show="isSelSku" @close="closeSelectedSkuPop" :heightSize="skuObj.sku.length < 3 ? '700' : '830'">
         <!--  -->
         <view class="skuPop">
             <view class="skuTop">
@@ -107,7 +107,7 @@
             </view>
             <view class="min-border-bottom m-lr-30"></view>
             <!-- 可选择规格项 -->
-            <view :class=" skuObj.sku.length <=3 ? 'sku-item-num' : 'sku-item'">
+            <view :class="skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'">
                 <view class="f26">规格</view>
                 <view class="item-view">
                     <view :class="chioceIndex ===index ?   'item-active' : 'item' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
@@ -434,6 +434,7 @@ export default {
                 this.$showToast("请选择商品");
                 return;
             }
+            console.log('this.selArr',this.selArr)
             this.selArr.map(item => {
                 const obj = {};
                 if (item.index) {
@@ -456,7 +457,7 @@ export default {
                 total_commission
             }).then(res => {
                 if (res.length === 0) {
-                    this.$showToast("提交成功！");
+                    this.$showToast("提交成功");
 
                     this.selItemArr = [];
                     this.selArr = [];
@@ -468,6 +469,12 @@ export default {
                             }
                         });
                     });
+                    
+                    setTimeout(() => {
+                        uni.redirectTo({
+                            url: '../index/index'
+                        });
+                    },2000);
                 }
             });
         }

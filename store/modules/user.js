@@ -10,7 +10,8 @@ export default {
       state.userInfo = data
     },
     setUserInfoAuth: (state,data) => {
-      state.userInfo.apiAuth = data
+      // state.userInfo.apiAuth = data
+      console.log("state.userInfo.apiAuth",state.userInfo.apiAuth)
     },
     setUserAccss: (state,data) => {
       state.userInfo.access = data

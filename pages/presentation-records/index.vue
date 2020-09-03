@@ -3,7 +3,7 @@
     <view class="card p-lr-20 m-bottom-20" v-for="(item,index) in list" :key="index">
       <view class="top p-tb-30 min-border-bottom">
         <view class="ordern">{{item.desk_name}}</view>
-        <view class="status end">{{item.client_name}}</view>
+        <view class="status confirmed">顾客：{{item.client_name ? item.client_name : '暂无数据'}}</view>
       </view>
       <view v-if="item.product.length!==0" :class="item.isMore ? 'main1 p-top-20 ': 'main p-top-20 ' ">
         <view class="item" v-for="(item2,index2) in item.product" :key="index2">
@@ -14,9 +14,9 @@
       <view v-if="item.product.length > 3 " class="over-view min-border-bottom p-tb-20" @click="showMore(index)">
           {{item.isMore ? '展开更多' : '收起'}}<text :class="item.isMore ? ' f22 botm1' : ' f22 botm'"></text>
       </view>
-      <view class="timer ">
-        <text>{{item.create_time}}</text>
-        <text class="bfont">合计：￥{{item.order_price}}</text>
+      <view class="timer  min-border-top m-top-20">
+        <text class="f24">{{item.create_time}}</text>
+        <text class="bfont f28">合计：￥{{item.order_price}}</text>
       </view>
     </view>
   <min-404 v-if="list.length === 0"></min-404>
@@ -158,7 +158,7 @@ export default {
     .status{
       font-size: 26rpx;
       &.confirmed{
-        color: #FF0101
+        color: #FF0202
       }
       &.end{
         color: #39BA01
@@ -179,7 +179,7 @@ export default {
       display: flex;
       justify-content: space-between;
       .bfont{
-        font-weight: bold
+        font-weight: bold;
       }
     }
   }

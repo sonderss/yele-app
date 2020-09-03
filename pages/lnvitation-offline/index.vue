@@ -4,7 +4,7 @@
     <min-cell class="m-tb-20" :card="false">
       <view class="title">可邀请的下线</view>
 
-     <view class="items" :key="i"  v-for="(n,i) in getValue">
+     <view :class="i === getValue.length-1?  'items':'items min-border-bottom' " :key="i"  v-for="(n,i) in getValue">
          <min-radio active='/static/images/active_.png' size="50" :label="i" v-model="isFlag" />
          <view class="test">
                 <min-describe
@@ -13,6 +13,7 @@
                   :leftTxt="n.sales_name"
                   :rightTxtT="n.department_name"
                   :rightTxtB="n.position_name"
+                  rightTxtBSize="15rpx"
                   :leftIcon="true"
                   :leftTxtTwo="true"
                    @chincesku="test(i)"
@@ -109,7 +110,7 @@ export default {
       justify-content: space-between;
       align-items: center;
       .test{
-      width: 89%;
+      width: 100%;
       }
 }
 .btn {

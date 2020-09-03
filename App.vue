@@ -6,7 +6,7 @@ export default {
         console.log('App Launch')
         // #ifdef APP-PLUS
         if (!plus.runtime.isAgreePrivacy()) {
-            alert('laji')
+            // alert('laji')
         }
         // #endif
         // #ifdef APP-PLUS
@@ -37,7 +37,8 @@ export default {
                             title: '更新提示',
                             showCancel: true,
                             content: res.data.data.upgrade_text ?
-                                res.data.data.upgrade_text : '版本更新：修复Bug',
+                                res.data.data.upgrade_text :
+                                '版本更新：修复Bug',
                             success: c => {
                                 if (c.confirm) {
                                     // 去下载新版本app

@@ -8,11 +8,13 @@ export default {
     dev: false,
     payMethods: [],
     isGetUser: false,
-    bookTime: [],
+    bookTime: false, // booktime
     vipUser: false,
     vipUrl: '',
     seatList: {},
-    myDate: ''
+    myDate: '',
+    isReloadUserInfo:false,
+    isNeed:false
   },
   mutations: {
     setStatus: (state, data) => {
@@ -45,6 +47,14 @@ export default {
     setMyDate: (state, data) => {
       state.myDate = data
       console.log(' state.myDate', data)
+    },
+    setisReloadUserInfo: (state, data) => {
+      state.isReloadUserInfo = data
+      console.log("改变头像",  state.isReloadUserInfo)
+    },
+    setisNeed: (state, data) => {
+      state.isNeed = data
+      console.log("isNeed",  state.isNeed)
     }
   },
   actions: {
@@ -77,6 +87,12 @@ export default {
     },
     setMyDate({ commit }, data) {
       commit('setMyDate', data)
+    },
+    setisReloadUserInfo({ commit }, data) {
+      commit('setisReloadUserInfo', data)
+    },
+    setisNeed({ commit },data){
+      commit('setisNeed', data)
     }
   }
 }

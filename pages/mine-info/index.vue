@@ -21,9 +21,9 @@
             </min-cell>
             <view class="m-top-20"></view>
             <min-cell :card="false">
-                <min-cell-item title="实名认证" :tail="userInfo.is_certify === 1 ? '已认证':'未认证'" :border="true" arrow tailType="red" @eventParent="toFace"></min-cell-item>
-                <min-cell-item title="提现银行卡" :isWidth="false" :border="true" arrow :tail="userInfo.bank_card_name ? userInfo.bank_card_name+`(${lastString})` : '未绑定'" @eventParent="payMethods(userInfo.bank_card_name)"></min-cell-item>
-                <min-cell-item title="提现密码" :border="false" arrow :tail="userInfo.is_cash_pwd ? '已设置':'未设置'" @eventParent="toSetPsd"></min-cell-item>
+                <min-cell-item title="实名认证" :tailcolor="userInfo.is_certify === 1 ? false: true " :tail="userInfo.is_certify === 1 ? '已认证':'未认证'" :border="true" arrow tailType="red" @eventParent="toFace"></min-cell-item>
+                <min-cell-item title="提现银行卡" :tailcolor="userInfo.bank_card_name ?  false : true " tailType="red" :isWidth="false" :border="true" arrow :tail="userInfo.bank_card_name ? userInfo.bank_card_name+`(${lastString})` : '未绑定'" @eventParent="payMethods(userInfo.bank_card_name)"></min-cell-item>
+                <min-cell-item title="提现密码" :tailcolor="userInfo.is_cash_pwd ? false  : true" tailType="red" :border="false" arrow :tail="userInfo.is_cash_pwd ? '已设置':'未设置'" @eventParent="toSetPsd"></min-cell-item>
             </min-cell>
         </view>
         <view class="cell-wrap p-lr-30">
@@ -36,6 +36,7 @@
             <min-btn type="white" @click="quit">退出登录</min-btn>
         </view>
     </scroll-view>
+    <view style="height:200rpx"></view>
     <min-modal ref="show"></min-modal>
 </view>
 </template>
@@ -166,6 +167,7 @@ export default {
         this.$minApi.getUserInfo().then((res) => {
             console.log(res);
             this.userInfo = res;
+            this.$store.dispatch('user/setUserInfos', res)
             this.userInfo.birthday = this.userInfo.birthday
                 .split("")
                 .splice(0, 11)
@@ -205,6 +207,7 @@ export default {
                             this.userInfo.head_img = JSON.parse(
                                 uploadFileRes.data
                             ).data[0].http_dir;
+                            this.$store.dispatch('status/setisReloadUserInfo', true)
                             this.setUserInfo();
                         },
                     });

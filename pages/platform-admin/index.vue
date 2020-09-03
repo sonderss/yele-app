@@ -166,7 +166,7 @@ export default {
     // })
     // #endif
     // this.getData(this.date)
-    if (this.$store.state.status.bookTime.length > 0) {
+    if (this.$store.state.status.bookTime) {
       console.log(this.$store.state.status.bookTime)
       return (this.datas = this.$store.state.status.bookTime)
     }

@@ -24,7 +24,7 @@
     </view>
     <min-goods-submit v-if="type != 1 && type != 2 " icon="../../static/images/cart.png" :goodsCount="countNums" :totalAmount="totalAmountE " :totalLabel="totalLabel" buttonText="去下单" @leftClick="leftClick" @submit="submit"></min-goods-submit>
     <!-- 选择规格 -->
-    <min-popup :show="isSelSku" @close="closeSelectedSkuPop">
+    <min-popup :show="isSelSku" @close="closeSelectedSkuPop" :heightSize="skuObj.sku.length < 3 ? '700' : '830' ">
         <view class="skuPop">
             <view class="skuTop">
                 <view class="leftView">
@@ -45,7 +45,7 @@
             </view>
             <view class="min-border-bottom m-lr-30"></view>
             <!-- 可选择规格项 -->
-            <view :class=" skuObj.sku.length <=3 ? 'sku-item-num' : 'sku-item'">
+            <view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'">
                 <view class="f26">规格</view>
                 <view class="item-view">
                     <view :class="chioceIndex ===index ?   'item-active' : 'item' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
@@ -53,10 +53,10 @@
             </view>
             <view class="min-border-bottom m-lr-30 m-tb-20"></view>
             <!-- 数量 -->
-            <view class="sku-item">
+            <view class="sku-item" style="height:auto">
                 <view class="f26">数量</view>
                 <view class="m-tb-30">
-                    <min-stepper :isAnimation="false" :min="1" v-model="skuObj.step"></min-stepper>
+                    <min-stepper v-model="list.step" :isAnimation="false" :min="1" @change="goodsChange($event,skuObj)"></min-stepper>
                 </view>
             </view>
             <view class="btn-sku" @click="skuChioce">确定</view>
@@ -79,7 +79,7 @@
             <view class="main-sel-view p-lr-30 p-tb-30">
                 <view class="item" v-for="(item2,n) in selArr" :key="n">
                     <!-- <view v-if="!item2.test"> -->
-                    <image :src="errImg ? '/static/images/goods.png': item2.product_img" mode @error="imgerr" />
+                    <image :src="errImg ? '/static/images/goods.png': item2.product_img" @error="imgerr" />
                     <view class="content-view">
                         <view class="right-view-title">
                             <text class="f28 t" style="display:block">{{item2.product_name}}</text>
@@ -283,7 +283,7 @@ export default {
         selSku(index, index2) {
             this.isSelSku = true
             this.skuObj = this.list
-            this.skuObj.step = 1
+            // this.skuObj.step = 1
         },
         /**  关闭选择规格弹出层 */
         closeSelectedSkuPop() {
@@ -698,6 +698,7 @@ export default {
             word-wrap: none;
             height: 58rpx;
             border: 1px solid #fe432a;
+            color: #fe432a;
             border-radius: 10rpx;
             margin-right: 20rpx;
             margin-bottom: 20rpx;

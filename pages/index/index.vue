@@ -14,7 +14,7 @@
                 <view class="min-flex min-flex-main-start">
                     <min-avatar size="md" :url="userInfo.head_img"></min-avatar>
                     <view class="m-left-20">
-                        <view class="f30" style="font-weight:bold">{{ userInfo.username }}</view>
+                        <view class="f30" style="font-weight:bold">{{ userInfo.user_name }}</view>
                         <view class="f24 m-top-20">{{ userInfo.store_name }} | {{ userInfo.position_name }}</view>
                     </view>
                 </view>
@@ -206,6 +206,29 @@ export default {
                     root: 'userInfo'
                 }
             ]
+        }
+    },
+    onShow() {
+        // console.log(this.$parseURL())
+        // if(this.$parseURL().store_name){
+        //     let obj =  this.$store.state.user.userInfo
+        //     obj.store_id = this.$parseURL().store_id
+        //     obj.store_name =  this.$parseURL().store_name
+        //     this.$store.dispatch('user/setUserInfo', obj)
+        //     // this.$minApi.getUserInfo({isLoading:true}).then(res => {
+        //     //             console.log(res)
+        //     //                                    this.$store.dispatch('user/setUserInfo', res)
+        //     // }) 
+        // }
+        if (this.$store.state.status.isReloadUserInfo) {
+            this.$minApi.getUserInfo({
+                isLoading: true
+            }).then(res => {
+                console.log("this.$store.state.user.userInfo.apiAuth", this.$store.state.user.userInfo.apiAuth)
+                res.apiAuth = this.$store.state.user.userInfo.apiAuth
+                this.$store.dispatch('user/setUserInfo', res)
+                this.$store.dispatch('status/setisReloadUserInfo', false)
+            })
         }
     },
     computed: {

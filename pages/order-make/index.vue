@@ -45,6 +45,7 @@
     <view class="btn">
         <min-btn :long="true" @click="submit" :opacity='false'>提交</min-btn>
     </view>
+   
 </view>
 </template>
 
@@ -139,7 +140,10 @@ export default {
                 this.storeInfo = res.storeInfo
                 this.bookingDate = res.bookingDate
                 this.storeSetting = res.storeSetting
-                this.getDate(this.storeSetting.store_business_time.start, this.storeSetting.store_business_time.end)
+                this.$nextTick(() => {
+                     this.getDate(this.storeSetting.store_business_time.start, this.storeSetting.store_business_time.end)
+                })
+               
             })
     },
     methods: {
@@ -159,15 +163,14 @@ export default {
                     const a = this.$minCommon.formatDate(eq, 'hh:mm')
                     arr1.push(a)
                 }
-                this.date = arr1
-                return
+                return  this.date = arr1
             }
-            var startime = '2020/3/18' + ' ' + start
-            var endTie = '2020/3/19' + ' ' + end
+            let startime = '2020/3/18' + ' ' + start
+            let endTie = '2020/3/19' + ' ' + end
             const endTiemeDate = new Date(endTie)
             const startimeDate = new Date(startime)
-            var night = new Date('2020/3/18 24:00:00')
-            var tom = new Date('2020/3/19 00:00:00')
+            let night = new Date('2020/3/18 23:59:59')
+            let tom = new Date('2020/3/19 00:00:00')
             const nightLine = night.getTime()
             const tommorw = tom.getTime()
             // 开始的时间戳

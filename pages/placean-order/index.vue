@@ -23,7 +23,7 @@
     </scroll-view>
     <!-- 底部按钮 -->
     <view class="bottom-view" v-if="mainArray.length !== 0">
-        <min-goods-submit icon="/static/images/cart.png" @leftClick="selectedEvent" :totalAmount="totalAmountE" :totalLabel="totalLabel" :goodsCount="countNums" buttonText="去下单" :buttonLabel="buttonLabel" @submit="submit" leftV="90" topV="20"></min-goods-submit>
+        <min-goods-submit icon="/static/images/cart.png" bottomcolot="#666" @leftClick="selectedEvent" :totalAmount="totalAmountE" :totalLabel="totalLabel" :goodsCount="countNums" buttonText="去下单" :buttonLabel="buttonLabel" @submit="submit" leftV="90" topV="20"></min-goods-submit>
     </view>
     <!-- 已选商品 -->
     <min-popup :show="selected" @close="closeSelectedPop">
@@ -73,7 +73,7 @@
     </min-popup>
 
     <!-- 选择规格 -->
-    <min-popup :show="isSelSku" @close="closeSelectedSkuPop" heightSize="830">
+    <min-popup :show="isSelSku" @close="closeSelectedSkuPop" :heightSize="skuObj.sku.length < 3 ? '700' : '830' ">
         <!--  -->
 
         <view class="skuTop">
@@ -94,7 +94,7 @@
         </view>
         <view class="min-border-bottom m-lr-30"></view>
         <!-- 可选择规格项 -->
-        <view :class=" skuObj.sku.length <=3 ? 'sku-item-num' : 'sku-item'">
+        <view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'">
             <view class="f26">规格</view>
             <view class="item-view">
                 <view :class="chioceIndex ===index ?   'item-active t' : 'item t' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
@@ -151,6 +151,7 @@ export default {
                 index2: ''
             },
             load: '',
+            colors: '#666'
         }
     },
     onLoad() {

@@ -3,32 +3,32 @@ import store from '../store/index'
 
 const minRequest = new MinRequest()
 
-// const root = process.env.VUE_APP_BASE_URL
-// console.log(root)
-// // 设置默认配置
-// minRequest.setConfig(config => {
-//   config.baseURL = root
-//   return config
-// })
-let deve = Boolean
-if( process.env.NODE_ENV === 'development'){
-  deve = true
-  store.dispatch('status/setDev',true)
-}else{
-  deve = false
-  store.dispatch('status/setDev',false)
-}
+const root = process.env.VUE_APP_BASE_URL
+console.log(root)
 // 设置默认配置
-minRequest.setConfig((config) => {
-  if(deve){
-     config.baseURL = 'http://api.app-store.dev.yeleonline.com/api'
-
-  }else{
-    // 'https://api.app-store.test.yeleonline.com'
-     config.baseURL = 'http://api.app-store.dev.yeleonline.com/api'
-  }
+minRequest.setConfig(config => {
+  config.baseURL = root
   return config
 })
+// let deve = Boolean
+// if( process.env.NODE_ENV === 'development'){
+//   deve = true
+//   store.dispatch('status/setDev',true)
+// }else{
+//   deve = false
+//   store.dispatch('status/setDev',false)
+// }
+// // 设置默认配置
+// minRequest.setConfig((config) => {
+//   if(deve){
+//      config.baseURL = 'http://api.app-store.dev.yeleonline.com/api'
+
+//   }else{
+//     // 'https://api.app-store.test.yeleonline.com'
+//      config.baseURL = 'http://api.app-store.dev.yeleonline.com/api'
+//   }
+//   return config
+// })
 
 // 请求拦截器
 minRequest.interceptors.request(request => {
@@ -41,6 +41,11 @@ minRequest.interceptors.request(request => {
 // 响应拦截器
 minRequest.interceptors.response(response => {
   const { code, data, msg } = response.data
+  // 是否签约
+  if (code === 1300000) {
+    store.dispatch('status/setvipUser', true)
+    return data
+  }
   // 统一处理响应请求，后续完善
   if (code !== 1) {
     uni.showToast({
@@ -60,10 +65,6 @@ minRequest.interceptors.response(response => {
       uni.reLaunch({
         url: '/pages/login/index'
       })
-    }
-    // 是否签约
-    if (code === 1300000) {
-      store.dispatch('status/setvipUser', true)
     }
     return Promise.reject(data)
   }

@@ -13,7 +13,7 @@
         :label="item.address"
         :border="index === storeList.length -1 ? false : true"
         arrow
-        @eventParent="changestore(item.store_id)"
+        @eventParent="changestore(item)"
       ></min-cell-item>
     </min-cell>
     <view class="nodata-wrap" v-if="storeList.length === 0">
@@ -58,18 +58,20 @@ export default {
         path: '/pages/switch-stores/index'
       })
     },
-    changestore(id){
+    changestore(item){
         this.$minApi.changeStore({
-          store_id:id
+          store_id:item.store_id
         }).then(res=>{
           console.log(res)
           this.$showToast('切换成功')
            this.$store.dispatch('user/setUserInfoAuth', res.apiAuth)
-          setTimeout(() => {
-              this.$minRouter.push({
-                name:'index'
-              })
-          },2000)
+           this.$store.dispatch('status/setisReloadUserInfo',true)
+             setTimeout(() => {
+                  this.$minRouter.push({
+                    name:'index'
+                  })
+              },2000)
+         
         })
     },
     getStoreList (shuaxin) {

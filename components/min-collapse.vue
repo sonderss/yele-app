@@ -9,14 +9,14 @@
                                                         transform: 'translateY(' + top + 'rpx' + ')'  `${list.length%5 == 0 ? list.length / 5 : Math.floor(list.length/5) + 1}00`-140+'rpx'-->
         </view>
         <view v-if="isArray">
-            <!-- <view class="content" :class="isShow ? 'animation': 'show animation' " :style="{'height':isShow? `${list.length%5 == 0 ? list.length / 5 : Math.floor(list.length/5) + 1}00`-140+'rpx' :'0','padding-bottom':ism +'rpx'}">
+            <!-- <view class="content" :class="isShow ? 'animation': 'show animation' " :style="{'height':isShow? `${list.length%5 == 0 ? list.length / 5 : Math.floor(list.length/5) + 1}00`+'rpx' :'0','padding-bottom':ism +'rpx'}">
                 <text class="m-right-20" @click="chioce(index)" :class="current === index ? 'chioce-date-item-active' : 'chioce-date-item' " v-for="(item,index) in list" :key="index">{{item}}</text>
             </view> -->
-            <view class="content" :class="isShow ? 'animation': 'show animation' " :style="{'height':isShow? (list.length <=5 ? '100rpx' :  `${ ( (Math.floor(list.length / 5) +1 )* 58) + ( (Math.floor(list.length / 5) +1 ) *20)}rpx` )  :'0','margin-bottom':isShow ?  `${list.length <=5 ? '0': '10px'}` :'0'}">
-                <text class="m-right-20" @click="chioce(index)" :class="current === index ? 'chioce-date-item-active' : 'chioce-date-item' " v-for="(item,index) in list" :key="index">{{item}}</text>
+            <view class="content"  v-if="isKua !== 1 || isKua !== '1'" :class="isShow ? 'animation': 'show animation' " :style="{'height':isShow ? (list.length <=5 ? '100rpx' :  `${ ( (Math.floor(list.length / 5) +1 )* 58) + ( (Math.floor(list.length / 5) +1 ) *20)}rpx` )  :'0','margin-bottom': isShow ?  `${list.length <= 5 ? '0' : '10px'}` :'0'}">
+                <text class="m-right-20" @click="chioce(index1)" :class="current === index1 ? 'chioce-date-item-active' : 'chioce-date-item' " v-for="(item1,index1) in list" :key="item1">{{item1}}</text>
             </view>
             <view class="content night" style="margin-bottom:10rpx" v-if="isShow && isKua">次日</view>
-            <view class="content" v-if="isKua === 1 || isKua === '1'" :class="isShow ? 'animation': 'show animation' " :style="{'height':isShow? (nightArr.length <= 5 ? '100rpx' :  `${ ( (Math.floor(nightArr.length / 5) +1 )* 58) + ( (Math.floor(nightArr.length / 5) +1 ) *20) }rpx` )  :'0','margin-bottom':isShow ?  `${nightArr.length <=5 ? '0': '10px'}` :'0'}">
+            <view class="content" v-if="isKua === 1 || isKua === '1'" :class="isShow ? 'animation': 'show animation' " :style="{'height':isShow ? (nightArr.length <= 5 ? '100rpx' :  `${ ( (Math.floor(nightArr.length / 5)  +1 )* 58) + ( (Math.floor(nightArr.length / 5) +1 ) *20) }rpx` )  :'0','margin-bottom':isShow ?  `${nightArr.length <=5 ? '0': '10px'}` :'0'}">
                 <text class="m-right-20 m-bottom-20" @click="chioce1(index)" :class="current1 === index ? 'chioce-date-item-active' : 'chioce-date-item' " v-for="(item,index) in nightArr" :key="index">{{item}}</text>
             </view>
         </view>
@@ -34,6 +34,7 @@ export default {
     props: {
         list: {
             type: [Array, String, Number],
+            default: () => []
         },
         nightArr: {
             type: Array,
@@ -62,6 +63,9 @@ export default {
             type: Boolean,
             default: false,
         },
+    },
+    mounted() {
+        console.log(this.list)
     },
     data() {
         return {

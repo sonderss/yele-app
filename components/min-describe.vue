@@ -6,7 +6,7 @@
       </view>
       <view :class=" leftTxtTwo ? 'txt-view': ''">
         <view class="left-txt" style="color:#333">{{leftTxt}}</view>
-        <view class="left-txt" style="color:#666" v-if="leftTxtTwo">{{leftTxtB}}</view>
+        <view class="left-txt f28" :style="{color:'#666'}" v-if="leftTxtTwo">{{leftTxtB}}</view>
       </view>
     </view>
     <view class="right-view">
@@ -27,7 +27,7 @@
       </view>
       <view class="txt-view1" v-if="leftTxtTwo">
         <view class="left-txt" style="color:#333">{{rightTxtT}}</view>
-        <view class="left-txt" style="color:#666">{{rightTxtB}}</view>
+        <view class="left-txt" :style="{color:'#666',fontSize:rightTxtBSize} ">{{rightTxtB}}</view>
       </view>
     </view>
   </view>
@@ -70,6 +70,10 @@ export default {
     rightTxtB: {
       type: [String, Number],
       default: '',
+    },
+    rightTxtBSize:{
+        type: String,
+        default:'28rpx'
     },
     leftTxtB: {
       type: [String, Number],
