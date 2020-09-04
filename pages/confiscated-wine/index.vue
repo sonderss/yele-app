@@ -60,8 +60,8 @@
                     <view class="content-view">
                         <view class="right-view-title">
                             <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                            <text class="f26 t" style="color:#666666" v-if="item2.sku.length > 1">规格：{{item2.sku[item2.index].sku_full_name}}</text>
-                            <text class="f26 t" style="color:#666666" v-if="item2.sku.length === 1">规格：{{item2.sku[0].sku_full_name}}</text>
+                            <text class="f24 t" style="color:#666666" v-if="item2.sku.length > 1">规格：{{item2.sku[item2.index].sku_full_name}}</text>
+                            <text class="f24 t" style="color:#666666" v-if="item2.sku.length === 1">规格：{{item2.sku[0].sku_full_name}}</text>
                         </view>
                         <view class="right-view-bottom">
                             <view class="right-view-bottom-desc">
@@ -309,7 +309,9 @@ export default {
             if (!this.selNum.includes(a)) {
                 this.selNum.push(a);
                 this.selArr.push(this.mainArray[index].list[index2]);
-            } else {}
+            } else {
+                console.log("aaaaaaaaaaaaaaaaaaaaaa")
+            }
         },
         /** 已选商品提交所需项 */
         // eslint-disable-next-line vue/no-dupe-keys
@@ -371,9 +373,7 @@ export default {
         changeChioce(index, index2) {
             this.addGoods(index, index2);
             const params = {};
-            params.id = this.mainArray[index].list[
-                index2
-            ].sku[0].confiscate_product_id;
+            params.id = this.mainArray[index].list[index2].sku[0].confiscate_product_id;
             params.product_num = this.mainArray[index].list[index2].step + 1;
             this.postItem(params);
         },
@@ -388,14 +388,13 @@ export default {
             }
             this.selArr.map(item => {
                 if (item.id === e.id) {
-                    if (
-                        item.sku[item.index].confiscate_product_id !==
-                        e.sku[e.index].confiscate_product_id
-                    ) {
+                    if (item.sku[item.index].confiscate_product_id !== e.sku[e.index].confiscate_product_id) {
                         this.selArr.push(e);
                     } else if (item.step < e.step) {
                         item.step = e.step;
                     }
+                } else {
+                    this.selArr.push(e);
                 }
             });
         },
@@ -434,7 +433,7 @@ export default {
                 this.$showToast("请选择商品");
                 return;
             }
-            console.log('this.selArr',this.selArr)
+            console.log('this.selArr', this.selArr)
             this.selArr.map(item => {
                 const obj = {};
                 if (item.index) {
@@ -469,12 +468,12 @@ export default {
                             }
                         });
                     });
-                    
+
                     setTimeout(() => {
                         uni.redirectTo({
                             url: '../index/index'
                         });
-                    },2000);
+                    }, 2000);
                 }
             });
         }

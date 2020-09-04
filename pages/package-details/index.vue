@@ -48,13 +48,22 @@
                     <view class="content-view">
                         <view class="right-view-title">
                             <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                            <text class="f26" style="color:#666666" v-if="item2.type === 'product' ">规格：{{item2.sku.sku_full_name}}</text>
+                            <text class="f24" style="color:#666666" v-if="item2.type === 'product' ">规格：{{item2.sku.sku_full_name}}</text>
+                            <text class="f24 t" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'setmeal'">
+                                规格：
+                                <template v-for="desc in item2.combination">
+                                    <template v-for="(desc1) in desc.combination_detail">
+                                        <span :key="desc1.id" class="m-left-10">{{desc1.name}}*{{desc1.quantity}}</span>
+                                    </template>
+                                </template>
+
+                            </text>
                         </view>
                         <view class="right-view-bottom">
                             <view class="right-view-bottom-desc">
-                                <text class="f20 t" v-if="item2.type === 'product'">￥<text style="color:#FF0000;font-size:30">{{item2.sku.sku_price}}</text></text>
-                                <text class="f20 t" v-if="item2.type === 'service'">￥<text style="color:#FF0000;font-size:30">{{item2.price}}</text></text>
-                                <text class="f20 t" v-if="item2.type === 'setmeal'">￥<text style="color:#FF0000;font-size:30">{{item2.price}}</text></text>
+                                <text class="f20 t" v-if="item2.type === 'product'"><text style="color:#FF0000;font-size:30">￥{{item2.sku.sku_price}}</text></text>
+                                <text class="f20 t" v-if="item2.type === 'service'"><text style="color:#FF0000;font-size:30">￥{{item2.price}}</text></text>
+                                <text class="f20 t" v-if="item2.type === 'setmeal'"><text style="color:#FF0000;font-size:30">￥{{item2.price}}</text></text>
 
                             </view>
                             <view class="steper">
@@ -238,6 +247,7 @@ export default {
         // 步进器
         changeChioce(e, id) {
             // this.taocanItem.quantity = e
+            console.log(e)
             console.log(this.product)
             if (this.product.length === 0) return this.$showToast('请先选择套餐组合')
             this.selArr.map((item, index) => {
@@ -441,7 +451,7 @@ export default {
 
         .item {
             display: flex;
-            margin-bottom: 10rpx;
+            margin-bottom: 20rpx;
             height: 140rpx;
 
             &>image {
@@ -463,7 +473,11 @@ export default {
 
                 .right-view-title {
                     .t {
-                        width: 100%
+                        font-weight: bold;
+                        width: 500rpx;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
                 }
 

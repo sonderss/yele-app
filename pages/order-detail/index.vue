@@ -53,6 +53,7 @@
             <view class="item">下单时间：{{$minCommon.formatDate(new Date(list.create_time*1000),'yyyy/MM/dd hh:mm:ss' ) }}</view>
             <view class="item">订单金额：￥{{list.order_total}}</view>
             <view class="item">已付金额：￥{{list.pay_price}}</view>
+
             <view class="item">
                 支付状态：
                 <text :class="list.pay_status === 0 ? 'red'  : 'fcolor' ">{{ list.pay_status === 0 ?'未付清' : '已付清'}}</text>

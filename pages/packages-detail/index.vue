@@ -11,7 +11,7 @@
         <view class="top-view f28 m-top-10 f28">{{list.product_name}}</view>
         <view class="botm-view">
             <view class="f22 m-bottom-20">
-                ￥ <text class="price">{{list.price}}</text>
+                <text class="price">￥{{list.price}}</text>
             </view>
         </view>
     </view>
@@ -168,6 +168,7 @@ export default {
             item2.type = this.list.combination[index].combination_detail[index2].comb_type === 1 ? 'product' : 'service'
             item2.quantity = this.list.combination[index].combination_detail[index2].step
             item2.sku_id = this.list.combination[index].combination_detail[index2].sku_id
+            item2.name = this.list.combination[index].combination_detail[index2].product_name
             item.combination_detail.push(item2)
             this.addGoods(item)
         },
@@ -203,15 +204,16 @@ export default {
         subMit() {
             console.log(this.list)
             let result = this.list.combination.some(item => {
-                if (item.necessary === 1) {
-                    if (item.goodsCount !== item.last_number) {
-                        return this.$showToast('请选择符合要求的份数')
-                    }
-                }
-                if (item.goodsCount > item.last_number) {
+                // if (item.necessary === 1) {
+                if (item.goodsCount !== item.last_number) {
+                    // return this.$showToast('请选择符合要求的份数')
                     return true
                 }
-                return false
+                // }
+                // if (item.goodsCount > item.last_number) {
+                //     return true
+                // }
+                // return false
             })
             if (result) {
                 return this.$showToast('请选择符合要求的份数')

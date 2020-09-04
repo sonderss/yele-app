@@ -1,11 +1,11 @@
 <template>
 <view class="login">
-    <image src="/static/images/login/back.png" class="bg-img" />
+    <!-- <image src="/static/images/login/back.png" class="bg-img" /> -->
     <view style="height: 50rpx;"></view>
-    <view class="m-lr-30 p-lr-30">
+    <view class="m-lr-30 p-lr-30" style="margin-top:466rpx">
         <view class="inp p-left-30 min-flex min-flex-main-start">
             <image class="icon" src="/static/images/login/user.png" />
-            <input type="number" v-model="mobile" placeholder="请输入手机号码" :focus="isFouce" @focus="cnmd" maxlength="11" @blur="gnm" :adjust-position="false" />
+            <input type="number" v-model="mobile" placeholder="请输入手机号码" :focus="isFouce" @focus="cnmd" maxlength="11" @blur="gnm" />
             <view :class="isFouce && mobile ? 'clear-icon-bg  clear-icon' : 'clear-icon'" @click="aa">
                 <!-- <image src="/static/images/clear.png" v-if="isFouce && mobile" /> -->
             </view>
@@ -13,7 +13,7 @@
         <view class="inp p-left-30 min-flex min-flex-main-between">
             <view class="min-flex min-flex-main-start">
                 <image class="icon" src="/static/images/login/lock.png" />
-                <input type="number" maxlength="6" v-model="code" placeholder="请输入验证码" :adjust-position="false" />
+                <input type="number" maxlength="6" v-model="code" placeholder="请输入验证码" />
             </view>
             <view class="code" @click="getVerificationCode" v-if="countDown === 0">获取验证码</view>
             <view v-else class="white">{{ countDown }} s</view>
@@ -38,7 +38,7 @@ export default {
             countDown: 0,
             code: '',
             mobile: '',
-            flag: true,
+            flag: false,
             isFouce: false,
             test: false,
             ndsl: false
@@ -87,42 +87,40 @@ export default {
             })
         },
         login() {
-            if (!this.$minCommon.checkMobile(this.mobile) || this.code.length !== 6) return this.$showToast('请正确填写信息')
-            console.log(this.flag)
 
-            if (this.flag) {
-                this.flag = false
-                this.$minApi
-                    .login({
-                        mobile: this.mobile,
-                        code: this.code
+            if (!this.$minCommon.checkMobile(this.mobile) || this.code.length !== 6) return this.$showToast('请正确填写信息')
+
+            if (this.flag) return
+            this.flag = true
+            this.$minApi
+                .login({
+                    mobile: this.mobile,
+                    code: this.code
+                })
+                .then(res => {
+                    this.$showToast('登录成功')
+                    this.flag = false
+
+                    uni.setStorage({
+                        key: 'userInfo',
+                        data: JSON.stringify({
+                            phone: this.mobile
+                        }),
+                        success: function () {
+                            console.log('success')
+                        }
                     })
-                    .then(res => {
-                        this.$showToast('登录成功')
-                        uni.setStorage({
-                            key: 'userInfo',
-                            data: JSON.stringify({
-                                phone: this.mobile
-                            }),
-                            success: function () {
-                                console.log('success')
-                            }
+                    setTimeout(() => {
+                        this.$store.dispatch('user/setUserInfo', res)
+                        uni.redirectTo({
+                            url: '../index/index'
                         })
-                        setTimeout(() => {
-                            this.$store.dispatch('user/setUserInfo', res)
-                            uni.redirectTo({
-                                url: '../index/index'
-                            })
-                        }, 1000)
-                    })
-                    .catch(err => {
-                        console.log(err)
-                        this.flag = true
-                    })
-                setTimeout(() => {
-                    this.flag = true
-                }, 3000)
-            }
+                    }, 1000)
+                })
+                .catch(err => {
+                    console.log(err)
+                    this.flag = false
+                })
 
         }
     }
@@ -134,6 +132,10 @@ export default {
     background: #030313;
     width: 100vw;
     min-height: 100vh;
+    background-image: url('/static/images/login/back.png');
+    background-position: top;
+    background-size: 100% 466rpx;
+    background-repeat: no-repeat;
 
     .bg-img {
         width: 100%;

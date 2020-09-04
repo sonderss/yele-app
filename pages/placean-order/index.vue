@@ -42,7 +42,16 @@
                 <view class="content-view">
                     <view class="right-view-title">
                         <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                        <text class="f26" style="color:#666666" v-if="item2.type === 'product'">规格：{{item2.sku.sku_full_name}}</text>
+                        <text class="f24" style="color:#666666" v-if="item2.type === 'product'">规格：{{item2.sku.sku_full_name}}</text>
+                        <text class="f24 t" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'setmeal'">
+                            规格：
+                            <template v-for="desc in item2.combination">
+                                <template v-for="(desc1) in desc.combination_detail">
+                                    <span :key="desc1.id" class="m-left-10">{{desc1.name}}*{{desc1.quantity}}</span>
+                                </template>
+                            </template>
+
+                        </text>
                     </view>
                     <view class="right-view-bottom">
                         <view class="right-view-bottom-desc">
@@ -163,12 +172,18 @@ export default {
         })
         this.android = uni.getSystemInfoSync().platform
         console.log(this.android)
+        console.log(this.$store.state.goods.orderTempData)
+        if (this.$store.state.goods.orderTempData.length > 0) {
+            console.log("我要崩溃了")
+            this.mainArray = this.$store.state.goods.orderTempData
+        }
         this.$nextTick(() => {
             this.getListData()
         })
         console.log('下单路由参数', this.$parseURL())
         this.buttonLabel = this.$parseURL().is_open_desk ? '(已开台)' : '(未开台)'
         this.totalLabel = `台位低消：${this.$parseURL().minim_charge}`
+
     },
     onBackPress() {
         this.selArr = []
@@ -285,6 +300,7 @@ export default {
         b(images) {
             this.$minApi.getOrderProduceList().then(res => {
                 this.mainArray = res.list
+                this.$store.dispatch('goods/seOrderTempData', res.list)
                 let temp = []
                 for (const val of this.mainArray) {
                     val.product.map(item2 => {
@@ -313,6 +329,7 @@ export default {
         a() {
             this.$minApi.getOrderProduceList().then(res => {
                 this.mainArray = res.list
+                this.$store.dispatch('goods/seOrderTempData', res.list)
                 let temp = []
                 for (const val of this.mainArray) {
                     val.product.map(item2 => {
@@ -841,7 +858,7 @@ uni-page-body {
 
         .item {
             display: flex;
-            margin-bottom: 10rpx;
+            margin-bottom: 20rpx;
             height: 140rpx;
 
             &>image {
@@ -864,7 +881,7 @@ uni-page-body {
                 .right-view-title {
                     .t {
                         font-weight: bold;
-                        width: 400rpx;
+                        width: 500rpx;
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;

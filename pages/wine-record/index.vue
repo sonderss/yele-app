@@ -1,7 +1,9 @@
 <template>
 <view class="fetch-record p-tb-20 p-lr-30">
-    <view v-if="list.length !== 0">
-        <view class="card p-lr-20 m-bottom-20" v-for="(item,index) in list" :key="index" @click="goDertail(item.id)">
+    <min-search placeholder="客户姓名/手机号搜索" v-model="key" />
+
+    <view v-if="getKeyData.length !== 0">
+        <view class="card p-lr-20 m-tb-20 " v-for="(item,index) in getKeyData" :key="index" @click="goDertail(item.id)">
             <view class="top p-tb-30 min-border-bottom">
                 <view class="f26">单号：{{item.deposit_sn}}</view>
                 <view :class="item.deposit_status ? 'status ' + statusData[item.deposit_status].status : 'status '">{{statusData[item.deposit_status].name }}</view>
@@ -11,7 +13,7 @@
                 <view class="item">联系电话：{{item.client_mobile}}</view>
                 <view class="item p-bottom-20 min-border-bottom">存酒数量：{{item.product_count}}</view>
             </view>
-            <view class="timer">{{item.create_time}}</view>
+            <view class="timer">{{item.create_time}}<text class="f24" style="color:#666666">存酒人：{{item.deposit_name}}</text></view>
         </view>
     </view>
     <min-404 v-else />
@@ -58,7 +60,31 @@ export default {
             falg: false,
             des: "加载中",
             page: 1,
-            load: true
+            load: true,
+            key: ''
+        }
+    },
+    computed: {
+        getKeyData() {
+            let d = [];
+            if (this.key) {
+                this.list.filter(item => {
+                    if (
+                        item.client_name
+                        .toLowerCase()
+                        .includes(this.key.toLowerCase())
+                    ) {
+                        d.push(item);
+                    } else if (
+                        item.client_mobile.toLowerCase().includes(this.key.toLowerCase())
+                    ) {
+                        d.push(item);
+                    }
+                });
+            } else {
+                d = this.list;
+            }
+            return d;
         }
     },
     onReachBottom() {
@@ -157,6 +183,9 @@ export default {
             padding: 20rpx 0;
             font-size: 24rpx;
             color: #666666;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
     }
 }

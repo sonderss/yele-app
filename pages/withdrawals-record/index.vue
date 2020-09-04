@@ -3,58 +3,62 @@
     <view class="top_view">
         <view class="botm">
             <text class="f30" style="color:#333">{{time}}</text>
-            <text class="f26" @click="changeTime">切换时间 ></text>
+            <text class="f26 aaa_bg" @click="changeTime">切换时间
+                <image class="p-left-10" src="/static/images/arrow.png" />
+            </text>
         </view>
     </view>
     <view class="bg">
-        <view v-for="(item,index) in list" :key="index" class="cell-item min-flex min-flex-main-between p-tb-30 p-lr-20 min-border-bottom" @click="toDeatil(item)">
-            <!--发放记录-->
-            <view class="min-flex" v-if="type === 1">
-                <view class style="width:300rpx">
-                    <view class="f28">{{item.grant_name}}{{list.grant_type === 2 ? '提成发放':'工资发放'}}</view>
-                    <view class="label m-top-10 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.grant_time*1000),"yyyy/MM/dd hh:mm:ss") }}</view>
+        <view v-for="(item,index) in list" :key="index" class="p-lr-20" @click="toDeatil(item)">
+            <view class="cell-item min-flex min-flex-main-between  min-border-bottom" style="width:100%;height:130rpx">
+                <!--发放记录-->
+                <view class="min-flex" v-if="type === 1">
+                    <view class style="width:300rpx">
+                        <view class="f28">{{item.grant_name}}{{list.grant_type === 2 ? '提成发放':'工资发放'}}</view>
+                        <view class="label m-top-10 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.grant_time*1000),"yyyy/MM/dd hh:mm:ss") }}</view>
+                    </view>
                 </view>
-            </view>
-            <view class="min-flex flex-end min-flex-dir-top" v-if="type === 1">
-                <view :class="item.total_amount *1 > 0 ? 'ared' : 'ablack'">{{item.total_amount *1 > 0 ? '+' : '-'}}{{item.total_amount}}</view>
-                <view class="bom">{{faStatus[item.grant_status]}}</view>
-            </view>
-            <!---->
-            <!--提现记录-->
-            <view class="min-flex" v-if="type === 2">
-                <view>
-                    <view class="f28">银行卡提现</view>
-                    <view class="label m-top-10 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.create_time*1000),"yyyy/MM/dd hh:mm:ss") }}</view>
+                <view class="min-flex flex-end min-flex-dir-top" v-if="type === 1">
+                    <view :class="item.total_amount *1 > 0 ? 'ared' : 'ablack'">{{item.total_amount *1 > 0 ? '+' : '-'}}{{item.total_amount}}</view>
+                    <view class="bom">{{faStatus[item.grant_status]}}</view>
                 </view>
-            </view>
-            <view class="min-flex flex-end min-flex-dir-top bpa" v-if="type === 2">
-                <view :class="item.cash_amount *1 > 0 ? 'ared' : 'ablack'">-{{item.amount}}</view>
-                <view class="bom f24 m-top-10">{{item.transaction_status === 0 ? '提现中' : (item.transaction_status === 1 ? '提现成功' : '提现失败' )}}</view>
-            </view>
-            <!---->
-            <!--转账记录-->
-            <view class="min-flex" v-if="type === 3">
-                <view>
-                    <view class="f28">{{item.account_name}}转账</view>
-                    <view class="label m-top-10 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.create_time*1000),"yyyy/MM/dd hh:mm:ss") }}</view>
+                <!---->
+                <!--提现记录-->
+                <view class="min-flex" v-if="type === 2">
+                    <view>
+                        <view class="f28">银行卡提现</view>
+                        <view class="label m-top-10 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.create_time*1000),"yyyy/MM/dd hh:mm:ss") }}</view>
+                    </view>
                 </view>
-            </view>
-            <view class="min-flex flex-end min-flex-dir-top" v-if="type === 3">
-                <view :class="item.amount *1 > 0 ? 'ared' : 'ablack'">{{item.amount *1 > 0 ? `+${item.amount}`: `-${item.amount}` }}</view>
-                <view class="bom f24 m-top-10">{{item.transaction_status === 0 ? '入账中' : (item.transaction_status === 1 ? '已到账' : '入账失败' )}}</view>
-            </view>
-            <!---->
-            <!--收支流水-->
-            <view class="min-flex" v-if="type === 0">
-                <view>
-                    <view class="f28">{{item.item_name}}</view>
-                    <view class="label m-top-10 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.create_time*1000),"yyyy/MM/dd hh:mm:ss") }}</view>
+                <view class="min-flex flex-end min-flex-dir-top bpa" v-if="type === 2">
+                    <view :class="item.cash_amount *1 > 0 ? 'ared' : 'ablack'">-{{item.amount}}</view>
+                    <view class="bom f24 m-top-10">{{item.transaction_status === 0 ? '提现中' : (item.transaction_status === 1 ? '提现成功' : '提现失败' )}}</view>
                 </view>
+                <!---->
+                <!--转账记录-->
+                <view class="min-flex" v-if="type === 3">
+                    <view>
+                        <view class="f28">{{item.account_name}}转账</view>
+                        <view class="label m-top-10 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.create_time*1000),"yyyy/MM/dd hh:mm:ss") }}</view>
+                    </view>
+                </view>
+                <view class="min-flex flex-end min-flex-dir-top" v-if="type === 3">
+                    <view :class="item.transaction_status === 2  ? ' ablack ' : 'ared'">{{item.amount *1 > 0 ? `+${item.amount}`: `-${item.amount}` }}</view>
+                    <view class="bom f24 m-top-10">{{item.transaction_status === 0 ? '入账中' : (item.transaction_status === 1 ? '已到账' : '入账失败' )}}</view>
+                </view>
+                <!---->
+                <!--收支流水-->
+                <view class="min-flex" v-if="type === 0">
+                    <view>
+                        <view class="f28">{{item.item_name}}</view>
+                        <view class="label m-top-10 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.create_time*1000),"yyyy/MM/dd hh:mm:ss") }}</view>
+                    </view>
+                </view>
+                <view class="min-flex flex-end min-flex-dir-top" v-if="type === 0">
+                    <view :class="item.fund_direction ===  2 ? 'ared' : 'ablack'">{{item.fund_direction === 1 ? `-${item.amount}`: `+${item.amount}` }}元</view>
+                </view>
+                <!---->
             </view>
-            <view class="min-flex flex-end min-flex-dir-top" v-if="type === 0">
-                <view :class="item.fund_direction ===  2 ? 'ared' : 'ablack'">{{item.fund_direction === 1 ? `-${item.amount}`: `+${item.amount}` }}元</view>
-            </view>
-            <!---->
         </view>
     </view>
     <min-404 v-if="list.length === 0" />
@@ -592,5 +596,20 @@ export default {
     flex: 1;
     justify-content: flex-end;
     align-items: flex-end;
+}
+
+.bg {
+    background: #fff;
+}
+
+.aaa_bg {
+    image {
+        width: 22rpx;
+        height: 22rpx;
+    }
+}
+
+.sc {
+    color: green;
 }
 </style>

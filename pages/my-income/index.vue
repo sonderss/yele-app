@@ -89,10 +89,10 @@
         <view class="p-lr-20 p-bottom-20 content_pop">
             <view class="top_pop_view min-border-bottom">
                 <text class="f26" @click="allIN">全部门店</text>
-                <text class="f22" @click="close">取消</text>
+                <text class="f22" style="color:#666" @click="close">取消</text>
             </view>
             <view class="main_">
-                <view :class="index === 49 ? 'item':' item min-border-bottom'" @click="toChange(item)" v-for="(item,index) in storeList" :key="index">
+                <view :class="index === storeList.length-1 ? 'item':' item min-border-bottom'" @click="toChange(item)" v-for="(item,index) in storeList" :key="index">
                     <image :src="item.head_img ?  item.head_img : '/static/images/goods.png' " />
                     <view class="right_ m-left-20">
                         <view>
@@ -309,6 +309,17 @@ export default {
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            position: relative;
+        }
+
+        .left-view::before {
+            content: '';
+            width: 1rpx;
+            height: 60rpx;
+            background: #CCCCCC;
+            opacity: 0.5;
+            position: absolute;
+            right: 0;
         }
 
         .right-view {
@@ -476,10 +487,12 @@ export default {
 
             .active {
                 padding: 2rpx;
+                padding-left: 10rpx;
+                padding-right: 10rpx;
                 background: #fff100;
                 border-radius: 10rpx;
                 display: inline-block;
-                margin-left: 20rpx;
+                margin-left: 10rpx;
             }
         }
     }

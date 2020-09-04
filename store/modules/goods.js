@@ -4,7 +4,8 @@ export default {
     selected_products: [],
     giveAwayInfo: {}, // 限制信息
     storeSelArr: [], // 赠送商品已选商品
-    orderSelArr: []// 下单已选商品
+    orderSelArr: [],// 下单已选商品
+    orderTempData:[] // 下单页存储已获取商品数据临时展示
   },
   mutations: {
     setselected_products: (state, data) => {
@@ -20,6 +21,10 @@ export default {
     setOrderSelArr: (state, data) => {
       state.orderSelArr = data
       console.log("state.orderSelArr",state.orderSelArr)
+    },
+    seOrderTempData: (state, data) => {
+      state.orderTempData = data
+      console.log("state.orderTempData",state.orderTempData)
     }
   },
   actions: {
@@ -34,6 +39,9 @@ export default {
     },
     setOrderSelArr ({ commit }, data) {
       commit('setOrderSelArr', data)
+    },
+    seOrderTempData ({ commit }, data) {
+      commit('seOrderTempData', data)
     }
   }
 }

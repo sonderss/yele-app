@@ -13,15 +13,18 @@
         </view>
     </view>
     <view class="m-top-20 bg" v-if="list.length > 0">
-        <view v-for="(item,index) in list" :key="index" class="cell-item min-flex min-flex-main-between p-tb-30 p-lr-20 min-border-bottom" @click="toDeatil(item.id)">
-            <view class="min-flex">
-                <view class style="width:400rpx">
-                    <view class="f28 min-ellipsis">{{item.commission_name}}</view>
-                    <view class="label m-top-10 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.create_time*1000),'yyyy/MM/dd hh:mm:ss') }}</view>
+        <view v-for="(item,index) in list" :key="index" class="p-lr-20  " @click="toDeatil(item.id)">
+            <!-- p-tb-30 p-lr-20  cell-item min-flex min-flex-main-between  min-border-botto-->
+            <view class="cell-item min-flex min-flex-main-between  min-border-bottom " style="width:100%;height:130rpx">
+                <view class="min-flex">
+                    <view style="width:400rpx">
+                        <view class="f28 min-ellipsis">{{item.commission_name}}</view>
+                        <view class="label m-top-10 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.create_time*1000),'yyyy/MM/dd hh:mm:ss') }}</view>
+                    </view>
                 </view>
-            </view>
-            <view class="min-flex flex-end min-flex-dir-top">
-                <view :class=" item.commission *1 <= 0 ? 'ablack' : 'ared'">{{item.commission * 1 > 0 ? '+' + item.commission : item.commission}}</view>
+                <view class="min-flex flex-end min-flex-dir-top">
+                    <view :class=" item.commission *1 <= 0 ? 'ablack' : 'ared'">{{item.commission * 1 > 0 ? '+' + item.commission : item.commission}}</view>
+                </view>
             </view>
         </view>
     </view>
@@ -428,7 +431,7 @@ export default {
 <style lang="scss" scoped>
 .top_view {
     width: 100%;
-    height: 100rpx;
+    height: 80rpx;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -449,8 +452,8 @@ export default {
     .botm {
         flex: 1;
         display: flex;
-        align-items: center;
         padding-left: 5rpx;
+        padding-top: 8rpx;
 
         text {
             color: rgba(102, 102, 102, 1);

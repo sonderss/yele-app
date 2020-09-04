@@ -83,7 +83,7 @@
                     <view class="content-view">
                         <view class="right-view-title">
                             <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                            <text class="f26" style="color:#666666" v-if="item2.type === 'product'">规格：{{item2.sku.sku_full_name}}</text>
+                            <text class="f24" style="color:#666666" v-if="item2.type === 'product'">规格：{{item2.sku.sku_full_name}}</text>
                         </view>
                         <view class="right-view-bottom">
                             <view class="right-view-bottom-desc">
@@ -761,7 +761,7 @@ export default {
 
         .item {
             display: flex;
-            margin-bottom: 10rpx;
+            margin-bottom: 20rpx;
             height: 140rpx;
 
             &>image {
