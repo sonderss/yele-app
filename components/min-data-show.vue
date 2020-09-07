@@ -11,15 +11,15 @@
             <view class="time_desc">
                 <view class=" f20 m-tb-20 " v-if="current === 0">更新时间：{{getNowTime}}</view>
                 <view class="f20  m-tb-20 " v-else>更新时间：{{getStartTime}} - {{getEndTime}}</view>
-                <text class="f20" v-if="ids === '0'">业绩合计：￥{{list.performance_total}}</text>
-                <text class="f20" v-if="ids === '1'">订台合计：{{list.booking_total}}</text>
-                <text class="f20" v-if="ids === '1'">开台合计：{{list.opening_total}}</text>
-                <text class="f20" v-if="ids === '2'">开台合计：{{list.opening_total}}</text>
-                <text class="f20" v-if="ids === '2'">业绩合计：￥{{list.performance_total}}</text>
-                <text class="f20" v-if="ids === '7'">业绩合计：￥{{list.role_performance_total}}</text>
-                <text class="f20" v-if="ids === '6'">业绩合计：￥{{list.performance_totals}}</text>
-                <text class="f20" v-if="ids === '4'">业绩合计：￥{{list.sales_totals}}</text>
-                <text class="f20" v-if="ids === '5'">销售额合计合计：￥{{list.sales_totals}}</text>
+                <text class="f20" v-if="ids === '0'">业绩合计：￥{{list.performance_total.toFixed(2)}}</text>
+                <text class="f20" v-if="ids === '1'">订台合计：{{list.booking_total.toFixed(2)}}</text>
+                <text class="f20" v-if="ids === '1'">开台合计：{{list.opening_total.toFixed(2)}}</text>
+                <text class="f20" v-if="ids === '2'">开台合计：{{list.opening_total.toFixed(2)}}</text>
+                <text class="f20" v-if="ids === '2'">业绩合计：￥{{list.performance_total.toFixed(2)}}</text>
+                <text class="f20" v-if="ids === '7'">业绩合计：￥{{list.role_performance_total.toFixed(2)}}</text>
+                <text class="f20" v-if="ids === '6'">业绩合计：￥{{list.performance_totals.toFixed(2)}}</text>
+                <text class="f20" v-if="ids === '4'">业绩合计：￥{{list.sales_totals.toFixed(2)}}</text>
+                <text class="f20" v-if="ids === '5'">销售额合计合计：￥{{list.sales_totals.toFixed(2)}}</text>
             </view>
             <view class="main_table">
                 <view class="title_list min-border-bottom">

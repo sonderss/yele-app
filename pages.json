@@ -256,7 +256,7 @@
       "style": {
         "app-plus": {
           "titleNView": {
-            "titleText": "下单赠送入口",
+            "titleText": "下单",
             "backgroundColor": "#030313",
             "titleColor": "#FFE001"
           }

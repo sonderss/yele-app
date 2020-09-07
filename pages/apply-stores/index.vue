@@ -77,7 +77,7 @@ export default {
         // console.log('refresh');
         this.isAll = false
         this.getData(1, 10, true).then(res => {
-            this.list = res.list
+            this.elseStoreList = res.list
             this.nums = 2
             uni.stopPullDownRefresh();
         })

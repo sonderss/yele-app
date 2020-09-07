@@ -20,7 +20,6 @@ export default {
     },
     setOrderSelArr: (state, data) => {
       state.orderSelArr = data
-      console.log("state.orderSelArr",state.orderSelArr)
     },
     seOrderTempData: (state, data) => {
       state.orderTempData = data

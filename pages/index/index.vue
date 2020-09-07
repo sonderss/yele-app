@@ -32,7 +32,7 @@
                         </view>
                         <view>
                             <view class="f28">酒台管理</view>
-                            <view class="f22 assist-text">订台、下单、赠送、开台、存酒</view>
+                            <view class="f22 assist-text">预约、下单、赠送、开台、存酒</view>
                         </view>
                     </view>
                 </view>
@@ -140,7 +140,7 @@ export default {
                     url: '../appointment-record/index.vue',
                     name: 'appointment-record',
                     img: '/static/images/index/station.png',
-                    text: '订台记录',
+                    text: '预约记录',
                     root: 'bookRecord'
                 },
                 {

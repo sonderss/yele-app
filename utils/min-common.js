@@ -267,6 +267,18 @@ class MinCommon {
         return ''
     }
   }
+
+  // 获取手机号后四位
+  static getPhoneLastNum(bank_card_num){
+          let arr = bank_card_num.split('')
+          let card = [...arr]
+          let a = [4, 3, 2, 1]
+          let str = ''
+          a.map(item => {
+             str += card[card.length - item]
+          })
+          return str
+  }
 }
 
 MinCommon.install = function (Vue) {

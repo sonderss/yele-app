@@ -23,7 +23,7 @@
                         <view class="right-view-bottom">
                             <view class="right-view-bottom-desc">
                                 <text class="f20 t">
-                                    提成：￥
+                                    提成： <text style="color:red" class="f22">￥</text>
                                     <text style="color:#FF0000;font-size:30">{{item2.sku.length >= 1 ? item2.sku[0].amount : item2.min_amount}}</text>
                                 </text>
                             </view>
@@ -54,30 +54,32 @@
                     <view class="f22 clear">清空</view>
                 </view>
             </view>
-            <view class="main-sel-view p-lr-30 p-tb-30">
-                <view class="item" v-for="(item2,n) in selArr" :key="n" @longpress="longTatch(n)">
-                    <image :src="item2.product_img" />
-                    <view class="content-view">
-                        <view class="right-view-title">
-                            <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                            <text class="f24 t" style="color:#666666" v-if="item2.sku.length > 1">规格：{{item2.sku[item2.index].sku_full_name}}</text>
-                            <text class="f24 t" style="color:#666666" v-if="item2.sku.length === 1">规格：{{item2.sku[0].sku_full_name}}</text>
-                        </view>
-                        <view class="right-view-bottom">
-                            <view class="right-view-bottom-desc">
-                                <text class="f20 t">
-                                    提成：￥
-                                    <text style="color:#FF0000;font-size:30">{{item2.sku.length > 1 ? item2.sku[item2.index].amount : item2.min_amount}}</text>
-                                </text>
+            <view class="main-sel-view p-lr-30 m-top-20" style="margin-bottom:300rpx" @touchstart="start" @touchmove="move" @touchend="end">
+                <scroll-view scroll-y :style="{transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'}">
+                    <view class="item" v-for="(item2,n) in selArr" :key="n" @longpress="longTatch(n)">
+                        <image :src="item2.product_img" />
+                        <view class="content-view">
+                            <view class="right-view-title">
+                                <text class="f28 t" style="display:block">{{item2.product_name}}</text>
+                                <text class="f24 t" style="color:#666666" v-if="item2.sku.length > 1">规格：{{item2.sku[item2.index].sku_full_name}}</text>
+                                <text class="f24 t" style="color:#666666" v-if="item2.sku.length === 1">规格：{{item2.sku[0].sku_full_name}}</text>
                             </view>
-                            <view class="steper">
-                                <!-- @change="changeIndex($event,n)" -->
-                                <min-stepper :isAnimation="false" v-if="isDel" v-model="item2.step" :min="0" @change="alDel($event,n)"></min-stepper>
-                                <view v-if="!isDel" @click="delItem(n)">删除</view>
+                            <view class="right-view-bottom">
+                                <view class="right-view-bottom-desc">
+                                    <text class="f20 t">
+                                        提成： <text style="color:red" class="f22">￥</text>
+                                        <text style="color:#FF0000;font-size:30">{{item2.sku.length > 1 ? item2.sku[item2.index].amount : item2.min_amount}}</text>
+                                    </text>
+                                </view>
+                                <view class="steper">
+                                    <!-- @change="changeIndex($event,n)" -->
+                                    <min-stepper :isAnimation="false" v-if="isDel" v-model="item2.step" :min="0" @change="alDel($event,n)"></min-stepper>
+                                    <view v-if="!isDel" @click="delItem(n)">删除</view>
+                                </view>
                             </view>
                         </view>
                     </view>
-                </view>
+                </scroll-view>
             </view>
             <!-- <view class="empty-view"></view> -->
             <view class="bottom-view-t">
@@ -99,7 +101,8 @@
                         <text class="f22 a">{{skuObj.product_name}}</text>
                         <text class="f22 m-tb-10 a">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
                         <text class="f22 m">
-                            提成:￥
+                            提成:
+                            <text style="color:red" class="f22">￥</text>
                             <text class="money">{{skuObj.sku[chioceIndex].amount}}</text>
                         </text>
                     </view>
@@ -146,6 +149,8 @@ export default {
             imageSrc: "", // 判断图片是否失效
             isDel: true, //  所需删除的已选列表中对应项
             selNum: [],
+            top: "",
+            lastY: '',
             isSkuNum: 0, // 选择规格弹出层的数量
             skuObj: {
                 sku: [{
@@ -301,6 +306,23 @@ export default {
         selectedEvent() {
             if (this.mainArray.length === 0) return;
             this.selected = true;
+        },
+        start(e) {
+            this.lastY = e.changedTouches[0].pageY
+        },
+        move(e) {
+            let currentY = e.changedTouches[0].pageY
+            if (this.top < currentY - this.lastY) {
+                // 像下滚动
+                this.top = currentY - this.lastY
+            } else {
+                // 向上滚动
+                //  this.top = 0
+                this.top = currentY - this.lastY
+            }
+        },
+        end(e) {
+            return (this.top = 0)
         },
         /** 添加商品事件 */
         addGoods(index, index2) {

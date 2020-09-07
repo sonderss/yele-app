@@ -15,7 +15,8 @@
     <scroll-view class="main" :show-scrollbar="false" :style="{ 'height':scrollHeight,top:'20rpx'}" :scroll-y="true" @scroll="mainScroll" :scroll-into-view="scrollInto" :scroll-with-animation="true">
         <view v-for="(item,index) in mainArray" :key="index" :id="`item-${index}`">
             <view v-for="(item2,index2) in item.product" :key="index2" :isFlag="item2.isFlag" @click.stop="goDetails(index,index2)">
-                <min-goods-chioce :image="item2.product_img" :discount="item2.is_limited === 1 ? true: false " :title="item2.product_name" :badgeTxt="item2.type === 'setmeal' ? '套餐': '' " :badge="item2.type === 'setmeal'? true : false " @changes="changeChioce(index,index2)" v-model="item2.step" @changesPop="changesPopNoStep(index,index2,item2.type)" :desc="item2.sku.length >=1 ?item2.sku[0].sku_full_name : item2.info " :price="item2.price" :isFlag="item2.isFlag"></min-goods-chioce>
+                <min-goods-chioce :image="item2.product_img" :discount="item2.is_limited === 1 ? true: false " :title="item2.product_name" :badgeTxt="item2.type === 'setmeal' ? '套餐': '' " :badge="item2.type === 'setmeal'? true : false " @changes="changeChioce(index,index2)" v-model="item2.step" @changesPop="changesPopNoStep(index,index2,item2.type)" :desc="item2.sku.length >=1 ?item2.sku[0].sku_full_name : item2.info " :price="item2.price" :isFlag="item2.isFlag">
+                </min-goods-chioce>
             </view>
         </view>
 
@@ -36,44 +37,50 @@
                 <view class="f22 clear">清空</view>
             </view>
         </view>
-        <view class="main-sel-view p-lr-30 p-tb-30">
-            <view class="item" v-for="(item2,n) in selArr" :key="n">
-                <image :src="errImg ? '/static/images/goods.png': item2.product_img" @error="imageErro" />
-                <view class="content-view">
-                    <view class="right-view-title">
-                        <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                        <text class="f24" style="color:#666666" v-if="item2.type === 'product'">规格：{{item2.sku.sku_full_name}}</text>
-                        <text class="f24 t" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'setmeal'">
-                            规格：
-                            <template v-for="desc in item2.combination">
-                                <template v-for="(desc1) in desc.combination_detail">
-                                    <span :key="desc1.id" class="m-left-10">{{desc1.name}}*{{desc1.quantity}}</span>
+        <view class="main-sel-view p-lr-30 m-top-20" style="margin-bottom:300rpx" @touchstart="start" @touchmove="move" @touchend="end">
+            <scroll-view scroll-y :style="{
+        transition: top === 0 ? 'transform 300ms' : '',
+        transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'
+      }">
+                <view class="item" v-for="(item2,n) in selArr" :key="n">
+                    <image :src="errImg ? '/static/images/goods.png': item2.product_img" @error="imageErro" />
+                    <view class="content-view">
+                        <view class="right-view-title">
+                            <text class="f28 t" style="display:block">{{item2.product_name}}</text>
+                            <text class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'product'">规格：{{item2.sku.sku_full_name}}</text>
+                            <text class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'setmeal'">
+                                规格：
+                                <template v-for="desc in item2.combination">
+                                    <template v-for="(desc1) in desc.combination_detail">
+                                        <span :key="desc1.id" class="m-left-10">{{desc1.name}}*{{desc1.quantity}}</span>
+                                    </template>
                                 </template>
-                            </template>
 
-                        </text>
-                    </view>
-                    <view class="right-view-bottom">
-                        <view class="right-view-bottom-desc">
-                            <text class="f20 t" v-if="item2.type === 'product'">
-                                ￥
-                                <text style="color:#FF0000;font-size:30">{{item2.is_limited ? item2.price : item2.sku.sku_price}}</text>
                             </text>
-                            <text class="f20 t" v-if="item2.type === 'service'">
-                                ￥
-                                <text style="color:#FF0000;font-size:30">{{item2.price}}</text>
-                            </text>
-                            <text class="f20 t" v-if="item2.type === 'setmeal'">
-                                ￥
-                                <text style="color:#FF0000;font-size:30">{{item2.price}}</text>
-                            </text>
+                            <text class="f26 t  m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'service'">规格：{{ item2.info }}</text>
                         </view>
-                        <view class="steper">
-                            <min-stepper :isAnimation="false" v-model="item2.step" @change="alDel($event,n)"></min-stepper>
+                        <view class="right-view-bottom">
+                            <view class="right-view-bottom-desc">
+                                <text class="f20 t" v-if="item2.type === 'product'">
+                                    ￥
+                                    <text style="color:#FF0000;font-size:30">{{item2.is_limited ? item2.price : item2.sku.sku_price}}</text>
+                                </text>
+                                <text class="f20 t" v-if="item2.type === 'service'">
+                                    ￥
+                                    <text style="color:#FF0000;font-size:30">{{item2.price}}</text>
+                                </text>
+                                <text class="f20 t" v-if="item2.type === 'setmeal'">
+                                    ￥
+                                    <text style="color:#FF0000;font-size:30">{{item2.price}}</text>
+                                </text>
+                            </view>
+                            <view class="steper">
+                                <min-stepper :isAnimation="false" v-model="item2.step" @change="alDel($event,n)"></min-stepper>
+                            </view>
                         </view>
                     </view>
                 </view>
-            </view>
+            </scroll-view>
         </view>
         <!-- <view class="empty-view"></view> -->
         <view class="bottom-view-t">
@@ -160,10 +167,13 @@ export default {
                 index2: ''
             },
             load: '',
+            top: '',
+            lastY: '',
             colors: '#666'
         }
     },
     onLoad() {
+        console.log(123132)
         uni.getSystemInfo({
             success: res => {
                 /* 设置当前滚动容器的高，若非窗口的高度，请自行修改 */
@@ -174,7 +184,7 @@ export default {
         console.log(this.android)
         console.log(this.$store.state.goods.orderTempData)
         if (this.$store.state.goods.orderTempData.length > 0) {
-            console.log("我要崩溃了")
+            // console.log("我要崩溃了")
             this.mainArray = this.$store.state.goods.orderTempData
         }
         this.$nextTick(() => {
@@ -217,7 +227,7 @@ export default {
         },
     },
     onShow() {
-        this.selArr = this.$store.state.goods.orderSelArr
+        return this.selArr = this.$store.state.goods.orderSelArr
     },
     watch: {
         selArr: {
@@ -230,18 +240,19 @@ export default {
                             })
                         }
                     })
-                    return
+                    // return
                 }
                 a.map((item, index) => {
                     if (item.step === 0) {
                         this.$nextTick(() => {
                             a.splice(index, 1)
                         })
+                        console.log(a)
                         this.$store.dispatch('goods/setOrderSelArr', a)
                         this.mainArray.map(item1 => {
                             if (item1.product && item1.product.length > 0) {
                                 item1.product.map((item2, index2) => {
-                                    if (item2.type === 'product' && item2.step === 0) {
+                                    if (item2.type === 'product' && item2.step === 0 && item2.sku.length > 1) {
                                         if (item.id && item.id === item2.sku[0].id) {
                                             // 重置多规格商品
                                             item2.isFlag = false
@@ -498,6 +509,7 @@ export default {
             this.tempId.index = index
             this.tempId.index2 = index2
             if (type === 'product') {
+                console.log("changesPopNoStep")
                 this.selSku(index, index2)
             } else if (type === 'setmeal') {
                 // 进入商品套餐详情
@@ -516,7 +528,25 @@ export default {
                 console.log('fuwu ', type)
             }
         },
+        start(e) {
+            this.lastY = e.changedTouches[0].pageY
+        },
+        move(e) {
+            let currentY = e.changedTouches[0].pageY
+            if (this.top < currentY - this.lastY) {
+                // 像下滚动
+                this.top = currentY - this.lastY
+            } else {
+                // 向上滚动
+                //  this.top = 0
+                this.top = currentY - this.lastY
+            }
+        },
+        end(e) {
+            return (this.top = 0)
+        },
         changeChioce(index, index2) {
+            console.log("changesPopNoStep")
             // 服务商品
             if (this.mainArray[index].product[index2].type === 'service') {
                 // 直接放入已选商品
@@ -542,14 +572,9 @@ export default {
                 return
             }
             if (this.mainArray[index].product[index2].type === 'product') {
-                if (
-                    !this.mainArray[index].product[index2].isFlag ||
-                    this.mainArray[index].product[index2].sku.length > 1
-                ) {
+                if (!this.mainArray[index].product[index2].isFlag || this.mainArray[index].product[index2].sku.length > 1) {
                     const obj = {}
-                    const skuOne = this.mainArray[index].product[index2].sku[
-                        this.chioceIndex
-                    ]
+                    const skuOne = this.mainArray[index].product[index2].sku[this.chioceIndex]
                     Object.assign(obj, this.mainArray[index].product[index2])
                     obj.sku = skuOne
                     this.addGoods(obj)
@@ -853,7 +878,7 @@ uni-page-body {
 
     .main-sel-view {
         width: 100%;
-        height: 620rpx;
+        // height: 620rpx;
         overflow: auto;
 
         .item {

@@ -19,6 +19,7 @@
     <text class="warn" v-if="money">手续费：￥{{tixianInfo.fee}}</text>
     <text class="warn1" v-if="ishow">输入金额超出可提现金额</text>
     <view class="submit" @click="submit">提现</view>
+    <view class="btm_descsss" @click="toVipInfo">《通联用户协议》</view>
 </view>
 </template>
 
@@ -115,6 +116,7 @@ export default {
             if (!this.lastString) return this.$showToast('你尚未绑定银行卡')
             this.money = this.tixianInfo.can_cash_withdraw
         },
+        toVipInfo() {}
     },
 }
 </script>
@@ -215,5 +217,21 @@ export default {
     line-height: 40rpx;
     font-weight: normal;
     color: #999;
+}
+
+.btm_descsss {
+    width: 100%;
+    height: 50rpx;
+    line-height: 50rpx;
+    position: absolute;
+    bottom: 50rpx;
+    left: 0;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-size: 20rpx;
+    font-family: PingFang SC;
+    font-weight: 400;
+    color: rgba(101, 101, 101, 1);
 }
 </style>

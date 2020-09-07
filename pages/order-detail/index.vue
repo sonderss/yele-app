@@ -48,12 +48,14 @@
         <view class="top p-tb-30 min-border-bottom">订单信息</view>
         <view class="main p-tb-30">
             <view class="item">订 单 号 ：{{list.order_sn}}</view>
-            <view class="item">订单类型：{{list.pay_type === 0 ? '先付' :'后付'}}</view>
+            <view class="item">订单来源：{{list.source ? '门店':'平台'}}</view>
+            <view class="item">支付类型：{{list.pay_type === 0 ? '先付' :'后付'}}</view>
             <view class="item">下单人员：{{list.confirm_user_name ? list.confirm_user_name  : '暂无数据'}}</view>
             <view class="item">下单时间：{{$minCommon.formatDate(new Date(list.create_time*1000),'yyyy/MM/dd hh:mm:ss' ) }}</view>
             <view class="item">订单金额：￥{{list.order_total}}</view>
             <view class="item">已付金额：￥{{list.pay_price}}</view>
-
+            <view class="item">应付金额：￥{{list.actual_total}}</view>
+            <view class="item">待付金额：￥{{list.unpay_price}}</view>
             <view class="item">
                 支付状态：
                 <text :class="list.pay_status === 0 ? 'red'  : 'fcolor' ">{{ list.pay_status === 0 ?'未付清' : '已付清'}}</text>
@@ -175,7 +177,7 @@ export default {
                     this.totalAmount = this.list.unpay_price
                     this.showSubmit = true
                 } else if (this.list.order_status === -1) {
-                    this.leftText = '应付'
+                    this.leftText = '待付金额'
                     this.buttonText = '补差价'
                     this.totalAmount = this.list.unpay_price
                     this.showSubmit = true

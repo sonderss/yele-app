@@ -23,7 +23,11 @@
           <view style="text-align:right;" class="p-right-30">{{item.last_number}}份</view>-->
         </view>
         <view class="title min-border-bottom m-bottom-30 p-lr-20" v-else>
-            <text class="left-txt">请选择{{item.combination_name}}{{item.last_number}}份{{item.is_check === 1 ? '（不可重复选）' : ''}}</text>
+            <span>
+                <span class="left-txt min-ellipsis" style="width:120rpx;display:block;float:left">{{ item.combination_name }}</span>
+                <text>{{item.combination_detail.length}}选{{ item.last_number }}</text>
+                <text class="f28">{{item.is_check === 1 ? '（不可重复选）' : ''}}</text>
+            </span>
             <text v-if="type !== 3" class="right-txt f26">已选 <text class="num1">{{item.goodsCount}}</text> 份</text>
         </view>
         <view class="content p-bottom-30" v-if="item.necessary !== 1">

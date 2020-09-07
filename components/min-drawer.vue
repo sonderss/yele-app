@@ -7,9 +7,11 @@
             <view class="f24 iconfont" style="color:#000" @click="close">&#xe608;</view>
         </view>
         <view class="main_drawer">
-            <view class="li" v-for="(item,idnex) in storeList" :key="idnex">
-                <min-cell-item :title="item.store_name" :border="idnex === storeList.length - 1 ?false :true" :title_right="nowStoreId === item.store_id ? '当前门店' : '' " :img="item.head_img" :label="`可提现金额：￥${item.can_cash_amount}`" @eventParent="tochange(item.store_id,item.store_name)">
-                </min-cell-item>
+            <view class="saddsdds">
+                <view class="li" v-for="(item,idnex) in storeList" :key="idnex">
+                    <min-cell-item :title="item.store_name" :border="idnex === storeList.length - 1 ?false :true" :title_right="nowStoreId === item.store_id ? '当前门店' : '' " :img="item.head_img" :label="`可提现金额：￥${item.can_cash_amount}`" @eventParent="tochange(item.store_id,item.store_name)">
+                    </min-cell-item>
+                </view>
             </view>
         </view>
         <slot />
@@ -184,5 +186,12 @@ $drawer-width: 450rpx;
     flex-direction: column;
     padding: 20rpx;
     padding-top: 0;
+}
+
+.saddsdds {
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-bottom: 100rpx;
 }
 </style>
