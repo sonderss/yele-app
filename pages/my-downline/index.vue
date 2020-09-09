@@ -28,7 +28,7 @@
         </view>
         <view v-if="list.subordinate.length !== 0">
             <view class="item p-lr-20" v-for="(item,index) in list.subordinate" :key="index" @click="torefund(item.id,item.user_name)">
-                <view class="cell-item min-flex min-flex-main-between bg-white p-tb-30 min-border-bottom">
+                <view :class="index === list.subordinate.length-1 ? 'cell-item min-flex min-flex-main-between bg-white p-tb-30':'cell-item min-flex min-flex-main-between bg-white p-tb-30 min-border-bottom'">
                     <view class="min-flex">
                         <view>
                             <min-avatar size="xs" :url="item.head_img ? item.head_img : '/static/images/goods.png'"></min-avatar>

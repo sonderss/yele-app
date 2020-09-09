@@ -3,24 +3,23 @@
     <min-navTab ref="navTab" class="navtabs" :tabTitle="list" @changeTab="changeTab"></min-navTab>
     <view class="desc_info m-tb-20 f20">台位剩余赠送额度：{{desk_remaining_quota}} &nbsp;&nbsp;个人剩余赠送额度：{{personal_remaining_quota}}</view>
 
-    <swiper style="height:100vh" :current="currentTab" @change="swiperTab">
-        <swiper-item v-for="(listItem,listIndex) in list" :key="listIndex">
-            <scroll-view style="height: auto" scroll-y="true" @scrolltolower="lower1" scroll-with-animation :scroll-into-view="toView">
+    <swiper style="width:100vw;height:100vh" :current="currentTab" @change="swiperTab">
+        <swiper-item v-for="(listItem,listIndex) in list" :key="listItem.id">
+            <scroll-view style="height: 100%" scroll-y @scrolltolower="lower1" :scroll-into-view="toView">
                 <view :id="'top'+listIndex" style="width: 100%;height:20rpx;"></view>
                 <view class="main p-lr-30" v-if="listItem.product.length > 0">
-                    <view class="item">
-                        <view class="goods" v-for="(item,index) in listItem.product" :key="index" @click.stop="toDetail(item)">
-                            <image lazy-load :src="item.product_img.length>10 ?  item.product_img : '../../static/images/goods.png' " />
+                    <view class="item" style="margin-bottom:200rpx">
+                        <view class="goods" v-for="(item) in listItem.product" :key="item.sku[0].id" @click.stop="toDetail(item)">
+                            <image lazy-load :src="item.product_img.length>10 ?  item.product_img : '/static/images/goods.png' " />
                             <view class="content-view">
                                 <view class="right-view-title">
-                                    <text class="f28 t" style="display:block">{{item.product_name}}</text>
+                                    <text class="f28 t" style="display:block;font-weight:700">{{item.product_name}}</text>
                                     <text class="f26" style="color:#666666">可赠数量：{{item.commodity_count}}</text>
                                 </view>
                                 <view class="right-view-bottom">
                                     <view class="right-view-bottom-desc">
                                         <text class="f20 t">
-                                            提成：￥
-                                            <text style="color:#FF0000;font-size:30">{{item.price}}</text>
+                                            <text style="color:#FF0000;font-size:30;font-weight:700">￥{{item.price}}</text>
                                         </text>
                                     </view>
                                     <view class="steper">
@@ -37,6 +36,7 @@
                         </view>
                     </view>
                 </view>
+
                 <min-404 v-else></min-404>
 
             </scroll-view>
@@ -57,25 +57,28 @@
             </view>
 
             <view class="main-sel-view p-lr-30 p-tb-30">
-                <view class="item" v-for="(item2,n) in selArr" :key="n">
-                    <image :src="errImg ? '/static/images/goods.png': item2.product_img" mode="" @error="imageErro1" />
-                    <view class="content-view">
-                        <view class="right-view-title">
-                            <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                            <text class="f26" style="color:#666666" v-if="item2.type === 'product'">规格：{{item2.sku[0].sku_full_name}}</text>
-                        </view>
-                        <view class="right-view-bottom">
-                            <view class="right-view-bottom-desc">
-                                <text class="f20 t"><text style="color:#FF0000;font-size:30">￥{{item2.price}}</text></text>
-
+                <scroll-view scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'}">
+                    <view class="item" v-for="(item2,n) in selArr" :key="n">
+                        <image :src="errImg ? '/static/images/goods.png': item2.product_img" mode="" @error="imageErro1" />
+                        <view class="content-view">
+                            <view class="right-view-title">
+                                <text class="f28 t" style="display:block">{{item2.product_name}}</text>
+                                <text class="f26 t" style="color:#666666;display:block;font-weight:400;width:400rpx" v-if="item2.type === 'product'">规格：{{item2.sku[0].sku_full_name}}</text>
                             </view>
-                            <view class="steper">
+                            <view class="right-view-bottom">
+                                <view class="right-view-bottom-desc">
+                                    <text class="f20 t"><text style="color:#FF0000;font-size:30">￥{{item2.price}}</text></text>
 
-                                <min-stepper :isAnimation='false' v-model="item2.step" :max="item2.commodity_count" :min='0' @change="alDel($event,n)"></min-stepper>
+                                </view>
+                                <view class="steper">
+
+                                    <min-stepper :isAnimation='false' v-model="item2.step" :max="item2.commodity_count" :min='0' @change="alDel($event,n)"></min-stepper>
+                                </view>
                             </view>
                         </view>
                     </view>
-                </view>
+                </scroll-view>
+
             </view>
             <!-- <view class="empty-view"></view> -->
             <view class="bottom-view-t">
@@ -112,6 +115,7 @@ export default {
             chinceIndex: 0,
             chinceIndex2: 0,
             orderId: '',
+            top: "",
             errImg: false,
             desk_remaining_quota: '',
             personal_remaining_quota: ''
@@ -121,14 +125,14 @@ export default {
         this.selArr = this.$store.state.goods.storeSelArr
     },
     onBackPress(options) {
-        this.selArr = []
-        this.$store.dispatch('goods/setStoreSelArr', [])
-        console.log(this.list)
-        this.list.map(item => {
-            item.product.map(item2 => {
-                this.$set(item2, "step", 0)
-            })
-        })
+        // this.selArr = []
+        // this.$store.dispatch('goods/setStoreSelArr', [])
+        // console.log(this.list)
+        // this.list.map(item => {
+        //     item.product.map(item2 => {
+        //         this.$set(item2, "step", 0)
+        //     })
+        // })
     },
     mounted() {
         this.$minApi.getGiveAwayList({
@@ -137,9 +141,7 @@ export default {
             res.list.map((item, index) => {
                 item.product.map(item2 => {
                     item2.step = 0
-                    if (item2.type === 'product') {
-                        item2.commodity_count = 2
-                    }
+
                 })
             })
             // this.tabTitle = res.list
@@ -200,6 +202,7 @@ export default {
     methods: {
         toDetail(item) {
             console.log(item)
+            console.log("草噢噢噢噢哦哦哦", this.$store.state.goods.storeSelArr)
             if (item.type === 'service') {
                 // 跳到赠送商品详情product-detail-giveaway
                 uni.navigateTo({
@@ -242,6 +245,7 @@ export default {
                 if (this.selArr[i].id === item.id && e === 0) {
                     this.$nextTick(() => {
                         this.selArr.splice(i, 1)
+                        console.log(1231231232132321)
                         this.$store.dispatch('goods/setStoreSelArr', this.selArr)
                     })
                 }
@@ -270,8 +274,11 @@ export default {
         alDel(n, index) {
             console.log(this.selArr)
             if (n === 0) {
-                this.selArr.splice(index, 1)
-                this.$store.dispatch('goods/setStoreSelArr', this.selArr)
+                this.$nextTick(() => {
+                    this.selArr.splice(index, 1)
+                    this.$store.dispatch('goods/setStoreSelArr', this.selArr)
+                })
+
             }
         },
         changeChioceT(item) {
@@ -446,6 +453,7 @@ export default {
 <style lang="scss" scoped>
 .swiper {
     margin-top: 72rpx;
+
 }
 
 .main {
@@ -511,7 +519,8 @@ export default {
 
             .right-view-title {
                 .t {
-                    width: 400rpx;
+                    font-weight: bold;
+                    width: 500rpx;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -592,11 +601,10 @@ export default {
     .main-sel-view {
         width: 100%;
         height: 620rpx;
-        overflow: auto;
 
         .item {
             display: flex;
-            margin-bottom: 10rpx;
+            margin-bottom: 20rpx;
             height: 140rpx;
 
             &>image {

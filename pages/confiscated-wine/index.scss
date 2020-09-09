@@ -308,7 +308,7 @@ uni-page-body {
     padding: 30rpx 0;
     padding-bottom: 10rpx;
     overflow: auto;
-    height: 300rpx;
+    height: 260rpx;
 
     .item-view {
         margin-top: 20rpx;
@@ -334,7 +334,6 @@ uni-page-body {
             margin-bottom: 20rpx;
             text-align: center;
             line-height: 58rpx;
-            font-size: 26rpx;
         }
 
         .item-active {
@@ -343,12 +342,11 @@ uni-page-body {
             height: 58rpx;
             border: 1px solid #fe432a;
             border-radius: 10rpx;
-            margin-right: 40rpx;
+            margin-right: 20rpx;
             margin-bottom: 20rpx;
             text-align: center;
             line-height: 58rpx;
             color: #fe432a;
-            font-size: 26rpx;
         }
     }
 }
@@ -357,7 +355,7 @@ uni-page-body {
     margin: 0 30rpx;
     padding: 30rpx 0;
     padding-bottom: 10rpx;
-    height: 160rpx;
+    height: 130rpx;
 
     .item-view {
         margin-top: 20rpx;
@@ -387,6 +385,7 @@ uni-page-body {
             margin-bottom: 20rpx;
             text-align: center;
             line-height: 58rpx;
+            color: #fe432a;
         }
     }
 }

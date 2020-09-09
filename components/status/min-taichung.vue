@@ -1,5 +1,5 @@
 <template>
-<view class="platform-detail">
+<view class="platform-detail" @click="getDom">
     <view class="card p-lr-20 m-bottom-20">
         <view class="p-tb-30 min-border-bottom">基本信息</view>
         <view class="main p-tb-20">
@@ -35,8 +35,8 @@
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
         <view class="p-tb-30 min-border-bottom">操作信息</view>
         <view class="main p-tb-20">
-            <view>营销人员：{{list.desk_info.book_user_name?list.desk_info.book_user_name:"暂无数据"}}</view>
-            <view>预约时间：{{$minCommon.formatDate(new Date(list.desk_info.book_time *1000),'yyyy-MM-dd hh:mm:ss') }}</view>
+            <view v-if="list.desk_info.booking_id">营销人员：{{list.desk_info.book_user_name?list.desk_info.book_user_name:"暂无数据"}}</view>
+            <view v-if="list.desk_info.booking_id">预约时间：{{$minCommon.formatDate(new Date(list.desk_info.book_time *1000),'yyyy-MM-dd hh:mm:ss') }}</view>
             <view>开台人员：{{list.desk_info.open_user_name}}</view>
             <view>开台时间：{{$minCommon.formatDate(new Date(list.desk_info.open_time *1000),'yyyy-MM-dd hh:mm:ss') }}</view>
         </view>
@@ -46,8 +46,8 @@
         <view :class="index === 0 ? 'btn active' : 'btn' " @click="book">预约</view>
         <view :class="index === 1 ? 'btn active' : 'btn' " @click="saveWine">存酒</view>
         <view :class="index === 2 ? 'btn active' : 'btn' " @click="orderGet">订单</view>
-        <view class="badge" @click="showToastTxt" id='testDom'>
-            <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
+        <view class="badge">
+            <text class="more" style="color: #CCCCCC;" @click="showToastTxt" id='testDom'>&#xe61c;</text>
             <view class="toast anmatiin " v-if="toast">
                 <view class="bag_btn" @click="bill">账单</view>
                 <view class="bag_btn" @click="del_order">销台</view>

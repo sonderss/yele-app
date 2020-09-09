@@ -10,7 +10,7 @@
     </view>
     <view class="bg">
         <view v-for="(item,index) in list" :key="index" class="p-lr-20" @click="toDeatil(item)">
-            <view class="cell-item min-flex min-flex-main-between  min-border-bottom" style="width:100%;height:130rpx">
+            <view :class="index !== list.length-1 ? 'cell-item min-flex min-flex-main-between  min-border-bottom':'cell-item min-flex min-flex-main-between' " style="width:100%;height:130rpx">
                 <!--发放记录-->
                 <view class="min-flex" v-if="type === 1">
                     <view class style="width:300rpx">
@@ -31,7 +31,7 @@
                     </view>
                 </view>
                 <view class="min-flex flex-end min-flex-dir-top bpa" v-if="type === 2">
-                    <view :class="item.cash_amount *1 > 0 ? 'ared' : 'ablack'">-{{item.amount}}</view>
+                    <view :class="item.transaction_status !== 2 ? 'ared' : 'ablack'">{{item.transaction_status === 2 ? `-${item.amount}`:item.amount }}</view>
                     <view class="bom f24 m-top-10">{{item.transaction_status === 0 ? '提现中' : (item.transaction_status === 1 ? '提现成功' : '提现失败' )}}</view>
                 </view>
                 <!---->
@@ -43,7 +43,7 @@
                     </view>
                 </view>
                 <view class="min-flex flex-end min-flex-dir-top" v-if="type === 3">
-                    <view :class="item.transaction_status === 2  ? ' ablack ' : 'ared'">{{item.amount *1 > 0 ? `+${item.amount}`: `-${item.amount}` }}</view>
+                    <view :class="item.transaction_status === 2  ? ' ablack ' : 'ared'">{{item.transaction_status !== 2  ? `+${item.amount}`: `-${item.amount}` }}</view>
                     <view class="bom f24 m-top-10">{{item.transaction_status === 0 ? '入账中' : (item.transaction_status === 1 ? '已到账' : '入账失败' )}}</view>
                 </view>
                 <!---->

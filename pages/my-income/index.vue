@@ -226,7 +226,7 @@ export default {
 <style lang="scss" scoped>
 .top-view {
     width: 100%;
-    height: 481rpx;
+    height: 500rpx;
     background: #030313;
     display: flex;
     flex-direction: column;
@@ -240,6 +240,7 @@ export default {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        margin-bottom: 20rpx;
 
         .price {
             width: auto;

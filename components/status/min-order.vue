@@ -1,5 +1,5 @@
 <template>
-<view class="platform-detail">
+<view class="platform-detail" @click="getDom">
     <view class="card p-lr-20 m-bottom-20">
         <view class="p-tb-30 min-border-bottom">基本信息</view>
         <view class="main p-tb-20">
@@ -23,7 +23,7 @@
             </view>
             <view>开台订单：{{list.order_info.order_id === 0 ? '未进行点单':'￥'+list.order_info.order_total}}{{list.order_info.is_can_open === 0 ? '' : '（未支付）' }}</view>
             <view class="card-btns">
-                <min-btn size="xs" v-if="list.order_info.is_can_open !== 1" @click="reorder">重新下单</min-btn>
+                <min-btn size="xs" v-if="list.order_info.is_can_open !== 1 && list.order_info.order_id !== 0" @click="reorder">重新下单</min-btn>
                 <view class="m-left-20"></view>
                 <min-btn size="xs" v-if="list.order_info.is_can_open !== 1" type="white" border @click="applicationopening(list.order_info.is_can_open)">申请开台</min-btn>
                 <view class="m-left-20"></view>
@@ -52,8 +52,8 @@
         <view :class="index === 0 ? 'btn active' : 'btn' " @click="book">预约</view>
         <view :class="index === 1 ? 'btn active' : 'btn' " @click="goOrder">下单</view>
         <view :class="index === 2 ? 'btn active' : 'btn' " @click="saveWine">存酒</view>
-        <view class="badge" @click="showToastTxt" id='testDom'>
-            <text class="more" style="color: #CCCCCC;">&#xe61c;</text>
+        <view class="badge">
+            <text class="more" style="color: #CCCCCC;" @click="showToastTxt" id='testDom'>&#xe61c;</text>
             <view class="toast anmatiin " v-if="toast">
                 <view class="bag_btn" @click="del_order">销台</view>
                 <view class="bag_btn" @click="goGetHistory">历史</view>

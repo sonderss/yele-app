@@ -22,7 +22,7 @@
         <view class="title min-border-bottom m-bottom-30">详细介绍</view>
         <view class="content p-bottom-30">{{list.info}}</view>
     </view>
-    <min-goods-submit v-if="type != 1 && type != 2 " icon="../../static/images/cart.png" :goodsCount="countNums" :totalAmount="totalAmountE " :totalLabel="totalLabel" buttonText="去下单" @leftClick="leftClick" @submit="submit"></min-goods-submit>
+    <min-goods-submit v-if="!$parseURL().isPay" icon="../../static/images/cart.png" :goodsCount="countNums" :totalAmount="totalAmountE " :totalLabel="totalLabel" buttonText="去下单" @leftClick="leftClick" @submit="submit"></min-goods-submit>
     <!-- 选择规格 -->
     <min-popup :show="isSelSku" @close="closeSelectedSkuPop" :heightSize="skuObj.sku.length < 3 ? '700' : '830' ">
         <view class="skuPop">
@@ -44,13 +44,15 @@
                 </view>
             </view>
             <view class="min-border-bottom m-lr-30"></view>
-            <!-- 可选择规格项 -->
-            <view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'">
-                <view class="f26">规格</view>
-                <view class="item-view">
-                    <view :class="chioceIndex ===index ?   'item-active' : 'item' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
+            <scroll-view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'" scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')'}">
+                <!-- 可选择规格项 -->
+                <view>
+                    <view class="f26">规格</view>
+                    <view class="item-view">
+                        <view :class="chioceIndex ===index ?   'item-active' : 'item' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
+                    </view>
                 </view>
-            </view>
+            </scroll-view>
             <view class="min-border-bottom m-lr-30 m-tb-20"></view>
             <!-- 数量 -->
             <view class="sku-item" style="height:auto">
@@ -77,10 +79,7 @@
                 </view>
             </view>
             <view class="main-sel-view p-lr-30 m-top-20" style="margin-bottom:300rpx" @touchstart="start" @touchmove="move" @touchend="end">
-                <scroll-view scroll-y :style="{
-        transition: top === 0 ? 'transform 300ms' : '',
-        transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'
-      }">
+                <scroll-view scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'}">
                     <view class="item" v-for="(item2,n) in selArr" :key="n">
                         <!-- <view v-if="!item2.test"> -->
                         <image :src="errImg ? '/static/images/goods.png': item2.product_img" @error="imgerra" />
@@ -262,6 +261,7 @@ export default {
     },
     mounted() {
         console.log(this.product_type)
+        console.log(this.$parseURL().isPay)
         this.getData()
     },
     methods: {
@@ -666,7 +666,7 @@ export default {
     padding: 30rpx 0;
     padding-bottom: 10rpx;
     overflow: auto;
-    height: 300rpx;
+    height: 260rpx;
 
     .item-view {
         margin-top: 20rpx;
@@ -713,7 +713,7 @@ export default {
     margin: 0 30rpx;
     padding: 30rpx 0;
     padding-bottom: 10rpx;
-    height: 160rpx;
+    height: 120rpx;
 
     .item-view {
         margin-top: 20rpx;

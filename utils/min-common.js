@@ -197,7 +197,7 @@ class MinCommon {
         return { desc: '待确认', color: 'green' }
 
       case 2:
-        return { desc: '待出品', color: 'red' }
+        return { desc: '待出品', color: 'blue' }
 
       case 3:
         return { desc: '出品中', color: 'blue' }
@@ -212,10 +212,10 @@ class MinCommon {
         return { desc: '待补差价', color: 'red' }
 
       case -2:
-        return { desc: '已取消', color: 'green' }
+        return { desc: '已取消', color: 'tcolor' }
 
       case -3:
-        return { desc: '已退单', color: 'red' }
+        return { desc: '已退单', color: 'fcolor' }
 
       case -4:
         return { desc: '改价作废', color: 'blue' }

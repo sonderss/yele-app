@@ -29,6 +29,9 @@
                             </view>
                             <view class="steper">
                                 <min-stepper v-if="item2.sku.length <= 1" v-model="item2.step" @change="changeChioce(index,index2)"></min-stepper>
+                                <!-- <view v-if="item2.sku.length <= 1 && item2.min_amount*1 <= 0" class="m-right-10" style="width:40rpx;height:40rpx;" @click.stop="changeChioceT">
+                                    <image lazy-load src="/static/images/yellow-add.png" style="width:100%" />
+                                </view> -->
                                 <view class="isSku f24" v-if="item2.sku.length > 1 " @click="selSku(index,index2)">选规格</view>
                             </view>
                         </view>
@@ -109,13 +112,15 @@
                 </view>
             </view>
             <view class="min-border-bottom m-lr-30"></view>
-            <!-- 可选择规格项 -->
-            <view :class="skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'">
-                <view class="f26">规格</view>
-                <view class="item-view">
-                    <view :class="chioceIndex ===index ?   'item-active' : 'item' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
+            <scroll-view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'" scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')'}">
+                <!-- 可选择规格项 -->
+                <view>
+                    <view class="f26">规格</view>
+                    <view class="item-view">
+                        <view :class="chioceIndex ===index ?   'item-active t' : 'item t' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
+                    </view>
                 </view>
-            </view>
+            </scroll-view>
             <view class="min-border-bottom m-lr-30"></view>
             <!-- 数量 -->
             <view class="sku-item">
@@ -326,6 +331,8 @@ export default {
         },
         /** 添加商品事件 */
         addGoods(index, index2) {
+            console.log(this.mainArray[index].list[index2])
+            // if (this.mainArray[index].list[index2].min_amount * 1 === 0) return this.$showToast('提成为0，添加失败')
             const a = index + "" + index2;
             // // 判断选择项是否重复
             if (!this.selNum.includes(a)) {
@@ -391,6 +398,7 @@ export default {
             this.skuObj.step = 1;
             this.skuIndex.index = index;
             this.skuIndex.index2 = index2;
+            console.log(this.skuObj)
         },
         changeChioce(index, index2) {
             this.addGoods(index, index2);

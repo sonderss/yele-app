@@ -6,9 +6,9 @@
             <view class="status" :class="$minCommon.getOrderStatus(list.order_status).color">{{$minCommon.getOrderStatus(list.order_status).desc}}</view>
         </view>
         <view class="goods-list p-top-10">
-            <view class="p-tb-20" v-for="item in list.order_product_list" :key="item.id">
+            <view class="p-tb-10" v-for="item in list.order_product_list" :key="item.detail_id">
                 <!--已出品-->
-                <min-goods-item :name="item.product_name" :price="item.order_price" :icon="item.product_img" :specification="item.sku" :value="item.quantity"></min-goods-item>
+                <min-goods-item @ToDetail="goodsDeatil(item.id,item.type)" :produced="item.produce_status ? true:false" :name="item.product_name" :price="item.order_price" :icon="item.product_img" :specification="item.sku" :value="item.quantity"></min-goods-item>
             </view>
         </view>
     </view>
@@ -23,12 +23,15 @@
             <view class="item">已付金额：￥{{list.origin_order.pay_price}}</view>
         </view>
     </view>
-    <view class="card p-lr-20 m-top-20" v-if="list.return_order.new_order_id">
+    <view class="card p-lr-20 m-top-20" v-if="list.return_order.new_order_id && list.order_status === -5">
         <view class="top p-tb-20 min-border-bottom">
             <view class="title">变更信息</view>
             <view class="btn" @click="viewNewOrder(list.return_order.new_order_id)">查看新订单</view>
         </view>
         <view class="main p-tb-30">
+            <!-- 这里需要数据测试 
+            <text v-if="list.return_order.return_product[0].type === 1"></text>
+            <text v-if="list.return_order.return_product[0].type === 2"></text>-->
             <view class="item item_products" v-for="item in list.return_order.return_product" :key="item.id">
                 <view v-if="item.type === 1">退货商品：{{item.product_name}}</view>
                 <view v-if="item.type === 2">新增商品：{{item.product_name}}</view>
@@ -38,28 +41,31 @@
             <view class="item" v-if="list.return_order.price_type === 1">待补金额：￥{{list.return_order.price}}</view>
             <view class="item" v-if="list.return_order.price_type === 2">退还金额：￥{{list.return_order.price}}</view>
 
-            <view class="item">审核人：{{list.return_order.reviewer_name ? `￥${list.return_order.reviewer_name}` : '暂无数据'}}</view>
+            <view class="item">审核人：{{list.return_order.reviewer_name ? `${list.return_order.reviewer_name}` : '-'}}</view>
             <view class="item">收银：{{list.return_order.cashier_name}}</view>
-            <view class="item">时间：{{12313}}</view>
+            <view class="item">时间：{{list.return_order.audit_time}}</view>
         </view>
     </view>
-
     <view class="card p-lr-20 m-top-20">
         <view class="top p-tb-30 min-border-bottom">订单信息</view>
         <view class="main p-tb-30">
-            <view class="item">订 单 号 ：{{list.order_sn}}</view>
-            <view class="item">订单来源：{{list.source ? '门店':'平台'}}</view>
+            <view class="item">订&nbsp;单&nbsp;<span class='p-left-20'>号：</span>{{list.order_sn}}</view>
+            <view class="item" v-if="list.order_status !== 2 && list.order_status !== 3 && list.order_status !== 4 && list.order_status !== 5 && list.order_status !== -2 && list.order_status !== -3 && list.order_status !== -5 && list.order_status !== -6">订单来源：{{list.source ? '门店':'平台'}}</view>
             <view class="item">支付类型：{{list.pay_type === 0 ? '先付' :'后付'}}</view>
-            <view class="item">下单人员：{{list.confirm_user_name ? list.confirm_user_name  : '暂无数据'}}</view>
+            <view class="item">下单人员：{{list.order_user_name ? list.order_user_name  : '暂无数据'}}</view>
             <view class="item">下单时间：{{$minCommon.formatDate(new Date(list.create_time*1000),'yyyy/MM/dd hh:mm:ss' ) }}</view>
             <view class="item">订单金额：￥{{list.order_total}}</view>
             <view class="item">已付金额：￥{{list.pay_price}}</view>
             <view class="item">应付金额：￥{{list.actual_total}}</view>
-            <view class="item">待付金额：￥{{list.unpay_price}}</view>
+            <view class="item" v-if="list.order_status !== 1 && list.order_status !== 2 && list.order_status !== 3 && list.order_status !== 4 && list.order_status !== -2 && list.order_status !== -3  && list.order_status !== -5">待付金额：￥{{list.unpay_price}}</view>
             <view class="item">
                 支付状态：
                 <text :class="list.pay_status === 0 ? 'red'  : 'fcolor' ">{{ list.pay_status === 0 ?'未付清' : '已付清'}}</text>
             </view>
+            <view class="item" v-if="list.order_status !== 0 && list.order_status !== 5 && list.order_status !== -1  && list.order_status !== -6 && !list.pay_type">支付时间：{{$minCommon.formatDate(new Date(list.pay_time*1000),'yyyy/MM/dd hh:mm:ss' )}}</view>
+            <view class="item" v-if="list.order_status !== 0 && list.order_status !== 5 && list.order_status !== -1  && list.order_status !== -6 && !list.pay_type">支付方式：{{method[list.payment_id]}}</view>
+            <view class="item" v-if="list.order_status !== 1 && list.order_status !== 0 && list.order_status !== 5  && list.order_status !== -6">确&nbsp;认&nbsp;<span class='p-left-20'>人：</span>{{list.confirm_user_name}}</view>
+            <view class="item" v-if="list.order_status !== 1 && list.order_status !== 0 && list.order_status !== 5  && list.order_status !== -6">确认时间：{{list.confirm_time}}</view>
         </view>
     </view>
     <view class="card p-lr-20 m-top-20" v-if="list.is_signoff === 1">
@@ -98,7 +104,9 @@
         </view>
     </view>
     <view style="height:200rpx"></view>
-    <min-goods-submit @leftClick="leftClick" :leftText="leftText" @submit="submit" :totalAmount="totalAmount" :buttonText="buttonText" v-if="showSubmit" />
+    <view v-if="list.order_status !== -5 && list.order_status !== -6">
+        <min-goods-submit @leftClick="leftClick" :leftText="leftText" @submit="submit" :totalAmount="totalAmount" :buttonText="buttonText" v-if="showSubmit" />
+    </view>
     <min-modal ref="show"></min-modal>
     <!-- 支付弹窗 -->
     <min-popup :show="showPayPop" @close="closePayPop" heightSize="800">
@@ -137,6 +145,7 @@
 <script>
 // 签折类型（0：全单打折，1：全单优惠，2：单品打折，3：单品优惠）
 const type = ['全单打折', '全单优惠', '单品打折', '单品优惠']
+const method = ['暂无', '支付宝扫码', '微信扫码', '现金支付', '刷卡支付', '后付款']
 export default {
     name: 'redorder-detail',
     navigate: ['navigateTo', 'redirectTo'],
@@ -157,7 +166,8 @@ export default {
             type,
             showPayPop: false,
             payType: 1,
-            showSubmit: false
+            showSubmit: false,
+            method
         }
     },
     onShow() {
@@ -310,10 +320,15 @@ export default {
         closePayPop() {
             this.showPayPop = false
         },
-        goodsDeatil(index) {
+        goodsDeatil(id, type) {
             // 跳到商品详情页
             this.$minRouter.push({
-                name: 'product-details'
+                name: 'product-details',
+                params: {
+                    product_id: id,
+                    product_type: type,
+                    isPay: true
+                }
             })
         }
     }

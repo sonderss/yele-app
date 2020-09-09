@@ -15,7 +15,7 @@
     <view class="m-top-20 bg" v-if="list.length > 0">
         <view v-for="(item,index) in list" :key="index" class="p-lr-20  " @click="toDeatil(item.id)">
             <!-- p-tb-30 p-lr-20  cell-item min-flex min-flex-main-between  min-border-botto-->
-            <view class="cell-item min-flex min-flex-main-between  min-border-bottom " style="width:100%;height:130rpx">
+            <view :class="index !== list.length-1 ? 'cell-item min-flex min-flex-main-between  min-border-bottom ':'cell-item min-flex min-flex-main-between'" style="width:100%;height:130rpx">
                 <view class="min-flex">
                     <view style="width:400rpx">
                         <view class="f28 min-ellipsis">{{item.commission_name}}</view>

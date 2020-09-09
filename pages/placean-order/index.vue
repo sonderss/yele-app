@@ -38,10 +38,7 @@
             </view>
         </view>
         <view class="main-sel-view p-lr-30 m-top-20" style="margin-bottom:300rpx" @touchstart="start" @touchmove="move" @touchend="end">
-            <scroll-view scroll-y :style="{
-        transition: top === 0 ? 'transform 300ms' : '',
-        transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'
-      }">
+            <scroll-view scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'}">
                 <view class="item" v-for="(item2,n) in selArr" :key="n">
                     <image :src="errImg ? '/static/images/goods.png': item2.product_img" @error="imageErro" />
                     <view class="content-view">
@@ -109,14 +106,16 @@
             </view>
         </view>
         <view class="min-border-bottom m-lr-30"></view>
-        <!-- 可选择规格项 -->
-        <view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'">
-            <view class="f26">规格</view>
-            <view class="item-view">
-                <view :class="chioceIndex ===index ?   'item-active t' : 'item t' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
+        <scroll-view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'" scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')'}">
+            <!-- 可选择规格项 -->
+            <view>
+                <view class="f26">规格</view>
+                <view class="item-view">
+                    <view :class="chioceIndex ===index ?   'item-active t' : 'item t' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
+                </view>
             </view>
-        </view>
-        <view class="min-border-bottom m-lr-30 m-tb-20"></view>
+        </scroll-view>
+        <view class="min-border-bottom m-lr-30"></view>
         <!-- 数量 -->
         <view class="sku-item">
             <view class="f26">数量</view>
@@ -879,7 +878,7 @@ uni-page-body {
     .main-sel-view {
         width: 100%;
         // height: 620rpx;
-        overflow: auto;
+        // overflow: auto;
 
         .item {
             display: flex;
@@ -1018,7 +1017,7 @@ uni-page-body {
         padding: 30rpx 0;
         padding-bottom: 10rpx;
         overflow: auto;
-        height: 300rpx;
+        height: 260rpx;
 
         .item-view {
             margin-top: 20rpx;
@@ -1067,7 +1066,7 @@ uni-page-body {
         margin: 0 30rpx;
         padding: 30rpx 0;
         padding-bottom: 10rpx;
-        height: 160rpx;
+        height: 120rpx;
 
         .item-view {
             margin-top: 20rpx;
@@ -1092,6 +1091,7 @@ uni-page-body {
                 word-wrap: none;
                 height: 58rpx;
                 border: 1px solid #fe432a;
+                color: #fe432a;
                 border-radius: 10rpx;
                 margin-right: 20rpx;
                 margin-bottom: 20rpx;

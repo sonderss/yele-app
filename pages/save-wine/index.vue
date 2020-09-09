@@ -56,7 +56,7 @@
     </view>
     <view class="client_desc p-lr-20 m-top-20">
         <min-desc-input sign="*" desc="客户姓名" v-model="name"></min-desc-input>
-        <min-desc-input sign="*" :border="false" desc="联系方式" v-model="phone"></min-desc-input>
+        <min-desc-input sign="*" :border="false" desc="联系方式" v-model="phone" :maxlength="11"></min-desc-input>
     </view>
     <view class="btn" @click="save">提交</view>
 </view>
@@ -116,7 +116,8 @@ export default {
                     options.order_id = item.order_id
                     options.apply_data.push({
                         sku_id: item.sku_id,
-                        ratio: item.quantity,
+                        // ratio: item.quantity,
+                        ratio: item.num,
                         unique_code: item.unique_code
                     })
                 }
@@ -127,7 +128,8 @@ export default {
                     // options.apply_data.push(item.sku_id + item.quantity)
                     options.apply_data.push({
                         sku_id: item.sku_id,
-                        ratio: item.quantity,
+                        // ratio: item.quantity,
+                        ratio: item.num,
                         unique_code: item.unique_code
                     })
                 }

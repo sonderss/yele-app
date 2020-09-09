@@ -5,7 +5,7 @@
         <view class="card p-lr-20">
             <view class="top p-tb-30 min-border-bottom" @click.stop="toCunDeati(item.id,index)">
                 <view class="order-num">单号：{{item.deposit_sn}}</view>
-                <view class="status">已生效</view>
+                <!-- <view :class="statusData[item.deposit_status].status">{{statusData[item.deposit_status].name}}</view> -->
             </view>
             <view class="main p-tb-30" @click.stop="toCunDeati(item.id,index)">
                 <view class="item">客户姓名：{{item.client_name}}</view>
@@ -23,6 +23,33 @@
 </template>
 
 <script>
+// 1待确认，2已存酒，3已过期，4已回仓，5已作废，6已取酒
+const statusData = [{},
+    {
+        name: '待确认',
+        status: 'confirmed'
+    },
+    {
+        name: '已存酒',
+        status: 'end'
+    },
+    {
+        name: '已过期',
+        status: 'expired'
+    },
+    {
+        name: '已回仓',
+        status: 'force'
+    },
+    {
+        name: '已作废',
+        status: 'expired'
+    },
+    {
+        name: '已取酒',
+        status: 'force'
+    }
+]
 export default {
     name: 'fetch-liquor',
     navigate: ['navigateTo'],
@@ -35,7 +62,8 @@ export default {
             falg: false,
             page: 2,
             des: "加载中",
-            load: true
+            load: true,
+            statusData
         }
     },
     onReachBottom() {
@@ -50,13 +78,24 @@ export default {
                 }, 1000)
             }
             this.page++
-            this.list = this.list.concat([...res.list])
+            let arr = []
+            res.list.map(item => {
+                if (item.deposit_status === 2) {
+                    arr.push(item)
+                }
+            })
+            this.list = this.list.concat([...arr])
         })
     },
     onPullDownRefresh() {
         console.log('refresh');
         this.getData(1, 10, true).then(res => {
-            this.list = res.list
+            res.list.map(item => {
+                if (item.deposit_status === 2) {
+                    this.list.push(item)
+                }
+            })
+            // this.list = res.list
             this.page = 2
             uni.stopPullDownRefresh();
         })
@@ -76,7 +115,11 @@ export default {
     mounted() {
         // 获取存酒记录
         this.getData(1, 10).then(res => {
-            this.list = res.list
+            res.list.map(item => {
+                if (item.deposit_status === 2) {
+                    this.list.push(item)
+                }
+            })
             console.log(this.list)
         })
         // this.$minApi.getWinekeepingrecord()
@@ -134,8 +177,20 @@ export default {
                 display: flex;
                 justify-content: space-between;
 
-                .status {
-                    color: #0090FF;
+                .confirmed {
+                    color: #ff0101;
+                }
+
+                .end {
+                    color: #39ba01;
+                }
+
+                .force {
+                    color: #0090ff;
+                }
+
+                .expired {
+                    color: #666666;
                 }
             }
         }

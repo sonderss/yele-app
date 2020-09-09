@@ -33,9 +33,13 @@ export default {
         }
     },
     mounted() {
-        if (this.$store.state.status.payMethods.length >= 1) return this.payM = this.$store.state.status.payMethods
+        if (this.$store.state.status.payMethods.length >= 1) {
+            this.payM = this.$store.state.status.payMethods
+            this.payType = this.payM[0].id
+        }
         this.$minApi.getPayMethods().then(res => {
             this.payM = res.list
+            this.payType = this.payM[0].id
         })
     }
 

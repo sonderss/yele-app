@@ -41,7 +41,7 @@ export default {
             })
             return
         }
-        this.userInfo = this.$store.state.user.userInfo
+        this.userInfo = this.$store.state.user.userInfos
         if (this.userInfo.bank_card_num) {
             this.getCardLast(this.userInfo.bank_card_num)
         }
@@ -72,8 +72,7 @@ export default {
         toBangding() {
             // 是否已经设置了支付密码  实名认证  弹窗
             if (!this.userInfo.is_cash_pwd) return this.$showToast('请先设置支付密码')
-            if (this.userInfo.is_certify !== 1)
-                return this.$showToast('请先进行实名认证')
+            if (this.userInfo.is_certify !== 1) return this.$showToast('请先进行实名认证')
             this.getVipInfo()
         },
         jiebang() {

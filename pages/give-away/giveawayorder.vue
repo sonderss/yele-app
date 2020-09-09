@@ -3,7 +3,7 @@
     <view class="goods-wrap m-top-20 p-lr-20">
         <view class="p-tb-30 min-border-bottom">商品</view>
         <view class="goods-list p-top-10">
-            <view class="p-tb-20" v-for="item in list.order_product" :key="item.commodity_id">
+            <view class="p-tb-10" v-for="item in list.order_product" :key="item.commodity_sku_id">
                 <min-goods-item :name="item.commodity_name" :price="item.commodity_price" :icon="item.commodity_img" :specification="item.commodity_detail_name" :value="item.commodity_quantity">
                 </min-goods-item>
             </view>
@@ -16,12 +16,12 @@
             <!-- <view :class="item.product_count === 1 ? 'status confirmed':'status end'">{{list.product_count === 1 ? '待确认': '已取酒'}}</view> -->
         </view>
         <view class="main p-top-20">
-            <view class="item">台号：{{list.order_info.desk_name}}</view>
-            <view class="item">低消：{{list.order_info.minim_charge}}</view>
+            <view class="item">台<span style="padding-left:55rpx">号：</span>{{list.order_info.desk_name}}</view>
+            <view class="item">抵<span style="padding-left:55rpx">消：</span>{{list.order_info.minim_charge}}</view>
             <view class="item">账单金额：￥{{list.order_info.bill_price}}</view>
-            <view class="item">客户姓名：{{list.order_info.client_name}}</view>
-            <view class="item">联系方式：{{list.order_info.client_mobile}}</view>
-            <view class="item">订单号：{{list.order_info.order_sn}}</view>
+            <view class="item">客户姓名：{{list.order_info.client_name ? list.order_info.client_name : '暂无'}}</view>
+            <view class="item">联系方式：{{list.order_info.client_mobile ? list.order_info.client_mobile :'暂无'}}</view>
+            <view class="item">订&nbsp;单&nbsp;<span class='p-left-20'>号：</span>{{list.order_info.order_sn}}</view>
             <view class="item">开台时间：{{list.order_info.create_time}}</view>
 
         </view>
@@ -116,6 +116,7 @@ export default {
             order_id: this.order_id
         }).then(res => {
             this.list = res
+            console.log(this.list)
             // eslint-disable-next-line handle-callback-err
         }).catch(err => {
             setTimeout(() => {

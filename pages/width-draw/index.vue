@@ -20,6 +20,7 @@
     <text class="warn1" v-if="ishow">输入金额超出可提现金额</text>
     <view class="submit" @click="submit">提现</view>
     <view class="btm_descsss" @click="toVipInfo">《通联用户协议》</view>
+    <web-view :src="uri" v-if="uri"></web-view>
 </view>
 </template>
 
@@ -36,7 +37,8 @@ export default {
             tixianInfo: {},
             disabled: false,
             can_cash_withdraw: '',
-            ishow: false
+            ishow: false,
+            uri: ''
         }
     },
     watch: {
@@ -116,7 +118,12 @@ export default {
             if (!this.lastString) return this.$showToast('你尚未绑定银行卡')
             this.money = this.tixianInfo.can_cash_withdraw
         },
-        toVipInfo() {}
+        toVipInfo() {
+            this.$minApi.getVipUserI().then(res => {
+                console.log(res)
+                this.uri = res.url
+            })
+        }
     },
 }
 </script>
@@ -187,7 +194,7 @@ export default {
     height: 88rpx;
     background: rgba(255, 224, 1, 1);
     border-radius: 10rpx;
-    margin: 70rpx auto;
+    margin: 90rpx auto;
     line-height: 88rpx;
     text-align: center;
 }

@@ -16,14 +16,12 @@ export default {
     },
     setStoreSelArr: (state, data) => {
       state.storeSelArr = data
-      console.log(data)
     },
     setOrderSelArr: (state, data) => {
       state.orderSelArr = data
     },
     seOrderTempData: (state, data) => {
       state.orderTempData = data
-      console.log("state.orderTempData",state.orderTempData)
     }
   },
   actions: {

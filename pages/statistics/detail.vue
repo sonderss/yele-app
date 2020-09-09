@@ -155,11 +155,11 @@
                 <view class="main_data_item" style="border-radius:10rpx">
                     <view class="item_box_ one" style="width:30%">
                         <text class="name">平均开台时长</text>
-                        <text class="desc">{{zhuotai.desk_statistics.average_duration}}</text>
+                        <text class="desc">{{zhuotai.desk_statistics.average_duration}}小时</text>
                     </view>
                     <view class="item_box_" style="width:30%">
                         <text class="name">翻台率</text>
-                        <text class="desc">{{zhuotai.desk_statistics.average_opening}}</text>
+                        <text class="desc">{{zhuotai.desk_statistics.average_opening}}%</text>
                     </view>
                     <view class="item_box_ one" style="width:30%;">
                         <text class="name"></text>
@@ -172,6 +172,11 @@
         <view class="taiwei m-lr-20 m-top-30" v-if=" zhuotai.consumption_rank.length !== 0">
             <view class="top_view">
                 <view class="mid_view min-border-bottom">桌台消费排行榜</view>
+                <view class="top_title">
+                    <text>台号</text>
+                    <text>营销</text>
+                    <text>消费额</text>
+                </view>
                 <view class="bom_view m-top-30" v-for="(item,index) in zhuotai.consumption_rank" :key="index" @click="toDeatiBill(item.opening_id,item.desk_id)">
                     <view class="item">{{item.desk_name}}</view>
                     <view class="item">{{item.sales_user_name}}</view>
@@ -1024,6 +1029,13 @@ export default {
                 text-align: center;
             }
         }
+    }
+
+    .top_title {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        background: red;
     }
 }
 </style>
