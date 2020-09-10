@@ -308,7 +308,8 @@ uni-page-body {
     padding: 30rpx 0;
     padding-bottom: 10rpx;
     overflow: auto;
-    height: 260rpx;
+    height: 220rpx;
+
 
     .item-view {
         margin-top: 20rpx;
@@ -318,11 +319,11 @@ uni-page-body {
         flex-wrap: wrap;
 
         .t {
-            width: 280rpx;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+          width: 320rpx;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
 
         .item {
             padding: 0 18rpx;
@@ -334,6 +335,7 @@ uni-page-body {
             margin-bottom: 20rpx;
             text-align: center;
             line-height: 58rpx;
+            font-size: 26rpx;
         }
 
         .item-active {
@@ -347,15 +349,21 @@ uni-page-body {
             text-align: center;
             line-height: 58rpx;
             color: #fe432a;
+            font-size: 26rpx;
         }
     }
 }
-
+.sku-item1{
+  margin: 0 30rpx;
+  padding: 30rpx 0;
+  padding-bottom: 10rpx;
+  height: 120rpx;
+}
 .sku-item-num {
     margin: 0 30rpx;
     padding: 30rpx 0;
     padding-bottom: 10rpx;
-    height: 130rpx;
+    height: 120rpx;
 
     .item-view {
         margin-top: 20rpx;
@@ -363,6 +371,12 @@ uni-page-body {
         display: flex;
         flex-wrap: wrap;
         justify-items: flex-start;
+        .t {
+          width: 320rpx;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+      }
         .item {
             padding: 0 10rpx;
             word-wrap: none;
@@ -373,6 +387,7 @@ uni-page-body {
             margin-bottom: 20rpx;
             text-align: center;
             line-height: 58rpx;
+            font-size: 26rpx;
         }
 
         .item-active {
@@ -386,6 +401,7 @@ uni-page-body {
             text-align: center;
             line-height: 58rpx;
             color: #fe432a;
+            font-size: 26rpx;
         }
     }
 }

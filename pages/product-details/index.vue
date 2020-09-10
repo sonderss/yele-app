@@ -1,7 +1,7 @@
 <template>
 <view class="product-details p-tb-20 p-lr-30">
     <swiper class="swiper" :indicatorDots="false" :circular="true" :autoplay="autoplay" :interval="interval" :duration="duration" v-if="!noData">
-        <swiper-item v-for="(item1,index) in item" :key="index">
+        <swiper-item v-for="(item1,index) in itemss" :key="index">
             <view class="swiper-item">
                 <image :src="item1" mode="scaleToFill" @error="imgerra" />
             </view>
@@ -29,7 +29,7 @@
             <view class="skuTop">
                 <view class="leftView">
                     <view class="img-view">
-                        <image :src="errImg ? '/static/images/goods.png': skuObj.sku[chioceIndex].sku_img" @error="imgerra" />
+                        <image :src="skuObj.sku[chioceIndex].sku_img" @error="imgerraaaa" />
                     </view>
                     <!-- sku信息 -->
                     <!-- sku信息 -->
@@ -53,7 +53,7 @@
                     </view>
                 </view>
             </scroll-view>
-            <view class="min-border-bottom m-lr-30 m-tb-20"></view>
+            <view class="min-border-bottom m-lr-30"></view>
             <!-- 数量 -->
             <view class="sku-item" style="height:auto">
                 <view class="f26">数量</view>
@@ -82,7 +82,7 @@
                 <scroll-view scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'}">
                     <view class="item" v-for="(item2,n) in selArr" :key="n">
                         <!-- <view v-if="!item2.test"> -->
-                        <image :src="errImg ? '/static/images/goods.png': item2.product_img" @error="imgerra" />
+                        <image :src="item2.sku.sku_img ? item2.sku.sku_img  : item2.product_img " @error="imgerras($event,n)" />
                         <view class="content-view">
                             <view class="right-view-title">
                                 <text class="f28 t" style="display:block">{{item2.product_name}}</text>
@@ -139,7 +139,7 @@ export default {
     navigate: ['navigateTo'],
     data() {
         return {
-            item: [],
+            itemss: [],
             autoplay: true,
             interval: 2000,
             duration: 500,
@@ -276,8 +276,8 @@ export default {
                         this.list.step = 0
                         this.list.type = 'product'
                         console.log(this.list)
-                        this.item = []
-                        this.item.push(this.list.product_img)
+                        this.itemss = []
+                        this.itemss.push(this.list.product_img)
                     })
                     .catch(() => {
                         this.noData = true
@@ -292,8 +292,8 @@ export default {
                         this.list.step = 0
                         this.list.type = 'service'
                         console.log(this.list)
-                        this.item = []
-                        this.item.push(this.list.product_img)
+                        this.itemss = []
+                        this.itemss.push(this.list.product_img)
                     })
                     .catch(() => {
                         this.noData = true
@@ -404,9 +404,18 @@ export default {
         // 图片错误
         imgerra(e) {
             if (e.type === 'error') {
-                this.item = []
-                this.item.push('/static/images/bid-goods.png')
-                this.errImg = true
+                this.itemss = []
+                this.itemss.push('/static/images/bid-goods.png')
+            }
+        },
+        imgerraaaa(e) {
+            if (e.type === 'error') {
+                this.skuObj.sku[chioceIndex].sku_img = '/static/images/bid-goods.png'
+            }
+        },
+        imgerras(e, n) {
+            if (e.type === 'error') {
+                this.$set(this.selArr[n], 'product_img', '/static/images/goods.png')
             }
         },
         // 已选商品
@@ -666,7 +675,7 @@ export default {
     padding: 30rpx 0;
     padding-bottom: 10rpx;
     overflow: auto;
-    height: 260rpx;
+    height: 220rpx;
 
     .item-view {
         margin-top: 20rpx;
@@ -684,10 +693,11 @@ export default {
             margin-bottom: 20rpx;
             text-align: center;
             line-height: 58rpx;
-            width: 280rpx;
+            width: 320rpx;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-size: 26rpx;
         }
 
         .item-active {
@@ -701,10 +711,11 @@ export default {
             text-align: center;
             line-height: 58rpx;
             color: #fe432a;
-            width: 280rpx;
+            width: 320rpx;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            font-size: 26rpx;
         }
     }
 }
@@ -731,6 +742,11 @@ export default {
             margin-bottom: 20rpx;
             text-align: center;
             line-height: 58rpx;
+            font-size: 26rpx;
+            width: 320rpx;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .item-active {
@@ -744,6 +760,11 @@ export default {
             margin-bottom: 20rpx;
             text-align: center;
             line-height: 58rpx;
+            font-size: 26rpx;
+            width: 320rpx;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 }

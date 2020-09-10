@@ -229,15 +229,15 @@ export default {
                     console.log(res)
                     if (res.paid === 1) {
                         // this.$showToast('支付成功')
-                        setTimeout(() => {
-                            this.$minRouter.push({
-                                name: 'redpay-success',
-                                type: "redirectTo",
-                                params: {
-                                    id: this.$parseURL().data.order_id
-                                }
-                            })
-                        }, 2000)
+                        // setTimeout(() => {
+                        this.$minRouter.push({
+                            name: 'redpay-success',
+                            type: "redirectTo",
+                            params: {
+                                id: this.$parseURL().data.order_id
+                            }
+                        })
+                        // }, 2000)
                     } else {
                         // this.$showToast('第三方支付开发中')
                         this.$minRouter.push({
@@ -263,17 +263,17 @@ export default {
                     desk_id: this.$parseURL().data.desk_id
                 }).then(res => {
                     console.log(res)
-                    this.$showToast('支付成功')
+                    // this.$showToast('支付成功')
                     if (res.paid === 1) {
-                        setTimeout(() => {
-                            this.$minRouter.push({
-                                name: 'redpay-success',
-                                type: "redirectTo",
-                                params: {
-                                    id: this.$parseURL().data.order_id
-                                }
-                            })
-                        }, 2000)
+                        // setTimeout(() => {
+                        this.$minRouter.push({
+                            name: 'redpay-success',
+                            type: "redirectTo",
+                            params: {
+                                id: this.$parseURL().data.order_id
+                            }
+                        })
+                        // }, 2000)
                     } else {
                         // this.$showToast('第三方支付开发中')
                         this.$minRouter.push({

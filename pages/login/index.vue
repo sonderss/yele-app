@@ -213,6 +213,7 @@ export default {
             height: 25rpx;
             display: inline-block;
             margin-right: 10rpx;
+            margin-left: 37rpx;
         }
 
         .d {

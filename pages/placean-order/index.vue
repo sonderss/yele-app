@@ -40,7 +40,7 @@
         <view class="main-sel-view p-lr-30 m-top-20" style="margin-bottom:300rpx" @touchstart="start" @touchmove="move" @touchend="end">
             <scroll-view scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'}">
                 <view class="item" v-for="(item2,n) in selArr" :key="n">
-                    <image :src="errImg ? '/static/images/goods.png': item2.product_img" @error="imageErro" />
+                    <image :src="item2.sku.sku_img ? item2.sku.sku_img  : item2.product_img " @error="imageErro($event,n)" />
                     <view class="content-view">
                         <view class="right-view-title">
                             <text class="f28 t" style="display:block">{{item2.product_name}}</text>
@@ -92,7 +92,7 @@
         <view class="skuTop">
             <view class="leftView">
                 <view class="img-view">
-                    <image :src="skuObj.sku[chioceIndex].sku_img" @error="imageErro" />
+                    <image :src="skuObj.sku[chioceIndex].sku_img" @error="imageErro2" />
                 </view>
                 <!-- sku信息 -->
                 <view class="sku-view">
@@ -436,10 +436,17 @@ export default {
             this.selected = true
         },
         // 图片错误
-        imageErro(e) {
+        imageErro(e, n) {
+            console.log("wocaonima", e, n)
             if (e.type === 'error') {
-                this.skuObj.product_img = '/static/images/goods.png'
-                this.errImg = true
+                // this.skuObj.product_img = '/static/images/goods.png'
+                this.$set(this.selArr[n], 'product_img', '/static/images/goods.png')
+                // this.errImg = true
+            }
+        },
+        imageErro2(e) {
+            if (e.type === 'error') {
+                this.skuObj.sku[this.chioceIndex].sku_img = '/static/images/goods.png'
             }
         },
         /** 清空已选商品 */
@@ -1027,7 +1034,7 @@ uni-page-body {
         padding: 30rpx 0;
         padding-bottom: 10rpx;
         overflow: auto;
-        height: 260rpx;
+        height: 220rpx;
 
         .item-view {
             margin-top: 20rpx;
@@ -1037,7 +1044,7 @@ uni-page-body {
             flex-wrap: wrap;
 
             .t {
-                width: 280rpx;
+                width: 320rpx;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -1083,6 +1090,13 @@ uni-page-body {
             width: 100%;
             display: flex;
             flex-wrap: wrap;
+
+            .t {
+                width: 320rpx;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
 
             .item {
                 padding: 0 10rpx;

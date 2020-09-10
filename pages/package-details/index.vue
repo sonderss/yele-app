@@ -43,12 +43,9 @@
             </view>
 
             <view class="main-sel-view p-lr-30 m-top-20" style="margin-bottom:300rpx" @touchstart="start" @touchmove="move" @touchend="end">
-                <scroll-view scroll-y :style="{
-        transition: top === 0 ? 'transform 300ms' : '',
-        transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'
-      }">
+                <scroll-view scroll-y :style="{transition: top === 0 ? 'transform 300ms' : '', transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'}">
                     <view class="item" v-for="(item2,n) in selArr" :key="n">
-                        <image :src="item2.product_img" mode="" />
+                        <image :src="item2.sku.sku_img ? item2.sku.sku_img  : item2.product_img " mode="" />
                         <view class="content-view">
                             <view class="right-view-title">
                                 <text class="f28 t" style="display:block">{{item2.product_name}}</text>

@@ -75,10 +75,13 @@
                     <text>{{myMoneylist.royalty_template ? myMoneylist.royalty_template : '暂无数据'}}</text>
                 </view>
             </view>
-            <view class="method-viewaaa" v-if="myMoneylist.activity_list.length > 0">
+            <view class="method-viewaaa">
                 <view class="left">活动方案</view>
-                <view class="rightaaa">
+                <view class="rightaaa" v-if="myMoneylist.activity_list.length > 0">
                     <view v-for="(item2,index2) in myMoneylist.activity_list" :key="index2" class="i f28">{{item2.activity_name ? item2.activity_name : '暂无数据'}}</view>
+                </view>
+                <view class="rightaaa" v-else>
+                    <view>暂无数据</view>
                 </view>
             </view>
         </view>
