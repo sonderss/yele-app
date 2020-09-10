@@ -252,6 +252,18 @@
       }
     },
     {
+      "path": "pages/user-agreement/index",
+      "style": {
+        "app-plus": {
+          "titleNView": {
+            "titleText": "用户协议",
+            "backgroundColor": "#030313",
+            "titleColor": "#FFE001"
+          }
+        }
+      }
+    },
+    {
       "path": "pages/order-entry/index",
       "style": {
         "app-plus": {
@@ -872,7 +884,7 @@
       "style": {
         "app-plus": {
           "titleNView": {
-            "titleText": "定台成功",
+            "titleText": "预约成功",
             "backgroundColor": "#030313",
             "titleColor": "#FFE001"
           }

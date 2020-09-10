@@ -458,6 +458,7 @@ export default {
         /**  关闭选择规格弹出层 */
         closeSelectedSkuPop() {
             this.isSelSku = false
+            this.chioceIndex = 0 // 初始化选中索引
         },
         // 删除选择项
         delItem(n) {
@@ -546,6 +547,8 @@ export default {
         },
         changeChioce(index, index2) {
             console.log("changesPopNoStep")
+            this.tempId.index = index
+            this.tempId.index2 = index2
             // 服务商品
             if (this.mainArray[index].product[index2].type === 'service') {
                 // 直接放入已选商品
@@ -573,7 +576,12 @@ export default {
             if (this.mainArray[index].product[index2].type === 'product') {
                 if (!this.mainArray[index].product[index2].isFlag || this.mainArray[index].product[index2].sku.length > 1) {
                     const obj = {}
-                    const skuOne = this.mainArray[index].product[index2].sku[this.chioceIndex]
+                    let skuOne = {}
+                    if (this.mainArray[index].product[index2].suoyin >= 0) {
+                        skuOne = this.mainArray[index].product[index2].sku[this.mainArray[index].product[index2].suoyin]
+                    } else {
+                        skuOne = this.mainArray[index].product[index2].sku[this.chioceIndex]
+                    }
                     Object.assign(obj, this.mainArray[index].product[index2])
                     obj.sku = skuOne
                     this.addGoods(obj)
@@ -619,6 +627,8 @@ export default {
             const obj = {}
             Object.assign(obj, this.skuObj)
             obj.sku = this.skuObj.sku[this.chioceIndex]
+            // this.mainArray[index].product[index2].suoyin
+            this.$set(this.mainArray[this.tempId.index].product[this.tempId.index2], "suoyin", this.chioceIndex)
             this.addGoods(obj)
             // this.mainArray[this.tempId.index].product[ this.tempId.index2].sku = this.mainArray[this.tempId.index].product[ this.tempId.index2].sku[this.chioceIndex]
             this.closeSelectedSkuPop()

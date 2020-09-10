@@ -373,6 +373,7 @@ export default {
         /**  关闭选择规格弹出层 */
         closeSelectedSkuPop() {
             this.isSelSku = false;
+            this.chioceIndex = 0
         },
         // 删除选择项
         delItem(n) {

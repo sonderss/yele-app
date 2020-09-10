@@ -1,7 +1,7 @@
 <template>
-<view class="min-describe p-lr-20" @click="chinceSku">
+<view :class=" 'min-describe  ' + isPadding" @click="chinceSku">
     <view class="left-view">
-        <view class="img-view" v-if="leftIcon">
+        <view :class="isCirl ?  'img-view-over' : 'img-view'" v-if="leftIcon">
             <image :src="leftIconValue ? leftIconValue : '/static/images/goods.png' " />
         </view>
         <view :class=" leftTxtTwo ? 'txt-view': ''">
@@ -86,6 +86,14 @@ export default {
             type: Boolean,
             default: false,
         },
+        isPadding: {
+            type: String,
+            default: 'p-lr-20'
+        },
+        isCirl: {
+            type: Boolean,
+            default: false
+        }
     },
     data() {
         return {
@@ -142,6 +150,19 @@ export default {
             height: 100rpx;
             margin-right: 20rpx;
             border-radius: 50%;
+
+            image {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .img-view-over {
+            width: 100rpx;
+            height: 100rpx;
+            margin-right: 20rpx;
+            border-radius: 50%;
+            overflow: hidden;
 
             image {
                 width: 100%;

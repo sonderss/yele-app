@@ -1,7 +1,7 @@
 <template>
 <view class="reservation-date p-lr-30 p-tb-20">
     <min-cell :card="false">
-        <min-cell-item v-for="(item,index) in list" :key="index" :title="item.title" :tail="item.is_booked === 0 ? '可预约' : item.sales_name" :tailcolor="item.is_booked === 0 ? true : false" tailType='red' :border="index !== list.length-1" @eventParent="backBook(index)"></min-cell-item>
+        <min-cell-item v-for="(item,index) in list" :key="index" :title="item.title" :tail="item.book_status === 0 ? '可预约' : item.sales_name" :tailcolor="item.book_status === 0 ? true : false" tailType='red' :border="index !== list.length-1" @eventParent="backBook(index)"></min-cell-item>
     </min-cell>
 </view>
 </template>
@@ -19,7 +19,7 @@ export default {
     methods: {
 
         backBook(index) {
-            if (this.list[index].is_booked !== 1) {
+            if (this.list[index].book_status === 0) {
                 this.times = this.list[index].title
                 console.log(this.times)
                 const pages = getCurrentPages() // 获取所有页面栈实例列表
@@ -32,6 +32,7 @@ export default {
         }
     },
     onLoad() {
+        // 预约状态（-1：暂停预约，0：可预约，1：已预约）
         this.list = this.$parseURL().data
         console.log(this.list)
         this.list.map((item, index) => {
@@ -39,7 +40,7 @@ export default {
             const f = '星期' + '日一二三四五六'.charAt(time.getDay())
             const a = this.$minCommon.formatDate(time, 'yyyy-MM-dd')
             item.title = '' + a + ' ' + f
-            if (item.is_booked === 1) {
+            if (item.book_status === 1) {
                 item.title += '( 已预约 )'
             }
         })

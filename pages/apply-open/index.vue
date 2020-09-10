@@ -16,7 +16,7 @@
             <view class="p-tb-30 min-border-bottom">商品</view>
             <view class="goods-list p-top-10">
                 <view class="p-tb-20" v-for="item in list.order_product_list" :key="item.id">
-                    <min-goods-item :name="item.product_name" :price="item.unit_price" :icon="item.product_img.length> 5?item.product_img: '/static/images/goods.png'" :specification="item.unit_name" :value="item.quantity">
+                    <min-goods-item :name="item.product_name" :price="item.order_price" :icon="item.product_img.length> 5?item.product_img: '/static/images/goods.png'" :specification="item.unit_name" :value="item.quantity">
                     </min-goods-item>
                 </view>
             </view>

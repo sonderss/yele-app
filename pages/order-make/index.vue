@@ -1,9 +1,6 @@
 <template>
 <view @touchstart="start" @touchmove="move" @touchend="end">
-    <scroll-view scroll-y :style="{
-        transition: top === 0 ? 'transform 300ms' : '',
-        transform: 'translateY(' + top + 'rpx' + ')'
-      }">
+    <scroll-view scroll-y :style="{transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')'}">
         <view class="order-make p-lr-30 p-tb-20" v-if="isData">
             <min-cell class="top-view" :card="false">
                 <view class="top-title-view min-flex min-flex-main-between">
@@ -45,7 +42,7 @@
     <view class="btn">
         <min-btn :long="true" @click="submit" :opacity='false'>提交</min-btn>
     </view>
-   
+
 </view>
 </template>
 
@@ -140,10 +137,11 @@ export default {
                 this.storeInfo = res.storeInfo
                 this.bookingDate = res.bookingDate
                 this.storeSetting = res.storeSetting
+                console.log(this.bookingDate)
                 this.$nextTick(() => {
-                     this.getDate(this.storeSetting.store_business_time.start, this.storeSetting.store_business_time.end)
+                    this.getDate(this.storeSetting.store_business_time.start, this.storeSetting.store_business_time.end)
                 })
-               
+
             })
     },
     methods: {
@@ -163,7 +161,7 @@ export default {
                     const a = this.$minCommon.formatDate(eq, 'hh:mm')
                     arr1.push(a)
                 }
-                return  this.date = arr1
+                return this.date = arr1
             }
             let startime = '2020/3/18' + ' ' + start
             let endTie = '2020/3/19' + ' ' + end

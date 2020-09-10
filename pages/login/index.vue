@@ -19,7 +19,12 @@
             <view v-else class="white">{{ countDown }} s</view>
         </view>
     </view>
-    <view style="height: 114rpx"></view>
+    <view class="user_info m-lr-30 p-lr-30 p-top-20">
+        <!-- <min-radio @change="ischange" v-model="a" :label="isCh" active="/static/images/active_sel.png" " /> -->
+        <image :src="src_" @click="ischange" />
+        <view style="color:#666666" class="f20">我已同意夜乐<text class="d" @click="toUser(1)">《用户协议》</text>和<text class="d" @click="toUser(2)">《隐私政策》</text></view>
+    </view>
+    <view style="height: 70rpx"></view>
     <view class="p-lr-30">
         <min-btn @click="login" shape="circle">
             <text style="font-size:30rpx">登 录</text>
@@ -41,7 +46,13 @@ export default {
             flag: false,
             isFouce: false,
             test: false,
-            ndsl: false
+            ndsl: false,
+            isChangeSel: true
+        }
+    },
+    computed: {
+        src_() {
+            return this.isChangeSel ? '/static/images/active_sel.png' : '/static/images/no_sel.png'
         }
     },
     onLoad() {
@@ -86,10 +97,18 @@ export default {
                 })
             })
         },
+        toUser(n) {
+            this.$minRouter.push({
+                name: 'user-agreement',
+                params: {
+                    n
+                }
+            })
+        },
         login() {
 
             if (!this.$minCommon.checkMobile(this.mobile) || this.code.length !== 6) return this.$showToast('请正确填写信息')
-
+            if (!this.isChangeSel) return this.$showToast('请先同意《用户协议》和《隐私政策》')
             if (this.flag) return
             this.flag = true
             this.$minApi
@@ -122,6 +141,9 @@ export default {
                     this.flag = false
                 })
 
+        },
+        ischange() {
+            this.isChangeSel = !this.isChangeSel
         }
     }
 }
@@ -179,6 +201,24 @@ export default {
     .icon {
         width: 40rpx;
         height: 40rpx;
+    }
+
+    .user_info {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        image {
+            width: 25rpx;
+            height: 25rpx;
+            display: inline-block;
+            margin-right: 10rpx;
+        }
+
+        .d {
+            color: #3699FF;
+            font-size: 20rpx;
+        }
     }
 }
 </style>

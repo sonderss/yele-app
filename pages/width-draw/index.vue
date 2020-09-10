@@ -41,6 +41,9 @@ export default {
             uri: ''
         }
     },
+    onBackPress(option) {
+        console.log(option)
+    },
     watch: {
         money(a) {
             console.log(a)
