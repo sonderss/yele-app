@@ -5,7 +5,7 @@
             <!-- @click="goodsAdd(index,index2)" -->
             <view class="image-view-com">
                 <view class="badge" v-if="badge">{{badgeTxt}}</view>
-                <image mode="aspectFit" lazy-load :src="imageSrc === 'error' ? '/static/images/produced.png' : image" @error="imgerr" />
+                <image mode="aspectFit" lazy-load :src="imageSrc === 'error' ? '/static/images/goods.png' : image" @error="imgerr" />
             </view>
             <view class="content-view">
                 <view class="right-view-title">

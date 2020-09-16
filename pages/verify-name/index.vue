@@ -49,8 +49,10 @@ export default {
                 this.$showToast('请输入正确的手机号码')
                 return
             }
-            this.$minApi.getVerificationCode({
-                mobile: this.info_user.phone
+            // 通联验证码
+            this.$minApi.getTongLianCode({
+                phone: this.info_user.phone,
+                type: 9 // 绑定手机号
             }).then(res => {
                 this.$showToast('发送成功')
                 this.$minCommon.setCountDown((num) => { // 倒计时

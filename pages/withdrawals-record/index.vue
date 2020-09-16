@@ -43,7 +43,7 @@
                     </view>
                 </view>
                 <view class="min-flex flex-end min-flex-dir-top" v-if="type === 3">
-                    <view :class="item.transaction_status === 2  ? ' ablack ' : 'ared'">{{item.transaction_status !== 2  ? `+${item.amount}`: `-${item.amount}` }}</view>
+                    <view :class="item.transaction_status !== 1  ? ' ablack ' : 'ared'">{{item.transaction_status === 1  ? `+${item.amount}`: `-${item.amount}` }}</view>
                     <view class="bom f24 m-top-10">{{item.transaction_status === 0 ? '入账中' : (item.transaction_status === 1 ? '已到账' : '入账失败' )}}</view>
                 </view>
                 <!---->

@@ -89,6 +89,7 @@ export default {
     },
     onPullDownRefresh() {
         console.log('refresh');
+        this.list = []
         this.getData(1, 10, true).then(res => {
             res.list.map(item => {
                 if (item.deposit_status === 2) {
@@ -124,6 +125,7 @@ export default {
         })
         // this.$minApi.getWinekeepingrecord()
         this.clentInfo = {
+            desk_name: this.$parseURL().desk_name,
             name: this.$parseURL().name,
             phone: this.$parseURL().phone
         }

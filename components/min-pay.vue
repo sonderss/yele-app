@@ -19,6 +19,10 @@ export default {
         mTop: {
             type: Boolean,
             default: true
+        },
+        scene: {
+            type: [String, Number],
+            default: 0
         }
     },
     data() {
@@ -33,11 +37,13 @@ export default {
         }
     },
     mounted() {
-        if (this.$store.state.status.payMethods.length >= 1) {
-            this.payM = this.$store.state.status.payMethods
-            this.payType = this.payM[0].id
-        }
-        this.$minApi.getPayMethods().then(res => {
+        // if (this.$store.state.status.payMethods.length >= 1) {
+        //     this.payM = this.$store.state.status.payMethods
+        //     this.payType = this.payM[0].id
+        // }
+        this.$minApi.getPayMethods({
+            scene: this.scene
+        }).then(res => {
             this.payM = res.list
             this.payType = this.payM[0].id
         })

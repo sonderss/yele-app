@@ -27,10 +27,11 @@
         </view>
         <view class="item" v-if="item.desk_status !== 1  ">消费金额：￥{{item.bill_price}}</view>
         <view class="item" v-if="item.desk_status === 0">销台时间：{{$minCommon.formatDate(new Date( item.close_time * 1000), "yyyy-MM-dd hh:mm:ss")}}</view>
-        <view class="btm-view min-border-top m-top-20">
+        <view class="btm-view min-border-top m-top-20" v-if="item.desk_status !== 1 ">
             <view class="o" @click.stop="queryOrder(item)">查看订单</view>
             <view class="o" @click.stop="queryDist(item)">查看账单</view>
         </view>
+        <view style="height:30rpx" v-else></view>
     </view>
     <min-404 v-if="list.length === 0" />
     <min-pulldown :isFlag="falg" :desc="des" :loading="load" />

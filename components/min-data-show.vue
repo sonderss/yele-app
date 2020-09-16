@@ -329,6 +329,7 @@ export default {
             this.$emit('change', i)
         },
         toDetail(uid) {
+            if (this.ids === '4' || this.ids === '5') return true
             uni.navigateTo({
                 url: '/pages/statistics/person?id=' + this.ids + '&uid=' + uid + '&current=' + this.current
             })

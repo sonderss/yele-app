@@ -15,7 +15,7 @@
             <view class="f22">
                 <text class="price">￥{{list.price}}</text>
             </view>
-            <min-stepper v-model="list.step" @change="changeServiceItem(list)" :max="commodity_count"></min-stepper>
+            <min-stepper v-model="list.step" @change="changeServiceItem(list)"></min-stepper>
         </view>
         <!-- 服务商品 -->
         <view class="botm-view" v-if="product_type === 'service'">
@@ -34,7 +34,7 @@
         <view class="content p-bottom-30" v-if="product_type === 'setmeal'">{{list.info}}</view>
     </view>
 
-    <min-goods-submit v-if="type != 1 && type != 2 " icon="../../static/images/cart.png" :goodsCount="countNums" :totalAmount="totalAmountE " :totalLabel="totalLabel" buttonText="确定赠送" @leftClick="leftClick" @submit="submit"></min-goods-submit>
+    <min-goods-submit v-if="type != 1 && type != 2 " icon="/static/images/cart.png" :goodsCount="countNums" :totalAmount="totalAmountE " :totalLabel="totalLabel" buttonText="确定赠送" @leftClick="leftClick" @submit="submit"></min-goods-submit>
     <!-- 选择规格 -->
     <min-popup :show="isSelSku" @close='closeSelectedSkuPop' heightSize="750">
         <view class="skuPop">
@@ -92,7 +92,7 @@
                         <view class="content-view">
                             <view class="right-view-title">
                                 <text class="f28 t" style="color:#666666;display:block;">{{item2.product_name}}</text>
-                                <text class=" f22 t  m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="product_type === 'product'">规格:{{item2.sku[0].sku_full_name}}</text>
+                                <text class=" f22 t  m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'product'">规格:{{item2.sku[0].sku_full_name}}</text>
                             </view>
                             <view class="right-view-bottom">
                                 <view class="right-view-bottom-desc">
@@ -192,7 +192,7 @@ export default {
         this.commodity_count = option.commodity_count
         this.desk_id = option.desk_id
         console.log('从全局变量中获取已选商品列表', this.$store.state.goods.storeSelArr)
-        this.selArr = this.$store.state.goods.storeSelArr
+        // this.selArr = this.$store.state.goods.storeSelArr
         this.content = `
           1. 当前台消费金额￥${info.consumption_amount}，根据赠送方案，可赠送的商品金额为￥${info.desk_presentation_limit}。<br />
           2. 当前用户的赠送额度为￥${info.personal_presentation_limit}，不能超过此额度。<br />
@@ -200,6 +200,9 @@ export default {
       `
         // this.$store.dispatch('goods/setselected_giveAwayInfo', { consumption_amount: res.consumption_amount, desk_presentation_limit: res.desk_presentation_limit, personal_presentation_limit: res.personal_presentation_limit })
         this.totalLabel = `赠送额度：${info.desk_presentation_limit}`
+    },
+    onShow() {
+        return this.selArr = this.$store.state.goods.storeSelArr
     },
     onNavigationBarButtonTap(e) {
         this.$refs.test.handleShow({
@@ -212,43 +215,42 @@ export default {
         })
     },
     watch: {
-        selArr: {
-            handler(a, b) {
-                a.map((item, index) => {
-                    if (item.step === 0) {
-                        return this.delArr.push(index)
-                    }
-                })
-                this.$store.dispatch('goods/setStoreSelArr', this.selArr)
-            },
-            deep: true
-        },
-        delArr(a) {
-            a.map(item => {
-                this.selArr.splice(item, 1)
-            })
-        }
+        // selArr: {
+        //     handler(a, b) {
+        //         a.map((item, index) => {
+        //             if (item.step === 0) {
+        //                 this.delArr.push(index)
+        //             }
+        //         })
+        //         this.$store.dispatch('goods/setStoreSelArr', a)
+        //     },
+        //     deep: true
+        // },
+        // delArr(a) {
+        //     a.map(item => {
+        //         this.selArr.splice(item, 1)
+        //     })
+        // }
     },
     mounted() {
-        if (this.selArr.length > 0) {
-            this.selArr.map(item => {
-                if (item.type === 'service') {
-                    this.list = item
-                    this.item = []
-                    this.list.step = 0
-                    this.item.push(this.list.product_img)
-                    console.log(this.list)
-                }
-                if (item.type === 'product') {
-                    this.list = item
-                    this.item = []
-                    this.list.step = 0
-                    this.item.push(this.list.product_img)
-                    console.log(this.list)
-                }
-            })
-            return
-        }
+        // if (this.selArr.length > 0) {
+        //     this.selArr.map(item => {
+        //         if (item.type === 'service') {
+        //             this.list = item
+        //             this.item = []
+        //             this.list.step = 0
+        //             this.item.push(this.list.product_img)
+        //             console.log(this.list)
+        //         }
+        //         if (item.type === 'product') {
+        //             this.list = item
+        //             this.item = []
+        //             this.list.step = 0
+        //             this.item.push(this.list.product_img)
+        //             console.log(this.list)
+        //         }
+        //     })
+        // }
         if (this.product_type === 'product') {
             this.$minApi.getGiveAwayProductDetail({
                     sku_id: this.product_id
@@ -256,7 +258,13 @@ export default {
                 .then(res => {
                     this.list = res.info
                     this.list.type = this.product_type
-                    // this.list.step = 1
+                    this.selArr.map(item => {
+                        if (item.id !== this.list.id) {
+                            this.$set(this.list, "step", 0)
+                            return
+                        }
+                        return this.$set(this.list, "step", item.step)
+                    })
                     console.log('product', res)
                     this.item = []
                     this.item.push(this.list.product_img)
@@ -312,6 +320,13 @@ export default {
             if (this.list.type === 'product' && this.list.sku.length === 1 && id === this.list.sku[0].id) {
                 this.$set(this.list, "step", e)
             }
+            if (e === 0) {
+                this.$nextTick(() => {
+                    this.selArr.splice(index, 1)
+                    this.$store.dispatch('goods/setStoreSelArr', this.selArr)
+                })
+
+            }
         },
         // 选择服务商品
         addGoodServe(e) {
@@ -354,7 +369,10 @@ export default {
             const result = this.selArr.some((item, index) => {
                 if (obj.type === 'product') {
                     if (item.sku[0].id === obj.sku[0].id) {
-                        item.step = obj.step
+                        this.$nextTick(() => {
+                            item.step = obj.step
+
+                        })
                         return true
                     }
                 } else if (obj.type === 'service') {
@@ -394,9 +412,19 @@ export default {
         delAll() {
             // this.selArr = []
             // this.$store.dispatch('goods/setStoreSelArr', this.selArr)
-            this.selArr.map((item, index) => {
-                this.delArr.push(index)
+            // this.selArr.map((item, index) => {
+            //     this.selArr.splice(index, 1)
+            //     this.$store.dispatch('goods/setStoreSelArr', this.selArr)
+            // })
+            let arr = []
+            for (let i = this.selArr.length - 1; i >= 0; i--) {
+                arr.push(i)
+            }
+            arr.map(item => {
+                this.selArr.splice(item, 1)
+                this.$store.dispatch('goods/setStoreSelArr', this.selArr)
             })
+
             this.list.step = 0
         },
         // 提交赠送商品

@@ -1,6 +1,6 @@
 <template>
 <view class="lnvitation-offline p-lr-30 p-tb-20">
-    <min-search bgcolor="#EEEEEE" v-model="key" placeholder="请输入营销姓名/手机号搜索"></min-search>
+    <min-search bgColor="#EEEEEE" v-model="key" placeholder="请输入营销姓名/手机号搜索"></min-search>
     <min-cell class="m-tb-20" :card="false">
         <view class="title">可邀请的下线</view>
 

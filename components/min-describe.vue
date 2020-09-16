@@ -5,11 +5,11 @@
             <image :src="leftIconValue ? leftIconValue : '/static/images/goods.png' " />
         </view>
         <view :class=" leftTxtTwo ? 'txt-view': ''">
-            <view class="left-txt" style="color:#333">{{leftTxt}}</view>
+            <view class="left-txt" style="color:#333;">{{leftTxt}}</view>
             <view class="left-txt f28" :style="{color:'#666'}" v-if="leftTxtTwo">{{leftTxtB}}</view>
         </view>
     </view>
-    <view class="right-view">
+    <view class="right-view" :style="sku2 ? 'justify-content: flex-end;':''">
         <view v-if="step">
             <min-stepper v-model="count" :isAnimation="Animation" :max="maxStep" @change="emitEvent" icon="/static/images/yellow-add.png"></min-stepper>
         </view>
@@ -17,6 +17,10 @@
         <text v-if="num">x {{num}}</text>
         <view v-if="sku" class="right-icon f30">
             <text class="t">{{sku}}</text>
+            <image src="/static/images/right-black.png" />
+        </view>
+        <view v-if="sku2" class="right-icon2 f30">
+            <text class="t" style="">{{sku2}}</text>
             <image src="/static/images/right-black.png" />
         </view>
         <view class="txt-view1" v-if="leftTxtTwo">
@@ -93,6 +97,10 @@ export default {
         isCirl: {
             type: Boolean,
             default: false
+        },
+        sku2: {
+            type: String,
+            default: ''
         }
     },
     data() {
@@ -107,7 +115,7 @@ export default {
     watch: {
         value(a) {
             this.count = a
-        },
+        }
     },
     methods: {
         chinceSku() {
@@ -200,6 +208,28 @@ export default {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 display: block;
+            }
+
+            image {
+                width: 20rpx;
+                height: 22rpx;
+                margin-left: 18rpx;
+                color: #666666;
+            }
+        }
+
+        .right-icon2 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .t {
+                width: 350rpx;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: block;
+                text-align: right;
             }
 
             image {

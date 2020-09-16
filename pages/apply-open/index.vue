@@ -81,6 +81,9 @@ export default {
                     setTimeout(() => {
                         this.$minRouter.push({
                             name: 'redsubmit-success',
+                            params: {
+                                desk_id: this.$parseURL().desk_id
+                            },
                             type: "redirectTo"
                         })
                     }, 2000)

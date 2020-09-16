@@ -172,16 +172,19 @@
         <view class="taiwei m-lr-20 m-top-30" v-if=" zhuotai.consumption_rank.length !== 0">
             <view class="top_view">
                 <view class="mid_view min-border-bottom">桌台消费排行榜</view>
-                <view class="top_title">
+                <view class="top_title m-top-20 p-lr-30">
                     <text>台号</text>
-                    <text>营销</text>
-                    <text>消费额</text>
+                    <text style="padding-left:40rpx">营销</text>
+                    <text style="padding-right:60rpx">消费额</text>
                 </view>
                 <view class="bom_view m-top-30" v-for="(item,index) in zhuotai.consumption_rank" :key="index" @click="toDeatiBill(item.opening_id,item.desk_id)">
-                    <view class="item">{{item.desk_name}}</view>
-                    <view class="item">{{item.sales_user_name}}</view>
-                    <view class="item">￥{{item.receivable_price}}</view>
-                    <view class="item m-left-20" style="width:24rpx">></view>
+                    <view class="item p-right-20" style="width:150rpx">{{item.desk_name ? item.desk_name : '暂无数据'}}</view>
+                    <view class="item p-left-10">{{item.sales_user_name ? item.sales_user_name : '暂无数据'}}</view>
+                    <view class="item min-flex  min-flex-main-center">
+                        <view style="text-align:left;flex:1">￥{{item.receivable_price}}</view>
+                        <image class="item p-left-10" src="/static/images/arrow.png" style="width:24rpx;height:24rpx" />
+                    </view>
+
                 </view>
             </view>
         </view>
@@ -1027,6 +1030,7 @@ export default {
             .item {
                 width: calc(100% / 3);
                 text-align: center;
+
             }
         }
     }
@@ -1035,7 +1039,10 @@ export default {
         display: flex;
         width: 100%;
         justify-content: space-between;
-        background: red;
+
+        text {
+            font-weight: bolder;
+        }
     }
 }
 </style>

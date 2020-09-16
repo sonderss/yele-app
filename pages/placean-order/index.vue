@@ -24,7 +24,7 @@
     </scroll-view>
     <!-- 底部按钮 -->
     <view class="bottom-view" v-if="mainArray.length !== 0">
-        <min-goods-submit icon="/static/images/cart.png" bottomcolot="#666" @leftClick="selectedEvent" :totalAmount="totalAmountE" :totalLabel="totalLabel" :goodsCount="countNums" buttonText="去下单" :buttonLabel="buttonLabel" @submit="submit" leftV="90" topV="20"></min-goods-submit>
+        <min-goods-submit icon="/static/images/cart.png" bottomcolot="#666" @leftClick="selectedEvent" :totalAmount="totalAmountE" :totalLabel="totalLabel" :goodsCount="countNums" buttonText="去下单" @submit="submit" leftV="90" topV="20"></min-goods-submit>
     </view>
     <!-- 已选商品 -->
     <min-popup :show="selected" @close="closeSelectedPop">
@@ -40,7 +40,7 @@
         <view class="main-sel-view p-lr-30 m-top-20" style="margin-bottom:300rpx" @touchstart="start" @touchmove="move" @touchend="end">
             <scroll-view scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'}">
                 <view class="item" v-for="(item2,n) in selArr" :key="n">
-                    <image :src="item2.sku.sku_img ? item2.sku.sku_img  : item2.product_img " @error="imageErro($event,n)" />
+                    <image :src="item2.type !== 'setmeal' ? (item2.sku.sku_img ? item2.sku.sku_img  : item2.product_img  ):item2.product_img " @error="imageErro($event,n)" />
                     <view class="content-view">
                         <view class="right-view-title">
                             <text class="f28 t" style="display:block">{{item2.product_name}}</text>
@@ -81,7 +81,7 @@
         </view>
         <!-- <view class="empty-view"></view> -->
         <view class="bottom-view-t">
-            <min-goods-submit icon="/static/images/cart.png" style="position:fixed" :totalAmount="totalAmountE" :goodsCount="countNums" buttonText="去下单" :buttonLabel="buttonLabel" @submit="submit" leftV="90" topV="20"></min-goods-submit>
+            <min-goods-submit icon="/static/images/cart.png" style="position:fixed" :totalAmount="totalAmountE" :goodsCount="countNums" buttonText="去下单" @submit="submit" leftV="90" topV="20"></min-goods-submit>
         </view>
     </min-popup>
 
@@ -190,7 +190,7 @@ export default {
             this.getListData()
         })
         console.log('下单路由参数', this.$parseURL())
-        this.buttonLabel = this.$parseURL().is_open_desk ? '(已开台)' : '(未开台)'
+        // this.buttonLabel = this.$parseURL().is_open_desk ? '(已开台)' : '(未开台)'
         this.totalLabel = `台位低消：${this.$parseURL().minim_charge}`
 
     },
@@ -235,7 +235,10 @@ export default {
                     this.mainArray.map(item => {
                         if (item.product && item.product.length > 0) {
                             item.product.map((item2, index2) => {
-                                item2.step = 0
+                                this.$nextTick(() => {
+                                    item2.step = 0
+
+                                })
                             })
                         }
                     })
@@ -895,7 +898,7 @@ uni-page-body {
     .main-sel-view {
         width: 100%;
         // height: 620rpx;
-        // overflow: auto;
+        overflow: hidden;
 
         .item {
             display: flex;
@@ -1083,7 +1086,7 @@ uni-page-body {
         margin: 0 30rpx;
         padding: 30rpx 0;
         padding-bottom: 10rpx;
-        height: 120rpx;
+        height: 130rpx;
 
         .item-view {
             margin-top: 20rpx;

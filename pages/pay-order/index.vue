@@ -10,7 +10,8 @@
             <view class="item">应付金额：￥{{list.order_info.actual_total}}</view>
         </view>
     </view>
-    <view class="card p-lr-20 m-top-20">
+    <!-- 这里暂时测试 -->
+    <view class="card p-lr-20 m-top-20" v-if="list.order_info.is_can_sign_off">
         <view class="top p-tb-20 min-border-bottom">
             <view class="title">签折</view>
             <view class="remain-amount">剩余额度：￥{{list.order_info.quota}}</view>
@@ -34,7 +35,7 @@
             <view class="all-dz" v-if="discountType === ALL_DZ">
                 <view class="header">
                     <view class="title">全单打折</view>
-                    <min-stepper psize="100rpx" :isAnimation="false" v-model="allAiscount" max="10" unit="折" />
+                    <min-stepper psize="100rpx" :isAnimation="false" v-model="allAiscount" :max="10" unit="折" />
                 </view>
                 <min-slider v-model="allAiscount" max="10" />
             </view>
@@ -52,7 +53,7 @@
                 <view class="goods" v-for="item in list.order_product_list" :key='item.id'>
                     <view class="stepper">
                         <view class="f28 t">{{item.product_name}}</view>
-                        <min-stepper :isAnimation="false" v-model="item.singleAiscount" psize="100rpx" max="10" unit="折" />
+                        <min-stepper :isAnimation="false" v-model="item.singleAiscount" psize="100rpx" :max="10" unit="折" />
                     </view>
                     <min-slider v-model="item.singleAiscount" max="10" />
                 </view>
@@ -64,14 +65,16 @@
                     <view class="stepper m-tb-10">
                         <view class="f28 t">{{item.product_name}}</view>
                         <!--<min-stepper :isAnimation="false" v-model="singlePAic" max="10" unit="折"/>-->
-                        <input class="input" type="number" v-model="item.youhui" placeholder="请输入优惠金额" placeholder-style="font-size:28rpx;" />
+                        <input class="input" type="number" maxlength="11" style="text-align:right" v-model="item.youhui" placeholder="请输入优惠金额" placeholder-style="font-size:28rpx;" />
                     </view>
                 </view>
             </view>
 
             <view class="f28 p-bottom-30" v-if="discountType === 0">扣除赠送额度：￥{{kouchu ? kouchu: 0}}</view>
             <view class="f28 p-bottom-30" v-if=" discountType === 1">扣除赠送额度：￥{{quanyou ? quanyou: 0}}</view>
-            <view class="f28 p-bottom-30" v-if=" discountType === 2 || discountType === 3">扣除赠送额度：￥{{k ? k : 0}}</view>
+            <view class="f28 p-bottom-30" v-if=" discountType === 2">扣除赠送额度：￥{{aaa ? aaa : 0}}</view>
+            <!-- discountType === 2 || -->
+            <view class="f28 p-bottom-30" v-if=" discountType === 3">扣除赠送额度：￥{{k ? k : 0}}</view>
 
         </view>
     </view>
@@ -112,7 +115,8 @@ export default {
             kouchu: 0,
             money: '',
             delArr: [],
-            quanyou: ''
+            quanyou: '',
+            aaa: 0
         }
     },
     onLoad() {
@@ -123,6 +127,9 @@ export default {
             let num = 0
             this.list.order_product_list.map((item, index) => {
                 if (this.discountType === 2 && item.singleAiscount) {
+                    if (item.singleAiscount === 0) {
+                        num += (item.order_price * item.quantity).toFixed(2) * 1
+                    }
                     num += (item.order_price * item.quantity - (((item.singleAiscount / 10) * item.order_price * item.quantity).toFixed(2))).toFixed(2) * 1
                 } else if (this.discountType === 3 && item.youhui) {
                     num += item.youhui * 1
@@ -134,10 +141,30 @@ export default {
         }
     },
     watch: {
+        list: {
+            handler(a) {
+                this.aaa = 0
+                a.order_product_list.map(item => {
+                    if (this.discountType === 2) {
+                        console.log(item.singleAiscount)
+                        if (item.singleAiscount === 0) {
+                            return this.aaa += (item.order_price * item.quantity).toFixed(2) * 1
+                        }
+                        this.aaa += (item.order_price * item.quantity - (((item.singleAiscount / 10) * item.order_price * item.quantity).toFixed(2))).toFixed(2) * 1
+                    }
+                })
+                this.money = (this.list.order_info.actual_total - this.aaa * 1).toFixed(2)
+            },
+            deep: true
+        },
         kouchu(a) {
             console.log(a)
             if (this.discountType === 0 || this.discountType === 1) {
                 this.money = (this.list.order_info.actual_total - a * 1).toFixed(2)
+            }
+            if (this.discountType === 0 && this.allAiscount === 0) {
+                this.money = 0
+                this.kouchu = this.list.order_info.actual_total
             }
         },
         quanyou(a) {
@@ -160,8 +187,19 @@ export default {
         },
         money(a) {
             console.log(a)
-            if (a * 1 < 0) {
-                this.$showToast('请重新输入合法值')
+            if (a * 1 < 0 || a * 1 > this.list.order_info.limit_discount_total * 1) {
+                if (this.discountType === 1) {
+                    this.$showToast('请重新输入合法值')
+                    this.$nextTick(() => {
+                        this.qdyouhui = this.list.order_info.limit_discount_total * 1
+                    })
+
+                }
+                //  else if (this.discountType === 3) {
+                //     this.list.order_product_list.map(item => {
+                //         console.log(item)
+                //     })
+                // }
                 this.money = this.list.order_info.actual_total
             }
         },
@@ -190,7 +228,33 @@ export default {
             //     })
             //     return
             // }
-            if (this.kouchu || this.quanyou || this.k) {
+            // if (this.kouchu || this.quanyou || this.k) {
+            // list.order_info.is_can_sign_off
+            if (this.discountType === 3) {
+                let nums = 0
+                this.list.order_product_list.map(item => {
+                    console.log(item)
+                    if (item.youhui * 1 > 0) {
+                        nums += item.youhui * 1
+                        console.log(nums > this.list.order_info.quota * 1)
+                        if (nums > this.list.order_info.quota * 1) {
+                            this.$showToast('优惠金额不可超出剩余额度')
+                            this.$set(item, 'isLast', true)
+                            nums -= item.youhui * 1
+                            this.$set(item, 'youhui', 0)
+                            this.list.order_product_list.map(item => {
+                                if (item.isLast) {
+                                    // 如果该商品为最后一个设置优惠金额的
+                                    return this.$set(item, 'youhui', this.list.order_info.limit_discount_total * 1 - nums)
+                                }
+                            })
+                            return
+                        }
+
+                    }
+                })
+            }
+            if (this.list.order_info.is_can_sign_off) {
                 // if(this.kouchu || this.quanyou  || this.k){
 
                 // }
@@ -410,7 +474,7 @@ export default {
                 }
 
                 .stepper {
-                    text-align: right;
+                    text-align: left;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;

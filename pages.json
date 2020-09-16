@@ -389,6 +389,7 @@
     {
       "path": "pages/desk-bill/index",
       "style": {
+        "enableDownRefresh": true,
         "app-plus": {
           "titleNView": {
             "titleText": "台位账单",

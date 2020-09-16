@@ -43,7 +43,7 @@
     </view>
 
     <view class="bottom-view" v-if="mainArray.length !== 0">
-        <min-goods-submit leftText="已选" @leftClick="selectedEvent" @submit="submit" :totalAmount="totalAmountE" :goodsCount="countNums" buttonText="提交"></min-goods-submit>
+        <min-goods-submit leftText="已选" :bgcolor="selArr.length >= 1 ? 'rgba(255, 224, 0, 1)' :'#CCCCCC'" @leftClick="selectedEvent" @submit="submit" :totalAmount="totalAmountE" :goodsCount="countNums" buttonText="提交"></min-goods-submit>
     </view>
     <!-- 已选商品 -->
     <min-popup :show="selected" @close="closeSelectedPop">
@@ -86,7 +86,7 @@
             </view>
             <!-- <view class="empty-view"></view> -->
             <view class="bottom-view-t">
-                <min-goods-submit style="position:fixed" leftText="已选" @submit="submit" :totalAmount="totalAmountE" :goodsCount="countNums" buttonText="提交"></min-goods-submit>
+                <min-goods-submit style="position:fixed" :bgcolor="selArr.length >= 1 ? 'rgba(255, 224, 0, 1)' :'#CCCCCC'" leftText="已选" @submit="submit" :totalAmount="totalAmountE" :goodsCount="countNums" buttonText="提交"></min-goods-submit>
             </view>
         </view>
     </min-popup>
@@ -338,6 +338,7 @@ export default {
             if (!this.selNum.includes(a)) {
                 this.selNum.push(a);
                 this.selArr.push(this.mainArray[index].list[index2]);
+                this.selArr = this.$minCommon.arrSet(this.selArr)
             } else {
                 console.log("aaaaaaaaaaaaaaaaaaaaaa")
             }
@@ -383,7 +384,7 @@ export default {
         },
         // 长按事件触发删除
         longTatch(n) {
-            this.isDel = false;
+            // this.isDel = false;
         },
         // 已选弹出层删除事件
         alDel(n, index) {
@@ -417,17 +418,23 @@ export default {
                 this.selArr.push(e);
                 return;
             }
-            this.selArr.map(item => {
-                if (item.id === e.id) {
-                    if (item.sku[item.index].confiscate_product_id !== e.sku[e.index].confiscate_product_id) {
-                        this.selArr.push(e);
-                    } else if (item.step < e.step) {
-                        item.step = e.step;
-                    }
+            const result = this.selArr.some(item => {
+                console.log(item)
+                console.log(e)
+
+                if (item.id !== e.id) {
+                    return false
                 } else {
-                    this.selArr.push(e);
+                    if (item.sku[item.index].confiscate_product_id === e.sku[e.index].confiscate_product_id) {
+                        item.step = e.step;
+                        return true
+
+                    }
                 }
             });
+            if (!result) {
+                this.selArr.push(e);
+            }
         },
         // 选择规格确定
         skuChioce() {

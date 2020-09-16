@@ -8,7 +8,7 @@
         <view class="goods-list p-top-10">
             <view class="p-tb-10" v-for="item in list.order_product_list" :key="item.detail_id">
                 <!--已出品-->
-                <min-goods-item @ToDetail="goodsDeatil(item.id,item.type)" :produced="item.produce_status ? true:false" :name="item.product_name" :price="item.order_price" :icon="item.product_img" :specification="item.sku" :value="item.quantity"></min-goods-item>
+                <min-goods-item @ToDetail="goodsDeatil(item.id,item.type)" :produced="item.produce_status ? true:false" :name="item.product_name" :price="item.order_price" :icon="item.product_img" :specification="item.type === 'setmeal' ? item.setmeal_product:item.sku" :value="item.quantity"></min-goods-item>
             </view>
         </view>
     </view>
@@ -23,7 +23,7 @@
             <view class="item">已付金额：￥{{list.origin_order.pay_price}}</view>
         </view>
     </view>
-    <view class="card p-lr-20 m-top-20" v-if="list.return_order.new_order_id && list.order_status === -5">
+    <view class="card p-lr-20 m-top-20" v-if="list.return_order.new_order_id && list.order_status === -5 ||list.order_status === -6 ">
         <view class="top p-tb-20 min-border-bottom">
             <view class="title">变更信息</view>
             <view class="btn" @click="viewNewOrder(list.return_order.new_order_id)">查看新订单</view>
@@ -32,18 +32,36 @@
             <!-- 这里需要数据测试 
             <text v-if="list.return_order.return_product[0].type === 1"></text>
             <text v-if="list.return_order.return_product[0].type === 2"></text>-->
-            <view class="item item_products" v-for="item in list.return_order.return_product" :key="item.id">
-                <view v-if="item.type === 1">退货商品：{{item.product_name}}</view>
-                <view v-if="item.type === 2">新增商品：{{item.product_name}}</view>
-            </view>
+            <template v-if="list.return_order.return_product.length > 0">
+                <view class="item item_products">
+                    <view class="desc">退货商品：</view>
+                    <view class="content">
+                        <view v-for="item in list.return_order.return_product" :key="item.id">
+                            <view>{{item.product_name}}</view>
+                        </view>
+                    </view>
+                </view>
+            </template>
+            <template v-if="list.return_order.add_product.length > 0">
+                <view class="item item_products">
+                    <view class="desc"> 新增商品：</view>
+                    <view class="content">
+                        <view class="item item_products" v-for="item in list.return_order.add_product" :key="item.id">
+                            <view>{{item.product_name}}</view>
+                        </view>
+                    </view>
+                </view>
+
+            </template>
+
             <view class="item">新订单金额：￥{{list.return_order.new_order_total}}</view>
             <view class="item">已付金额：￥{{list.pay_price}}</view>
             <view class="item" v-if="list.return_order.price_type === 1">待补金额：￥{{list.return_order.price}}</view>
             <view class="item" v-if="list.return_order.price_type === 2">退还金额：￥{{list.return_order.price}}</view>
 
-            <view class="item">审核人：{{list.return_order.reviewer_name ? `${list.return_order.reviewer_name}` : '-'}}</view>
-            <view class="item">收银：{{list.return_order.cashier_name}}</view>
-            <view class="item">时间：{{list.return_order.audit_time}}</view>
+            <view class="item">审<span style="padding-left:20rpx"></span>核<span style="padding-left:10rpx">人：</span>{{list.return_order.reviewer_name ? `${list.return_order.reviewer_name}` : '-'}}</view>
+            <view class="item">收 <span style="padding-left:60rpx">银：</span>{{list.return_order.cashier_name}}</view>
+            <view class="item">时 <span style="padding-left:60rpx">间：</span>{{$minCommon.formatDate(new Date(list.return_order.audit_time*1000),'yyyy/MM/dd hh:mm:ss' ) }}</view>
         </view>
     </view>
     <view class="card p-lr-20 m-top-20">
@@ -65,7 +83,7 @@
             <view class="item" v-if="list.order_status !== 0 && list.order_status !== 5 && list.order_status !== -1  && list.order_status !== -6 && !list.pay_type">支付时间：{{$minCommon.formatDate(new Date(list.pay_time*1000),'yyyy/MM/dd hh:mm:ss' )}}</view>
             <view class="item" v-if="list.order_status !== 0 && list.order_status !== 5 && list.order_status !== -1  && list.order_status !== -6 && !list.pay_type">支付方式：{{method[list.payment_id]}}</view>
             <view class="item" v-if="list.order_status !== 1 && list.order_status !== 0 && list.order_status !== 5  && list.order_status !== -6">确&nbsp;认&nbsp;<span class='p-left-20'>人：</span>{{list.confirm_user_name}}</view>
-            <view class="item" v-if="list.order_status !== 1 && list.order_status !== 0 && list.order_status !== 5  && list.order_status !== -6">确认时间：{{list.confirm_time}}</view>
+            <view class="item" v-if="list.order_status !== 1 && list.order_status !== 0 && list.order_status !== 5  && list.order_status !== -6">确认时间：{{list.confirm_time ?  $minCommon.formatDate(new Date(list.confirm_time*1000),'yyyy/MM/dd hh:mm:ss' ) : '-'}}</view>
         </view>
     </view>
     <view class="card p-lr-20 m-top-20" v-if="list.is_signoff === 1">
@@ -125,7 +143,7 @@
                 </view>
                 <view class="f28 m-top-20 p-bottom-20" style="font-weight: bolder;">支付方式</view>
             </view>
-            <min-pay :isTitle="false" :mTop="false" v-model="payType" />
+            <min-pay :isTitle="false" :mTop="false" v-model="payType" scene="2" />
             <view class="btn_pay" @click="pay_money">支付</view>
         </view>
 
@@ -160,7 +178,9 @@ export default {
                     order_sn: ''
                 },
                 return_order: {
-                    new_order_id: ''
+                    new_order_id: '',
+                    add_product: [],
+                    return_product: []
                 }
             },
             type,
@@ -246,7 +266,7 @@ export default {
                         this.totalAmount = this.list.unpay_price
                         this.showSubmit = true
                     } else if (this.list.order_status === -1) {
-                        this.leftText = '应付'
+                        this.leftText = '待付金额'
                         this.buttonText = '补差价'
                         this.totalAmount = this.list.unpay_price
                         this.showSubmit = true
@@ -268,7 +288,7 @@ export default {
                         this.totalAmount = this.list.unpay_price
                         this.showSubmit = true
                     } else if (this.list.order_status === -1) {
-                        this.leftText = '应付'
+                        this.leftText = '待付金额'
                         this.buttonText = '补差价'
                         this.totalAmount = this.list.unpay_price
                         this.showSubmit = true
@@ -321,6 +341,19 @@ export default {
             this.showPayPop = false
         },
         goodsDeatil(id, type) {
+            console.log(type)
+            if (type === 'setmeal') {
+                // 跳到套餐详情页
+                this.$minRouter.push({
+                    name: 'package-details',
+                    params: {
+                        product_id: id,
+                        product_type: type,
+                        isPay: true
+                    }
+                })
+                return
+            }
             // 跳到商品详情页
             this.$minRouter.push({
                 name: 'product-details',
@@ -414,9 +447,26 @@ export default {
                 }
             }
 
-            .item_products {
+            .item {
                 display: flex;
+
+                .item_products {
+                    display: flex;
+
+                    .desc {
+                        width: 300rpx;
+                    }
+
+                    .content {
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    ;
+                }
             }
+
         }
     }
 
@@ -521,5 +571,6 @@ export default {
         line-height: 98rpx;
         text-align: center;
     }
+
 }
 </style>

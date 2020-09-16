@@ -3,7 +3,7 @@
     <swiper class="swiper" :circular="true" :autoplay="true" :interval="2000" :duration="500">
         <swiper-item v-for="(item,index) in list.setmeal_images" :key="index">
             <view class="swiper-item">
-                <image :src="item" />
+                <image :src="item" @error="imgerra" />
             </view>
         </swiper-item>
     </swiper>
@@ -16,23 +16,42 @@
         </view>
     </view>
     <view class="introduction " v-for="(item,index) in list.combination" :key="index">
-        <view class="title min-border-bottom m-bottom-30 p-lr-20" v-if="item.necessary === 1">必选商品</view>
-        <view class="content p-bottom-30" v-if="item.necessary === 1">
-            <min-describe class="i" v-for="(item2,index2) in item.combination_detail" :key="index2" :leftIcon='true' :maxStep="item.is_check === 1 ? 1 : 999" :value="item2.step" :leftTxt="item2.product_name +'*'+ item2.num " :leftIconValue='item2.product_img' :Animation="true"></min-describe>
-            <!--
+        <!-- <view v-if="item.necessary === 1">
+            <view class="title min-border-bottom m-bottom-30 p-lr-20">必选商品</view>
+            <view class="content p-bottom-30" v-if="item.necessary === 1">
+                <min-describe class="i" v-for="(item2,index2) in item.combination_detail" :key="index2" :leftIcon='true' :leftTxt="item2.product_name +'*'+ item2.num " :leftIconValue='item2.product_img'></min-describe>
+
+            </view>
+        </view> -->
+        <view v-if="item.necessary === 1">
+            <view class="title min-border-bottom m-bottom-30 p-lr-20">
+                <span>
+                    <span class="left-txt min-ellipsis" style="width:120rpx;display:block;float:left">{{ item.combination_name }}</span>
+                    <text>{{item.combination_detail.length}}选{{ item.last_number }}</text>
+                    <text class="f28">{{item.is_check === 1 ? '（不可重复选）' : ''}}</text>
+                </span>
+                <text v-if="type !== 3" class="right-txt f26">已选 <text class="num1">{{item.goodsCount}}</text> 份</text>
+            </view>
+            <view class="content p-bottom-30" v-if="item.necessary === 1">
+                <min-describe class="i" v-for="(item2,index2) in item.combination_detail" :key="index2" :leftIcon='true' :maxStep="1" :value="0" @changeCount="changeCount($event,index,index2)" :leftTxt="item2.product_name +'*'+ item2.num " :leftIconValue='item2.product_img' :step='type === 3 ? false: true' :Animation="true"></min-describe>
+                <!--
           <view style="text-align:right;" class="p-right-30">{{item.last_number}}份</view>-->
+            </view>
         </view>
-        <view class="title min-border-bottom m-bottom-30 p-lr-20" v-else>
-            <span>
-                <span class="left-txt min-ellipsis" style="width:120rpx;display:block;float:left">{{ item.combination_name }}</span>
-                <text>{{item.combination_detail.length}}选{{ item.last_number }}</text>
-                <text class="f28">{{item.is_check === 1 ? '（不可重复选）' : ''}}</text>
-            </span>
-            <text v-if="type !== 3" class="right-txt f26">已选 <text class="num1">{{item.goodsCount}}</text> 份</text>
+        <view v-else>
+            <view class="title min-border-bottom m-bottom-30 p-lr-20">
+                <span>
+                    <span class="left-txt min-ellipsis" style="width:120rpx;display:block;float:left">{{ item.combination_name }}</span>
+                    <text>{{item.combination_detail.length}}选{{ item.last_number }}</text>
+                    <text class="f28">{{item.is_check === 1 ? '（不可重复选）' : ''}}</text>
+                </span>
+                <text v-if="type !== 3" class="right-txt f26">已选 <text class="num1">{{item.goodsCount}}</text> 份</text>
+            </view>
+            <view class="content p-bottom-30" v-if="item.necessary !== 1">
+                <min-describe class="i" v-for="(item2,index2) in item.combination_detail" :key="index2" :isCan="item2.isCan" :leftIcon='true' :maxStep="item.is_check !== 1 ? (item.goodsCount !== item.last_number ? item.last_number : item.last_number - item.goodsCount) : item.last_number - item.goodsCount" :value="item2.step" @changeCount="changeCount($event,index,index2)" :leftTxt="item2.product_name +'*'+ item2.num " :leftIconValue='item2.product_img' :step='type === 3 ? false: true' :Animation="true"></min-describe>
+            </view>
         </view>
-        <view class="content p-bottom-30" v-if="item.necessary !== 1">
-            <min-describe class="i" v-for="(item2,index2) in item.combination_detail" :key="index2" :leftIcon='true' :maxStep="item.is_check === 1 ? 1 : 999" :value="item2.step" @changeCount="changeCount($event,index,index2)" :leftTxt="item2.product_name +'*'+ item2.num " :leftIconValue='item2.product_img' :step='type === 3 ? false: true' :Animation="true"></min-describe>
-        </view>
+
     </view>
     <!-- <view class="introduction">
         <view class="title min-border-bottom m-bottom-30 p-lr-20">
@@ -73,7 +92,8 @@ export default {
                 combination_detail: []
             }],
             delArr: [],
-            testiD: {}
+            testiD: {},
+            isHaveBi: false
         }
     },
     onLoad() {
@@ -111,17 +131,19 @@ export default {
         },
         // list: {
         //     handler(a) {
-        //         a.combination.map(item => {
-        //             if (item.goodsCount > item.last_number) {
-        //                 this.selArr.map((item22, index22) => {
-        //                     if (item22.id === item.id) {
-        //                         this.selArr.splice(index22, 1)
-        //                     }
-        //                 })
-        //                 this.$showToast("请选择正确数量")
-        //                 this.getData()
-        //             }
+        //         a.combination.map(item111 => {
+        //             item111.combination_detail.map(item222222 => {
+        //                 console.log(item222222)
+        //                 this.aaaaaaa += item222222.step
+        //             })
+        //             // this.selArr.map(item => {
+        //             //     console.log("123123123", item)
+        //             //     if (item.id === item111.id) {
+        //             //         this.$set(item111, "last_number", item111.last_number - item.combination_detail.length)
+        //             //     }
+        //             // })
         //         })
+
         //     },
         //     deep: true
         // }
@@ -135,15 +157,22 @@ export default {
                     res.info.combination.map(item => {
                         item.combination_detail.map(item2 => {
                             item2.step = 0
+                            console.log("崩溃了", item2)
                         })
                     })
                     this.list = res.info
+                    if (this.list.setmeal_images.length <= 0) {
+                        this.list.setmeal_images.push(this.list.product_img)
+                    }
                     this.list.combination.map((item, index) => {
                         this.$set(item, 'goodsCount', 0)
-                        if (item.necessary === 1) {
-                            item.combination_detail.map((item2, index2) => {
-                                this.changeCount(1, index, index2)
-                            })
+                        // if (item.necessary === 1) {
+                        //     item.combination_detail.map((item2, index2) => {
+                        //         this.changeCount(1, index, index2)
+                        //     })
+                        // }
+                        if (item.necessary) {
+                            this.isHaveBi = true
                         }
                     })
                 })
@@ -174,14 +203,21 @@ export default {
             item2.sku_id = this.list.combination[index].combination_detail[index2].sku_id
             item2.name = this.list.combination[index].combination_detail[index2].product_name
             item.combination_detail.push(item2)
+            item.necessary = this.list.combination[index].necessary
+            item.last_number = this.list.combination[index].last_number
+            console.log(item)
             this.addGoods(item)
+        },
+        imgerra(e) {
+            if (e.type === 'error') {
+                this.list.setmeal_images.push('/static/images/bid-goods.png')
+            }
         },
         addGoods(obj) {
             if (this.selArr.length === 0) {
                 this.selArr.push(obj)
                 return
             }
-            console.log(obj);
             const resultF = this.selArr.some(item => {
                 if (obj.id === item.id) {
                     const result = item.combination_detail.some(item2 => {
@@ -206,22 +242,38 @@ export default {
             }
         },
         subMit() {
-            console.log(this.list)
-            let result = this.list.combination.some(item => {
-                // if (item.necessary === 1) {
-                if (item.goodsCount !== item.last_number) {
-                    // return this.$showToast('请选择符合要求的份数')
-                    return true
-                }
-                // }
-                // if (item.goodsCount > item.last_number) {
-                //     return true
-                // }
-                // return false
-            })
-            if (result) {
-                return this.$showToast('请选择符合要求的份数')
-            }
+
+            // const result11 = this.selArr.some(item => {
+            //     if (item.necessary) {
+            //         //  this.$showToast('必选商品数量不够')
+            //         if (item.last_number !== item.combination_detail.length) return true
+            //     }
+            //     if (!item.necessary) {
+            //         if (item.last_number !== item.combination_detail.length) return true
+            //     }
+            // })
+            // if (result11) return this.$showToast('请选择符合要求的份数')
+            // if (result1[0] === 1) {
+            //     return this.$showToast('必选商品数量不够')
+            // }
+            // if (result1[0] === 2) {
+            //     return this.$showToast('可选商品数量不够')
+            // }
+            // let result = this.list.combination.some(item => {
+            //     // if (item.necessary === 1) {
+            //     if (item.goodsCount !== item.last_number) {
+            //         // return this.$showToast('请选择符合要求的份数')
+            //         return true
+            //     }
+            //     // }
+            //     // if (item.goodsCount > item.last_number) {
+            //     //     return true
+            //     // }
+            //     // return false
+            // })
+            // if (result) {
+            //     return this.$showToast('请选择符合要求的份数')
+            // }
             const tempArr = JSON.parse(JSON.stringify(this.selArr))
             tempArr.map((item, index) => {
                 item.combination_detail.map((item2, index2) => {
@@ -230,6 +282,31 @@ export default {
                     }
                 })
             })
+            // 有必选的情况
+            if (this.isHaveBi) {
+                const result = this.selArr.some(item => {
+                    if (item.necessary && item.last_number === item.combination_detail.length) return true
+
+                })
+                if (!result) return this.$showToast('请选择必选商品')
+            }
+            // const result = this.selArr.some(item => {
+            //     if (item.necessary && item.last_number === item.combination_detail.length) return true
+
+            // })
+            // if (!result) return this.$showToast('请选择必选商品')
+            // 没有必选的情况
+            const result11 = this.selArr.some(item => {
+                if (!item.necessary) {
+                    console.log(item)
+                    let count = 0
+                    item.combination_detail.map(itemA => {
+                        count += itemA.quantity
+                    })
+                    if (item.last_number !== count) return true
+                }
+            })
+            if (result11) return this.$showToast('请选择符合要求的份数')
             this.$minRouter.push({
                 name: 'redpackage-details',
                 type: 'redirectTo',

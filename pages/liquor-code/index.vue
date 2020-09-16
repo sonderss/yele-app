@@ -62,6 +62,9 @@ export default {
         }, {
             name: '联系电话',
             value: this.$parseURL().info.phone
+        }, {
+            name: "当前台号",
+            value: this.$parseURL().info.desk_name
         }]
     },
     methods: {

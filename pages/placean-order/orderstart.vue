@@ -4,7 +4,7 @@
         <view class="p-tb-30 min-border-bottom">商品</view>
         <view class="goods-list p-top-10">
             <view class="p-tb-20" v-for="item in list.order_product_list" :key="item.commodity_id">
-                <min-goods-item :name="item.product_name" :price="item.order_price" :icon="item.product_img" :specification="item.sku" :value="item.quantity">
+                <min-goods-item :name="item.product_name" :price="item.order_price" :icon="item.product_img" :specification="item.type === 'setmeal' ? item.setmeal_product:item.sku" :value="item.quantity">
                 </min-goods-item>
             </view>
         </view>

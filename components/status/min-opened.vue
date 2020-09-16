@@ -166,6 +166,7 @@ export default {
             this.$minRouter.push({
                 name: 'fetch-liquor',
                 params: {
+                    desk_name: this.list.desk_info.desk_name,
                     name: this.list.desk_info.client_name,
                     phone: this.list.desk_info.client_mobile
                 }

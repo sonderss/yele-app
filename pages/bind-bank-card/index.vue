@@ -36,32 +36,29 @@ export default {
     methods: {
         getVerificationCode() {
             // 获取验证码
-            if (!this.$minCommon.checkMobile(this.phone)) {
-                this.$showToast('请输入正确的手机号码')
-                return
-            }
-            this.$minApi.getVerificationCode({
-                mobile: this.phone
-            }).then(res => {
-                this.$showToast('发送成功')
-                this.$minCommon.setCountDown(num => {
-                    // 倒计时
-                    this.countDown = num
+            if (!this.$minCommon.checkMobile(this.phone)) return this.$showToast('请输入正确的手机号码')
+            // //  通联验证码
+            // this.$minApi.getTongLianCode({
+            //     phone: this.phone
+            // }).then(res => {
+            //     this.$showToast('发送成功')
+            //     this.$minCommon.setCountDown(num => {
+            //         // 倒计时
+            //         this.countDown = num
+            //     })
+
+            //     return
+            // })
+            // 请求绑定银行卡
+            this.$minApi.getBangding({
+                    cardholder: this.name,
+                    bank_card_num: this.card,
+                    phone: this.phone,
                 })
-
-                this.$minApi
-                    .getBangding({
-                        cardholder: this.name,
-                        bank_card_num: this.card,
-                        phone: this.phone,
-                    })
-                    .then(res => {
-                        console.log(res)
-                        this.info = res
-                    })
-                return
-            })
-
+                .then(res => {
+                    console.log(res)
+                    this.info = res
+                })
             this.$minCommon.setCountDown(num => {
                 // 倒计时
                 this.countDown = num
@@ -84,7 +81,7 @@ export default {
             if (!this.$minCommon.checkMobile(this.phone))
                 return this.$showToast('请输入正确的手机号码')
             if (!this.card) return this.$showToast('请输入银行卡号')
-            if (this.code.length !== 6) return this.$showToast('请输入验证码')
+            // if (this.code.length !== 6) return this.$showToast('请输入验证码')
             this.$minApi
                 .postCard({
                     bank_code: this.info.bankCode, // 银行代码

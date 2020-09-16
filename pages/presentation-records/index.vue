@@ -7,7 +7,7 @@
         </view>
         <view v-if="item.product.length!==0" :class="item.isMore ? 'main1 p-top-20 ': 'main p-top-20 ' ">
             <view class="item" v-for="(item2,index2) in item.product" :key="index2">
-                <text class="min-ellipsis">{{item2.commodity_detail_name}}</text>
+                <text class="min-ellipsis">{{item2.commodity_detail_name}}*{{item2.commodity_quantity}}</text>
                 <text>￥{{item2.commodity_price}}</text>
             </view>
         </view>

@@ -56,7 +56,7 @@
         </view>
     </min-popup>
     <view class="no_uuu">
-        <min-drawer :visible="showdrawer" mode="right" @close="closedrawer" @changeStore="changeStoreId"></min-drawer>
+        <min-drawer :isShowClose="false" :visible="showdrawer" @allChangeStore="allChangeStore" mode="right" @close="closedrawer" @changeStore="changeStoreId"></min-drawer>
     </view>
     <min-pulldown :isFlag="falg" :desc="des" :loading="load" />
 </view>
@@ -134,8 +134,34 @@ export default {
                 this.list = this.list.concat([...res.list])
             })
     },
+    watch: {
+        showdrawer(a) {
+            console.log(a)
+            /*  #ifdef  APP-PLUS  */
+            const pages = getCurrentPages();
+            const page = pages[pages.length - 1];
+            const currentWebview = page.$getAppWebview();
+            if (a) {
+                currentWebview.setStyle({
+                    pullToRefresh: {
+                        support: false,
+                    }
+                });
+            }
+            if (!a) {
+                currentWebview.setStyle({
+                    pullToRefresh: {
+                        support: true,
+                    }
+                });
+            }
+            /*  #endif  */
+
+        }
+    },
     onPullDownRefresh() {
         console.log('refresh')
+        // if (this.showdrawer) return uni.stopPullDownRefresh()
         // this.getDatetre( this.startTime1), this.getDatetre(this.endTime1),
         this.$minApi
             .getTCList({
@@ -424,6 +450,14 @@ export default {
                 id
             )
         },
+        // 全部门店
+        allChangeStore(e) {
+            // 修改右上角内容
+            this.setContent('全部门店')
+            this.closedrawer()
+            this.getData(this.getDatetre(this.startTime1), this.getDatetre(this.endTime1), '', 1)
+            this.getTall(this.getDatetre(this.startTime1), this.getDatetre(this.endTime1))
+        }
     },
 }
 </script>

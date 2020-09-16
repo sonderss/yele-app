@@ -42,7 +42,7 @@
         </view>
     </min-cell>
 
-    <min-cell :card="false" class="m-top-20">
+    <min-cell :card="false" class="m-top-20" v-if="showData.length !== 0">
 
         <view class="f30  top-view1 ">
             <view class="left-view">
@@ -64,7 +64,8 @@
             </view>
         </view>
     </min-cell>
-
+    <min-pulldown :isFlag="falg" :desc="des" :loading="load" />
+    <min-404 v-if="showData.length === 0" pTop='130rpx' />
 </view>
 </template>
 
@@ -80,7 +81,12 @@ export default {
             list: [],
             store: [],
             market: [],
-            showData: []
+            showData: [],
+            falg: false,
+            des: '加载中',
+            page: 2,
+            load: true,
+            isNone:true
         }
     },
     watch: {
@@ -121,7 +127,34 @@ export default {
                     billId: id
                 }
             })
+        },
+        async getDataList(id, page, limit = 10, isLoading = false) {
+            return await this.$minApi.getOrderListDown({
+                opening_id: id,
+                page,
+                limit,
+                isLoading
+            })
         }
+    },
+    onReachBottom() {
+        console.log('到底')
+        if(this.isNone) return  false
+        this.falg = true
+        this.getDataList(this.$parseURL().open_id, this.page, 10, true).then(res => {
+            if (res.list.length === 0) {
+                this.load = false
+                this.des = '暂无更多数据'
+                setTimeout(() => {
+                    return (this.falg = false)
+                }, 1000)
+                return
+            }
+            this.page++
+            this.list = this.list.concat([...res.list])
+            this.test(this.list)
+            this.showData = this.store
+        })
     },
     onShow() {
         console.log(this.$parseURL())
@@ -134,19 +167,35 @@ export default {
             console.log(this.data)
         })
         // getOrderListDown
-        this.$minApi.getOrderListDown({
-                opening_id: this.$parseURL().open_id
-            })
-            .then(res => {
-                console.log(res)
-                this.list = []
-                this.store = []
-                this.market = []
-                this.list = res.list
-                this.test(this.list)
-                this.showData = this.store
-                console.log(this.store, this.market)
-            })
+        this.getDataList(this.$parseURL().open_id, 1, 10).then(res => {
+            console.log(res)
+            this.list = []
+            this.store = []
+            this.market = []
+            this.list = res.list
+            this.test(this.list)
+            this.showData = this.store
+            if( this.showData.length !== 0){
+                   this.isNone = false
+            }
+            console.log(this.store, this.market)
+        })
+        // this.$minApi.getOrderListDown({
+        //         opening_id: this.$parseURL().open_id,
+        //         page,
+        //         limit: 10,
+        //         isLoading,
+        //     })
+        //     .then(res => {
+        //         console.log(res)
+        //         this.list = []
+        //         this.store = []
+        //         this.market = []
+        //         this.list = res.list
+        //         this.test(this.list)
+        //         this.showData = this.store
+        //         console.log(this.store, this.market)
+        //     })
     },
     onLoad() {
         // console.log(this.$parseURL())

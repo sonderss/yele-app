@@ -11,7 +11,7 @@
         </view>
         <view class="f26" :style="{color:bottomcolot}" v-if="totalLabel">{{totalLabel}}</view>
     </view>
-    <view class="min-right" @click="$emit('submit')">
+    <view class="min-right" :style="{backgroundColor:bgcolor}" @click="$emit('submit')">
         <view class="min-text">{{buttonText}}</view>
         <view class="min-label" v-if="buttonLabel">{{buttonLabel}}</view>
     </view>
@@ -77,7 +77,11 @@ export default {
         },
         topV: String,
         leftV: String,
-        bottomcolot: String
+        bottomcolot: String,
+        bgcolor: {
+            type: String,
+            default: 'rgba(255, 224, 0, 1)'
+        }
     }
 }
 </script>
@@ -127,7 +131,7 @@ export default {
 
     .min-right {
         flex-basis: 200rpx;
-        background: rgba(255, 224, 0, 1);
+        // background: rgba(255, 224, 0, 1);
         color: #333;
         display: flex;
         flex-direction: column;

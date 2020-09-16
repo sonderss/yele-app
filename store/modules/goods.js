@@ -16,6 +16,7 @@ export default {
     },
     setStoreSelArr: (state, data) => {
       state.storeSelArr = data
+      console.log(" state.storeSelArr", state.storeSelArr)
     },
     setOrderSelArr: (state, data) => {
       state.orderSelArr = data

@@ -11,7 +11,7 @@
             <view class="p-tb-30 min-border-bottom">商品</view>
             <view class="goods-list p-top-10">
                 <view class="p-tb-20" v-for="item in list.order_product_list" :key="item.id">
-                    <min-goods-item :name="item.product_name" :price="item.order_price" :icon="item.product_img" :specification="item.sku" :value="item.quantity">
+                    <min-goods-item :name="item.product_name" :price="item.order_price" :icon="item.product_img" :specification="item.type === 'setmeal' ? item.setmeal_product:item.sku" :value="item.quantity">
                     </min-goods-item>
                 </view>
             </view>
@@ -62,22 +62,30 @@ export default {
                 return
             }
             if (this.list.order_info.is_can_open === 1) {
-                if (this.payType === 1 || this.payType === 2) {
-                    // 第三方二维码支付
-                    this.$minRouter.push({
-                        name: "pay-code"
-                    })
-                    return
-                }
+                // if (this.payType === 1 || this.payType === 2) {
+                //     // 第三方二维码支付
+                //     this.$minRouter.push({
+                //         name: "pay-code",
+                //         params: {
+                //             info: {
+                //                 payment_id: this.payType,
+                //                 money: this.totalAmount,
+                //                 desk_name: this.list.order_info.desk_name
+                //             },
+                //             data: res.payParam,
+                //             id: res.id,
+                //             order_id: this.$parseURL().order_id
+                //         }
+                //     })
+                //     return
+                // }
                 this.$minApi.confirmOrder({
                     order_id: this.$parseURL().order_id,
                     payment_id: this.payType,
                     desk_id: this.$parseURL().desk_id
                 }).then(res => {
                     console.log(res)
-                    // this.$showToast('开台成功')
-                    // this.$store.dispatch('goods/setOrderSelArr', [])
-                    setTimeout(() => {
+                    if (res.paid === 1) {
                         this.$minRouter.push({
                             name: 'redopen-success',
                             type: "redirectTo",
@@ -88,7 +96,29 @@ export default {
                                 desk_name: this.list.order_info.desk_name
                             }
                         })
-                    }, 2000)
+                    } else {
+                        // this.$showToast('第三方支付开发中')
+                        //     // 第三方二维码支付
+                        this.$minRouter.push({
+                            name: "pay-code",
+                            params: {
+                                info: {
+                                    payment_id: this.payType,
+                                    money: this.totalAmount,
+                                    desk_name: this.list.order_info.desk_name
+                                },
+                                data: res.payParam,
+                                id: res.id,
+                                order_id: this.$parseURL().order_id
+                            }
+                        })
+                        return
+                    }
+                    // this.$showToast('开台成功')
+                    // this.$store.dispatch('goods/setOrderSelArr', [])
+                    // setTimeout(() => {
+
+                    // }, 2000)
                 })
             } else {
                 // 申请开台

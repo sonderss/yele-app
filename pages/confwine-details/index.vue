@@ -11,8 +11,8 @@
             <view class="content">
                 <text class="title f28 min-ellipsis">{{item.product_name}}</text>
                 <view class="title f28 min-ellipsis min-flex min-flex-main-between ">
-                    <text class="f24" style="color:#666666">{{item.product_sku}}</text>
-                    <text class="f24" style="color:#666666">*{{item.product_num}}</text>
+                    <text class="f24 min-ellipsis" style="color:#666666; ">{{item.product_sku}}</text>
+                    <text class="f24 p-left-20" style="color:#666666">*{{item.product_num}}</text>
                 </view>
                 <text class="desc f24">提成：￥{{item.commission_amount}}</text>
             </view>
@@ -26,10 +26,12 @@
             <view class="item">充公单号：{{data.order_sn}}</view>
             <view class="item">充公人员：{{data.confiscate_user_name}}</view>
             <view class="item">当前状态：{{data.friend_status}}</view>
-            <!-- <view class="item">确认人员：{{data.confirm_user_name ? data.confirm_user_name :'暂无数据' }}</view> -->
+            <view class="item" v-if="data.confirm_user_name">确认人员：{{data.confirm_user_name ? data.confirm_user_name :'暂无数据' }}</view>
             <view class="item">提成合计：￥{{data.total_commission}}</view>
             <view class="item">充公时间：{{data.friend_create_time}}</view>
-            <!-- <view class="item">确认时间：{{data.friend_operate_time ? data.friend_operate_time :'暂无数据'}}</view> -->
+            <view class="item" v-if="data.friend_operate_time ">确认时间：{{data.friend_operate_time ? data.friend_operate_time :'暂无数据'}}</view>
+            <view class="item" v-if="data.zuofei">作废人员：{{data.zuofei ? data.zuofei :'暂无数据' }}</view>
+            <view class="item" v-if="data.zuofei">作废时间：{{data.zuofei ? data.zuofei :'暂无数据' }}</view>
         </view>
     </view>
 </view>

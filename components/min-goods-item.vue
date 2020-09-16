@@ -6,7 +6,10 @@
         <view class="min-goods-content" :class="{'min-produced': produced}">
             <view class="min-goods-name">{{name}}</view>
             <view class="min-goods-size p-right-20">
-                <view class="sku min-ellipsis f24">{{specification}}</view>
+                <view class="sku min-ellipsis f24" v-if="!Array.isArray(specification)">{{specification}}</view>
+                <view class="sku min-ellipsis f24" v-if="Array.isArray(specification)">
+                    <text style="color: #666;" class="f24" v-for="(it,inde) in specification" :key="inde">{{`${it.product_name}   `}}</text>
+                </view>
                 <view class="count" v-if="!stepper">x {{count}}</view>
             </view>
 
@@ -16,6 +19,7 @@
             <slot name="stepper" />
             <min-stepper v-model="count" @change="changeCount" />
         </view>
+        <view class="active-left-p f22" v-if="Array.isArray(specification)">套餐</view>
     </view>
 </view>
 </template>
@@ -49,7 +53,7 @@ export default {
             default: 0
         },
         specification: {
-            type: String,
+            type: [String, Array],
             default: ''
         },
         iconSize: {
@@ -200,6 +204,20 @@ export default {
         position: absolute;
         right: 30rpx;
         bottom: 20rpx;
+    }
+
+    .active-left-p {
+        width: 80rpx;
+        height: 40rpx;
+        background: #030313;
+        color: #FFE001;
+        display: block;
+        text-align: center;
+        line-height: 40rpx;
+        position: absolute;
+        border-radius: 0 20rpx 20rpx 0;
+        left: -20rpx;
+        top: 0rpx
     }
 }
 </style>

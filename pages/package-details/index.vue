@@ -3,7 +3,7 @@
     <swiper class="swiper" :indicatorDots="false" :circular="true" :autoplay="autoplay" :interval="interval" :duration="duration">
         <swiper-item v-for="(item,index) in list.setmeal_images" :key="index">
             <view class="swiper-item">
-                <image :src="item" />
+                <image :src="item" @error="imgerra" />
             </view>
         </swiper-item>
     </swiper>
@@ -14,13 +14,16 @@
                 ￥
                 <text class="price">{{list.price}}</text>
             </view>
-            <min-stepper v-if="showNum" :isAnimation="false" @change='changeChioce($event,list.id)' v-model="showNum"></min-stepper>
-            <view v-else class="m-right-10 m-bottom-20" style="width:40rpx;height:40rpx;" @click.stop="changeChioceT">
-                <image src="/static/images/yellow-add.png" style="width:100%" />
+            <view v-if="!$parseURL().isPay">
+                <!-- <min-stepper v-if="showNum" :isAnimation="false" @change='changeChioce($event,list.id)' v-model="showNum"></min-stepper> -->
+                <view class="m-right-10 m-bottom-20" style="width:40rpx;height:40rpx;" @click.stop="changeChioceT">
+                    <image src="/static/images/yellow-add.png" style="width:100%" />
+                </view>
             </view>
+
         </view>
     </view>
-    <min-describe @chincesku="toDeatil" :sku="list.combination[0].combination_name" leftTxt="套餐组合"></min-describe>
+    <min-describe v-if="!$parseURL().isPay" @chincesku="toDeatil" :sku2="list.combination[0].combination_name" leftTxt="套餐组合"></min-describe>
     <view class="introduction m-top-20 p-lr-20">
         <view class="title min-border-bottom m-bottom-30">详细介绍</view>
         <view class="content p-bottom-30">
@@ -28,7 +31,7 @@
         </view>
     </view>
 
-    <min-goods-submit @leftClick='selectedEvent' @submit="submit" :goodsCount="countNums" buttonText='去下单' :buttonLabel='buttonLabel' icon="../../static/images/cart.png" :totalAmount="totalAmountE" :totalLabel="totalLabel"></min-goods-submit>
+    <min-goods-submit v-if="!$parseURL().isPay" @leftClick='selectedEvent' @submit="submit" :goodsCount="countNums" buttonText='去下单' icon="/static/images/cart.png" :totalAmount="totalAmountE" :totalLabel="totalLabel"></min-goods-submit>
     <!-- 已选商品 -->
     <min-popup :show="selected" @close='closeSelectedPop'>
         <view class="popview">
@@ -45,17 +48,19 @@
             <view class="main-sel-view p-lr-30 m-top-20" style="margin-bottom:300rpx" @touchstart="start" @touchmove="move" @touchend="end">
                 <scroll-view scroll-y :style="{transition: top === 0 ? 'transform 300ms' : '', transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'}">
                     <view class="item" v-for="(item2,n) in selArr" :key="n">
-                        <image :src="item2.sku.sku_img ? item2.sku.sku_img  : item2.product_img " mode="" />
+                        <image :src="item2.type !== 'setmeal' ? (item2.sku.sku_img ? item2.sku.sku_img  : item2.product_img  ):item2.product_img " mode="" />
                         <view class="content-view">
                             <view class="right-view-title">
                                 <text class="f28 t" style="display:block">{{item2.product_name}}</text>
                                 <text class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'product' ">规格：{{item2.sku.sku_full_name}}</text>
                                 <text class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'setmeal'">
                                     规格：
-                                    <template v-for="desc in item2.combination">
-                                        <template v-for="(desc1) in desc.combination_detail">
-                                            <span :key="desc1.id" class="m-left-10">{{desc1.name}}*{{desc1.quantity}}</span>
-                                        </template>
+                                    <template v-for="(desc,a) in item2.combination">
+                                        <span :key="a">
+                                            <template v-for="(desc1,qwer) in desc.combination_detail">
+                                                <span :key="qwer" class="m-left-10">{{desc1.name}}*{{desc1.quantity}}</span>
+                                            </template>
+                                        </span>
                                     </template>
 
                                 </text>
@@ -69,7 +74,7 @@
 
                                 </view>
                                 <view class="steper">
-                                    <min-stepper :isAnimation='false' v-model="item2.step" :min='0' @change="alDel($event,n)"></min-stepper>
+                                    <min-stepper :isAnimation='false' v-model="item2.step" :min='0' @change.stop="alDel($event,n)"></min-stepper>
                                 </view>
                             </view>
                         </view>
@@ -137,12 +142,20 @@ export default {
         //   },
         //   deep: true
         // },
-        selArr(v) {
-            // console.log(v)
-        }
+        // selArr(v) {
+        //     v.map((item, index) => {
+        //         if (item.step === 0) {
+        //             console.log(23111111111)
+        //             this.$nextTick(() => {
+        //                 v.splice(index, 1)
+        //             })
+        //         }
+        //     })
+        // }
     },
     onShow() {
         this.selArr = this.$store.state.goods.orderSelArr
+        console.log("这里是this.selArr", this.selArr)
     },
     onBackPress(options) {
 
@@ -193,6 +206,9 @@ export default {
                 .then(res => {
                     this.list = res.info
                     this.list.type = 'setmeal'
+                    if (this.list.setmeal_images.length <= 0) {
+                        this.list.setmeal_images.push(this.list.product_img)
+                    }
                     if (this.$parseURL().product && this.$parseURL().product.length > 0) {
                         this.product = this.$parseURL().product
                         this.list.step = 1
@@ -202,13 +218,13 @@ export default {
                         this.addGoods(obj)
                     }
                     console.log(this.list)
-                    this.selArr.map(item => {
-                        console.log(item)
-                        if (item.id === this.list.id) {
-                            this.showNum = item.step
-                        }
-                    })
-                    console.log(this.showNum)
+                    // this.selArr.map(item => {
+                    //     console.log(item)
+                    //     if (item.id === this.list.id) {
+                    //         this.showNum = item.step
+                    //     }
+                    // })
+                    // console.log(this.showNum)
                 })
         },
         back(a) {
@@ -224,6 +240,12 @@ export default {
                     data: this.$parseURL()
                 }
             })
+        },
+        imgerra(e) {
+            console.log(e)
+            if (e.type === 'error') {
+                this.list.setmeal_images.push('/static/images/bid-goods.png')
+            }
         },
         start(e) {
             this.lastY = e.changedTouches[0].pageY
@@ -243,18 +265,39 @@ export default {
             return (this.top = 0)
         },
         addGoods(obj) {
+            console.log("这里是obj", obj)
+            let kaiguan = true
             if (this.selArr.length === 0) return this.selArr.push(obj)
             const result = this.selArr.some(item => {
                 // if (item.type === 'setmeal') {
                 if (item.id !== obj.id) {
                     return true
-                } else {
-                    item.combination = obj.combination
+                } else if (item.id === obj.id) {
+                    // 这里是ID相同的情况
+                    // item.combination = obj.combination
+                    const aaaa = item.combination.some(objItem => {
+                        const bbbb = obj.combination.some(itemItem => {
+                            if (objItem.id !== itemItem.id) {
+                                return true
+                            } else if (objItem.id === itemItem.id) {
+                                return objItem.combination_detail.some(detail => {
+                                    return itemItem.combination_detail.some(combination_detail => {
+                                        if (detail.sku_id !== combination_detail.sku_id) {
+                                            return true
+                                        }
+                                    })
+                                })
+                            }
+                        })
+                        return bbbb
+                    })
+                    if (aaaa) return true
                 }
                 // }
             })
             if (result) {
                 this.selArr.push(obj)
+                this.selArr = this.$minCommon.arrSet(this.selArr)
                 this.$store.dispatch('goods/setOrderSelArr', this.selArr)
             }
         },
@@ -274,7 +317,10 @@ export default {
             if (this.product.length === 0) return this.$showToast('请先选择套餐组合')
             this.selArr.map((item, index) => {
                 if (item.id === id) {
-                    item.step = e
+                    this.$nextTick(() => {
+                        item.step = e
+
+                    })
                 }
             })
             this.$store.dispatch('goods/setOrderSelArr', this.selArr)
@@ -289,16 +335,29 @@ export default {
         // 已选弹出层删除事件
         alDel(n, index) {
             if (this.selArr[index].type === 'setmeal') {
-                this.list.step = n
+                this.$nextTick(() => {
+                    this.list.step = n
+                    this.showNum = n
+                })
+
             }
             if (n === 0) {
                 this.selArr.splice(index, 1)
-                this.$store.dispatch('goods/setOrderSelArr', this.selArr)
+                return this.$store.dispatch('goods/setOrderSelArr', this.selArr)
+
+                // this.selArr.splice(index, 1)
+                // this.$store.dispatch('goods/setOrderSelArr', this.selArr)
             }
         },
         // 未选状态step按钮
         changeChioceT() {
-            this.$showToast("请选择套餐组合")
+            // this.$showToast("请选择套餐组合")
+            this.$minRouter.push({
+                name: 'packages-detail',
+                params: {
+                    data: this.$parseURL()
+                }
+            })
         },
         // 提交
         submit() {

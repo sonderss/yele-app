@@ -14,13 +14,15 @@
                 <text class="price" v-if="product_type === 'product' ">￥{{list.sku.length === 0 ? '暂无数据': list.sku[chioceIndex].sku_price}}</text>
                 <text class="price" v-if="product_type === 'service' ">￥{{list.price}}</text>
             </view>
-            <min-stepper v-model="list.step" @change="goodsChange($event,list)"></min-stepper>
+            <min-stepper v-if="!$parseURL().isPay" v-model="list.step" @change="goodsChange($event,list)"></min-stepper>
         </view>
     </view>
-    <min-describe @chincesku="selSku" :sku="list.sku[0].sku_full_name" leftTxt="规格" v-if="product_type === 'product' "></min-describe>
+    <view v-if="!$parseURL().isPay">
+        <min-describe @chincesku="selSku" :sku="list.sku[0].sku_full_name" leftTxt="规格" v-if="product_type === 'product' "></min-describe>
+    </view>
     <view class="introduction m-top-20 p-lr-20" v-if="!noData">
         <view class="title min-border-bottom m-bottom-30">详细介绍</view>
-        <view class="content p-bottom-30">{{list.info}}</view>
+        <view class="content p-bottom-30">{{list.info ? list.info : '暂无数据'}}</view>
     </view>
     <min-goods-submit v-if="!$parseURL().isPay" icon="../../static/images/cart.png" :goodsCount="countNums" :totalAmount="totalAmountE " :totalLabel="totalLabel" buttonText="去下单" @leftClick="leftClick" @submit="submit"></min-goods-submit>
     <!-- 选择规格 -->
@@ -82,7 +84,7 @@
                 <scroll-view scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'}">
                     <view class="item" v-for="(item2,n) in selArr" :key="n">
                         <!-- <view v-if="!item2.test"> -->
-                        <image :src="item2.sku.sku_img ? item2.sku.sku_img  : item2.product_img " @error="imgerras($event,n)" />
+                        <image :src="item2.type !== 'setmeal' ? (item2.sku.sku_img ? item2.sku.sku_img  : item2.product_img  ):item2.product_img  " @error="imgerras($event,n)" />
                         <view class="content-view">
                             <view class="right-view-title">
                                 <text class="f28 t" style="display:block">{{item2.product_name}}</text>
@@ -125,7 +127,7 @@
             </view>
             <!-- <view class="empty-view"></view> -->
             <view class="bottom-view-t">
-                <min-goods-submit style="position:fixed" leftText="已选" :totalAmount="totalAmountE" :goodsCount="countNums" :totalLabel="totalLabel" buttonText="去下单" :buttonLabel="buttonLabel" @submit="submit"></min-goods-submit>
+                <min-goods-submit style="position:fixed" leftText="已选" :totalAmount="totalAmountE" :goodsCount="countNums" :totalLabel="totalLabel" buttonText="去下单" @submit="submit"></min-goods-submit>
             </view>
         </view>
     </min-popup>
@@ -171,22 +173,22 @@ export default {
         }
     },
     watch: {
-        selArr: {
-            handler(a, b) {
-                a.map((item, index) => {
-                    if (item.step === 0) {
-                        return this.delArr.push(index)
-                    }
-                })
-                this.$store.dispatch('goods/setOrderSelArr', a)
-            },
-            deep: true,
-        },
-        delArr(a) {
-            a.map(item => {
-                this.selArr.splice(item, 1)
-            })
-        },
+        // selArr: {
+        //     handler(a, b) {
+        //         a.map((item, index) => {
+        //             if (item.step === 0) {
+        //                 return this.delArr.push(index)
+        //             }
+        //         })
+        //         this.$store.dispatch('goods/setOrderSelArr', a)
+        //     },
+        //     deep: true,
+        // },
+        // delArr(a) {
+        //     a.map(item => {
+        //         this.selArr.splice(item, 1)
+        //     })
+        // },
     },
     computed: {
         // 合计金额
@@ -257,7 +259,7 @@ export default {
             console.log(this.selArr)
         }
         this.totalLabel = `台位低消：${this.$parseURL().minim_charge}`
-        this.buttonLabel = this.$parseURL().is_open_desk ? '(已开台)' : '(未开台)'
+        // this.buttonLabel = this.$parseURL().is_open_desk ? '(已开台)' : '(未开台)'
     },
     mounted() {
         console.log(this.product_type)
@@ -328,17 +330,28 @@ export default {
         },
         // 已选商品统一列表方法
         addGoods(obj) {
-            if (this.selArr.length === 0) return this.selArr.push(obj)
+            console.log("asdsdsdsdadadad")
+            if (this.selArr.length === 0) {
+                this.selArr.push(obj)
+                this.$store.dispatch('goods/setOrderSelArr', this.selArr)
+                return
+            }
             const result = this.selArr.some(item => {
                 if (obj.type === 'service') {
                     if (item.id === obj.id) {
-                        item.step = obj.step
+                        this.$nextTick(() => {
+                            item.step = obj.step
+
+                        })
                         return true
                     }
                 } else if (obj.type === 'product') {
                     if (item.type === 'product') {
                         if (item.sku.id === obj.sku.id) {
-                            item.step = obj.step
+                            this.$nextTick(() => {
+                                item.step = obj.step
+
+                            })
                             return true
                         }
                     }
@@ -724,7 +737,7 @@ export default {
     margin: 0 30rpx;
     padding: 30rpx 0;
     padding-bottom: 10rpx;
-    height: 120rpx;
+    height: 130rpx;
 
     .item-view {
         margin-top: 20rpx;

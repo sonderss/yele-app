@@ -7,7 +7,7 @@
         </view>
         <view :class="item.isMore ?  'main p-top-20': 'main1 p-tb-20 '" @click="goDetail(index)">
             <view class="item" v-for="(item2,index2) in item.detail" :key="index2">
-                <text class="f28">{{item2.product_name+item2.product_sku}}</text>
+                <text class="f28 min-ellipsis ">{{item2.product_name+item2.product_sku}}</text>
                 <text class="f28">*{{item2.product_num}}</text>
             </view>
         </view>

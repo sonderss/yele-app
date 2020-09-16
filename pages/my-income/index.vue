@@ -180,9 +180,9 @@ export default {
         },
         // 提现
         widthdraw() {
+            // ,  type: 'redirectTo',
             this.$minRouter.push({
-                name: 'redwidth-draw',
-                type: 'redirectTo',
+                name: 'width-draw'
             })
         },
         close() {

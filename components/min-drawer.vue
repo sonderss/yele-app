@@ -3,8 +3,8 @@
     <view class="uni-drawer__mask" :class="{ 'uni-drawer__mask--visible': showDrawer && mask }" @tap="close" />
     <view class="uni-drawer__content" :class="{'uni-drawer--right': rightMode,'uni-drawer--left': !rightMode, 'uni-drawer__content--visible': showDrawer}">
         <view class="top_view_drawer">
-            <view class="f30" style="font-weight:500;">全部门店</view>
-            <view class="f24 iconfont" style="color:#000" @click="close">&#xe608;</view>
+            <view class="f30" style="font-weight:500;" @click="allStore">全部门店</view>
+            <view class="f24 iconfont" v-if="isShowClose" style="color:#000" @click="close">&#xe608;</view>
         </view>
         <view class="main_drawer">
             <view class="saddsdds">
@@ -41,6 +41,10 @@ export default {
          * 蒙层显示状态
          */
         mask: {
+            type: Boolean,
+            default: true
+        },
+        isShowClose: {
             type: Boolean,
             default: true
         }
@@ -98,6 +102,9 @@ export default {
                 },
                 status ? 50 : 300
             )
+        },
+        allStore() {
+            this.$emit('allChangeStore', true)
         },
         tochange(store_id, store_name) {
             this.nowStoreId = store_id

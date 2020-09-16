@@ -9,7 +9,7 @@
                 <view :id="'top'+listIndex" style="width: 100%;height:20rpx;"></view>
                 <view class="main p-lr-30" v-if="listItem.product.length > 0">
                     <view class="item" style="margin-bottom:200rpx">
-                        <view class="goods" v-for="(item) in listItem.product" :key="item.sku[0].id" @click.stop="toDetail(item)">
+                        <view class="goods" v-for="(item,index) in listItem.product" :key="index" @click.stop="toDetail(item)">
                             <image lazy-load :src="item.product_img.length>10 ?  item.product_img : '/static/images/goods.png' " />
                             <view class="content-view">
                                 <view class="right-view-title">
@@ -122,7 +122,43 @@ export default {
         }
     },
     onShow() {
-        this.selArr = this.$store.state.goods.storeSelArr
+        this.$nextTick(() => {
+            return this.selArr = this.$store.state.goods.storeSelArr
+        })
+    },
+    watch: {
+        selArr: {
+            handler(a) {
+                if (a.length === 0) {
+                    this.list.map(listItem => {
+                        listItem.product.map(item => {
+                            item.step = 0
+                        })
+                    })
+                    // return
+                }
+                a.map((item, index) => {
+                    console.log("item", item)
+                    this.list.map(item1 => {
+                        if (item1.product && item1.product.length > 0) {
+                            item1.product.map((item2, index2) => {
+                                console.log("item2", item2)
+                                if (item2.id === item.id) {
+                                    if (item2.sku[0].id === item.sku[0].id) {
+                                        this.$nextTick(() => {
+                                            item2.step = item.step
+
+                                        })
+                                    }
+
+                                }
+                            })
+                        }
+                    })
+                })
+            },
+            deep: true
+        }
     },
     onBackPress(options) {
         // this.selArr = []
@@ -384,8 +420,12 @@ export default {
         },
         /** 清空已选商品 */
         delAll() {
-            this.selArr = []
+            // this.selArr = []
+            this.selArr.map((item, index) => {
+                this.selArr.splice(index, 1)
+            })
             this.$store.dispatch('goods/setStoreSelArr', [])
+
             this.list.map(item => {
                 item.product.map((item2, index) => {
                     if (item2.step > 0) {
