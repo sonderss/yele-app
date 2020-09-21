@@ -12,11 +12,15 @@
     </view>
     <!-- 这里暂时测试 -->
     <view class="card p-lr-20 m-top-20" v-if="list.order_info.is_can_sign_off">
-        <view class="top p-tb-20 min-border-bottom">
+        <view class="top123 p-tb-20 min-border-bottom">
+            <view class="title">签折优惠</view>
+            <min-switch scale='scale(0.6,0.6)' v-model="isUseSign" />
+        </view>
+        <view class="top p-tb-20 min-border-bottom" v-if="isUseSign">
             <view class="title">签折</view>
             <view class="remain-amount">剩余额度：￥{{list.order_info.quota}}</view>
         </view>
-        <view class="discount-wrap m-top-20">
+        <view class="discount-wrap m-top-20" v-if="isUseSign">
             <view class="discounts">
                 <view class="discount">
                     <min-radio title="全单打折" :label="ALL_DZ" v-model="discountType" />
@@ -77,6 +81,7 @@
             <view class="f28 p-bottom-30" v-if=" discountType === 3">扣除赠送额度：￥{{k ? k : 0}}</view>
 
         </view>
+        <view v-else class="top p-tb-20 min-border-bottom">不使用签折优惠</view>
     </view>
     <!--支付方式-->
 
@@ -116,7 +121,8 @@ export default {
             money: '',
             delArr: [],
             quanyou: '',
-            aaa: 0
+            aaa: 0,
+            isUseSign: true
         }
     },
     onLoad() {
@@ -254,7 +260,7 @@ export default {
                     }
                 })
             }
-            if (this.list.order_info.is_can_sign_off) {
+            if (this.list.order_info.is_can_sign_off && this.isUseSign && (this.quanyou || this.aaa || this.k || this.kouchu)) {
                 // if(this.kouchu || this.quanyou  || this.k){
 
                 // }
@@ -412,6 +418,14 @@ export default {
                 color: #FF0000;
                 line-height: 60rpx;
             }
+        }
+
+        .top123 {
+            width: 100%;
+            height: 100rpx;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .main {

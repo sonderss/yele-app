@@ -195,7 +195,7 @@ export default {
                 success: (chooseImageRes) => {
                     const tempFilePaths = chooseImageRes.tempFilePaths;
                     uni.uploadFile({
-                        url: "http://api.app-store.dev.yeleonline.com/api/5ebdf23feeba7",
+                        url: process.env.VUE_APP_UPLOADFILE_URL,
                         filePath: tempFilePaths[0],
                         name: "file",
                         header: {

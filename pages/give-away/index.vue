@@ -279,11 +279,11 @@ export default {
             // 数量为0时从已选商品中删除掉该商品
             for (let i = 0; i < this.selArr.length; i++) {
                 if (this.selArr[i].id === item.id && e === 0) {
-                    this.$nextTick(() => {
+                    if (this.selArr[i].sku[0].id === item.sku[0].id) {
                         this.selArr.splice(i, 1)
-                        console.log(1231231232132321)
                         this.$store.dispatch('goods/setStoreSelArr', this.selArr)
-                    })
+                    }
+
                 }
             }
         },

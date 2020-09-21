@@ -10,7 +10,7 @@
             <view class="content-view">
                 <view class="right-view-title">
                     <view class="f28 t">
-                        <text v-if="discount" class="discount f26">限时特惠</text>
+                        <text v-if="discount" class="discount min-ellipsis f26">{{discountdesc}}</text>
                         <text class>{{title}}</text>
                     </view>
                     <text class="f26 abc m-top-10" v-if="isSku" style="color:#666666">{{desc}}</text>
@@ -23,7 +23,7 @@
                         </text>
                     </view>
                     <view class="steper">
-                        <min-stepper :isFlag="isFlag" v-if="isFlag" v-model="count" @change="changeChioce"></min-stepper>
+                        <min-stepper :isAnimation="count > 0 ? false : true " :isFlag="isFlag" v-if="isFlag" v-model="count" @change="changeChioce"></min-stepper>
                         <view v-else class="m-right-10" style="width:40rpx;height:40rpx;" @click.stop="changeChioceT">
                             <image lazy-load src="/static/images/yellow-add.png" style="width:100%" />
                         </view>
@@ -87,6 +87,10 @@ export default {
             type: Boolean,
             default: false,
         },
+        discountdesc: {
+            type: String,
+            default: "限时优惠"
+        }
     },
     created() {
         this.count = this.value

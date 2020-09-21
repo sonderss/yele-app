@@ -40,11 +40,15 @@
             <view class="main p-tb-30">
                 <view class="item">存酒单号：{{list.deposit_sn}}</view>
                 <view class="item">存酒人员：{{list.deposit_name}}</view>
-                <view class="item">存酒台号：{{list.desk_name}}</view>
-                <view class="item">确认人员：{{list.confirm_name}}</view>
+                <view class="item">存酒台号：{{list.desk_name ? list.desk_name :'暂无'}}</view>
+                <view class="item" v-if="list.deposit_status !== 1 && list.deposit_status !== 5">确认人员：{{list.confirm_name}}</view>
                 <view class="item">存酒时间：{{list.create_time}}</view>
-                <view class="item">生效时间：{{list.confirm_time}}</view>
-                <view class="item">到期时间：{{list.expires_time}}</view>
+                <view class="item" v-if="list.deposit_status === 6">取酒人员：{{list.operator_name}}</view>
+                <view class="item" v-if="list.deposit_status === 5">操作人员：{{list.operator_name}}</view>
+                <view class="item" v-if="list.deposit_status === 5">备注：{{list.operator_remarks}}</view>
+                <view class="item" v-if="list.deposit_status !== 1 && list.deposit_status !== 5">生效时间：{{list.confirm_time}}</view>
+                <view class="item" v-if="list.deposit_status !== 1  && list.deposit_status !== 5">到期时间：{{list.expires_time}}</view>
+                <!--  -->
             </view>
         </view>
     </view>

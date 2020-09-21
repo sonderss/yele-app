@@ -2,12 +2,11 @@
 <view class="my-downline">
     <view class="top-view f26"></view>
     <view class="mid-view">
-        <text class="name m-left-10 f26">我的上线：{{list.superior.superior ?list.superior.superior:'暂无'}}{{list.superior.mobile}}</text>
+        <text class="name m-left-10 f26">我的上线：{{list.superior.superior ? list.superior.superior.user_name : '暂无'}}&nbsp;{{list.superior.superior.mobile}}</text>
         <view class="backi m-top-10" :style="{backgroundImage:`url(${n})`,backgroundSize: 'cover'}">
             <view class="show-money">
                 <view class="money">
-                    ￥
-                    <text class="m">{{list.superior.grand_total_rebate}}</text>
+                    ￥<text class="m">{{list.superior.grand_total_rebate}}</text>
                 </view>
                 <view class="desc">累计获得分佣</view>
             </view>
@@ -69,7 +68,11 @@ export default {
     data() {
         return {
             list: {
-                superior: {},
+                superior: {
+                    superior: {
+                        mobile: ''
+                    }
+                },
                 subordinate: []
             },
             nums: 0,
@@ -78,8 +81,9 @@ export default {
     },
     mounted() {
         this.$minApi.getMyDownLineInfo().then(res => {
-            console.log(res)
             this.list.superior = res
+            console.log(this.list.superior)
+
         })
         this.$minApi
             .getMyDownLine({

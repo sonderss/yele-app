@@ -9,12 +9,12 @@
         <view class="bom">
             <ul class="iul">
                 <input type="number" v-model="key" :focus="isfocus" maxlength="6" />
-                <li @click.stop="getFocus">{{value}}</li>
-                <li @click="getFocus">{{value1}}</li>
-                <li @click="getFocus">{{value2}}</li>
-                <li @click="getFocus">{{value3}}</li>
-                <li @click="getFocus">{{value4}}</li>
-                <li @click="getFocus">{{value5}}</li>
+                <li @click.stop="getFocus">{{value ? '*':''  || value === '0' ? '*':'' }}</li>
+                <li @click="getFocus">{{value1 ? '*':''  || value1 === '0' ? '*':'' }}</li>
+                <li @click="getFocus">{{value2 ? '*':''  || value2 === '0' ? '*':'' }}</li>
+                <li @click="getFocus">{{value3 ? '*':''  || value3 === '0' ? '*':'' }}</li>
+                <li @click="getFocus">{{value4 ? '*':''  || value4 === '0' ? '*':'' }}</li>
+                <li @click="getFocus">{{value5 ? '*':''  || value5 === '0' ? '*':'' }}</li>
             </ul>
         </view>
     </view>
@@ -46,6 +46,7 @@ export default {
     watch: {
         key(a) {
             let arr = [...a];
+
             this.value = arr[0];
             this.value1 = arr[1];
             this.value2 = arr[2];

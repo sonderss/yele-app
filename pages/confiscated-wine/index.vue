@@ -12,7 +12,7 @@
 
             <view class="item" v-for="(item,index) in mainArray" :key="index" :id="'item-'+index">
                 <view class="goods" v-for="(item2,index2) in item.list" :key="index2">
-                    <image lazy-load :src="item2.product_img" mode="aspectFill" @error="imgerr($event,index,index2)" />
+                    <image lazy-load :src="item2.product_img" mode="aspectFit" @error="imgerr($event,index,index2)" />
                     <view class="content-view">
                         <view class="right-view-title">
                             <text class="f28 t" style="display:block">{{item2.product_name}}</text>

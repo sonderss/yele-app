@@ -11,17 +11,19 @@
             </scroll-view>
         </view>
     </view>
-
-    <scroll-view class="main" :show-scrollbar="false" :style="{ 'height':scrollHeight,top:'20rpx'}" :scroll-y="true" @scroll="mainScroll" :scroll-into-view="scrollInto" :scroll-with-animation="true">
-        <view v-for="(item,index) in mainArray" :key="index" :id="`item-${index}`">
-            <view v-for="(item2,index2) in item.product" :key="index2" :isFlag="item2.isFlag" @click.stop="goDetails(index,index2)">
-                <min-goods-chioce :image="item2.product_img" :discount="item2.is_limited === 1 ? true: false " :title="item2.product_name" :badgeTxt="item2.type === 'setmeal' ? '套餐': '' " :badge="item2.type === 'setmeal'? true : false " @changes="changeChioce(index,index2)" v-model="item2.step" @changesPop="changesPopNoStep(index,index2,item2.type)" :desc="item2.sku.length >=1 ?item2.sku[0].sku_full_name : item2.info " :price="item2.price" :isFlag="item2.isFlag">
-                </min-goods-chioce>
+    <view class="main m-top-30">
+        <scroll-view :show-scrollbar="false" :style="{ 'height':scrollHeight}" @scrolltolower="testBottom" scroll-y="true" @scroll="mainScroll" :scroll-into-view="scrollInto" scroll-with-animation="true">
+            <view style="height:20rpx"></view>
+            <view v-for="(item,index) in mainArray" :key="index" :id="`item-${index}`">
+                <view v-for="(item2,index2) in item.product" :key="index2" :isFlag="item2.isFlag" @click.stop="goDetails(index,index2)">
+                    <min-goods-chioce :image="item2.product_img" :discountdesc="item2.limited_activity_name" :discount="item2.is_limited === 1 ? true: false " :title="item2.product_name" :badgeTxt="item2.type === 'setmeal' ? '套餐': '' " :badge="item2.type === 'setmeal'? true : false " @changes="changeChioce(index,index2)" v-model="item2.step" @changesPop="changesPopNoStep(index,index2,item2.type)" :desc="item2.sku.length >=1 ?item2.sku[0].sku_full_name : item2.info " :price="item2.price" :isFlag="item2.isFlag">
+                    </min-goods-chioce>
+                </view>
             </view>
-        </view>
 
-        <view style="height:120rpx;"></view>
-    </scroll-view>
+            <view style="height:120rpx;"></view>
+        </scroll-view>
+    </view>
     <!-- 底部按钮 -->
     <view class="bottom-view" v-if="mainArray.length !== 0">
         <min-goods-submit icon="/static/images/cart.png" bottomcolot="#666" @leftClick="selectedEvent" :totalAmount="totalAmountE" :totalLabel="totalLabel" :goodsCount="countNums" buttonText="去下单" @submit="submit" leftV="90" topV="20"></min-goods-submit>
@@ -270,6 +272,13 @@ export default {
             },
             deep: true,
         },
+        mainArray(a) {
+            a.map((item, index) => {
+                if (item.product.length === 0) {
+                    a.splice(index, 1)
+                }
+            })
+        }
     },
     methods: {
         test(step, id, type) {
@@ -407,24 +416,36 @@ export default {
         },
         /* 主区域滚动监听 */
         mainScroll(e) {
-            this.$minCommon.debounce(this.testHua(e))
+            // this.$minCommon.debounce(this.testHua(e))
+            const top = e.detail.scrollTop;
+            if (top === 0) {
+                this.leftIndex = 0;
+            }
+            let index = 0;
+            /* 查找当前滚动距离 */
+            for (let i = this.topArr.length - 1; i >= 0; i--) {
+                if (top + 100 >= this.topArr[i]) {
+                    index = i;
+                    break;
+                }
+            }
+            this.leftIndex = index < 0 ? 0 : index;
         },
         // 测试滑动
         testHua(e) {
-            const top = e.detail.scrollTop
+            const top = e.detail.scrollTop;
             if (top === 0) {
-                this.leftIndex = 0
-                return
+                this.leftIndex = 0;
             }
-            let index = 0
+            let index = 0;
             /* 查找当前滚动距离 */
             for (let i = this.topArr.length - 1; i >= 0; i--) {
-                /* 在部分安卓设备上，因手机逻辑分辨率与rpx单位计算不是整数，滚动距离与有误差，增加2px来完善该问题 */
-                if (top + 2 >= this.topArr[i]) {
-                    index = i + 1
+                if (top - 2 >= this.topArr[i]) {
+                    index = i;
+                    break;
                 }
             }
-            this.leftIndex = index < 0 ? 0 : index
+            this.leftIndex = index < 0 ? 0 : index;
         },
         /* 左侧导航点击 */
         leftTap(index) {
@@ -433,6 +454,14 @@ export default {
         testLH(index) {
             this.scrollInto = `item-${index}`
             this.leftIndex = index
+
+        },
+        // 底部
+        testBottom(EventHandle) {
+            if (EventHandle.target.direction === "bottom") {
+                this.leftIndex = this.mainArray.length - 1;
+
+            }
         },
         /** 已选商品弹出事件 */
         selectedEvent() {

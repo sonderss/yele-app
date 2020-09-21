@@ -26,12 +26,12 @@
             <view class="item">充公单号：{{data.order_sn}}</view>
             <view class="item">充公人员：{{data.confiscate_user_name}}</view>
             <view class="item">当前状态：{{data.friend_status}}</view>
-            <view class="item" v-if="data.confirm_user_name">确认人员：{{data.confirm_user_name ? data.confirm_user_name :'暂无数据' }}</view>
+            <view class="item" v-if="data.status === 2">确认人员：{{data.operate_user_name ? data.operate_user_name :'暂无数据' }}</view>
+            <view class="item" v-if="data.status === 3">作废人员：{{data.operate_user_name ? data.operate_user_name :'暂无数据' }}</view>
             <view class="item">提成合计：￥{{data.total_commission}}</view>
             <view class="item">充公时间：{{data.friend_create_time}}</view>
-            <view class="item" v-if="data.friend_operate_time ">确认时间：{{data.friend_operate_time ? data.friend_operate_time :'暂无数据'}}</view>
-            <view class="item" v-if="data.zuofei">作废人员：{{data.zuofei ? data.zuofei :'暂无数据' }}</view>
-            <view class="item" v-if="data.zuofei">作废时间：{{data.zuofei ? data.zuofei :'暂无数据' }}</view>
+            <view class="item" v-if="data.status === 2">确认时间：{{data.friend_operate_time ? data.friend_operate_time :'暂无数据'}}</view>
+            <view class="item" v-if="data.status === 3">作废时间：{{data.friend_operate_time ? data.friend_operate_time :'暂无数据'}}</view>
         </view>
     </view>
 </view>
