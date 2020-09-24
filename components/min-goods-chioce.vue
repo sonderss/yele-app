@@ -5,12 +5,13 @@
             <!-- @click="goodsAdd(index,index2)" -->
             <view class="image-view-com">
                 <view class="badge" v-if="badge">{{badgeTxt}}</view>
+                <!-- imageSrc === 'error' ? '/static/images/goods.png' :  -->
                 <image mode="aspectFit" lazy-load :src="imageSrc === 'error' ? '/static/images/goods.png' : image" @error="imgerr" />
             </view>
             <view class="content-view">
                 <view class="right-view-title">
                     <view class="f28 t">
-                        <text v-if="discount" class="discount min-ellipsis f26">{{discountdesc}}</text>
+                        <text v-if="discount" :class="discountdesc.length < 4 ?   'discount_  min-ellipsis f26' :' discount min-ellipsis f26'">{{discountdesc}}</text>
                         <text class>{{title}}</text>
                     </view>
                     <text class="f26 abc m-top-10" v-if="isSku" style="color:#666666">{{desc}}</text>
@@ -205,10 +206,12 @@ export default {
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    display: flex;
+                    align-items: center;
 
                     .discount {
-                        width: 86rpx;
-                        height: 26rpx;
+                        width: 120rpx;
+                        height: 100%;
                         font-size: 22rpx;
                         font-family: PingFang SC;
                         font-weight: bold;
@@ -216,6 +219,22 @@ export default {
                         background: #f80409;
                         padding: 5rpx;
                         margin-right: 10rpx;
+                        display: block;
+                        line-height: 26rpx;
+                    }
+
+                    .discount_ {
+                        width: auto;
+                        height: 100%;
+                        font-size: 22rpx;
+                        font-family: PingFang SC;
+                        font-weight: bold;
+                        color: #fff;
+                        background: #f80409;
+                        padding: 5rpx;
+                        margin-right: 10rpx;
+                        display: block;
+                        line-height: 26rpx;
                     }
                 }
             }

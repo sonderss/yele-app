@@ -17,7 +17,7 @@
                 座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.desk_info.seats)}}
             </view>
             <view>
-                开台条件：{{list.desk_info.minimum_consume_percent+'%低消'+ ` (￥${list.desk_info.desk_open_minimum })`}}
+                开台条件：{{list.desk_info.desk_open_minimum === 0 ? '无低消':  list.desk_info.minimum_consume_percent+'%低消'+ `(￥${list.desk_info.desk_open_minimum})`}}
             </view>
         </view>
     </view>

@@ -12,7 +12,7 @@
         <view class="botm-view">
             <view class="f28" style="color:#fe432a;font-weight:700">
                 ￥
-                <text class="price">{{list.price}}</text>
+                <text class="price">{{list.deduction_limit}}</text>
             </view>
             <!-- <min-stepper v-if="list.step" @change='changeChioce($event,list.id)' v-model="list.step"></min-stepper> -->
             <view class="m-right-10 m-bottom-20" style="width:40rpx;height:40rpx;" @click.stop="toDeatil">
@@ -43,30 +43,29 @@
             </view>
 
             <view class="main-sel-view p-lr-30 p-tb-30">
-                  <scroll-view scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'}">
+                <scroll-view scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'}">
 
-                      
-                <view class="item" v-for="(item2,n) in selArr" :key="n">
-                    <image :src="item2.product_img" mode="" />
-                    <view class="content-view">
-                        <view class="right-view-title">
-                            <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                            <text class="f26" style="color:#666666" v-if="item2.type === 'product' ">规格：{{item2.sku[0].sku_full_name}}</text>
-                        </view>
-                        <view class="right-view-bottom">
-                            <view class="right-view-bottom-desc">
-                                <text class="f20 t" v-if="item2.type === 'product'"><text style="color:#FF0000;font-size:30">￥{{item2.sku[0].sku_price}}</text></text>
-                                <text class="f20 t" v-if="item2.type === 'service'"><text style="color:#FF0000;font-size:30">￥{{item2.price}}</text></text>
-                                <text class="f20 t" v-if="item2.type === 'setmeal'"><text style="color:#FF0000;font-size:30">￥{{item2.price}}</text></text>
-
+                    <view class="item" v-for="(item2,n) in selArr" :key="n">
+                        <image :src="item2.product_img" mode="" />
+                        <view class="content-view">
+                            <view class="right-view-title">
+                                <text class="f28 t" style="display:block">{{item2.product_name}}</text>
+                                <text class="f26" style="color:#666666" v-if="item2.type === 'product' ">规格：{{item2.sku[0].sku_full_name}}</text>
                             </view>
-                            <view class="steper">
-                                <min-stepper :isAnimation='false' v-model="item2.step" :min='0' @change="alDel($event,n)"></min-stepper>
+                            <view class="right-view-bottom">
+                                <view class="right-view-bottom-desc">
+                                    <text class="f20 t" v-if="item2.type === 'product'"><text style="color:#FF0000;font-size:30">￥{{item2.sku[0].deduction_limit}}</text></text>
+                                    <text class="f20 t" v-if="item2.type === 'service'"><text style="color:#FF0000;font-size:30">￥{{item2.deduction_limit}}</text></text>
+                                    <text class="f20 t" v-if="item2.type === 'setmeal'"><text style="color:#FF0000;font-size:30">￥{{item2.deduction_limit}}</text></text>
+
+                                </view>
+                                <view class="steper">
+                                    <min-stepper :isAnimation='false' v-model="item2.step" :min='0' @change="alDel($event,n)"></min-stepper>
+                                </view>
                             </view>
                         </view>
                     </view>
-                </view>
-                  </scroll-view>
+                </scroll-view>
 
             </view>
 
@@ -111,7 +110,7 @@ export default {
             setmeal_id: '',
             desk_id: '',
             parseproducts: {},
-            top:0
+            top: 0
             // isDel: true
         }
     },
@@ -161,8 +160,9 @@ export default {
         this.selArr = this.$store.state.goods.storeSelArr
     },
     mounted() {
-        this.$minApi.getOriderPackageDetails({
-                setmeal_id: this.setmeal_id
+        this.$minApi.getGiveAwaySetmealDetail({
+                setmeal_id: this.setmeal_id,
+                desk_id: this.desk_id
             })
             .then(res => {
                 res.info.combination.map(item => {
@@ -179,6 +179,11 @@ export default {
                     const obj = {}
                     Object.assign(obj, this.list)
                     obj.combination = this.product
+                    let aaaaa = ''
+                    JSON.parse(obj.combination).map((item1, index1) => {
+                        aaaaa += item1.myIsSetID.quantity + '_' + item1.myIsSetID.sku_id
+                    })
+                    obj.aaaaa = aaaaa
                     this.addGoods(obj)
                 }
                 if (this.list.setmeal_images.length <= 0) {
@@ -192,11 +197,22 @@ export default {
         totalAmountE() {
             let sum = 0
             this.selArr.map(item => {
-                if (item.type === 'product') {
-                    sum += item.step * item.sku[0].sku_price
-                } else {
-                    sum += item.step * item.price
+                console.log(item)
+                if (item.type === 'setmeal') {
+                    sum += item.deduction_limit * item.step
                 }
+                if (item.type === 'service') {
+                    sum += item.deduction_limit * item.step
+                }
+                if (item.type === 'product') {
+                    sum += item.sku[0].deduction_limit * item.step
+
+                }
+                // if (item.type !== 'setmeal') {
+                //     sum += item.step * item.sku[0].deduction_limit
+                // } else {
+                //     sum += item.step * item.deduction_limit
+                // }
             })
             return sum.toFixed(2)
         },
@@ -225,6 +241,24 @@ export default {
             });
         },
         addGoods(obj) {
+            console.log("这里是obj", obj)
+            let kaiguan = true
+            if (this.selArr.length === 0) return this.selArr.push(obj)
+            let a = true
+            this.selArr.map((item, index) => {
+                // if (item.type === 'setmeal') {
+                if (item.aaaaa === obj.aaaaa) {
+                    this.$set(item, "step", item.step += 1)
+                    return a = false
+                }
+            })
+            if (a) {
+                this.selArr.push(obj)
+                this.selArr = this.$minCommon.arrSet(this.selArr)
+                this.$store.dispatch('goods/setStoreSelArr', this.selArr)
+            }
+        },
+        addGoods1(obj) {
             if (this.selArr.length === 0) return this.selArr.push(obj)
             const result = this.selArr.some(item => {
                 // if (item.type === 'setmeal') {

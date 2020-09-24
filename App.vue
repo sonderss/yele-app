@@ -1,6 +1,9 @@
 <script>
 import store from './store/index'
 
+const APP_BASE_URL = process.env.VUE_APP_BASE_URL
+const APP_UPDATE_URL = process.env.VUE_APP_UPDATE_URL
+
 export default {
     onLaunch: function () {
         console.log('App Launch')
@@ -26,7 +29,7 @@ export default {
         function getCheckVersion(req) {
             // 请求版本升级服务器，判断是否需要更新
             uni.request({
-                url: "http://api.app-store.dev.yeleonline.com/api/5ee745d5552d2",
+                url: APP_UPDATE_URL,
                 data: req,
                 header: {
                     'access-token': 'HPkSFqbVhWpCRxVRpOTkyEubusFxBEEd'

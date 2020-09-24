@@ -9,7 +9,7 @@
             <text class="iconfont">&#xe6b2;</text>
         </view>
         <view class="botm">
-            <text class="f26">业绩￥{{total}}</text>
+            <text class="f26">提成合计￥{{total}}</text>
         </view>
     </view>
     <view class="m-top-20 bg" v-if="list.length > 0">

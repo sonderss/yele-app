@@ -2,13 +2,13 @@
 <view class="apply-open">
     <view class="p-top-20 p-lr-30" style="padding-bottom: 66rpx;">
         <view class="platform-info f28 p-lr-20 p-tb-20" v-if='!$parseURL().isOrder'>
-            <view>台位抵消：￥{{list.order_info.minim_charge}}</view>
+            <view>台位低消：￥{{list.order_info.minim_charge}}</view>
             <view>开台条件：<text class="emp">{{list.order_info.minimum_percent}}%低消 {{`(${list.order_info.desk_open_minimum})`}}</text></view>
             <view>订单金额：￥{{list.order_info.order_total}}</view>
-            <view>达成状态：{{list.order_info.is_can_open === 0 ? "未达成开台条件":"达成开台条件"}}</view>
+            <view>达成状态：{{list.order_info.is_can_open === 0 ?  "未达成开台条件":"达成开台条件"}}</view>
         </view>
         <view class="platform-info f28 p-lr-20 p-tb-20" v-else>
-            <view>台位抵消：￥{{list.order_info.minim_charge}}</view>
+            <view>台位低消：￥{{list.order_info.minim_charge}}</view>
             <view>开台条件：<text class="emp">{{list.order_info.minimum_percent}}%低消 {{`(${list.order_info.desk_open_minimum})`}}</text></view>
             <view>达成状态：{{list.order_info.is_can_open === 0 ? "未达成开台条件":"达成开台条件"}}</view>
         </view>

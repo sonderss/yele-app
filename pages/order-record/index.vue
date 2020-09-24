@@ -20,10 +20,10 @@
                         <image lazy-load :src="item.order_product_list[0].product_img" @error="imageErro($event,index,0)" />
                         <view style=" display: flex;flex-direction: column;" class="m-left-20">
                             <text class="f28 fcolor title">{{item.order_product_list[0].product_name}}</text>
-                            <text class="tcolor f22 desc" v-if="item.order_product_list[0].type !== 'setmeal'">{{item.order_product_list[0].sku}}</text>
+                            <text class="tcolor f22 desc" v-if="item.order_product_list[0].type !== 'setmeal'">{{`${item.order_product_list[0].sku}${item.order_product_list[0].sku ? '/' :''}${item.order_product_list[0].unit_name}`}}</text>
                             <text class="tcolor f22 desc" v-if="item.order_product_list[0].type === 'setmeal'">
                                 <template v-for="cjq in item.order_product_list[0].setmeal_product">
-                                    {{`${cjq.product_name}   `}}
+                                    {{`${cjq.product_name} ${cjq.sku}/${cjq.unit_name}*${cjq.quantity}  `}}
                                 </template>
                             </text>
                         </view>

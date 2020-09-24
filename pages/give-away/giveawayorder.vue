@@ -28,17 +28,16 @@
         <!-- <view class="timer min-top-border">{{item.create_time}}</view> -->
     </view>
 
-    <view class="card p-lr-20 m-tb-20 p-bottom-20">
+    <!-- <view class="card p-lr-20 m-tb-20 p-bottom-20">
         <view class="top p-tb-30 min-border-bottom">
             <view>赠送额度</view>
-            <!-- <view :class="item.product_count === 1 ? 'status confirmed':'status end'">{{list.product_count === 1 ? '待确认': '已取酒'}}</view> -->
         </view>
         <view class="main p-top-20">
             <view class="item">可用额度：￥{{list.presentation_quota.available_credit}}</view>
             <view class="item">本次使用：￥{{list.presentation_quota.used_credit}}</view>
             <view class="item">剩余额度：￥{{list.presentation_quota.remaining_credit}}</view>
         </view>
-    </view>
+    </view> -->
     <view style="height:100rpx"></view>
     <min-goods-submit leftText="应付赠送额度" :totalAmount='list.payable_credit' buttonText='确定赠送' @submit='submit'></min-goods-submit>
     <min-modal ref="test"></min-modal>

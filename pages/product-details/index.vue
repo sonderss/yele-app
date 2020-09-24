@@ -36,11 +36,13 @@
                     <!-- sku信息 -->
                     <!-- sku信息 -->
                     <view class="sku-view">
+                        <view class="f24 dissss" v-if="skuObj.sku[chioceIndex].is_limited">{{this.skuObj.limited_activity_name}}</view>
                         <text class="f24 a">{{skuObj.product_name}}</text>
                         <text class="f24 m-tb-10">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
                         <text class="f30 m">
                             ￥
                             <text class="money">{{skuObj.sku[chioceIndex].sku_price}}</text>
+                            <text class="dissss_d" v-if="skuObj.sku[chioceIndex].is_limited">￥{{skuObj.sku[chioceIndex].original_price}}</text>
                         </text>
                     </view>
                 </view>
@@ -661,12 +663,34 @@ export default {
                 text-overflow: ellipsis;
             }
 
+            .dissss {
+                font-size: 24rpx;
+                font-family: PingFang SC;
+                font-weight: bold;
+                color: #fff;
+                background: #f80409;
+                display: inline-block;
+                width: 120rpx;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: block;
+            }
+
             .m {
                 color: #ff0000;
 
                 .money {
                     font-weight: bold;
                     color: #ff0000;
+                }
+
+                .dissss_d {
+                    color: #999;
+                    font-size: 20rpx;
+                    display: inline-block;
+                    padding-left: 20rpx;
+                    text-decoration: line-through
                 }
             }
         }

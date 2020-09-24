@@ -11,15 +11,15 @@
             <view class="time_desc">
                 <view class=" f20 m-tb-20 " v-if="current === 0">更新时间：{{getNowTime}}</view>
                 <view class="f20  m-tb-20 " v-else>更新时间：{{getStartTime}} - {{getEndTime}}</view>
-                <text class="f20" v-if="ids === '0'">业绩合计：￥{{list.performance_total.toFixed(2)}}</text>
-                <text class="f20" v-if="ids === '1'">订台合计：{{list.booking_total.toFixed(2)}}</text>
-                <text class="f20" v-if="ids === '1'">开台合计：{{list.opening_total.toFixed(2)}}</text>
-                <text class="f20" v-if="ids === '2'">开台合计：{{list.opening_total.toFixed(2)}}</text>
-                <text class="f20" v-if="ids === '2'">业绩合计：￥{{list.performance_total.toFixed(2)}}</text>
-                <text class="f20" v-if="ids === '7'">业绩合计：￥{{list.role_performance_total.toFixed(2)}}</text>
-                <text class="f20" v-if="ids === '6'">业绩合计：￥{{list.performance_totals.toFixed(2)}}</text>
-                <text class="f20" v-if="ids === '4'">业绩合计：￥{{list.sales_totals.toFixed(2)}}</text>
-                <text class="f20" v-if="ids === '5'">销售额合计合计：￥{{list.sales_totals.toFixed(2)}}</text>
+                <text class="f20" v-if="ids === '0'">业绩合计：￥{{list.performance_total}}</text>
+                <text class="f20" v-if="ids === '1'">订台合计：{{list.booking_total}}</text>
+                <text class="f20" v-if="ids === '1'">开台合计：{{list.opening_total}}</text>
+                <text class="f20" v-if="ids === '2'">开台合计：{{list.opening_total}}</text>
+                <text class="f20" v-if="ids === '2'">业绩合计：￥{{list.performance_total}}</text>
+                <text class="f20" v-if="ids === '7'">业绩合计：￥{{list.role_performance_total}}</text>
+                <text class="f20" v-if="ids === '6'">业绩合计：￥{{list.performance_totals}}</text>
+                <text class="f20" v-if="ids === '4'">业绩合计：￥{{list.sales_totals}}</text>
+                <text class="f20" v-if="ids === '5'">销售额合计合计：￥{{list.sales_totals}}</text>
             </view>
             <view class="main_table">
                 <view class="title_list min-border-bottom">
@@ -82,7 +82,7 @@
                         <view class="test_ui" v-for="(i,n) in listTest.product_list" :key="n" @click="toDetail(i.uid)">
                             <view class="left">
                                 <text class="lefty_" style="textAlign:left">{{i.product_name}}</text>
-                                <text class="left_" style="textAlign:right">{{i.cate_name ? i.cate_name:'暂无'}}</text>
+                                <text class="left_" style="textAlign:right;padding-right:20rpx">{{i.cate_name ? i.cate_name:'暂无'}}</text>
                                 <text class="left_" style="padding-left:30rpx">{{i.quantity}}</text>
                                 <text class="left_" style="textAlign:right">{{i.total}}</text>
                             </view>
@@ -92,7 +92,7 @@
                         <view class="test_ui" v-for="(i,n) in getData.product_list" :key="n" @click="toDetail(i.uid)">
                             <view class="left">
                                 <text class="lefty_" style="textAlign:left">{{i.product_name}}</text>
-                                <text class="left_" style="textAlign:right">{{i.cate_name ? i.cate_name:'暂无'}}</text>
+                                <text class="left_" style="textAlign:right;padding-right:20rpx">{{i.cate_name ? i.cate_name:'暂无'}}</text>
                                 <text class="left_" style="padding-left:30rpx">{{i.quantity}}</text>
                                 <text class="left_" style="textAlign:right">{{i.total}}</text>
                             </view>
@@ -105,8 +105,8 @@
                         <view class="test_ui" v-for="(i,n) in listTest.set_meal_list" :key="n" @click="toDetail(i.uid)">
                             <view class="left">
                                 <text class="lefty_" style="textAlign:left">{{i.setmeal_name}}</text>
-                                <text class="left_" style="padding-left:40rpx">{{i.quantity}}</text>
-                                <text class="left_" style="padding-left:60rpx">{{i.total}}</text>
+                                <text class="left_" style="padding-left:60rpx">{{i.quantity}}</text>
+                                <text class="left_" style="textAlign:right">{{i.total}}</text>
                             </view>
                         </view>
                     </view>
@@ -114,8 +114,8 @@
                         <view class="test_ui" v-for="(i,n) in getData.set_meal_list" :key="n" @click="toDetail(i.uid)">
                             <view class="left">
                                 <text class="lefty_" style="textAlign:left">{{i.setmeal_name}}</text>
-                                <text class="left_" style="padding-left:40rpx">{{i.quantity}}</text>
-                                <text class="left_" style="padding-left:60rpx">{{i.total}}</text>
+                                <text class="left_" style="padding-left:60rpx">{{i.quantity}}</text>
+                                <text class="left_" style="textAlign:right">{{i.total}}</text>
                             </view>
                         </view>
                     </view>
@@ -123,7 +123,7 @@
                 <view v-if="ids === '7'">
                     <view class="test_ui" v-for="(i,n) in getData.role_performance_list" :key="n">
                         <view class="left">
-                            <text class="lefty_" style="width:200rpx">{{i.role_name}}</text>
+                            <text class="lefty_" style="width:200rpx;textAlign:left">{{i.role_name}}</text>
                             <text class="left_" style="textAlign:right">{{i.role_performance}}</text>
                         </view>
 
@@ -574,8 +574,8 @@ export default {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: 0 60rpx;
-                padding-left: 40rpx;
+                padding: 0 30rpx;
+                padding-left: 30rpx;
 
                 .title_item {
                     display: flex;
@@ -605,7 +605,9 @@ export default {
                         width: 40%;
                         text-align: center;
                         line-height: 100%;
-
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
 
                     .lefty_ {

@@ -24,6 +24,12 @@
             </view>
         </view> -->
         <view v-if="item.necessary === 1">
+            <view class="title min-border-bottom m-bottom-30 p-lr-20" v-if="item.necessary === 1">必选商品</view>
+            <view class="content " v-if="item.necessary === 1">
+                <min-describe class="i" v-for="(item2,index2) in item.combination_detail" :key="index2" :leftIcon='true' :leftTxt="item2.product_name +'*'+ item2.num " :leftIconValue='item2.product_img'></min-describe>
+
+            </view>
+            <view style="background:#f7f7f7;width:100%;height:20rpx"></view>
             <view class="title min-border-bottom m-bottom-30 p-lr-20">
                 <span>
                     <span class="left-txt min-ellipsis" style="width:120rpx;display:block;float:left">{{ item.combination_name }}</span>
@@ -88,12 +94,14 @@ export default {
                 }]
             },
             selArr: [],
+            selArr_in: [],
             detail: [{
                 combination_detail: []
             }],
             delArr: [],
             testiD: {},
-            isHaveBi: false
+            isHaveBi: false,
+            list_in: {}
         }
     },
     onLoad() {
@@ -157,7 +165,6 @@ export default {
                     res.info.combination.map(item => {
                         item.combination_detail.map(item2 => {
                             item2.step = 0
-                            console.log("崩溃了", item2)
                         })
                     })
                     this.list = res.info
@@ -203,7 +210,13 @@ export default {
             item2.sku_id = this.list.combination[index].combination_detail[index2].sku_id
             item2.name = this.list.combination[index].combination_detail[index2].product_name
             item.combination_detail.push(item2)
+            let myIsSetID = {}
+            item.combination_detail.map(testDom => {
+                myIsSetID.sku_id = item.id + '_' + testDom.sku_id + '_'
+                myIsSetID.quantity = testDom.quantity + ''
+            })
             item.necessary = this.list.combination[index].necessary
+            item.myIsSetID = myIsSetID
             item.last_number = this.list.combination[index].last_number
             console.log(item)
             this.addGoods(item)
@@ -239,6 +252,71 @@ export default {
             })
             if (!resultF) {
                 this.selArr.push(obj)
+            }
+        },
+        addGoods_in(obj) {
+            console.log("这里是obj", obj)
+            if (this.$store.state.goods.orderSelArr.length === 0) {
+                this.$store.state.goods.orderSelArr.push(obj)
+                this.$store.state.goods.orderSelArr = this.$minCommon.arrSet(this.$store.state.goods.orderSelArr)
+                this.$store.dispatch('goods/setOrderSelArr', this.$store.state.goods.orderSelArr)
+                return
+            }
+            let a = true
+            this.$store.state.goods.orderSelArr.map((item, index) => {
+                console.log("item", item)
+                // if (item.type === 'setmeal') {
+                if (item.aaaaa === obj.aaaaa) {
+                    this.$set(item, "step", item.step += 1)
+                    return a = false
+                }
+            })
+            if (a) {
+                this.$store.state.goods.orderSelArr.push(obj)
+                this.$store.state.goods.orderSelArr = this.$minCommon.arrSet(this.selArr)
+                this.$store.dispatch('goods/setOrderSelArr', this.$store.state.goods.orderSelArr)
+                console.log("我的serlArr", this.$store.state.goods.orderSelArr)
+            }
+        },
+        addGoods_in1(obj) {
+            console.log("这里是obj", obj)
+            if (this.$store.state.goods.orderSelArr.length === 0) {
+                this.$store.state.goods.orderSelArr.push(obj)
+                this.$store.state.goods.orderSelArr = this.$minCommon.arrSet(this.$store.state.goods.orderSelArr)
+                this.$store.dispatch('goods/setOrderSelArr', this.$store.state.goods.orderSelArr)
+                return
+            }
+            const result = this.$store.state.goods.orderSelArr.some(item => {
+                // if (item.type === 'setmeal') {
+                if (item.id !== obj.id) {
+                    return true
+                } else if (item.id === obj.id) {
+                    // 这里是ID相同的情况
+                    // item.combination = obj.combination
+                    const aaaa = item.combination.some(objItem => {
+                        const bbbb = obj.combination.some(itemItem => {
+                            if (objItem.id !== itemItem.id) {
+                                return true
+                            } else if (objItem.id === itemItem.id) {
+                                return objItem.combination_detail.some(detail => {
+                                    return itemItem.combination_detail.some(combination_detail => {
+                                        if (detail.sku_id !== combination_detail.sku_id) {
+                                            return true
+                                        }
+                                    })
+                                })
+                            }
+                        })
+                        return bbbb
+                    })
+                    if (aaaa) return true
+                }
+                // }
+            })
+            if (result) {
+                this.$store.state.goods.orderSelArr.push(obj)
+                this.$store.state.goods.orderSelArr = this.$minCommon.arrSet(this.$store.state.goods.orderSelArr)
+                this.$store.dispatch('goods/setOrderSelArr', this.$store.state.goods.orderSelArr)
             }
         },
         subMit() {
@@ -307,6 +385,43 @@ export default {
                 }
             })
             if (result11) return this.$showToast('请选择符合要求的份数')
+            if (this.$parseURL().data.isIndex) {
+                // 添加购物车  并返回首页
+                this.$minApi.getOriderPackageDetails({
+                        setmeal_id: this.$parseURL().data.product_id
+                    })
+                    .then(res => {
+                        this.list_in = res.info
+                        this.list_in.type = 'setmeal'
+                        this.list_in.step = 1
+                        const obj = {}
+                        Object.assign(obj, this.list_in)
+                        obj.combination = this.selArr
+                        let aaaaa = ''
+                        obj.combination.map((item1, index1) => {
+                            aaaaa += item1.myIsSetID.quantity + '_' + item1.myIsSetID.sku_id
+                        })
+                        obj.aaaaa = aaaaa
+                        this.addGoods_in(obj)
+                        console.log(this.list_in)
+                        // this.selArr.map(item => {
+                        //     console.log(item)
+                        //     if (item.id === this.list.id) {
+                        //         this.showNum = item.step
+                        //     }
+                        // })
+                        // console.log(this.showNum)
+                        this.$minRouter.push({
+                            name: 'redplacean-order',
+                            params: {
+                                minim_charge: this.$parseURL().minim_charge,
+                                desk_id: this.$parseURL().desk_id,
+                                is_open_desk: this.$parseURL().is_open_desk,
+                            }
+                        })
+                    })
+                return
+            }
             this.$minRouter.push({
                 name: 'redpackage-details',
                 type: 'redirectTo',

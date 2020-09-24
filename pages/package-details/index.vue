@@ -74,7 +74,7 @@
 
                                 </view>
                                 <view class="steper">
-                                    <min-stepper :isAnimation='false' v-model="item2.step" :min='0' @change.stop="alDel($event,n)"></min-stepper>
+                                    <min-stepper :isAnimation='false' v-model="item2.step" :min='0' @change="alDel($event,n)"></min-stepper>
                                 </view>
                             </view>
                         </view>
@@ -122,7 +122,8 @@ export default {
                 combination: []
             },
             product: [],
-            showNum: 0
+            showNum: 0,
+            isTets: true
             // isDel: true
         }
     },
@@ -142,19 +143,19 @@ export default {
         //   },
         //   deep: true
         // },
-        // selArr(v) {
-        //     v.map((item, index) => {
-        //         if (item.step === 0) {
-        //             console.log(23111111111)
-        //             this.$nextTick(() => {
-        //                 v.splice(index, 1)
-        //             })
-        //         }
-        //     })
+        // selArr: {
+        //     handler(v) {
+        //         v.map((item, index) => {
+        //             if (item.step === 0) {
+        //                 this.selArr.splice(index, 1)
+        //             }
+        //         })
+        //     },
+        //     deep: true
         // }
     },
     onShow() {
-        this.selArr = this.$store.state.goods.orderSelArr
+        return this.selArr = this.$store.state.goods.orderSelArr
         console.log("这里是this.selArr", this.selArr)
     },
     onBackPress(options) {
@@ -215,16 +216,13 @@ export default {
                         const obj = {}
                         Object.assign(obj, this.list)
                         obj.combination = this.product
+                        let aaaaa = ''
+                        obj.combination.map((item1, index1) => {
+                            aaaaa += item1.myIsSetID.quantity + '_' + item1.myIsSetID.sku_id
+                        })
+                        obj.aaaaa = aaaaa
                         this.addGoods(obj)
                     }
-                    console.log(this.list)
-                    // this.selArr.map(item => {
-                    //     console.log(item)
-                    //     if (item.id === this.list.id) {
-                    //         this.showNum = item.step
-                    //     }
-                    // })
-                    // console.log(this.showNum)
                 })
         },
         back(a) {
@@ -268,37 +266,19 @@ export default {
             console.log("这里是obj", obj)
             let kaiguan = true
             if (this.selArr.length === 0) return this.selArr.push(obj)
-            const result = this.selArr.some(item => {
+            let a = true
+            this.selArr.map((item, index) => {
                 // if (item.type === 'setmeal') {
-                if (item.id !== obj.id) {
-                    return true
-                } else if (item.id === obj.id) {
-                    // 这里是ID相同的情况
-                    // item.combination = obj.combination
-                    const aaaa = item.combination.some(objItem => {
-                        const bbbb = obj.combination.some(itemItem => {
-                            if (objItem.id !== itemItem.id) {
-                                return true
-                            } else if (objItem.id === itemItem.id) {
-                                return objItem.combination_detail.some(detail => {
-                                    return itemItem.combination_detail.some(combination_detail => {
-                                        if (detail.sku_id !== combination_detail.sku_id) {
-                                            return true
-                                        }
-                                    })
-                                })
-                            }
-                        })
-                        return bbbb
-                    })
-                    if (aaaa) return true
+                if (item.aaaaa === obj.aaaaa) {
+                    this.$set(item, "step", item.step += 1)
+                    return a = false
                 }
-                // }
             })
-            if (result) {
+            if (a) {
                 this.selArr.push(obj)
                 this.selArr = this.$minCommon.arrSet(this.selArr)
                 this.$store.dispatch('goods/setOrderSelArr', this.selArr)
+                console.log("我的serlArr", this.selArr)
             }
         },
         /** 已选商品弹出事件 */
@@ -342,10 +322,10 @@ export default {
 
             }
             if (n === 0) {
-                this.selArr.splice(index, 1)
-                return this.$store.dispatch('goods/setOrderSelArr', this.selArr)
-
-                // this.selArr.splice(index, 1)
+                this.$nextTick(() => {
+                    this.selArr.splice(index, 1)
+                    this.$store.dispatch('goods/setOrderSelArr', this.selArr)
+                })
                 // this.$store.dispatch('goods/setOrderSelArr', this.selArr)
             }
         },

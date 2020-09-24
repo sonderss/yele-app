@@ -28,7 +28,7 @@
                                 </text>
                             </view>
                             <view class="steper">
-                                <min-stepper v-if="item2.sku.length <= 1" v-model="item2.step" @change="changeChioce(index,index2)"></min-stepper>
+                                <min-stepper psize="20rpx" v-if="item2.sku.length <= 1" v-model="item2.step" @change="changeChioce(index,index2)"></min-stepper>
                                 <!-- <view v-if="item2.sku.length <= 1 && item2.min_amount*1 <= 0" class="m-right-10" style="width:40rpx;height:40rpx;" @click.stop="changeChioceT">
                                     <image lazy-load src="/static/images/yellow-add.png" style="width:100%" />
                                 </view> -->
@@ -204,17 +204,17 @@ export default {
         }
     },
     watch: {
-        selArr: {
-            handler(a, b) {
-                a.map((item, index) => {
-                    if (item.step === 0) {
-                        a.splice(index, 1);
-                        this.selNum.splice(index, 1);
-                    }
-                });
-            },
-            deep: true
-        },
+        // selArr: {
+        //     handler(a, b) {
+        //         a.map((item, index) => {
+        //             if (item.step === 0) {
+        //                 a.splice(index, 1);
+        //                 this.selNum.splice(index, 1);
+        //             }
+        //         });
+        //     },
+        //     deep: true
+        // },
         intNet: function (a) {
             if (!a) {} else {
                 // 请求数据
@@ -359,6 +359,7 @@ export default {
         delAll() {
             this.selArr = [];
             this.selNum = [];
+            this.selItemArr = []
             this.mainArray.map(item => {
                 item.list.map(item2 => {
                     if (item2.step > 0) {
@@ -389,8 +390,23 @@ export default {
         // 已选弹出层删除事件
         alDel(n, index) {
             if (n === 0) {
-                this.selArr.splice(index, 1);
-                this.selNum.splice(index, 1);
+                for (let i = this.selArr.length - 1; i >= 0; i--) {
+                    if (index === i) {
+                        this.$nextTick(() => {
+                            this.selArr.splice(i, 1);
+                        })
+                    }
+                }
+                for (let i = this.selNum.length - 1; i >= 0; i--) {
+                    if (index === i) {
+                        this.$nextTick(() => {
+                            this.selNum.splice(i, 1);
+                        })
+                    }
+                }
+                // this.selArr.splice(index, 1);
+                // this.selNum.splice(index, 1);
+
             }
         },
         // 选择规格事件

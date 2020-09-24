@@ -17,7 +17,7 @@
                 座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.desk_info.seats) }}
             </view>
             <view>
-                开台条件：{{list.desk_info.minimum_consume_percent+'%低消'+ `(￥${list.desk_info.desk_open_minimum})`}}
+                开台条件：{{list.desk_info.desk_open_minimum === 0 ? '无低消':  list.desk_info.minimum_consume_percent+'%低消'+ `(￥${list.desk_info.desk_open_minimum})`}}
             </view>
         </view>
     </view>
@@ -26,7 +26,7 @@
         <view class="main p-tb-20">
             <view>
                 当前状态：
-                <text style="color: #FF0000;">{{list.order_info.is_can_open === 0 ?  '不满足开台条件' : '已够开台条件'}}</text>
+                <text style="color: #FF0000;">{{list.order_info.is_can_open === 0 ? (list.desk_info.desk_open_minimum === 0 || list.order_info.order_id === 0 ? '待确认':'不够开台条件') : '已够开台条件'}}</text>
             </view>
             <view>开台订单：{{list.order_info.order_id === 0 ? '未进行点单':'￥'+list.order_info.order_total}}</view>
         </view>

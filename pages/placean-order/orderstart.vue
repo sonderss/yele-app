@@ -4,7 +4,7 @@
         <view class="p-tb-30 min-border-bottom">商品</view>
         <view class="goods-list p-top-10">
             <view class="p-tb-20" v-for="item in list.order_product_list" :key="item.commodity_id">
-                <min-goods-item :name="item.product_name" :price="item.order_price" :icon="item.product_img" :specification="item.type === 'setmeal' ? item.setmeal_product:item.sku" :value="item.quantity">
+                <min-goods-item :name="item.product_name" :price="item.order_price" :icon="item.product_img" :specification="item.type === 'setmeal' ? item.setmeal_product:`${item.sku}${item.sku ? '/':''}${item.unit_name}`" :value="item.quantity">
                 </min-goods-item>
             </view>
         </view>
@@ -31,7 +31,7 @@
         <view class="main p-top-20">
             <view class="item">台号：{{list.order_info.desk_name}}</view>
             <view class="item">低消：￥{{list.order_info.minim_charge}}</view>
-            <view class="item">当前账单金额：￥{{list.order_info.order_total}}</view>
+            <view class="item">当前账单金额：￥{{list.order_info.bill_price}}</view>
         </view>
     </view>
     <view style="height:100rpx"></view>

@@ -11,7 +11,7 @@
             <view>分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;组：{{list.desk_info.group_name}}</view>
             <view>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消：￥{{list.desk_info.minim_charge}}<text class="f28" style="color:#FE0000" v-if="!list.desk_info.is_enough_consume">（未够低消）</text></view>
             <view>座&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：{{$minCommon.getSeats(list.desk_info.seats) }}</view>
-            <view>开台条件：{{list.desk_info.minimum_consume_percent+'%低消'+ `(￥${list.desk_info.desk_open_minimum})`}}</view>
+            <view>开台条件：{{list.desk_info.desk_open_minimum === 0 ? '无低消':  list.desk_info.minimum_consume_percent+'%低消'+ `(￥${list.desk_info.desk_open_minimum})`}}</view>
         </view>
     </view>
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
@@ -185,8 +185,8 @@ export default {
                     desk_info: {
                         name: this.list.desk_info.desk_name,
                         charge: this.list.desk_info.minim_charge,
-                        price: this.list.payable_total,
-                        group_name: this.list.desk_info.group_name
+                        price: this.list.desk_info.bill_price,
+                        group_name: this.list.desk_info.group_name,
                     }
                 }
             })

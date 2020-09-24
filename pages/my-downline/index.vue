@@ -56,8 +56,8 @@
 <script>
 import backs from '../../static/images/b-mydownl.png'
 export default {
-    name: 'my-downline',
-    navigate: ['navigateTo'],
+    name: 'redmy-downline',
+    navigate: ['navigateTo', 'redirectTo'],
     onNavigationBarButtonTap() {
         this.$minRouter.push({
             name: 'invitation-record',

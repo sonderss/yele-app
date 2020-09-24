@@ -8,7 +8,7 @@
         <view class="goods-list p-top-10">
             <view class="p-tb-10" v-for="item in list.order_product_list" :key="item.detail_id">
                 <!--已出品-->
-                <min-goods-item @ToDetail="goodsDeatil(item.id,item.type)" :produced="item.produce_status ? true:false" :name="item.product_name" :price="item.order_price" :icon="item.product_img" :specification="item.type === 'setmeal' ? item.setmeal_product:item.sku" :value="item.quantity"></min-goods-item>
+                <min-goods-item @ToDetail="goodsDeatil(item.id,item.type)" :produced="item.produce_status ? true:false" :name="item.product_name" :price="item.order_price" :icon="item.product_img" :specification="item.type === 'setmeal' ? item.setmeal_product:`${item.sku}${item.sku ? '/':''}${item.unit_name}`" :value="item.quantity"></min-goods-item>
             </view>
         </view>
     </view>
@@ -68,7 +68,7 @@
         <view class="top p-tb-30 min-border-bottom">订单信息</view>
         <view class="main p-tb-30">
             <view class="item">订&nbsp;单&nbsp;<span class='p-left-20'>号：</span>{{list.order_sn}}</view>
-            <view class="item" v-if="list.order_status !== 2 && list.order_status !== 3 && list.order_status !== 4 && list.order_status !== 5 && list.order_status !== -2 && list.order_status !== -3 && list.order_status !== -5 && list.order_status !== -6">订单来源：{{list.source ? '门店':'平台'}}</view>
+            <view class="item" v-if="list.order_status === 0 || list.order_status === -1">订单来源：{{list.source ? '门店':'平台'}}</view>
             <view class="item">支付类型：{{list.pay_type === 0 ? '先付' :'后付'}}</view>
             <view class="item">下单人员：{{list.order_user_name ? list.order_user_name  : '暂无数据'}}</view>
             <view class="item">下单时间：{{$minCommon.formatDate(new Date(list.create_time*1000),'yyyy/MM/dd hh:mm:ss' ) }}</view>

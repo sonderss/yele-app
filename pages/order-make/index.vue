@@ -117,7 +117,8 @@ export default {
             isKua: Number,
             isData: 123,
             top: '',
-            lastY: ''
+            lastY: '',
+            isToady: false
         }
     },
     computed: {
@@ -129,7 +130,7 @@ export default {
     onLoad() {
         this.id = this.$parseURL().id
     },
-    mounted() {
+    onShow() {
         this.getData(this.id)
             .then(res => {
                 console.log(res)
@@ -139,14 +140,29 @@ export default {
                 this.storeSetting = res.storeSetting
                 console.log(this.bookingDate)
                 this.$nextTick(() => {
+                    if (this.isToady) return this.getDate(this.$minCommon.formatDate(new Date(Date.now()), 'yyyy-MM-dd hh:mm').split(' ')[1], this.storeSetting.store_business_time.end)
                     this.getDate(this.storeSetting.store_business_time.start, this.storeSetting.store_business_time.end)
                 })
 
             })
     },
+    watch: {
+        dates(a) {
+            let t = a.split(' ')[0]
+            console.log(t)
+            let nowTime = this.$minCommon.formatDate(new Date(Date.now()), 'yyyy-MM-dd hh:mm').split(' ')[0]
+            console.log(nowTime)
+            // 2020-09-23 
+            if (t === nowTime) return this.isToady = true
+            return this.isToady = false
+            // let aaa = t.replace(/-/g, '/')
+            // console.log(aaa)
+        }
+    },
     methods: {
         // 获取时间
         getDate(start, end) {
+            console.log(start, end)
             const ia = 30 * 60 * 1000
             if (this.storeSetting.is_store_across !== 1) {
                 // 没有跨天

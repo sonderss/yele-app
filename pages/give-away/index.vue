@@ -1,7 +1,7 @@
 <template>
 <view class="give-away">
     <min-navTab ref="navTab" class="navtabs" :tabTitle="list" @changeTab="changeTab"></min-navTab>
-    <view class="desc_info m-tb-20 f20">台位剩余赠送额度：{{desk_remaining_quota}} &nbsp;&nbsp;个人剩余赠送额度：{{personal_remaining_quota}}</view>
+    <view class="desc_info m-tb-20 f20">可赠送额度：{{personal_remaining_quota}}</view>
 
     <swiper style="width:100vw;height:100vh" :current="currentTab" @change="swiperTab">
         <swiper-item v-for="(listItem,listIndex) in list" :key="listItem.id">
@@ -19,7 +19,7 @@
                                 <view class="right-view-bottom">
                                     <view class="right-view-bottom-desc">
                                         <text class="f20 t">
-                                            <text style="color:#FF0000;font-size:30;font-weight:700">￥{{item.price}}</text>
+                                            <text style="color:#FF0000;font-size:30;font-weight:700">￥{{item.sku.length === 1 ?  item.sku[0].deduction_limit :  item.deduction_limit}}</text>
                                         </text>
                                     </view>
                                     <view class="steper">
@@ -67,7 +67,7 @@
                             </view>
                             <view class="right-view-bottom">
                                 <view class="right-view-bottom-desc">
-                                    <text class="f20 t"><text style="color:#FF0000;font-size:30">￥{{item2.price}}</text></text>
+                                    <text class="f20 t"><text style="color:#FF0000;font-size:30">￥{{item2.sku.length >= 1 ? item2.sku[0].deduction_limit :item2.deduction_limit}}</text></text>
 
                                 </view>
                                 <view class="steper">
@@ -144,11 +144,13 @@ export default {
                             item1.product.map((item2, index2) => {
                                 console.log("item2", item2)
                                 if (item2.id === item.id) {
-                                    if (item2.sku[0].id === item.sku[0].id) {
-                                        this.$nextTick(() => {
-                                            item2.step = item.step
+                                    if (item2.sku.length >= 1) {
+                                        if (item2.sku[0].id === item.sku[0].id) {
+                                            this.$nextTick(() => {
+                                                item2.step = item.step
 
-                                        })
+                                            })
+                                        }
                                     }
 
                                 }
@@ -193,9 +195,9 @@ export default {
             this.$store.dispatch('goods/setselected_giveAwayInfo', {
                 consumption_amount: res.consumption_amount,
                 desk_presentation_limit: res.desk_presentation_limit,
-                personal_presentation_limit: res.personal_presentation_limit
+                personal_presentation_limit: res.personal_remaining_quota
             })
-            this.totalLabel = `赠送额度：${res.desk_presentation_limit}`
+            this.totalLabel = `赠送额度：${res.personal_remaining_quota}`
             console.log(this.list, this.totalLabel)
             console.log('已选赠送商品全局变量', this.$store.state.goods.storeSelArr)
             console.log(this.$store.state.goods.giveAwayInfo)
@@ -208,16 +210,16 @@ export default {
             }, 2000)
         })
     },
-    onNavigationBarButtonTap(e) {
-        this.$refs.test.handleShow({
-            title: e.text,
-            content: this.content,
-            showCancel: false,
-            success: (e) => {
-                console.log(e) // 这里拿到的是modalID: "modal"，id: 1
-            }
-        })
-    },
+    // onNavigationBarButtonTap(e) {
+    //     this.$refs.test.handleShow({
+    //         title: e.text,
+    //         content: this.content,
+    //         showCancel: false,
+    //         success: (e) => {
+    //             console.log(e) // 这里拿到的是modalID: "modal"，id: 1
+    //         }
+    //     })
+    // },
     computed: {
         num() {
             let counts = 0
@@ -229,7 +231,16 @@ export default {
         moneySum() {
             let sum = 0
             this.selArr.map(item => {
-                sum += item.price * item.step
+                if (item.type === 'setmeal') {
+                    sum += item.deduction_limit * item.step
+                }
+                if (item.type === 'service') {
+                    sum += item.deduction_limit * item.step
+                }
+                if (item.type === 'product') {
+                    sum += item.sku[0].deduction_limit * item.step
+
+                }
                 this.$store.dispatch('goods/setStoreSelArr', this.selArr)
             })
             return sum.toFixed(2)

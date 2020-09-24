@@ -11,7 +11,7 @@
         <view class="top-view f28 m-top-10 f28">{{list.product_name}}</view>
         <view class="botm-view">
             <view class="f22 m-bottom-20">
-                <text class="price"> ￥{{list.price}}</text>
+                <text class="price"> ￥{{list.deduction_limit}}</text>
                 <!-- v-model="list.step" @change="changeServiceItem(list)" :max="commodity_count" -->
             </view>
 
@@ -116,8 +116,9 @@ export default {
         }
     },
     mounted() {
-        this.$minApi.getOriderPackageDetails({
-                setmeal_id: this.setmeal_id
+        this.$minApi.getGiveAwaySetmealDetail({
+                setmeal_id: this.setmeal_id,
+                desk_id: this.desk_id
             })
             .then(res => {
                 res.info.combination.map(item => {
@@ -178,7 +179,13 @@ export default {
             item2.quantity = this.list.combination[index].combination_detail[index2].step
             item2.sku_id = this.list.combination[index].combination_detail[index2].sku_id
             item.combination_detail.push(item2)
-
+            let myIsSetID = {}
+            item.combination_detail.map(testDom => {
+                myIsSetID.sku_id = item.id + '_' + testDom.sku_id + '_'
+                myIsSetID.quantity = testDom.quantity + ''
+            })
+            item.necessary = this.list.combination[index].necessary
+            item.myIsSetID = myIsSetID
             item.necessary = this.list.combination[index].necessary
             item.last_number = this.list.combination[index].last_number
             this.addGoods(item)

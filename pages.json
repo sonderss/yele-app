@@ -708,12 +708,7 @@
           "titleNView": {
             "titleText": "赠送列表",
             "backgroundColor": "#030313",
-            "titleColor": "#FFE001",
-            "buttons": [{
-              "width": "auto",
-              "text": "赠送限制",
-              "fontSize": "28rpx"
-            }]
+            "titleColor": "#FFE001"
           }
         }
       }
@@ -723,14 +718,9 @@
       "style": {
         "app-plus": {
           "titleNView": {
-            "titleText": "商品详情（赠送商品）",
+            "titleText": "商品详情",
             "backgroundColor": "#030313",
-            "titleColor": "#FFE001",
-            "buttons": [{
-              "width": "auto",
-              "text": "赠送限制",
-              "fontSize": "28rpx"
-            }]
+            "titleColor": "#FFE001"
           }
         }
       }
@@ -742,12 +732,7 @@
           "titleNView": {
             "titleText": "确认订单",
             "backgroundColor": "#030313",
-            "titleColor": "#FFE001",
-            "buttons": [{
-              "width": "auto",
-              "text": "赠送限制",
-              "fontSize": "28rpx"
-            }]
+            "titleColor": "#FFE001"
           }
         }
       }
@@ -757,14 +742,9 @@
       "style": {
         "app-plus": {
           "titleNView": {
-            "titleText": "套餐详情（赠送商品）",
+            "titleText": "套餐详情",
             "backgroundColor": "#030313",
-            "titleColor": "#FFE001",
-            "buttons": [{
-              "width": "auto",
-              "text": "赠送限制",
-              "fontSize": "28rpx"
-            }]
+            "titleColor": "#FFE001"
           }
         }
       }

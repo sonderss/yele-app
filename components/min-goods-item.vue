@@ -8,7 +8,7 @@
             <view class="min-goods-size p-right-20">
                 <view class="sku min-ellipsis f24" v-if="!Array.isArray(specification)">{{specification}}</view>
                 <view class="sku min-ellipsis f24" v-if="Array.isArray(specification)">
-                    <text style="color: #666;" class="f24" v-for="(it,inde) in specification" :key="inde">{{`${it.product_name}   `}}</text>
+                    <text style="color: #666;" class="f24" v-for="(it,inde) in specification" :key="inde">{{`${it.product_name} ${it.sku}${it.sku ? '/':''}${it.unit_name}*${it.quantity}`}}，</text>
                 </view>
                 <view class="count" v-if="!stepper">x {{count}}</view>
             </view>

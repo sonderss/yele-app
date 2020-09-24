@@ -13,14 +13,14 @@
         <view class="top-view f28  f28" v-if="product_type === 'setmeal' ">{{list.setmeal_name}}</view>
         <view class="botm-view" v-if="product_type === 'product' ">
             <view class="f22">
-                <text class="price">￥{{list.price}}</text>
+                <text class="price">￥{{list.deduction_limit}}</text>
             </view>
             <min-stepper v-model="list.step" @change="changeServiceItem(list)"></min-stepper>
         </view>
         <!-- 服务商品 -->
         <view class="botm-view" v-if="product_type === 'service'">
             <view class="f22">
-                <text class="price">￥{{list.price}}</text>
+                <text class="price">￥{{list.deduction_limit}}</text>
             </view>
             <min-stepper v-model="list.step" :max="commodity_count" @change="changeServiceItem(list)"></min-stepper>
         </view>
@@ -47,7 +47,7 @@
                     <view class="sku-view">
                         <text class="f22 t">{{skuObj.product_name}}</text>
                         <text class="f22 m-tb-10 t">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
-                        <text class="f22 m">￥<text class="money">{{skuObj.price}}</text></text>
+                        <text class="f22 m">￥<text class="money">{{skuObj.deduction_limit}}</text></text>
                     </view>
                 </view>
             </view>
@@ -96,7 +96,7 @@
                             </view>
                             <view class="right-view-bottom">
                                 <view class="right-view-bottom-desc">
-                                    <text class="f26" style="color:#FF0000">￥{{item2.price}}</text>
+                                    <text class="f26" style="color:#FF0000">￥{{item2.sku.length >= 1 ? item2.sku[0].deduction_limit :item2.deduction_limit}}</text>
 
                                 </view>
                                 <view class="steper">
@@ -165,10 +165,15 @@ export default {
         totalAmountE() {
             let sum = 0
             this.selArr.map(item => {
+                if (item.type === 'setmeal') {
+                    sum += item.deduction_limit * item.step
+                }
+                if (item.type === 'service') {
+                    sum += item.deduction_limit * item.step
+                }
                 if (item.type === 'product') {
-                    sum += item.step * item.price
-                } else {
-                    sum += item.step * item.price
+                    sum += item.sku[0].deduction_limit * item.step
+
                 }
                 this.$store.dispatch('goods/setStoreSelArr', this.selArr)
             })
@@ -191,15 +196,7 @@ export default {
         this.product_type = option.product_type
         this.commodity_count = option.commodity_count
         this.desk_id = option.desk_id
-        console.log('从全局变量中获取已选商品列表', this.$store.state.goods.storeSelArr)
-        // this.selArr = this.$store.state.goods.storeSelArr
-        this.content = `
-          1. 当前台消费金额￥${info.consumption_amount}，根据赠送方案，可赠送的商品金额为￥${info.desk_presentation_limit}。<br />
-          2. 当前用户的赠送额度为￥${info.personal_presentation_limit}，不能超过此额度。<br />
-          3. 不同商品的可赠数量不同，不能超过最高可赠数量 <br />
-      `
-        // this.$store.dispatch('goods/setselected_giveAwayInfo', { consumption_amount: res.consumption_amount, desk_presentation_limit: res.desk_presentation_limit, personal_presentation_limit: res.personal_presentation_limit })
-        this.totalLabel = `赠送额度：${info.desk_presentation_limit}`
+        this.totalLabel = `赠送额度：${info.personal_presentation_limit}`
     },
     onShow() {
         return this.selArr = this.$store.state.goods.storeSelArr
@@ -253,7 +250,8 @@ export default {
         // }
         if (this.product_type === 'product') {
             this.$minApi.getGiveAwayProductDetail({
-                    sku_id: this.product_id
+                    sku_id: this.product_id,
+                    desk_id: this.desk_id
                 })
                 .then(res => {
                     this.list = res.info
@@ -274,7 +272,8 @@ export default {
                 })
         } else if (this.product_type === 'service') {
             this.$minApi.getGiveAwayServeDetail({
-                    service_id: this.product_id
+                    service_id: this.product_id,
+                    desk_id: this.desk_id
                 })
                 .then(res => {
                     this.list = res.info
@@ -295,6 +294,7 @@ export default {
             this.isSelSku = true
             Object.assign(this.skuObj, this.list)
             this.skuObj.step = 1
+            this.skuObj.sku[0].deduction_limit = this.list.deduction_limit
             console.log('skuObj', this.skuObj)
         },
         /**  关闭选择规格弹出层 */

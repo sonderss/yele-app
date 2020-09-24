@@ -249,5 +249,7 @@ export default {
   //  获取座位分布图 5f3b9b2999739
   getSeatList: data => minRequest.get('/5f3b9b2999739', data),
   // 会员电子协议查询 5f585a2806cd5
-  getVipUserI: data  => minRequest.get('/5f585a2806cd5',data)
+  getVipUserI: data  => minRequest.get('/5f585a2806cd5',data),
+  // 获取通联验证码 5f2d266fc2e9f
+  getTongLianCode: data => minRequest.get('/5f2d266fc2e9f',data)
 }

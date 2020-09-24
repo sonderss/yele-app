@@ -77,6 +77,11 @@ export default {
             }).then(res => {
                 if (res.length === 0) {
                     this.$showToast('邀请成功')
+                    setTimeout(() => {
+                        uni.navigateBack({
+                            delta: 1
+                        });
+                    }, 2000)
                 }
             })
             // return this.$showToast('正在开发中')

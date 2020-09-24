@@ -16,6 +16,7 @@
             <view style="height:20rpx"></view>
             <view v-for="(item,index) in mainArray" :key="index" :id="`item-${index}`">
                 <view v-for="(item2,index2) in item.product" :key="index2" :isFlag="item2.isFlag" @click.stop="goDetails(index,index2)">
+                    <!-- -->
                     <min-goods-chioce :image="item2.product_img" :discountdesc="item2.limited_activity_name" :discount="item2.is_limited === 1 ? true: false " :title="item2.product_name" :badgeTxt="item2.type === 'setmeal' ? '套餐': '' " :badge="item2.type === 'setmeal'? true : false " @changes="changeChioce(index,index2)" v-model="item2.step" @changesPop="changesPopNoStep(index,index2,item2.type)" :desc="item2.sku.length >=1 ?item2.sku[0].sku_full_name : item2.info " :price="item2.price" :isFlag="item2.isFlag">
                     </min-goods-chioce>
                 </view>
@@ -62,7 +63,7 @@
                             <view class="right-view-bottom-desc">
                                 <text class="f20 t" v-if="item2.type === 'product'">
                                     ￥
-                                    <text style="color:#FF0000;font-size:30">{{item2.is_limited ? item2.price : item2.sku.sku_price}}</text>
+                                    <text style="color:#FF0000;font-size:30">{{item2.is_limited ?  item2.sku.sku_price  :  item2.price}}</text>
                                 </text>
                                 <text class="f20 t" v-if="item2.type === 'service'">
                                     ￥
@@ -98,11 +99,13 @@
                 </view>
                 <!-- sku信息 -->
                 <view class="sku-view">
+                    <view class="f24 dissss" v-if="skuObj.sku[chioceIndex].is_limited">{{this.skuObj.limited_activity_name}}</view>
                     <text class="f24 t">{{skuObj.product_name}}</text>
                     <text class="f24 m-tb-10 t">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
                     <text class="f30 m">
                         ￥
                         <text class="money">{{skuObj.sku[chioceIndex].sku_price}}</text>
+                        <text class="dissss_d" v-if="skuObj.sku[chioceIndex].is_limited">￥{{skuObj.sku[chioceIndex].original_price}}</text>
                     </text>
                 </view>
             </view>
@@ -170,6 +173,7 @@ export default {
             load: '',
             top: '',
             lastY: '',
+            isaaaa: true,
             colors: '#666'
         }
     },
@@ -207,9 +211,9 @@ export default {
             this.selArr.map(item => {
                 if (item.type === 'product') {
                     if (item.is_limited) {
-                        sum += item.step * item.price
+                        sum += item.step * item.sku.sku_price // item2.is_limited ?  item2.sku.sku_price  :  item2.price
                     } else {
-                        sum += item.step * item.sku.sku_price
+                        sum += item.step * item.price
                     }
                 } else {
                     sum += item.step * item.price
@@ -307,32 +311,54 @@ export default {
         },
         /* 获取列表数据 getProductList */
         getListData() {
-            uni.getStorage({
-                key: 'images',
-                success: res => {
-                    this.b(JSON.parse(res.data))
-                },
-                complete: res => {
-                    if (!res.data) {
-                        this.a()
-                    }
-                },
-            })
+            // uni.removeStorage({
+            //     key: 'images',
+            //     success: function (res) {
+            //         console.log('success');
+            //     }
+            // });
+            // uni.getStorage({
+            //     key: 'images',
+            //     complete: res => {
+            //         if (!res.data) {
+            //             this.a()
+            //             return
+            //         }
+            //         if (res.data) {
+            //             console.log(JSON.parse(res.data))
+            //         }
+            //         this.b(JSON.parse(res.data))
+
+            //     },
+            // })
+            // uni.removeStorage({
+            //     key: 'images',
+            //     success: (res) => {}
+            // });
+            this.b()
         },
         b(images) {
+            // console.log("images", images)
             this.$minApi.getOrderProduceList().then(res => {
                 this.mainArray = res.list
                 this.$store.dispatch('goods/seOrderTempData', res.list)
                 let temp = []
                 for (const val of this.mainArray) {
+
                     val.product.map(item2 => {
-                        images.map(item3 => {
-                            switch (item2.product_img.split('/')[6]) {
-                                case item3.split('/')[3]:
-                                    this.$set(item2, 'product_img', item3)
-                                    break
-                            }
-                        })
+                        // if (images.indexOf(item2.product_img.split('/')[6])) {
+                        //     console.log("item2.product_img.split('/')[6]")
+                        //     console.log("item3", images.indexOf(item2.product_img.split('/')[6]))
+                        //     this.$set(item2, 'product_img', item3)
+                        // }
+                        // if (item2.product_img.split('/')[6] == item3.split('/')[3]) {
+                        //     console.log("item2.product_img.split('/')[6]")
+                        //     console.log("item3", item3)
+                        //     this.$nextTick(() => {
+                        //         this.$set(item2, 'product_img', item3)
+                        //     })
+                        //     return
+                        // }
                         if (item2.type === 'product' && item2.sku.length > 1) {
                             this.$set(item2, 'isFlag', false)
                             this.$set(item2, 'isPro', true)
@@ -342,50 +368,86 @@ export default {
                             this.$set(item2, 'isFlag', true)
                         }
                     })
+                    //  else {
+                    //     return isRestart = true
+                    // }
+                    // switch (item2.product_img.split('/')[6]) {
+                    //     case item3.split('/')[3]:
+                    //         this.$set(item2, 'product_img', item3)
+                    //         break
+                    // }
+                    //       images.map(item3 => {
+                    // })
+
                 }
+                // if (isRestart) {
+                //     uni.removeStorage({
+                //         key: 'images',
+                //         success: (res) => {
+                //             this.a()
+                //         }
+                //     });
+                // }
                 this.$nextTick(() => {
                     this.getElementTop()
                 })
             })
+
         },
         a() {
             this.$minApi.getOrderProduceList().then(res => {
                 this.mainArray = res.list
                 this.$store.dispatch('goods/seOrderTempData', res.list)
                 let temp = []
-                for (const val of this.mainArray) {
-                    val.product.map(item2 => {
-                        // #ifdef APP-PLUS
-                        uni.downloadFile({
-                            url: item2.product_img,
-                            success: res => {
-                                temp.push(res.tempFilePath)
-                                uni.setStorage({
-                                    key: 'images',
-                                    data: JSON.stringify(temp),
-                                    success: function () {
-                                        console.log('success')
-                                    },
-                                })
-                                this.$set(item2, 'product_img', res.tempFilePath)
-                            },
-                        })
-                        // #endif
-                        if (item2.type === 'product' && item2.sku.length > 1) {
-                            this.$set(item2, 'isFlag', false)
-                            this.$set(item2, 'isPro', true)
-                        } else if (item2.type === 'setmeal') {
-                            this.$set(item2, 'isFlag', false)
+                uni.getStorage({
+                    key: 'images',
+                    complete: res => {
+                        console.log(res)
+                        if (res.data) {
+                            console.log(JSON.parse(res.data))
+                            this.b(JSON.parse(res.data))
+                            return
                         } else {
-                            this.$set(item2, 'isFlag', true)
+                            for (const val of this.mainArray) {
+                                val.product.map(item2 => {
+                                    // #ifdef APP-PLUS
+                                    uni.downloadFile({
+                                        url: item2.product_img,
+                                        success: res => {
+                                            temp.push(res.tempFilePath)
+                                            uni.setStorage({
+                                                key: 'images',
+                                                data: JSON.stringify(temp),
+                                                success: function () {
+                                                    console.log('success')
+                                                },
+                                            })
+                                            console.log("res.tempFilePath", res.tempFilePath)
+                                            this.$set(item2, 'product_img', res.tempFilePath ? res.tempFilePath : item2.product_img)
+                                        },
+                                    })
+                                    // #endif
+                                    if (item2.type === 'product' && item2.sku.length > 1) {
+                                        this.$set(item2, 'isFlag', false)
+                                        this.$set(item2, 'isPro', true)
+                                    } else if (item2.type === 'setmeal') {
+                                        this.$set(item2, 'isFlag', false)
+                                    } else {
+                                        this.$set(item2, 'isFlag', true)
+                                    }
+                                })
+                            }
+                            this.$nextTick(() => {
+                                this.getElementTop()
+                            })
                         }
-                    })
-                }
-                this.$nextTick(() => {
-                    this.getElementTop()
+
+                    },
                 })
+
             })
         },
+
         /* 获取元素顶部信息 */
         getElementTop() {
             /* Promise 对象数组 */
@@ -483,10 +545,19 @@ export default {
         },
         /** 清空已选商品 */
         delAll() {
-            for (let i = 0; i < this.selArr.length; i++) {
-                this.selArr.splice(i, 1)
+            // for (let i = 0; i < this.selArr.length; i++) {
+            //     this.selArr.splice(i, 1)
+            //     this.$store.dispatch('goods/setOrderSelArr', this.selArr)
+            // }
+            let arr = []
+            for (let i = this.selArr.length - 1; i >= 0; i--) {
+                arr.push(i)
             }
-            this.selArr = []
+            arr.map(item => {
+                this.selArr.splice(item, 1)
+                this.$store.dispatch('goods/setOrderSelArr', this.selArr)
+            })
+            // this.selArr = []
             this.selected = false
             this.getListData()
         },
@@ -551,18 +622,38 @@ export default {
                 console.log("changesPopNoStep")
                 this.selSku(index, index2)
             } else if (type === 'setmeal') {
-                // 进入商品套餐详情
+                console.log(123213123123123)
+                let data = {
+                    page_type: 'order',
+                    is_open_desk: this.$parseURL().is_open_desk,
+                    desk_id: this.$parseURL().desk_id,
+                    minim_charge: this.$parseURL().minim_charge,
+                    product_id: this.mainArray[index].product[index2].id,
+                    product_type: this.mainArray[index].product[index2].type,
+                    isIndex: true
+                }
+                // 直接进入选择套餐
                 this.$minRouter.push({
-                    name: 'package-details',
+                    name: 'packages-detail',
                     params: {
-                        page_type: 'order',
-                        is_open_desk: this.$parseURL().is_open_desk,
-                        desk_id: this.$parseURL().desk_id,
+                        data,
                         minim_charge: this.$parseURL().minim_charge,
-                        product_id: this.mainArray[index].product[index2].id,
-                        product_type: this.mainArray[index].product[index2].type,
-                    },
+                        desk_id: this.$parseURL().desk_id,
+                        is_open_desk: this.$parseURL().is_open_desk,
+                    }
                 })
+                // // 进入商品套餐详情
+                // this.$minRouter.push({
+                //     name: 'package-details',
+                //     params: {
+                //         page_type: 'order',
+                //         is_open_desk: this.$parseURL().is_open_desk,
+                //         desk_id: this.$parseURL().desk_id,
+                //         minim_charge: this.$parseURL().minim_charge,
+                //         product_id: this.mainArray[index].product[index2].id,
+                //         product_type: this.mainArray[index].product[index2].type,
+                //     },
+                // })
             } else {
                 console.log('fuwu ', type)
             }
@@ -1039,12 +1130,34 @@ uni-page-body {
                     text-overflow: ellipsis;
                 }
 
+                .dissss {
+                    font-size: 24rpx;
+                    font-family: PingFang SC;
+                    font-weight: bold;
+                    color: #fff;
+                    background: #f80409;
+                    display: inline-block;
+                    width: 120rpx;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: block;
+                }
+
                 .m {
                     color: #ff0000;
 
                     .money {
                         font-weight: bold;
                         color: #ff0000;
+                    }
+
+                    .dissss_d {
+                        color: #999;
+                        font-size: 20rpx;
+                        display: inline-block;
+                        padding-left: 20rpx;
+                        text-decoration: line-through
                     }
                 }
             }
