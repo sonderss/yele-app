@@ -38,7 +38,7 @@
                     <view class="sku-view">
                         <view class="f24 dissss" v-if="skuObj.sku[chioceIndex].is_limited">{{this.skuObj.limited_activity_name}}</view>
                         <text class="f24 a">{{skuObj.product_name}}</text>
-                        <text class="f24 m-tb-10">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
+                        <text class="f24 m-tb-10">已选："{{skuObj.sku[chioceIndex].sku}}"</text>
                         <text class="f30 m">
                             ￥
                             <text class="money">{{skuObj.sku[chioceIndex].sku_price}}</text>
@@ -53,7 +53,7 @@
                 <view>
                     <view class="f26">规格</view>
                     <view class="item-view">
-                        <view :class="chioceIndex ===index ?   'item-active' : 'item' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
+                        <view :class="chioceIndex ===index ?   'item-active' : 'item' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku}}</view>
                     </view>
                 </view>
             </scroll-view>
@@ -90,13 +90,16 @@
                         <view class="content-view">
                             <view class="right-view-title">
                                 <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                                <text class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'product'">规格：{{item2.sku.sku_full_name}}</text>
+                                <text class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'product'">规格：{{item2.sku.sku}}</text>
                                 <text class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'setmeal'">
                                     规格：
-                                    <template v-for="desc in item2.combination">
-                                        <template v-for="(desc1) in desc.combination_detail">
-                                            <span :key="desc1.id" class="m-left-10">{{desc1.name}}*{{desc1.quantity}}</span>
-                                        </template>
+                                    <template v-for="(desc,aa) in item2.combination">
+                                        <span :key="aa">
+                                            <template v-for="(desc1,abc) in desc.combination_detail">
+                                                <span :key="abc" class="m-left-10">{{desc1.name}}*{{desc1.num_}}</span>
+                                            </template>
+                                        </span>
+
                                     </template>
 
                                 </text>

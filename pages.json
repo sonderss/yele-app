@@ -752,6 +752,7 @@
     {
       "path": "pages/my-downline/index",
       "style": {
+        "enableDownRefresh": true,
         "app-plus": {
           "titleNView": {
             "titleText": "我的下线",
@@ -936,6 +937,7 @@
     {
       "path": "pages/start-stage/index",
       "style": {
+        "enableDownRefresh": true,
         "app-plus": {
           "titleNView": {
             "titleText": "开台",

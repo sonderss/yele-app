@@ -74,7 +74,8 @@ export default {
                 this.num = 60
             }
             this.$minApi.getVerificationCode({
-                mobile: this.$parseURL().client_mobile
+                mobile: this.$parseURL().client_mobile,
+                type: 2
             }).then(res => {
                 this.$showToast('发送成功')
                 this.$minCommon.setCountDown(() => {

@@ -66,8 +66,8 @@ export default {
             if (str.length < 18) return this.$showToast('身份证填写错误')
             // if(this.code.length !== 6)return this.$showToast('验证码格式错误')
             this.$minApi.postNameTrue({
-                user_name: this.name,
-                id_card: this.idCard,
+                real_name: this.name,
+                identity_no: this.idCard,
                 msg_code: this.code
             }).then(res => {
                 this.$showToast('实名成功')

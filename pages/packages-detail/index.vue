@@ -30,7 +30,7 @@
 
             </view>
             <view style="background:#f7f7f7;width:100%;height:20rpx"></view>
-            <view class="title min-border-bottom m-bottom-30 p-lr-20">
+            <!-- <view class="title min-border-bottom m-bottom-30 p-lr-20">
                 <span>
                     <span class="left-txt min-ellipsis" style="width:120rpx;display:block;float:left">{{ item.combination_name }}</span>
                     <text>{{item.combination_detail.length}}选{{ item.last_number }}</text>
@@ -40,16 +40,14 @@
             </view>
             <view class="content p-bottom-30" v-if="item.necessary === 1">
                 <min-describe class="i" v-for="(item2,index2) in item.combination_detail" :key="index2" :leftIcon='true' :maxStep="1" :value="0" @changeCount="changeCount($event,index,index2)" :leftTxt="item2.product_name +'*'+ item2.num " :leftIconValue='item2.product_img' :step='type === 3 ? false: true' :Animation="true"></min-describe>
-                <!--
-          <view style="text-align:right;" class="p-right-30">{{item.last_number}}份</view>-->
-            </view>
+            </view> -->
         </view>
         <view v-else>
             <view class="title min-border-bottom m-bottom-30 p-lr-20">
                 <span>
                     <span class="left-txt min-ellipsis" style="width:120rpx;display:block;float:left">{{ item.combination_name }}</span>
                     <text>{{item.combination_detail.length}}选{{ item.last_number }}</text>
-                    <text class="f28">{{item.is_check === 1 ? '（不可重复选）' : ''}}</text>
+                    <!-- <text class="f28">{{item.is_check === 1 ? '（不可重复选）' : ''}}</text> -->
                 </span>
                 <text v-if="type !== 3" class="right-txt f26">已选 <text class="num1">{{item.goodsCount}}</text> 份</text>
             </view>
@@ -209,14 +207,16 @@ export default {
             item2.quantity = this.list.combination[index].combination_detail[index2].step
             item2.sku_id = this.list.combination[index].combination_detail[index2].sku_id
             item2.name = this.list.combination[index].combination_detail[index2].product_name
+            item2.num_ = this.list.combination[index].combination_detail[index2].num
             item.combination_detail.push(item2)
-            let myIsSetID = {}
-            item.combination_detail.map(testDom => {
-                myIsSetID.sku_id = item.id + '_' + testDom.sku_id + '_'
-                myIsSetID.quantity = testDom.quantity + ''
-            })
+            // let myIsSetID = {}
+            // item.combination_detail.map(testDom => {
+            //     myIsSetID.sku_id = item.id + '_' + testDom.sku_id + '_'
+            //     myIsSetID.quantity = testDom.quantity + ''
+            // })
+            // item.myIsSetID = myIsSetID
+
             item.necessary = this.list.combination[index].necessary
-            item.myIsSetID = myIsSetID
             item.last_number = this.list.combination[index].last_number
             console.log(item)
             this.addGoods(item)
@@ -256,15 +256,9 @@ export default {
         },
         addGoods_in(obj) {
             console.log("这里是obj", obj)
-            if (this.$store.state.goods.orderSelArr.length === 0) {
-                this.$store.state.goods.orderSelArr.push(obj)
-                this.$store.state.goods.orderSelArr = this.$minCommon.arrSet(this.$store.state.goods.orderSelArr)
-                this.$store.dispatch('goods/setOrderSelArr', this.$store.state.goods.orderSelArr)
-                return
-            }
+            if (this.$store.state.goods.orderSelArr.length === 0) return this.$store.state.goods.orderSelArr.push(obj)
             let a = true
             this.$store.state.goods.orderSelArr.map((item, index) => {
-                console.log("item", item)
                 // if (item.type === 'setmeal') {
                 if (item.aaaaa === obj.aaaaa) {
                     this.$set(item, "step", item.step += 1)
@@ -273,85 +267,12 @@ export default {
             })
             if (a) {
                 this.$store.state.goods.orderSelArr.push(obj)
-                this.$store.state.goods.orderSelArr = this.$minCommon.arrSet(this.selArr)
+                this.$store.state.goods.orderSelArr = this.$minCommon.arrSet(this.$store.state.goods.orderSelArr)
                 this.$store.dispatch('goods/setOrderSelArr', this.$store.state.goods.orderSelArr)
                 console.log("我的serlArr", this.$store.state.goods.orderSelArr)
             }
         },
-        addGoods_in1(obj) {
-            console.log("这里是obj", obj)
-            if (this.$store.state.goods.orderSelArr.length === 0) {
-                this.$store.state.goods.orderSelArr.push(obj)
-                this.$store.state.goods.orderSelArr = this.$minCommon.arrSet(this.$store.state.goods.orderSelArr)
-                this.$store.dispatch('goods/setOrderSelArr', this.$store.state.goods.orderSelArr)
-                return
-            }
-            const result = this.$store.state.goods.orderSelArr.some(item => {
-                // if (item.type === 'setmeal') {
-                if (item.id !== obj.id) {
-                    return true
-                } else if (item.id === obj.id) {
-                    // 这里是ID相同的情况
-                    // item.combination = obj.combination
-                    const aaaa = item.combination.some(objItem => {
-                        const bbbb = obj.combination.some(itemItem => {
-                            if (objItem.id !== itemItem.id) {
-                                return true
-                            } else if (objItem.id === itemItem.id) {
-                                return objItem.combination_detail.some(detail => {
-                                    return itemItem.combination_detail.some(combination_detail => {
-                                        if (detail.sku_id !== combination_detail.sku_id) {
-                                            return true
-                                        }
-                                    })
-                                })
-                            }
-                        })
-                        return bbbb
-                    })
-                    if (aaaa) return true
-                }
-                // }
-            })
-            if (result) {
-                this.$store.state.goods.orderSelArr.push(obj)
-                this.$store.state.goods.orderSelArr = this.$minCommon.arrSet(this.$store.state.goods.orderSelArr)
-                this.$store.dispatch('goods/setOrderSelArr', this.$store.state.goods.orderSelArr)
-            }
-        },
         subMit() {
-
-            // const result11 = this.selArr.some(item => {
-            //     if (item.necessary) {
-            //         //  this.$showToast('必选商品数量不够')
-            //         if (item.last_number !== item.combination_detail.length) return true
-            //     }
-            //     if (!item.necessary) {
-            //         if (item.last_number !== item.combination_detail.length) return true
-            //     }
-            // })
-            // if (result11) return this.$showToast('请选择符合要求的份数')
-            // if (result1[0] === 1) {
-            //     return this.$showToast('必选商品数量不够')
-            // }
-            // if (result1[0] === 2) {
-            //     return this.$showToast('可选商品数量不够')
-            // }
-            // let result = this.list.combination.some(item => {
-            //     // if (item.necessary === 1) {
-            //     if (item.goodsCount !== item.last_number) {
-            //         // return this.$showToast('请选择符合要求的份数')
-            //         return true
-            //     }
-            //     // }
-            //     // if (item.goodsCount > item.last_number) {
-            //     //     return true
-            //     // }
-            //     // return false
-            // })
-            // if (result) {
-            //     return this.$showToast('请选择符合要求的份数')
-            // }
             const tempArr = JSON.parse(JSON.stringify(this.selArr))
             tempArr.map((item, index) => {
                 item.combination_detail.map((item2, index2) => {
@@ -360,19 +281,50 @@ export default {
                     }
                 })
             })
+            this.list.combination.map((item, index) => {
+                if (item.necessary === 1) {
+                    item.combination_detail.map((item2, index2) => {
+                        console.log('asddsadsaaaaaaaaaaaaaaaaaaaaaaaaa.00')
+                        this.changeCount(1, index, index2)
+                    })
+                }
+
+            })
+            let myIsSetID = {}
+            let u = []
+            let lastStr = ''
+            this.selArr.map((iytem, index) => {
+                iytem.combination_detail.map((ite, ina) => {
+                    u.push({
+                        sku_id: iytem.id + '_' + ite.sku_id + '_',
+                        quantity: ite.quantity + ''
+                    })
+                })
+                u.map(itemq => {
+                    lastStr += itemq.sku_id + itemq.quantity + '_'
+                })
+                iytem.myIsSetID = this.$minCommon.getMySkuID(lastStr)
+            })
             // 有必选的情况
             if (this.isHaveBi) {
+                // 这里默认添加必须商品
+                // this.list.combination.map((item, index) => {
+                //     if (item.necessary === 1) {
+                //         item.combination_detail.map((item2, index2) => {
+                //             console.log('asddsadsaaaaaaaaaaaaaaaaaaaaaaaaa.00')
+                //             this.changeCount(1, index, index2)
+                //         })
+                //     }
+
+                // })
+                console.log("这里默认添加必须商品")
                 const result = this.selArr.some(item => {
                     if (item.necessary && item.last_number === item.combination_detail.length) return true
 
                 })
                 if (!result) return this.$showToast('请选择必选商品')
             }
-            // const result = this.selArr.some(item => {
-            //     if (item.necessary && item.last_number === item.combination_detail.length) return true
-
-            // })
-            // if (!result) return this.$showToast('请选择必选商品')
+            if (this.selArr.length === 0) return this.$showToast('请选择符合要求的份数')
             // 没有必选的情况
             const result11 = this.selArr.some(item => {
                 if (!item.necessary) {
@@ -384,7 +336,16 @@ export default {
                     if (item.last_number !== count) return true
                 }
             })
+            const result22 = this.list.combination.some((item, index) => {
+                if (!item.necessary) {
+                    if (item.last_number !== item.goodsCount) {
+                        return true
+                    }
+
+                }
+            })
             if (result11) return this.$showToast('请选择符合要求的份数')
+            if (result22) return this.$showToast('请选择完整套餐')
             if (this.$parseURL().data.isIndex) {
                 // 添加购物车  并返回首页
                 this.$minApi.getOriderPackageDetails({
@@ -399,26 +360,22 @@ export default {
                         obj.combination = this.selArr
                         let aaaaa = ''
                         obj.combination.map((item1, index1) => {
-                            aaaaa += item1.myIsSetID.quantity + '_' + item1.myIsSetID.sku_id
+                            // aaaaa += item1.myIsSetID.quantity + '_' + item1.myIsSetID.sku_id
+                            aaaaa = item1.myIsSetID
                         })
                         obj.aaaaa = aaaaa
                         this.addGoods_in(obj)
-                        console.log(this.list_in)
-                        // this.selArr.map(item => {
-                        //     console.log(item)
-                        //     if (item.id === this.list.id) {
-                        //         this.showNum = item.step
+                        uni.navigateBack({
+                            delta: 1
+                        });
+                        // this.$minRouter.push({
+                        //     name: 'redplacean-order',
+                        //     params: {
+                        //         minim_charge: this.$parseURL().minim_charge,
+                        //         desk_id: this.$parseURL().desk_id,
+                        //         is_open_desk: this.$parseURL().is_open_desk,
                         //     }
                         // })
-                        // console.log(this.showNum)
-                        this.$minRouter.push({
-                            name: 'redplacean-order',
-                            params: {
-                                minim_charge: this.$parseURL().minim_charge,
-                                desk_id: this.$parseURL().desk_id,
-                                is_open_desk: this.$parseURL().is_open_desk,
-                            }
-                        })
                     })
                 return
             }

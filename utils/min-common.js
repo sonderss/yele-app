@@ -143,6 +143,25 @@ class MinCommon {
     }
   }
 
+  // 返回自定义的skuID
+  static getMySkuID(str){
+    if(str.length <= 0) throw console.error('str错误');
+    let newArr = str.split('_')
+    let arr = []
+    let s = ''
+    newArr.map(item => {
+       if(item.length >= 1){
+          arr.push(item*1)
+       }
+    })
+    arr = arr.sort((a,b) => {
+       return a - b
+    })
+    s += [...arr]
+    s = s.replace(/,/g,'_')
+    return s 
+  }
+
   /**
    *  返回座位数
    *

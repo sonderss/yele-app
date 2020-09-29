@@ -59,9 +59,10 @@ export default {
 
     .pays {
         display: flex;
-        flex-wrap: column;
-        flex-wrap: wrap;
-        align-content: space-between;
+        // flex-wrap: column;
+        // flex-wrap: wrap;
+        // align-content: space-between;
+        flex-direction: column;
 
         .pay {
             width: 50%;

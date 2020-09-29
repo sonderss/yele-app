@@ -45,7 +45,8 @@ export default {
             if (!this.name || !this.card) return this.$showToast("请输入密码")
             if (this.name !== this.card) return this.$showToast("两次密码输入不一致")
             this.$minApi.getVerificationCode({
-                mobile: this.mobile
+                mobile: this.mobile,
+                type: 3
             }).then(res => {
                 this.$showToast('发送成功')
                 this.flag = true

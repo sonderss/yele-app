@@ -52,13 +52,13 @@
                         <view class="content-view">
                             <view class="right-view-title">
                                 <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                                <text class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'product' ">规格：{{item2.sku.sku_full_name}}</text>
+                                <text class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'product' ">规格：{{item2.sku.sku}}</text>
                                 <text class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'setmeal'">
                                     规格：
                                     <template v-for="(desc,a) in item2.combination">
                                         <span :key="a">
                                             <template v-for="(desc1,qwer) in desc.combination_detail">
-                                                <span :key="qwer" class="m-left-10">{{desc1.name}}*{{desc1.quantity}}</span>
+                                                <span :key="qwer" class="m-left-10">{{desc1.name}}*{{desc1.num_}}</span>
                                             </template>
                                         </span>
                                     </template>
@@ -216,9 +216,11 @@ export default {
                         const obj = {}
                         Object.assign(obj, this.list)
                         obj.combination = this.product
+                        console.log("  obj.combination ", obj.combination)
                         let aaaaa = ''
                         obj.combination.map((item1, index1) => {
-                            aaaaa += item1.myIsSetID.quantity + '_' + item1.myIsSetID.sku_id
+                            // aaaaa += item1.myIsSetID.quantity + '_' + item1.myIsSetID.sku_id
+                            aaaaa = item1.myIsSetID
                         })
                         obj.aaaaa = aaaaa
                         this.addGoods(obj)

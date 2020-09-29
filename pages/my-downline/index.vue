@@ -30,7 +30,7 @@
                 <view :class="index === list.subordinate.length-1 ? 'cell-item min-flex min-flex-main-between bg-white p-tb-30':'cell-item min-flex min-flex-main-between bg-white p-tb-30 min-border-bottom'">
                     <view class="min-flex">
                         <view>
-                            <min-avatar size="xs" :url="item.head_img ? item.head_img : '/static/images/goods.png'"></min-avatar>
+                            <min-avatar size="xs" :url="item.head_img ? item.head_img : '/static/images/head.png'"></min-avatar>
                         </view>
                         <view class="m-left-20" style="width:400rpx">
                             <view class="f28 min-ellipsis">{{item.user_name}}</view>
@@ -50,6 +50,7 @@
             </view>
         </view>
     </view>
+    <min-pulldown :isFlag="falg" :desc="des" :loading="load" />
 </view>
 </template>
 
@@ -77,7 +78,30 @@ export default {
             },
             nums: 0,
             n: backs,
+            falg: false,
+            des: "加载中",
+            page: 2,
+            load: true,
+            isAll: false
         }
+    },
+    onReachBottom() {
+        console.log('到底')
+        if (this.isAll) return
+        this.falg = true
+        this.getData(this.page, 10, true).then(res => {
+            if (res.list.length === 0) {
+                this.load = false
+                this.des = '暂无更多数据'
+                setTimeout(() => {
+                    this.isAll = true
+                    return this.falg = false
+                }, 1000)
+            }
+            this.page++
+            this.list.subordinate = this.list.concat([...res.list])
+            this.nums = this.list.subordinate.length
+        })
     },
     mounted() {
         this.$minApi.getMyDownLineInfo().then(res => {
@@ -85,19 +109,32 @@ export default {
             console.log(this.list.superior)
 
         })
-        this.$minApi
-            .getMyDownLine({
-                limit: 10,
-                page: 1,
-            })
-            .then(res => {
-                this.list.subordinate = res.list
-                console.log(res)
-                this.nums = this.list.subordinate.length
-                console.log(res)
-            })
+        this.getData(1, 10).then(res => {
+            this.list.subordinate = res.list
+            console.log(res)
+            this.nums = this.list.subordinate.length
+            console.log(res)
+        })
+        // this.$minApi
+        //     .getMyDownLine({
+        //         limit: 10,
+        //         page: 1,
+        //     })
+        //     .then(res => {
+        //         this.list.subordinate = res.list
+        //         console.log(res)
+        //         this.nums = this.list.subordinate.length
+        //         console.log(res)
+        //     })
     },
     methods: {
+        async getData(page, limit, isLoading) {
+            return await this.$minApi.getMyDownLine({
+                page,
+                limit,
+                isLoading: false
+            })
+        },
         go() {
             this.$minRouter.push({
                 name: 'lnvitation-offline',

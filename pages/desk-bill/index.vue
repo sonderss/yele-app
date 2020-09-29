@@ -12,6 +12,9 @@
             <text class="m-bottom-10  f28">应付合计：￥{{data.receivable_price}}</text>
             <text class="m-bottom-10  f28">已付合计：￥{{data.pay_price}}</text>
             <text class="m-bottom-10  f28">待付合计：￥{{data.unpay_price}}</text>
+            <text class="m-bottom-10  f28" v-if="data.is_checkout">操<span style="padding:0 15rpx">作</span>人：{{data.checkout_name}}</text>
+            <text class="m-bottom-10  f28" v-if="data.is_checkout">账单支付时间：{{$minCommon.formatDate(new Date(data.checkout_time*1000),'yyyy-MM-dd hh:mm:ss')}}</text>
+
         </view>
     </min-cell>
     <view class="mid-view p-lr-20">
@@ -86,7 +89,7 @@ export default {
             des: '加载中',
             page: 2,
             load: true,
-            isNone:true
+            isNone: true
         }
     },
     watch: {
@@ -139,7 +142,7 @@ export default {
     },
     onReachBottom() {
         console.log('到底')
-        if(this.isNone) return  false
+        if (this.isNone) return false
         this.falg = true
         this.getDataList(this.$parseURL().open_id, this.page, 10, true).then(res => {
             if (res.list.length === 0) {
@@ -175,8 +178,8 @@ export default {
             this.list = res.list
             this.test(this.list)
             this.showData = this.store
-            if( this.showData.length !== 0){
-                   this.isNone = false
+            if (this.showData.length !== 0) {
+                this.isNone = false
             }
             console.log(this.store, this.market)
         })

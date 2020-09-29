@@ -3,7 +3,7 @@
     <view class="p-top-20 p-lr-30" style="padding-bottom: 66rpx;">
         <view class="platform-info f28 p-lr-20 p-tb-20" :style="list.order_info.is_can_open === 0 ? 'background:#ffe4e4' : 'background:#fff'">
             <view>台位低消：￥{{list.order_info.minim_charge}}</view>
-            <view>开台条件：<text class="emp">{{list.order_info.minim_charge*1 === 0 ? '无低消' :  `${ list.order_info.minimum_percent}%低消}(${list.order_info.desk_open_minimum})`}}</text></view>
+            <view>开台条件：<text class="emp">{{list.order_info.minim_charge*1 === 0 ? '无低消' :  `${ list.order_info.minimum_percent}%低消(${list.order_info.desk_open_minimum})`}}</text></view>
             <view v-if='!$parseURL().isOrder'>订单金额：￥{{list.order_info.order_total}}</view>
             <view>达成状态：{{list.order_info.is_can_open === 0 ? "未达成开台条件":"达成开台条件"}}</view>
         </view>
@@ -52,7 +52,8 @@ export default {
                 // 没有订单 - 申请开台
                 console.log(this.$parseURL())
                 this.$minRouter.push({
-                    name: 'apply-open',
+                    name: 'redapply-open',
+                    type: 'redirectTo',
                     params: {
                         desk_id: this.$parseURL().desk_id,
                         isOrder: true,
@@ -124,7 +125,8 @@ export default {
                 // 申请开台
                 console.log(this.$parseURL())
                 this.$minRouter.push({
-                    name: 'apply-open',
+                    name: 'redapply-open',
+                    type: 'redirectTo',
                     params: {
                         desk_id: this.$parseURL().desk_id,
                         order_id: this.$parseURL().order_id,

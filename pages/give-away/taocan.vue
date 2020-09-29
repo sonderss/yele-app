@@ -28,7 +28,7 @@
         </view>
     </view>
 
-    <min-goods-submit @leftClick='selectedEvent' @submit="submit" :goodsCount="countNums" buttonText='赠送' icon="/static/images/cart.png" :totalAmount="totalAmountE"></min-goods-submit>
+    <min-goods-submit @leftClick='selectedEvent' @submit="submit" :totalLabel="$store.state.goods.giveAwayInfo.personal_presentation_limit == -1 ? '赠送额度：无限制':totalLabel" :goodsCount="countNums" buttonText='赠送' icon="/static/images/cart.png" :totalAmount="totalAmountE"></min-goods-submit>
     <!-- 已选商品 -->
     <min-popup :show="selected" @close='closeSelectedPop'>
         <view class="popview">
@@ -50,7 +50,7 @@
                         <view class="content-view">
                             <view class="right-view-title">
                                 <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                                <text class="f26" style="color:#666666" v-if="item2.type === 'product' ">规格：{{item2.sku[0].sku_full_name}}</text>
+                                <text class="f26" style="color:#666666" v-if="item2.type === 'product' ">规格：{{item2.sku[0].sku}}</text>
                             </view>
                             <view class="right-view-bottom">
                                 <view class="right-view-bottom-desc">
@@ -135,8 +135,10 @@ export default {
         console.log(option)
         this.setmeal_id = option.setmeal_id
         this.desk_id = option.desk_id
-        console.log(option.product)
-        this.parseproducts = option.product
+        this.parseproducts = JSON.parse(JSON.stringify(option.product))
+        console.log(this.parseproducts)
+        this.totalLabel = `赠送额度：${this.$store.state.goods.giveAwayInfo.personal_presentation_limit}`
+
     },
     watch: {
         // selArr: {
@@ -179,11 +181,14 @@ export default {
                     const obj = {}
                     Object.assign(obj, this.list)
                     obj.combination = this.product
+                    console.log(" obj.combination", obj.combination)
                     let aaaaa = ''
                     JSON.parse(obj.combination).map((item1, index1) => {
-                        aaaaa += item1.myIsSetID.quantity + '_' + item1.myIsSetID.sku_id
+                        // aaaaa += item1.myIsSetID.quantity + '_' + item1.myIsSetID.sku_id
+                        aaaaa = item1.myIsSetID
                     })
                     obj.aaaaa = aaaaa
+                    console.log(obj)
                     this.addGoods(obj)
                 }
                 if (this.list.setmeal_images.length <= 0) {
@@ -241,7 +246,7 @@ export default {
             });
         },
         addGoods(obj) {
-            console.log("这里是obj", obj)
+            obj.combination = JSON.parse(obj.combination)
             let kaiguan = true
             if (this.selArr.length === 0) return this.selArr.push(obj)
             let a = true
@@ -349,8 +354,7 @@ export default {
                     obj.id = item.id
                     obj.type = item.type
                     obj.quantity = item.step
-                    obj.combination = []
-                    obj.sku_id = item.sku.id
+                    obj.sku_id = item.sku[0].id
                 }
                 // 类型为服务商品
                 if (item.type === 'service') {

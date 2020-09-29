@@ -18,6 +18,7 @@
         <min-btn :opacity="false" :long="true" @click="toAddUserInfo">下一步</min-btn>
     </view>
     <min-404 v-if="isNone" pTop="100rpx"></min-404>
+    <min-pulldown :isFlag="falg" :desc="des" :loading="load" />
 </view>
 </template>
 
@@ -34,7 +35,12 @@ export default {
             type: '',
             seil: {},
             isChecked: false,
-            a: -2
+            a: -2,
+            falg: false,
+            nums: 2,
+            des: "加载中",
+            load: true,
+            isAll: false
         }
     },
     computed: {
@@ -65,7 +71,26 @@ export default {
         // console.log(this.msg)
     },
     mounted() {
-        this.getData()
+        this.getData(1, 10, false).then(res => {
+            console.log(res)
+            this.list = res.list
+        })
+    },
+    onReachBottom() {
+        if (this.isAll) return
+        console.log('到底')
+        this.getData(this.nums, 10, true).then(res => {
+            if (res.list.length === 0) {
+                this.load = false
+                this.des = '暂无更多数据'
+                setTimeout(() => {
+                    this.isAll = true
+                    return this.falg = false
+                }, 1000)
+            }
+            this.list = this.list.concat([...res.list])
+            this.nums++
+        })
     },
     methods: {
         test(n) {
@@ -79,12 +104,20 @@ export default {
                 this.type = 0
             }
         },
-        getData() {
-            this.$minApi.getMarketingList()
-                .then(res => {
-                    console.log(res)
-                    this.list = res.list
-                })
+        async getData(page, limit, isLoading) {
+            // this.$minApi.getMarketingList({
+            //         page: 1,
+            //         limit: 10
+            //     })
+            //     .then(res => {
+            //         console.log(res)
+            //         this.list = res.list
+            //     })
+            return await this.$minApi.getMarketingList({
+                page,
+                limit,
+                isLoading
+            })
         },
         toAddUserInfo() {
             if (this.type !== '') {

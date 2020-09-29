@@ -1,94 +1,97 @@
 <template>
-<view class="give-away">
-    <min-navTab ref="navTab" class="navtabs" :tabTitle="list" @changeTab="changeTab"></min-navTab>
-    <view class="desc_info m-tb-20 f20">可赠送额度：{{personal_remaining_quota}}</view>
+<view class="give-away" @touchmove.stop.prevent="moveHandle">
+    <view v-if="list.length > 0 || isFlag ">
+        <min-navTab ref="navTab" class="navtabs" :tabTitle="list" @changeTab="changeTab"></min-navTab>
+        <view class="desc_info m-tb-20 f20">可赠送额度：{{personal_remaining_quota === -1 ? '无限制': personal_remaining_quota}}</view>
+        <view style="padding-top:80rpx"></view>
+        <swiper style="width:100vw;height:100vh" :current="currentTab" @change="swiperTab" @touchmove.stop.prevent="moveHandle">
+            <swiper-item v-for="(listItem,listIndex) in list" :key="listItem.id">
+                <scroll-view style="height:85vh" id="scol" scroll-y @scrolltolower="lower1" :scroll-into-view="toView">
+                    <view :id="'top'+listIndex"></view>
+                    <view class="main p-lr-30" v-if="listItem.product.length > 0">
+                        <view class="item">
+                            <view class="goods" v-for="(item,index) in listItem.product" :key="index" @click.stop="toDetail(item)">
+                                <image lazy-load :src="item.product_img.length>10 ?  item.product_img : '/static/images/goods.png' " />
+                                <view class="content-view">
+                                    <view class="right-view-title">
+                                        <view class="f28 aaaa">{{item.product_name}}</view>
+                                        <text class="f26 t" v-if="item.sku.length > 0 && item.sku[0].sku_full_name" style="display:block;font-weight:400">规格：{{item.sku[0].sku}}</text>
+                                        <text class="f26" style="color:#666666">可赠数量：{{item.commodity_count}}</text>
+                                    </view>
+                                    <view class="right-view-bottom">
+                                        <view class="right-view-bottom-desc">
+                                            <text class="f20 t">
+                                                <text style="color:#FF0000;font-size:30;font-weight:700">￥{{item.sku.length === 1 ?  item.sku[0].deduction_limit :  item.deduction_limit}}</text>
+                                            </text>
+                                        </view>
+                                        <view class="steper">
+                                            <min-stepper v-model="item.step" @lesss="lesss($event,item)" :max="item.commodity_count" v-if="(item.type === 'setmeal') ? false : true " :showBtn="item.type === 'setmeal' ? true : false" @change="changeItem(item)" :isFlag="item.isFlag">
+                                            </min-stepper>
+                                            <view class="m-right-10" v-else style="width:40rpx;height:40rpx;" @click.stop="changeChioceT(item)">
+                                                <image lazy-load src="/static/images/yellow-add.png" style="width:100%" />
+                                            </view>
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
 
-    <swiper style="width:100vw;height:100vh" :current="currentTab" @change="swiperTab">
-        <swiper-item v-for="(listItem,listIndex) in list" :key="listItem.id">
-            <scroll-view style="height: 100%" scroll-y @scrolltolower="lower1" :scroll-into-view="toView">
-                <view :id="'top'+listIndex" style="width: 100%;height:20rpx;"></view>
-                <view class="main p-lr-30" v-if="listItem.product.length > 0">
-                    <view class="item" style="margin-bottom:200rpx">
-                        <view class="goods" v-for="(item,index) in listItem.product" :key="index" @click.stop="toDetail(item)">
-                            <image lazy-load :src="item.product_img.length>10 ?  item.product_img : '/static/images/goods.png' " />
+                    </view>
+
+                    <min-404 v-else></min-404>
+
+                </scroll-view>
+            </swiper-item>
+        </swiper>
+
+        <!-- 已选商品 -->
+        <min-popup :show="selected" @close='closeSelectedPop'>
+            <view class="popview">
+                <view class="top-view min-border-bottom ">
+                    <view>已选商品</view>
+                    <view class="right-view" @click="delAll">
+                        <view class="icon-del m-right-10">
+                            <image src='/static/images/del.png' />
+                        </view>
+                        <view class="f22 clear">清空</view>
+                    </view>
+                </view>
+
+                <view class="main-sel-view p-lr-30 p-tb-30">
+                    <scroll-view scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'}">
+                        <view class="item" v-for="(item2,n) in selArr" :key="n">
+                            <image :src="errImg ? '/static/images/goods.png': item2.product_img" mode="" @error="imageErro1" />
                             <view class="content-view">
                                 <view class="right-view-title">
-                                    <text class="f28 t" style="display:block;font-weight:700">{{item.product_name}}</text>
-                                    <text class="f26" style="color:#666666">可赠数量：{{item.commodity_count}}</text>
+                                    <text class="f28 t" style="display:block">{{item2.product_name}}</text>
+                                    <text class="f26 t" style="color:#666666;display:block;font-weight:400;width:400rpx" v-if="item2.type === 'product'">规格：{{item2.sku[0].sku}}</text>
                                 </view>
                                 <view class="right-view-bottom">
                                     <view class="right-view-bottom-desc">
-                                        <text class="f20 t">
-                                            <text style="color:#FF0000;font-size:30;font-weight:700">￥{{item.sku.length === 1 ?  item.sku[0].deduction_limit :  item.deduction_limit}}</text>
-                                        </text>
+                                        <text class="f20 t"><text style="color:#FF0000;font-size:30">￥{{item2.sku.length >= 1 ? item2.sku[0].deduction_limit :item2.deduction_limit}}</text></text>
+
                                     </view>
                                     <view class="steper">
-                                        <!-- :max="item.commodity_count" -->
-                                        <min-stepper v-model="item.step" @lesss="lesss($event,item)" :max="item.commodity_count" v-if="(item.type === 'setmeal') ? false : true " :showBtn="item.type === 'setmeal' ? true : false" @change="changeItem(item)" :isFlag="item.isFlag">
-                                        </min-stepper>
-                                        <view class="m-right-10" v-else style="width:40rpx;height:40rpx;" @click.stop="changeChioceT(item)">
-                                            <image lazy-load src="/static/images/yellow-add.png" style="width:100%" />
-                                        </view>
-                                        <!-- <view class="isSku f24"  v-if="item2.sku.length > 1 "  @click="selSku(index,index2)">选规格</view> -->
+
+                                        <min-stepper :isAnimation='false' v-model="item2.step" :max="item2.commodity_count" :min='0' @change="alDel($event,n)"></min-stepper>
                                     </view>
                                 </view>
                             </view>
                         </view>
-                    </view>
+                    </scroll-view>
+
                 </view>
-
-                <min-404 v-else></min-404>
-
-            </scroll-view>
-        </swiper-item>
-    </swiper>
-
-    <!-- 已选商品 -->
-    <min-popup :show="selected" @close='closeSelectedPop'>
-        <view class="popview">
-            <view class="top-view min-border-bottom ">
-                <view>已选商品</view>
-                <view class="right-view" @click="delAll">
-                    <view class="icon-del m-right-10">
-                        <image src='/static/images/del.png' />
-                    </view>
-                    <view class="f22 clear">清空</view>
+                <!-- <view class="empty-view"></view> -->
+                <view class="bottom-view-t">
+                    <min-goods-submit style="position:fixed" :totalLabel="personal_remaining_quota === -1 ? '赠送额度：无限制': totalLabel " icon="/static/images/cart.png" :totalAmount='moneySum' :goodsCount="num" buttonText='确定赠送' @submit="submit"></min-goods-submit>
                 </view>
             </view>
+        </min-popup>
 
-            <view class="main-sel-view p-lr-30 p-tb-30">
-                <scroll-view scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'}">
-                    <view class="item" v-for="(item2,n) in selArr" :key="n">
-                        <image :src="errImg ? '/static/images/goods.png': item2.product_img" mode="" @error="imageErro1" />
-                        <view class="content-view">
-                            <view class="right-view-title">
-                                <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                                <text class="f26 t" style="color:#666666;display:block;font-weight:400;width:400rpx" v-if="item2.type === 'product'">规格：{{item2.sku[0].sku_full_name}}</text>
-                            </view>
-                            <view class="right-view-bottom">
-                                <view class="right-view-bottom-desc">
-                                    <text class="f20 t"><text style="color:#FF0000;font-size:30">￥{{item2.sku.length >= 1 ? item2.sku[0].deduction_limit :item2.deduction_limit}}</text></text>
-
-                                </view>
-                                <view class="steper">
-
-                                    <min-stepper :isAnimation='false' v-model="item2.step" :max="item2.commodity_count" :min='0' @change="alDel($event,n)"></min-stepper>
-                                </view>
-                            </view>
-                        </view>
-                    </view>
-                </scroll-view>
-
-            </view>
-            <!-- <view class="empty-view"></view> -->
-            <view class="bottom-view-t">
-                <min-goods-submit style="position:fixed" icon="/static/images/cart.png" :totalAmount='moneySum' :goodsCount="num" buttonText='确定赠送' @submit="submit"></min-goods-submit>
-            </view>
-        </view>
-    </min-popup>
-
-    <min-goods-submit style="position:fixed" :totalLabel='totalLabel' @leftClick='selectedEvent' icon="/static/images/cart.png" :totalAmount='moneySum' :goodsCount="num" buttonText='确定赠送' @submit='submit'></min-goods-submit>
-    <min-modal ref="test"></min-modal>
+        <min-goods-submit style="position:fixed" :totalLabel="personal_remaining_quota === -1 ? '赠送额度：无限制': totalLabel" @leftClick='selectedEvent' icon="/static/images/cart.png" :totalAmount='moneySum' :goodsCount="num" buttonText='确定赠送' @submit='submit'></min-goods-submit>
+        <min-modal ref="test"></min-modal>
+    </view>
+    <min-404 v-else />
 </view>
 </template>
 
@@ -118,7 +121,8 @@ export default {
             top: "",
             errImg: false,
             desk_remaining_quota: '',
-            personal_remaining_quota: ''
+            personal_remaining_quota: '',
+            isFlag: false
         }
     },
     onShow() {
@@ -163,6 +167,9 @@ export default {
         }
     },
     onBackPress(options) {
+
+        this.selArr = []
+        this.$store.dispatch('goods/setStoreSelArr', [])
         // this.selArr = []
         // this.$store.dispatch('goods/setStoreSelArr', [])
         // console.log(this.list)
@@ -173,9 +180,9 @@ export default {
         // })
     },
     mounted() {
-        this.$minApi.getGiveAwayList({
-            desk_id: this.$parseURL().desk_id
-        }).then(res => {
+        console.log("我说", this.$parseURL().res)
+        let res = this.$parseURL().res
+        if (this.$parseURL().res.list.length > 0) {
             res.list.map((item, index) => {
                 item.product.map(item2 => {
                     item2.step = 0
@@ -201,14 +208,46 @@ export default {
             console.log(this.list, this.totalLabel)
             console.log('已选赠送商品全局变量', this.$store.state.goods.storeSelArr)
             console.log(this.$store.state.goods.giveAwayInfo)
-            // eslint-disable-next-line handle-callback-err
-        }).catch(err => {
-            setTimeout(() => {
-                uni.navigateBack({
-                    delta: 1
-                })
-            }, 2000)
-        })
+        } else {
+            this.isFlag = true
+        }
+        //     this.$minApi.getGiveAwayList({
+        //         desk_id: this.$parseURL().desk_id
+        //     }).then(res => {
+        //         res.list.map((item, index) => {
+        //             item.product.map(item2 => {
+        //                 item2.step = 0
+
+        //             })
+        //         })
+        //         // this.tabTitle = res.list
+        //         console.log(res)
+        //         this.list = res.list
+        //         this.desk_remaining_quota = res.desk_remaining_quota
+        //         this.personal_remaining_quota = res.personal_remaining_quota
+        //         this.content = `
+        //       1. 当前台消费金额￥${res.consumption_amount}，根据赠送方案，可赠送的商品金额为￥${res.desk_presentation_limit}。<br />
+        //       2. 当前用户的赠送额度为￥${res.personal_presentation_limit}，不能超过此额度。<br />
+        //       3. 不同商品的可赠数量不同，不能超过最高可赠数量。 <br />
+        //   `
+        //         this.$store.dispatch('goods/setselected_giveAwayInfo', {
+        //             consumption_amount: res.consumption_amount,
+        //             desk_presentation_limit: res.desk_presentation_limit,
+        //             personal_presentation_limit: res.personal_remaining_quota
+        //         })
+        //         this.totalLabel = `赠送额度：${res.personal_remaining_quota}`
+        //         console.log(this.list, this.totalLabel)
+        //         console.log('已选赠送商品全局变量', this.$store.state.goods.storeSelArr)
+        //         console.log(this.$store.state.goods.giveAwayInfo)
+        //         // eslint-disable-next-line handle-callback-err
+        //     }).catch(err => {
+        //         this.isFlag = true
+        //         // setTimeout(() => {
+        //         //     uni.navigateBack({
+        //         //         delta: 1
+        //         //     })
+        //         // }, 2000)
+        //     })
     },
     // onNavigationBarButtonTap(e) {
     //     this.$refs.test.handleShow({
@@ -298,6 +337,9 @@ export default {
                 }
             }
         },
+        moveHandle() {
+
+        },
         changeItem(e) {
             console.log(e)
             if (e.type === 'setmeal') {
@@ -345,18 +387,18 @@ export default {
                 return
             }
             const result = this.selArr.some(item => {
-                if (item.type === 'service') {
+                if (item.type === 'service' && e.type === 'service') {
                     if (item.id === e.id) {
                         item.step = e.step
                         return true
                     }
-                } else if (item.type === 'product') {
+                } else if (item.type === 'product' && e.type === 'product') {
                     // console.log(item, e)
                     if (item.sku[0].id === e.sku[0].id) {
                         item.step = e.step
                         return true
                     }
-                } else if (item.type === 'setmeal') {
+                } else if (item.type === 'setmeal' && e.type === 'setmeal') {
                     if (item.id === e.id) {
                         item.step = e.step
                         return true
@@ -434,9 +476,9 @@ export default {
             // this.selArr = []
             this.selArr.map((item, index) => {
                 this.selArr.splice(index, 1)
+                this.$store.dispatch('goods/setStoreSelArr', this.selArr)
             })
-            this.$store.dispatch('goods/setStoreSelArr', [])
-
+            this.selArr = []
             this.list.map(item => {
                 item.product.map((item2, index) => {
                     if (item2.step > 0) {
@@ -512,6 +554,7 @@ export default {
     // margin-top: 72rpx;
     flex-grow: 1;
     box-sizing: border-box;
+    overflow: hidden;
 
     .title {
         line-height: 64rpx;
@@ -538,6 +581,8 @@ export default {
         width: 100%;
         // margin-bottom: 20rpx;
         padding-bottom: 0 0 5rpx;
+        height: 100%;
+        overflow: hidden;
     }
 
     .goods {
@@ -549,7 +594,7 @@ export default {
         align-content: center;
         margin-bottom: 20rpx;
         background: #fff;
-        height: 200rpx;
+        height: 230rpx;
         width: 100%;
         padding: 20rpx;
 
@@ -569,12 +614,27 @@ export default {
             color: #333333;
 
             .right-view-title {
+                width: 500rpx;
+
                 .t {
                     font-weight: bold;
                     width: 500rpx;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                }
+
+                .aaaa {
+                    width: 500rpx;
+                    font-size: 28rpx;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 2;
+                    word-wrap: break-word;
+                    word-break: break-all;
+                    font-weight: 700;
                 }
             }
 
@@ -595,6 +655,80 @@ export default {
                     justify-content: flex-end;
                     align-items: center;
                 }
+            }
+        }
+    }
+}
+
+.goods {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+    margin-bottom: 20rpx;
+    background: #fff;
+    height: 230rpx;
+    width: 100%;
+    padding: 20rpx;
+
+    &>image {
+        width: 160rpx;
+        height: 160rpx;
+        margin-right: 16rpx;
+    }
+
+    .content-view {
+        flex: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: space-between;
+        color: #333333;
+
+        .right-view-title {
+            width: 500rpx;
+
+            .t {
+                font-weight: bold;
+                width: 500rpx;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .aaaa {
+                width: 500rpx;
+                font-size: 28rpx;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                word-wrap: break-word;
+                word-break: break-all;
+                font-weight: 700;
+            }
+        }
+
+        .right-view-bottom {
+            height: 48rpx;
+            display: flex;
+            // position: relative;
+            justify-content: space-between;
+
+            .right-view-bottom-desc {
+                display: flex;
+            }
+
+            .steper {
+                // position: absolute;
+                // right:0;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
             }
         }
     }
@@ -684,6 +818,7 @@ export default {
                         font-weight: bold;
 
                     }
+
                 }
 
                 .right-view-bottom {
@@ -741,5 +876,16 @@ export default {
     margin-top: 80rpx;
     padding: 0 30rpx;
     // #endif
+    position: fixed;
+    top: 100rpx;
+    left: 30rpx;
+}
+
+#scol {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
 }
 </style>

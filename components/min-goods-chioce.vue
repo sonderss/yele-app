@@ -11,8 +11,8 @@
             <view class="content-view">
                 <view class="right-view-title">
                     <view class="f28 t">
-                        <text v-if="discount" :class="discountdesc.length < 4 ?   'discount_  min-ellipsis f26' :' discount min-ellipsis f26'">{{discountdesc}}</text>
-                        <text class>{{title}}</text>
+
+                        <view class='aaaa f26'> <text v-if="discount" :class="discountdesc.length < 4 ?   'discount_  min-ellipsis f26' :' discount min-ellipsis f26'">{{discountdesc}}</text>{{title}}</view>
                     </view>
                     <text class="f26 abc m-top-10" v-if="isSku" style="color:#666666">{{desc}}</text>
                 </view>
@@ -149,7 +149,7 @@ export default {
         margin-bottom: 20rpx;
         background: #fff;
         width: 100%;
-        height: 200rpx;
+        height: 210rpx;
         padding: 20rpx;
         position: relative;
 
@@ -201,11 +201,23 @@ export default {
                     display: block;
                 }
 
-                .t {
-                    font-weight: bold;
-                    white-space: nowrap;
+                .aaaa {
+                    font-size: 28rpx;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 2;
+                    word-wrap: break-word;
+                    word-break: break-all;
+                    font-weight: 700;
+                }
+
+                .t {
+                    font-weight: bold;
+                    // white-space: nowrap;
+                    // overflow: hidden;
+                    // text-overflow: ellipsis;
                     display: flex;
                     align-items: center;
 
@@ -219,7 +231,7 @@ export default {
                         background: #f80409;
                         padding: 5rpx;
                         margin-right: 10rpx;
-                        display: block;
+                        // display: block;
                         line-height: 26rpx;
                     }
 
@@ -233,7 +245,7 @@ export default {
                         background: #f80409;
                         padding: 5rpx;
                         margin-right: 10rpx;
-                        display: block;
+                        // display: block;
                         line-height: 26rpx;
                     }
                 }

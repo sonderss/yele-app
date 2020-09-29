@@ -1,29 +1,30 @@
 <template>
-<view class="list_box" style="overflow:auto;">
-    <view class="left" :style="{marginTop: '0' }" v-if="mainArray.length !== 0">
-        <view class="left_view">
-            <scroll-view scroll-y="true" :style="{height:scrollHeight}">
-                <template v-for="(item,index) in mainArray">
-                    <view class="item" @tap="leftTap(index)" :class="{ 'active':index==leftIndex }" :key="item.id" :data-index="index" v-if="item.product && item.product.length >0">{{item.cate_name}}</view>
-                </template>
+<view class="list_box" style="overflow: hidden;" @touchmove.stop.prevent="moveHandle">
+    <view class="left" @touchmove.stop.prevent="moveHandle" v-if="mainArray.length !== 0">
 
-                <view style="height:200rpx"></view>
-            </scroll-view>
-        </view>
+        <scroll-view scroll-y="true" :show-scrollbar="false" scroll-with-animation="true" :style="{height:scrollHeight}">
+            <list style="width: 100%;height: 800rpx;">
+                <cell v-for="(item,index) in mainArray" :key="item.id" class="item" @tap="leftTap(index)" :class="{ 'active':index==leftIndex }" :data-index="index">{{item.cate_name}}</cell>
+            </list>
+            <view style="height:200rpx"></view>
+        </scroll-view>
     </view>
-    <view class="main m-top-30">
+    <view class="main" @touchmove.stop.prevent="moveHandle">
+
         <scroll-view :show-scrollbar="false" :style="{ 'height':scrollHeight}" @scrolltolower="testBottom" scroll-y="true" @scroll="mainScroll" :scroll-into-view="scrollInto" scroll-with-animation="true">
             <view style="height:20rpx"></view>
-            <view v-for="(item,index) in mainArray" :key="index" :id="`item-${index}`">
-                <view v-for="(item2,index2) in item.product" :key="index2" :isFlag="item2.isFlag" @click.stop="goDetails(index,index2)">
-                    <!-- -->
-                    <min-goods-chioce :image="item2.product_img" :discountdesc="item2.limited_activity_name" :discount="item2.is_limited === 1 ? true: false " :title="item2.product_name" :badgeTxt="item2.type === 'setmeal' ? '套餐': '' " :badge="item2.type === 'setmeal'? true : false " @changes="changeChioce(index,index2)" v-model="item2.step" @changesPop="changesPopNoStep(index,index2,item2.type)" :desc="item2.sku.length >=1 ?item2.sku[0].sku_full_name : item2.info " :price="item2.price" :isFlag="item2.isFlag">
-                    </min-goods-chioce>
-                </view>
-            </view>
+            <list style="width: 100%;height: 800rpx;">
+                <cell v-for="(item,index) in mainArray" :key="index" :id="`item-${index}`">
+                    <cell v-for="(item2,index2) in item.product" :key="index2" :isFlag="item2.isFlag" @click.stop="goDetails(index,index2)">
+                        <min-goods-chioce style="margin-right:25rpx" :image="item2.product_img" :discountdesc="item2.limited_activity_name" :discount="item2.is_limited === 1 ? true: false " :title="item2.product_name" :badgeTxt="item2.type === 'setmeal' ? '套餐': '' " :badge="item2.type === 'setmeal'? true : false " @changes="changeChioce(index,index2)" v-model="item2.step" @changesPop="changesPopNoStep(index,index2,item2.type)" :desc="item2.sku.length >=1 ?item2.sku[0].sku_full_name : item2.info " :price="item2.price" :isFlag="item2.isFlag">
+                        </min-goods-chioce>
+                    </cell>
+                </cell>
 
+            </list>
             <view style="height:120rpx;"></view>
         </scroll-view>
+
     </view>
     <!-- 底部按钮 -->
     <view class="bottom-view" v-if="mainArray.length !== 0">
@@ -50,10 +51,13 @@
                             <text class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'product'">规格：{{item2.sku.sku_full_name}}</text>
                             <text class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'setmeal'">
                                 规格：
-                                <template v-for="desc in item2.combination">
-                                    <template v-for="(desc1) in desc.combination_detail">
-                                        <span :key="desc1.id" class="m-left-10">{{desc1.name}}*{{desc1.quantity}}</span>
-                                    </template>
+                                <template v-for="(desc,aa) in item2.combination">
+                                    <span :key="aa">
+                                        <template v-for="(desc1,abc) in desc.combination_detail">
+                                            <span :key="abc" class="m-left-10">{{desc1.name}}*{{desc1.num_}}</span>
+                                        </template>
+                                    </span>
+
                                 </template>
 
                             </text>
@@ -63,7 +67,7 @@
                             <view class="right-view-bottom-desc">
                                 <text class="f20 t" v-if="item2.type === 'product'">
                                     ￥
-                                    <text style="color:#FF0000;font-size:30">{{item2.is_limited ?  item2.sku.sku_price  :  item2.price}}</text>
+                                    <text style="color:#FF0000;font-size:30">{{item2.is_limited || item2.sku.sku_price ?  item2.sku.sku_price  :  item2.price}}</text>
                                 </text>
                                 <text class="f20 t" v-if="item2.type === 'service'">
                                     ￥
@@ -178,7 +182,6 @@ export default {
         }
     },
     onLoad() {
-        console.log(123132)
         uni.getSystemInfo({
             success: res => {
                 /* 设置当前滚动容器的高，若非窗口的高度，请自行修改 */
@@ -189,7 +192,6 @@ export default {
         console.log(this.android)
         console.log(this.$store.state.goods.orderTempData)
         if (this.$store.state.goods.orderTempData.length > 0) {
-            // console.log("我要崩溃了")
             this.mainArray = this.$store.state.goods.orderTempData
         }
         this.$nextTick(() => {
@@ -198,7 +200,6 @@ export default {
         console.log('下单路由参数', this.$parseURL())
         // this.buttonLabel = this.$parseURL().is_open_desk ? '(已开台)' : '(未开台)'
         this.totalLabel = `台位低消：${this.$parseURL().minim_charge}`
-
     },
     onBackPress() {
         this.selArr = []
@@ -210,7 +211,8 @@ export default {
             let sum = 0
             this.selArr.map(item => {
                 if (item.type === 'product') {
-                    if (item.is_limited) {
+                    console.log(item)
+                    if (item.is_limited || item.sku.sku_price) {
                         sum += item.step * item.sku.sku_price // item2.is_limited ?  item2.sku.sku_price  :  item2.price
                     } else {
                         sum += item.step * item.price
@@ -243,7 +245,6 @@ export default {
                             item.product.map((item2, index2) => {
                                 this.$nextTick(() => {
                                     item2.step = 0
-
                                 })
                             })
                         }
@@ -311,40 +312,25 @@ export default {
         },
         /* 获取列表数据 getProductList */
         getListData() {
-            // uni.removeStorage({
-            //     key: 'images',
-            //     success: function (res) {
-            //         console.log('success');
-            //     }
-            // });
-            // uni.getStorage({
-            //     key: 'images',
-            //     complete: res => {
-            //         if (!res.data) {
-            //             this.a()
-            //             return
-            //         }
-            //         if (res.data) {
-            //             console.log(JSON.parse(res.data))
-            //         }
-            //         this.b(JSON.parse(res.data))
-
-            //     },
-            // })
-            // uni.removeStorage({
-            //     key: 'images',
-            //     success: (res) => {}
-            // });
             this.b()
+        },
+        moveHandle() {
+
         },
         b(images) {
             // console.log("images", images)
             this.$minApi.getOrderProduceList().then(res => {
                 this.mainArray = res.list
                 this.$store.dispatch('goods/seOrderTempData', res.list)
+                this.mainArray.map(item => {
+                    if (item.cate_name.length >= 8) {
+                        let a = item.split('')
+                        a = a.splice(1, 6)
+                        console.log(a + '...')
+                    }
+                })
                 let temp = []
                 for (const val of this.mainArray) {
-
                     val.product.map(item2 => {
                         // if (images.indexOf(item2.product_img.split('/')[6])) {
                         //     console.log("item2.product_img.split('/')[6]")
@@ -378,7 +364,6 @@ export default {
                     // }
                     //       images.map(item3 => {
                     // })
-
                 }
                 // if (isRestart) {
                 //     uni.removeStorage({
@@ -392,7 +377,6 @@ export default {
                     this.getElementTop()
                 })
             })
-
         },
         a() {
             this.$minApi.getOrderProduceList().then(res => {
@@ -441,19 +425,15 @@ export default {
                                 this.getElementTop()
                             })
                         }
-
                     },
                 })
-
             })
         },
-
         /* 获取元素顶部信息 */
         getElementTop() {
             /* Promise 对象数组 */
             // eslint-disable-next-line camelcase
             const p_arr = []
-
             /* 新建 Promise 方法 */
             // eslint-disable-next-line camelcase
             const new_p = selector => {
@@ -470,7 +450,6 @@ export default {
             this.mainArray.forEach((item, index) => {
                 p_arr.push(new_p(`#item-${index}`))
             })
-
             /* 所有节点信息返回后调用该方法 */
             Promise.all(p_arr).then(data => {
                 this.topArr = data
@@ -511,19 +490,19 @@ export default {
         },
         /* 左侧导航点击 */
         leftTap(index) {
-            this.$minCommon.debounce(this.testLH(index))
+            this.scrollInto = `item-${index}`
+            this.leftIndex = index
+            // this.$minCommon.debounce(this.testLH(index))
         },
         testLH(index) {
             this.scrollInto = `item-${index}`
             this.leftIndex = index
-
         },
         // 底部
         testBottom(EventHandle) {
-            if (EventHandle.target.direction === "bottom") {
-                this.leftIndex = this.mainArray.length - 1;
-
-            }
+            // if (EventHandle.target.direction === "bottom") {
+            //     this.leftIndex = this.mainArray.length - 1;
+            // }
         },
         /** 已选商品弹出事件 */
         selectedEvent() {
@@ -759,6 +738,7 @@ export default {
             obj.sku = this.skuObj.sku[this.chioceIndex]
             // this.mainArray[index].product[index2].suoyin
             this.$set(this.mainArray[this.tempId.index].product[this.tempId.index2], "suoyin", this.chioceIndex)
+            console.log(obj)
             this.addGoods(obj)
             // this.mainArray[this.tempId.index].product[ this.tempId.index2].sku = this.mainArray[this.tempId.index].product[ this.tempId.index2].sku[this.chioceIndex]
             this.closeSelectedSkuPop()
@@ -820,7 +800,6 @@ export default {
                                     this.$parseURL().desk_id,
                                     this.$parseURL().is_open_desk
                                 )
-
                                 uni.navigateTo({
                                     url: './orderstart?order_id=' +
                                         res.orderId +
@@ -829,7 +808,6 @@ export default {
                                         '&open_status=' +
                                         1,
                                 })
-
                                 return
                             }
                             this.$minRouter.push({
@@ -893,9 +871,11 @@ export default {
 
 <style lang="scss" scoped>
 uni-page-body {
+    height: 100%;
     overflow: hidden;
-    min-height: 100vh;
-    width: 100%;
+    //  min-height: 100vh;
+    //  width: 100%;
+    // box-sizing: border-box;
 }
 
 .list_box {
@@ -906,39 +886,51 @@ uni-page-body {
     align-items: flex-start;
     align-content: flex-start;
     font-size: 28rpx;
-    overflow: auto;
+    height: 100%;
+    overflow: hidden;
 
     .left {
         width: 160rpx;
         background-color: #fff;
         font-size: 32rpx;
-        position: fixed;
-        left: 0;
-        top: 0;
-        overflow: hidden;
+        // position: fixed;
+        // left: 0;
+        // top: 0;
+        box-sizing: border-box;
+        bottom: 50rpx;
 
-        .left_view {
-            overflow: auto;
-            width: 100%;
-            height: auto;
-        }
-
+        // height: 100%;
+        // overflow: hidden;
+        // .left_view {
+        //     overflow: auto;
+        //     width: 100%;
+        //     height: auto;
+        // }
         .item {
             position: relative;
             text-align: center;
-            height: 96rpx;
-            line-height: 96rpx;
+            height: 82rpx;
+            box-sizing: border-box;
             color: #666666;
             width: 100%;
-            white-space: nowrap;
+            padding-left: 10rpx;
+            font-size: 26rpx;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             overflow: hidden;
             text-overflow: ellipsis;
-            padding-left: 10rpx;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            word-wrap: break-word;
+            word-break: break-all;
 
             &.active {
                 color: #333333;
                 background-color: #f7f7f7;
                 font-weight: bold;
+                font-size: 26rpx;
 
                 &::after {
                     content: '';
@@ -958,12 +950,13 @@ uni-page-body {
         width: 72%;
         padding-left: 20rpx;
         flex-grow: 1;
-
-        position: fixed;
-        left: 165rpx;
-        top: -30rpx;
-        bottom: 50rpx;
-        overflow: auto;
+        // position: fixed;
+        // left: 165rpx;
+        // top: -30rpx;
+        // bottom: 50rpx;
+        // overflow: hidden;
+        // height: 100%;
+        // flex: 1;
 
         .title {
             line-height: 64rpx;
@@ -978,7 +971,6 @@ uni-page-body {
     }
 
     // 已选商品的弹出层
-
     .top-view {
         width: 100%;
         height: 83rpx;

@@ -2,7 +2,7 @@
 <view :class=" 'min-describe  ' + isPadding" @click="chinceSku">
     <view class="left-view">
         <view :class="isCirl ?  'img-view-over' : 'img-view'" v-if="leftIcon">
-            <image :src="leftIconValue ? leftIconValue : '/static/images/goods.png' " />
+            <image :src="leftIconValue ? leftIconValue : errImage " />
         </view>
         <view :class=" leftTxtTwo ? 'txt-view': ''">
             <view class="left-txt" style="color:#333;">{{leftTxt}}</view>
@@ -101,6 +101,10 @@ export default {
         sku2: {
             type: String,
             default: ''
+        },
+        errImage: {
+            type: String,
+            default: '/static/images/goods.png'
         }
     },
     data() {

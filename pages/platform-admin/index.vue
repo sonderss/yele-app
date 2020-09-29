@@ -13,7 +13,7 @@
         <view class="platform-wrap" v-if=" getMineChange && getMineChange.length > 0">
             <view class="title">我的台位</view>
             <view class="list">
-                <view class="item" :class="statusArr[item.desk_status].class" v-for="(item, index) in getMineChange" :key="index" @click="goDetail(item.id,item.desk_status)">
+                <view class="item" :class="[statusArr[item.desk_status].class,(index%4) ==0 ? 'one':'']" v-for="(item, index) in getMineChange" :key="index" @click="goDetail(item.id,item.desk_status)">
                     <view class="name">{{item.desk_name}}</view>
                     <view class="status">{{statusArr[item.desk_status].name}}</view>
                     <view class="count">{{$minCommon.getSeats(item.seats)}}</view>
@@ -24,7 +24,7 @@
             <view class="platform-wrap" v-if="item.desk_lists.length > 0">
                 <view class="title">{{item.group_name}}</view>
                 <view class="list">
-                    <view class="item" :class="statusArr[item2.desk_status].class" v-for="(item2, index2) in item.desk_lists" :key="index2" @click="goDetail(item2.id,item2.desk_status)">
+                    <view class="item" :class="[statusArr[item2.desk_status].class,(index2%4) ==0 ? 'one':'']" v-for="(item2, index2) in item.desk_lists" :key="index2" @click="goDetail(item2.id,item2.desk_status)">
                         <view class="name">{{item2.desk_name}}</view>
                         <view class="status">{{statusArr[item2.desk_status].name}}</view>
                         <view class="count">{{$minCommon.getSeats(item2.seats)}}</view>
@@ -112,12 +112,20 @@ export default {
             flag: true,
             datas: [],
             value: [],
+            isPayS: "",
             indicatorStyle: `height: ${Math.round(
         uni.getSystemInfoSync().screenWidth / (750 / 100)
       )}rpx;`,
         }
     },
     onBackPress(options) {
+        if (this.isPayS === 'true') {
+            // 下单支付成功特殊处理
+            uni.reLaunch({
+                url: '../index/index'
+            });
+            return true
+        }
         const pages = getCurrentPages() //当前页
         const beforePage = pages[pages.length - 2] //上个页面
         const page = pages[pages.length - 1] //页面
@@ -139,7 +147,9 @@ export default {
             }
         }
     },
-    onLoad() {
+    onLoad(option) {
+        console.log(option)
+        this.isPayS = option.isPayscuess
         const month = new Date().getMonth() + 1
         const day = new Date().getDate()
         // const year = new Date().getFullYear()

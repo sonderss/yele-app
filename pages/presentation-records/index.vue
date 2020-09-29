@@ -11,7 +11,7 @@
                 <text>￥{{item2.commodity_price}}</text>
             </view>
         </view>
-        <view v-if="item.product.length > 3 " class="over-view min-border-bottom p-tb-20" @click="showMore(index)">
+        <view v-if="item.product.length > 3 " class="over-view  p-tb-20" @click="showMore(index)">
             {{item.isMore ? '展开更多' : '收起'}}<text :class="item.isMore ? ' f22 botm1' : ' f22 botm'"></text>
         </view>
         <view class="timer  min-border-top m-top-20">

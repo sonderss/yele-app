@@ -88,7 +88,8 @@ export default {
                 return
             }
             this.$minApi.getVerificationCode({
-                mobile: this.mobile
+                mobile: this.mobile,
+                type: 1
             }).then(res => {
                 this.$showToast('发送成功')
                 this.$minCommon.setCountDown(num => {
@@ -106,7 +107,9 @@ export default {
             })
         },
         login() {
-
+            // #ifdef APP-PLUS
+            if (this.$store.state.status.intNet) return this.$showToast('无网络连接')
+            // #endif
             if (!this.$minCommon.checkMobile(this.mobile) || this.code.length !== 6) return this.$showToast('请正确填写信息')
             if (!this.isChangeSel) return this.$showToast('请先同意《用户协议》和《隐私政策》')
             if (this.flag) return

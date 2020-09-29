@@ -133,17 +133,16 @@ export default {
     onShow() {
         this.getData(this.id)
             .then(res => {
+                uni.showLoading({
+                    title: '加载中'
+                });
                 console.log(res)
                 this.deskInfo = res.deskInfo
                 this.storeInfo = res.storeInfo
                 this.bookingDate = res.bookingDate
                 this.storeSetting = res.storeSetting
-                console.log(this.bookingDate)
-                this.$nextTick(() => {
-                    if (this.isToady) return this.getDate(this.$minCommon.formatDate(new Date(Date.now()), 'yyyy-MM-dd hh:mm').split(' ')[1], this.storeSetting.store_business_time.end)
-                    this.getDate(this.storeSetting.store_business_time.start, this.storeSetting.store_business_time.end)
-                })
-
+                if (this.isToady) return this.getDate(this.getNowYing(), this.storeSetting.store_business_time.end)
+                this.getDate(this.storeSetting.store_business_time.start, this.storeSetting.store_business_time.end)
             })
     },
     watch: {
@@ -162,8 +161,16 @@ export default {
     methods: {
         // 获取时间
         getDate(start, end) {
-            console.log(start, end)
+            let result = this.setTimePrint(start, end)
+            console.log(result)
+            start = result.start
+            end = result.end
             const ia = 30 * 60 * 1000
+            if (start === '23:59') {
+                this.storeSetting.is_store_across = 0
+                start = "00:00"
+            }
+
             if (this.storeSetting.is_store_across !== 1) {
                 // 没有跨天
                 const startime1 = '2020/3/18' + ' ' + start
@@ -177,6 +184,7 @@ export default {
                     const a = this.$minCommon.formatDate(eq, 'hh:mm')
                     arr1.push(a)
                 }
+                uni.hideLoading();
                 return this.date = arr1
             }
             let startime = '2020/3/18' + ' ' + start
@@ -205,6 +213,7 @@ export default {
             }
             this.date = arr
             this.nightArr = brr
+            uni.hideLoading();
         },
         getData(id) {
             return new Promise((resolve, reject) => {
@@ -225,6 +234,83 @@ export default {
         },
         chioce(n) {
             this.isKua = n
+        },
+        // 将日期改为整数
+        setTimePrint(startime, endtime) {
+            let start = startime.split(':')
+            let end = endtime.split(':')
+
+            if (start[1] * 1 !== 30 && start[1] !== '00') {
+                console.log("开始时间", start[1])
+                if (start[1] * 1 < 30) {
+                    console.log("小于30")
+                    start = start[0] + ':' + '30'
+                }
+                if (start[1] * 1 > 30) {
+                    console.log("大于30")
+                    if (start[0] * 1 < 23) {
+                        start = start[0] * 1 + 1 + ':' + '00'
+                    }
+                    if (start[0] * 1 == 23) {
+                        start = '23:' + '59'
+                    }
+                }
+            } else {
+                start = startime
+            }
+            if (end[1] * 1 !== 30 && end[1] !== '00') {
+                console.log("结束时间", end[1])
+                if (end[1] * 1 < 30) {
+                    console.log("小于30")
+                    end = end[0] + ':' + '00'
+                }
+                if (end[1] * 1 > 30) {
+                    console.log("大于30")
+                    if (end[0] * 1 < 23) {
+                        end = end[0] * 1 + ':' + '30'
+                    }
+                    if (end[0] * 1 == 23) {
+                        end = '23:' + '30'
+                    }
+                }
+            } else {
+                end = endtime
+            }
+            return {
+                start,
+                end
+            }
+        },
+        // 获取营业时间以内的当前时间段
+        getNowYing() {
+            // this.storeSetting.store_business_time.start, this.storeSetting.store_business_time.end
+            let now = this.$minCommon.formatDate(new Date(), 'hh:mm') // 11:56
+            const ia = 30 * 60 * 1000
+            let startime = '2020/3/18' + ' ' + this.storeSetting.store_business_time.start
+            let endTie = '2020/3/19' + ' ' + this.storeSetting.store_business_time.end
+            let nowtime = '2020/3/18' + ' ' + now
+
+            const endTiemeDate = new Date(endTie)
+            const startimeDate = new Date(startime)
+            const nowtimeDate = new Date(nowtime)
+            let night = new Date('2020/3/18 23:59:59')
+            let tom = new Date('2020/3/19 00:00:00')
+            const nightLine = night.getTime()
+            const tommorw = tom.getTime()
+            // // 开始的时间戳
+            // start = startimeDate.getTime()
+            // // 结束的时间戳
+            // end = endTiemeDate.getTime()
+            const arr = []
+            for (let i = startimeDate.getTime(); i < nightLine; i += ia) {
+                const eq = new Date(i)
+                if (eq.getTime() >= nowtimeDate.getTime()) {
+                    let a = this.$minCommon.formatDate(eq, 'hh:mm')
+                    arr.push(a)
+                }
+
+            }
+            return arr[0]
         },
         // 提交
         submit() {

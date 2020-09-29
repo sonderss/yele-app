@@ -48,7 +48,12 @@ export default {
         }
     },
     onBackPress(options) {
-
+        if (this.$parseURL().isPaySuccess) {
+            uni.redirectTo({
+                url: '../platform-admin/index?isPayscuess=true'
+            });
+            return true;
+        }
         const pages = getCurrentPages(); //当前页
         const beforePage = pages[pages.length - 2]; //上个页面
         const page = pages[pages.length - 1]; //页面

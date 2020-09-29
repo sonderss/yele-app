@@ -27,7 +27,7 @@ export default {
     navigate: ['navigateTo', "redirectTo"],
     data() {
         return {
-            isShengri: true,
+            isShengri: false,
             isPhone: '',
             isName: '',
             value: '',

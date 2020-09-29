@@ -34,7 +34,7 @@
         <view class="content p-bottom-30" v-if="product_type === 'setmeal'">{{list.info}}</view>
     </view>
 
-    <min-goods-submit v-if="type != 1 && type != 2 " icon="/static/images/cart.png" :goodsCount="countNums" :totalAmount="totalAmountE " :totalLabel="totalLabel" buttonText="确定赠送" @leftClick="leftClick" @submit="submit"></min-goods-submit>
+    <min-goods-submit v-if="type != 1 && type != 2 " icon="/static/images/cart.png" :goodsCount="countNums" :totalAmount="totalAmountE " :totalLabel="$store.state.goods.giveAwayInfo.personal_presentation_limit === -1 ? '赠送额度：无限制':totalLabel" buttonText="确定赠送" @leftClick="leftClick" @submit="submit"></min-goods-submit>
     <!-- 选择规格 -->
     <min-popup :show="isSelSku" @close='closeSelectedSkuPop' heightSize="750">
         <view class="skuPop">
@@ -46,7 +46,7 @@
                     <!-- sku信息 -->
                     <view class="sku-view">
                         <text class="f22 t">{{skuObj.product_name}}</text>
-                        <text class="f22 m-tb-10 t">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
+                        <text class="f22 m-tb-10 t">已选："{{skuObj.sku[chioceIndex].sku}}"</text>
                         <text class="f22 m">￥<text class="money">{{skuObj.deduction_limit}}</text></text>
                     </view>
                 </view>
@@ -56,7 +56,7 @@
             <view class="sku-item">
                 <view class="f26">规格</view>
                 <view class="item-view">
-                    <view :class="chioceIndex ===index ?   'item-active t' : 'item t' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
+                    <view :class="chioceIndex ===index ?   'item-active t' : 'item t' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku}}</view>
                 </view>
             </view>
             <view class="min-border-bottom m-lr-30"></view>
@@ -92,7 +92,7 @@
                         <view class="content-view">
                             <view class="right-view-title">
                                 <text class="f28 t" style="color:#666666;display:block;">{{item2.product_name}}</text>
-                                <text class=" f22 t  m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'product'">规格:{{item2.sku[0].sku_full_name}}</text>
+                                <text class=" f22 t  m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'product'">规格:{{item2.sku[0].sku}}</text>
                             </view>
                             <view class="right-view-bottom">
                                 <view class="right-view-bottom-desc">
@@ -109,7 +109,7 @@
                 </scroll-view>
             </view>
             <view class="bottom-view-t">
-                <min-goods-submit style="position:fixed" leftText="已选" :totalAmount='totalAmountE' :goodsCount="countNums" buttonText='确定赠送' @submit="submit"></min-goods-submit>
+                <min-goods-submit style="position:fixed" :totalLabel="$store.state.goods.giveAwayInfo.personal_presentation_limit === -1 ? '赠送额度：无限制':totalLabel" leftText="已选" :totalAmount='totalAmountE' :goodsCount="countNums" buttonText='确定赠送' @submit="submit"></min-goods-submit>
             </view>
         </view>
     </min-popup>

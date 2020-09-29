@@ -7,7 +7,7 @@
         <view :class="i === getValue.length-1?  'items':'items min-border-bottom' " :key="i" v-for="(n,i) in getValue">
             <min-radio active='/static/images/active_.png' size="50" :label="i" v-model="isFlag" />
             <view class="test">
-                <min-describe :leftIconValue="n.head_img" isCirl :leftTxtB="n.mobile" isPadding="p-lr-10" :leftTxt="n.sales_name" :rightTxtT="n.department_name" :rightTxtB="n.position_name" rightTxtBSize="26rpx" :leftIcon="true" :leftTxtTwo="true" @chincesku="test(i)">
+                <min-describe :leftIconValue="n.head_img" errImage='/static/images/head.png' isCirl :leftTxtB="n.mobile" isPadding="p-lr-10" :leftTxt="n.sales_name" :rightTxtT="n.department_name" :rightTxtB="n.position_name" rightTxtBSize="26rpx" :leftIcon="true" :leftTxtTwo="true" @chincesku="test(i)">
                 </min-describe>
             </view>
 

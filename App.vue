@@ -40,8 +40,7 @@ export default {
                             title: '更新提示',
                             showCancel: true,
                             content: res.data.data.upgrade_text ?
-                                res.data.data.upgrade_text :
-                                '版本更新：修复Bug',
+                                res.data.data.upgrade_text : '版本更新：修复Bug',
                             success: c => {
                                 if (c.confirm) {
                                     // 去下载新版本app
@@ -118,8 +117,16 @@ export default {
     },
     onShow: () => {
         console.log('App Show')
+        uni.getNetworkType({
+            success: function (res) {
+                console.log(res.networkType);
+                if (res.networkType === 'none') return store.dispatch('status/setStatus', true)
+
+            }
+        });
         uni.onNetworkStatusChange(res => {
-            store.dispatch('status/setStatus', res.isConnected)
+            console.log(res)
+            store.dispatch('status/setStatus', res.isConnected ? false : true)
         })
     },
     onHide: function () {

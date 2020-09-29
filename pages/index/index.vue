@@ -12,7 +12,7 @@
             <view style="height: 178rpx;"></view>
             <view class="info min-flex min-flex-main-between m-lr-30">
                 <view class="min-flex min-flex-main-start">
-                    <min-avatar size="md" :url="userInfo.head_img"></min-avatar>
+                    <min-avatar size="md" :url="userInfo.head_img ? userInfo.head_img  :'/static/images/head.png'"></min-avatar>
                     <view class="m-left-20">
                         <view class="f30" style="font-weight:bold">{{ userInfo.user_name }}</view>
                         <view class="f24 m-top-20">{{ userInfo.store_name }} | {{ userInfo.position_name }}</view>

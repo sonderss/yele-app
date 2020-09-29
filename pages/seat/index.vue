@@ -2,15 +2,15 @@
 <view class="seat">
 
     <movable-area class="mains">
-        <movable-view class="max" direction="all" scale inertia :out-of-bounds="true" x="-150" y="150">
-            <!-- <view class="max" v-for="(item2,index2) in back" :key="index2" :style="{backgroundImage:url(`${item2}`)}"></view> -->
-            <view class="main" v-if="list.length >0 ">
+        <movable-view class="max" direction="all" scale inertia :out-of-bounds="true" x="-150" y="130">
+            <!-- <view class="max" v-for="(item2,index2) in back" :key="index2" :style="{backgroundImage:url(`${item2}`)}"></view>    -->
+            <view class="main" v-if="list.length >0 " :style="{  backgroundImage: `url('${this.$store.state.status.seatList.desk_base_img}')`}">
                 <view class="item" v-for="(item,index) in list" :key="index" @click="toDetail(item.id,item.status)" :style="{
                         left:`${item.cord.x  }rpx`,
                         top:`${item.cord.y }rpx`,
                         width:`${item.cord.w*2}rpx`,
                         height:`${item.cord.h*2}rpx`,
-                         backgroundImage: `url(${back[item.status]})`,
+                         backgroundImage: `url('${back[item.status]}')`,
                         backgroundPosition:`-${item.cord.x}px  -${item.cord.y}px`
                       }"></view>
             </view>
@@ -31,10 +31,19 @@
 export default {
     name: 'seat',
     navigate: ['navigateTo'],
+
+    onLoad() {
+        const {
+            windowWidth,
+            windowHeight
+        } = uni.getSystemInfoSync();
+        // this.Height = windowHeight + 'rpx'
+        // this.Width = windowWidth + 'rpx'
+        // console.log(this.Height, this.Width)
+
+    },
     mounted() {
-        console.log(this.$store.state.status.myDate)
-        console.log(this.$parseURL().url)
-        console.log(this.$store.state.status.seatList)
+
         this.list = JSON.parse(this.$store.state.status.seatList.desk_coordinate)
         this.back.push(this.$store.state.status.seatList.desk_lock_img)
         this.back.push(this.$store.state.status.seatList.desk_base_img)
@@ -44,11 +53,15 @@ export default {
         this.back.push(this.$store.state.status.seatList.desk_open_img)
         this.back.push(this.$store.state.status.seatList.desk_clean_img)
         this.back.push(this.$store.state.status.seatList.desk_select_img)
+        console.log(this.back)
     },
     data() {
         return {
             list: [],
             back: [''],
+            Width: '',
+            Height: ''
+
         }
     },
     methods: {
@@ -93,6 +106,9 @@ export default {
     .max {
         width: auto;
         height: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .main {
@@ -100,7 +116,7 @@ export default {
         height: 910rpx;
         background-repeat: no-repeat;
         background-size: contain;
-        transform: rotate(90deg);
+        transform: rotate(90deg) scale(0.7);
         position: relative;
     }
 

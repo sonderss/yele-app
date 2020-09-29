@@ -27,7 +27,8 @@ export default {
             //     name: 'platform-admin'
             // })
             this.$minRouter.push({
-                name: 'platform-detail',
+                name: 'redplatform-detail',
+                type: "redirectTo",
                 params: {
                     id: this.$parseURL().desk_id,
                     date: this.$store.state.status.date.date

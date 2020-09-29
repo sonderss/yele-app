@@ -19,7 +19,7 @@ export default {
   // 获取台位历史
   getStationHistory: data => minRequest.get('/5e1eae7d5198f', data),
   // 获取营销列表
-  getMarketingList: () => minRequest.get('/5e2156e70e285'),
+  getMarketingList: data => minRequest.get('/5e2156e70e285',data),
   // 预约 （订台预览）
   getBookingPreview: data => minRequest.get('/5e1ed699a2e11', data),
   // 订台

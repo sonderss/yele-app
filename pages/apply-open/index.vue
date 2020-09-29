@@ -38,8 +38,8 @@
 
 <script>
 export default {
-    name: 'apply-open',
-    navigate: ['navigateTo'],
+    name: 'redapply-open',
+    navigate: ['navigateTo', 'redirectTo'],
     data() {
         return {
             value: '',

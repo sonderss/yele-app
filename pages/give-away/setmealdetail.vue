@@ -179,15 +179,16 @@ export default {
             item2.quantity = this.list.combination[index].combination_detail[index2].step
             item2.sku_id = this.list.combination[index].combination_detail[index2].sku_id
             item.combination_detail.push(item2)
-            let myIsSetID = {}
-            item.combination_detail.map(testDom => {
-                myIsSetID.sku_id = item.id + '_' + testDom.sku_id + '_'
-                myIsSetID.quantity = testDom.quantity + ''
-            })
+            // let myIsSetID = {}
+            // item.combination_detail.map(testDom => {
+            //     myIsSetID.sku_id = item.id + '_' + testDom.sku_id + '_'
+            //     myIsSetID.quantity = testDom.quantity + ''
+            // })
+            // item.myIsSetID = myIsSetID
             item.necessary = this.list.combination[index].necessary
-            item.myIsSetID = myIsSetID
             item.necessary = this.list.combination[index].necessary
             item.last_number = this.list.combination[index].last_number
+            console.log(item, '123333333333')
             this.addGoods(item)
         },
         addGoods(obj) {
@@ -230,13 +231,31 @@ export default {
             // if (result) {
             //     return this.$showToast('请选择正确的份数')
             // }
-            const tempArr = JSON.parse(JSON.stringify(this.selArr))
+            const tempArr = this.selArr
             tempArr.map((item, index) => {
                 item.combination_detail.map((item2, index2) => {
                     if (item2.quantity === 0) {
                         this.selArr[index].combination_detail.splice(index2, 1)
                     }
                 })
+            })
+            let myIsSetID = {}
+            let u = []
+            let lastStr = ''
+            this.selArr.map((iytem, index) => {
+                iytem.combination_detail.map((ite, ina) => {
+                    // myIsSetID.sku_id = iytem.id + '_' + ite.sku_id + '_'
+                    // myIsSetID.quantity = ite.quantity + ''
+                    u.push({
+                        sku_id: iytem.id + '_' + ite.sku_id + '_',
+                        quantity: ite.quantity + ''
+                    })
+                })
+                u.map(itemq => {
+                    lastStr += itemq.sku_id + itemq.quantity + '_'
+                })
+                // iytem.myIsSetID = lastStr
+                iytem.myIsSetID = this.$minCommon.getMySkuID(lastStr)
             })
             // 有必选的情况
             if (this.isHaveBi) {

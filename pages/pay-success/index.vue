@@ -44,6 +44,18 @@ export default {
         })
 
     },
+    onBackPress(options) {
+        this.$minRouter.push({
+            name: "redplatform-detail",
+            type: "redirectTo",
+            params: {
+                id: this.$store.state.status.date.id,
+                date: this.$store.state.status.date.date,
+                isPaySuccess: true
+            }
+        })
+        return true;
+    },
     methods: {
         goOn() {
 
@@ -52,7 +64,8 @@ export default {
                 type: "redirectTo",
                 params: {
                     id: this.$store.state.status.date.id,
-                    date: this.$store.state.status.date.date
+                    date: this.$store.state.status.date.date,
+                    isPaySuccess: true
                 }
             })
         },

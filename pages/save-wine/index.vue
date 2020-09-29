@@ -7,7 +7,7 @@
                 <view style="background: #fff;">
                     <view class="goods-item">
                         <min-checkbox v-model="item.flag"></min-checkbox>
-                        <image class="goods-icon" :src="imgErro ? '/static/images/goods.png' :item.product_img" @error="imgError" />
+                        <image class="goods-icon" :src="item.product_img" @error="imgError($event,index,0)" />
                         <view class="goods-content">
                             <view class="goods-name">{{item.sku_full_name}}</view>
                             <view class="count-weap">
@@ -34,7 +34,8 @@
             <view class="p-top-20" v-for="(item,index) in list.from_fetch" :key="index">
                 <view style="background: #fff;">
                     <view class="goods-item">
-                        <image class="goods-icon" :src="imgErro ? '/static/images/goods.png' :item.product_img" @error="imgError" />
+                        <min-checkbox v-model="item.flag"></min-checkbox>
+                        <image class="goods-icon" :src="item.product_img" @error="imgError($event,index,1)" />
                         <view class="goods-content">
                             <view class="goods-name">{{item.sku_full_name}}</view>
                             <view class="count-weap">
@@ -96,10 +97,20 @@ export default {
         }
     },
     methods: {
-        imgError(e) {
-            if (e.type === 'error') {
-                this.imgErro = true
+        imgError(e, index, n) {
+            if (n) {
+                if (e.type === 'error') {
+                    // this.imgErro = true
+                    this.$set(this.list.from_fetch[index], 'product_img', '/static/images/goods.png')
+                }
             }
+            if (!n) {
+                if (e.type === 'error') {
+                    // this.imgErro = true
+                    this.$set(this.list.from_order[index], 'product_img', '/static/images/goods.png')
+                }
+            }
+
         },
         save() {
             // saveWinePost

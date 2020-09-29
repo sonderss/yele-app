@@ -16,7 +16,7 @@
                     <view class="content-view">
                         <view class="right-view-title">
                             <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                            <text class="f26 t" v-if="item2.sku.length >= 1" style="color:#666666">规格：{{item2.sku[0].sku_full_name}}</text>
+                            <text class="f26 t" v-if="item2.sku.length >= 1" style="color:#666666">规格：{{item2.sku[0].sku}}</text>
                         </view>
                         <!-- <view class="describe">第{{index2+1}}个商品的描述内容</view>
               <view class="money">第{{index2+1}}个商品的价格</view>-->
@@ -28,7 +28,7 @@
                                 </text>
                             </view>
                             <view class="steper">
-                                <min-stepper psize="20rpx" v-if="item2.sku.length <= 1" v-model="item2.step" @change="changeChioce(index,index2)"></min-stepper>
+                                <min-stepper psize="20rpx" v-if="item2.sku.length <= 1" v-model="item2.step" @change="changeChioce($event,index,index2)"></min-stepper>
                                 <!-- <view v-if="item2.sku.length <= 1 && item2.min_amount*1 <= 0" class="m-right-10" style="width:40rpx;height:40rpx;" @click.stop="changeChioceT">
                                     <image lazy-load src="/static/images/yellow-add.png" style="width:100%" />
                                 </view> -->
@@ -102,7 +102,7 @@
                     <!-- sku信息 -->
                     <view class="sku-view">
                         <text class="f22 a">{{skuObj.product_name}}</text>
-                        <text class="f22 m-tb-10 a">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
+                        <text class="f22 m-tb-10 a">已选："{{skuObj.sku[chioceIndex].sku}}"</text>
                         <text class="f22 m">
                             提成:
                             <text style="color:red" class="f22">￥</text>
@@ -117,7 +117,7 @@
                 <view>
                     <view class="f26">规格</view>
                     <view class="item-view">
-                        <view :class="chioceIndex ===index ?   'item-active t' : 'item t' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
+                        <view :class="chioceIndex ===index ?   'item-active t' : 'item t' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku}}</view>
                     </view>
                 </view>
             </scroll-view>
@@ -192,7 +192,7 @@ export default {
             this.selArr.map(item => {
                 sum += item.step * item.min_amount;
             });
-            return sum;
+            return sum > 0 ? sum.toFixed(2) : sum
         },
         // 监听所选数量
         countNums() {
@@ -208,8 +208,11 @@ export default {
         //     handler(a, b) {
         //         a.map((item, index) => {
         //             if (item.step === 0) {
-        //                 a.splice(index, 1);
-        //                 this.selNum.splice(index, 1);
+        //                 this.$nextTick(() => {
+        //                     this.selArr.splice(index, 1);
+        //                     this.selNum.splice(index, 1);
+        //                 })
+
         //             }
         //         });
         //     },
@@ -418,7 +421,12 @@ export default {
             this.skuIndex.index2 = index2;
             console.log(this.skuObj)
         },
-        changeChioce(index, index2) {
+        changeChioce(e, index, index2) {
+            if (e === 0) {
+                this.selArr.splice(index, 1);
+                this.selNum.splice(index, 1);
+                return
+            }
             this.addGoods(index, index2);
             const params = {};
             params.id = this.mainArray[index].list[index2].sku[0].confiscate_product_id;

@@ -6,7 +6,7 @@
       }">
         <view class="cell-wrap p-lr-30 p-tb-20">
             <min-cell :card="false">
-                <min-cell-item :img="userInfo.head_img" tail="头像" imgSize="sm" :border="true" @eventParent="changeHeadImg" arrow></min-cell-item>
+                <min-cell-item :img="userInfo.head_img ? userInfo.head_img : '/static/images/head.png'" tail="头像" imgSize="sm" :border="true" @eventParent="changeHeadImg" arrow></min-cell-item>
                 <min-cell-item title="名字" :tail="userInfo.user_name" :border="true"></min-cell-item>
                 <picker @change="bindPickerChange" :value="index" :range="sex">
                     <min-cell-item title="性别" :tail="sex[index]" :border="true" arrow></min-cell-item>
