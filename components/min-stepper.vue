@@ -175,21 +175,21 @@ export default {
 
         .min-less {
             padding: 10rpx;
-            width: 40rpx;
-            height: 40rpx;
+            width: 48rpx;
+            height: 48rpx;
             background: url('/static/images/less.png') no-repeat;
             background-position: center center;
-            background-size: 40rpx 40rpx;
+            background-size: 48rpx 48rpx;
         }
     }
 
     .min-add {
         padding: 10rpx;
-        width: 40rpx;
-        height: 40rpx;
+        width: 48rpx;
+        height: 48rpx;
         // background: url('/static/images/add.png') no-repeat;
         // background-position: center center;
-        background-size: 40rpx 40rpx;
+        background-size: 48rpx 48rpx;
     }
 
     .min-value {
@@ -197,7 +197,7 @@ export default {
         width: 50rpx;
         height: 40rpx;
         font-size: 26rpx;
-        line-height: 44rpx;
+        line-height: 48rpx;
         color: #333;
         text-align: center;
     }

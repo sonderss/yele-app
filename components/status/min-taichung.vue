@@ -94,6 +94,7 @@ export default {
         // },
         // 订单
         orderGet() {
+            this.index = 2
             this.$minRouter.push({
                 name: 'order-list',
                 params: {

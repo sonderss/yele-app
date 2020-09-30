@@ -2,7 +2,7 @@
 <view class="seat">
 
     <movable-area class="mains">
-        <movable-view class="max" direction="all" scale inertia :out-of-bounds="true" x="-150" y="130">
+        <movable-view v-if="isLaji" @scale='listenScal' class="max" direction="all" scale :scale-value="scales" inertia :out-of-bounds="true" :x="X" :y="Y">
             <!-- <view class="max" v-for="(item2,index2) in back" :key="index2" :style="{backgroundImage:url(`${item2}`)}"></view>    -->
             <view class="main" v-if="list.length >0 " :style="{  backgroundImage: `url('${this.$store.state.status.seatList.desk_base_img}')`}">
                 <view class="item" v-for="(item,index) in list" :key="index" @click="toDetail(item.id,item.status)" :style="{
@@ -22,6 +22,7 @@
 
     <view class=" close" @click.stop="close">x
     </view>
+    <view v-if="isShow" class="huifu" @click.stop="init">回到原点</view>
 </view>
 </template>
 
@@ -60,11 +61,32 @@ export default {
             list: [],
             back: [''],
             Width: '',
-            Height: ''
+            Height: '',
+            isShow: false,
+            X: '-150',
+            Y: '100',
+            scales: 1,
+            isLaji: true
 
         }
     },
     methods: {
+        listenScal(e) {
+            console.log(e)
+            this.isShow = true
+        },
+        init() {
+            this.$nextTick(() => {
+                this.X = '-150'
+                this.Y = '100'
+                this.scales = 1
+                this.isLaji = false
+                setTimeout(() => {
+                    this.isLaji = true
+                }, 20)
+            })
+
+        },
         close() {
             if (this.$parseURL().url === 'platform-admin') {
                 uni.redirectTo({
@@ -146,6 +168,24 @@ export default {
         background-position: 0 0;
         position: absolute;
         left: -80rpx;
+    }
+
+    .huifu {
+        position: fixed;
+        left: 20rpx;
+        bottom: 80rpx;
+        width: auto;
+        height: 50rpx;
+        transform: rotate(90deg);
+        border-radius: 50rpx;
+        background-color: #eee;
+        color: #3276fd;
+        padding: 0 20rpx;
+        font-size: 24rpx;
+        line-height: 50rpx;
+        // background-image: url('/static/images/s.png');
+        // background-size: contain;
+        // background-repeat: no-repeat;
     }
 }
 </style>

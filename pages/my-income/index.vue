@@ -63,19 +63,25 @@
                     <image src="/static/images/downarrow24.png" />
                 </view>
             </view>
-            <view class="method-view min-border-bottom">
+            <view class="method-viewaaa m-top-20 min-border-bottom">
                 <view class="left">工资方案</view>
                 <view class="right">
                     <text>{{ myMoneylist.salary_scheme ? myMoneylist.salary_scheme : '暂无数据'}}</text>
                 </view>
             </view>
-            <view class="method-view min-border-bottom">
+            <view class="method-viewaaa m-top-20 min-border-bottom">
                 <view class="left">基础提成</view>
-                <view class="right">
+                <!-- <view class="right">
                     <text>{{myMoneylist.royalty_template ? myMoneylist.royalty_template : '暂无数据'}}</text>
+                </view> -->
+                <view class="rightaaa" v-if="myMoneylist.royalty_template.length > 0">
+                    <view v-for="(item2,index2) in myMoneylist.royalty_template" :key="index2" class="i f28">{{item2.template_name ? item2.template_name : '暂无数据'}}</view>
+                </view>
+                <view class="rightaaa" v-else>
+                    <view>暂无数据</view>
                 </view>
             </view>
-            <view class="method-viewaaa">
+            <view class="method-viewaaa m-top-20">
                 <view class="left">活动方案</view>
                 <view class="rightaaa" v-if="myMoneylist.activity_list.length > 0">
                     <view v-for="(item2,index2) in myMoneylist.activity_list" :key="index2" class="i f28">{{item2.activity_name ? item2.activity_name : '暂无数据'}}</view>
@@ -121,7 +127,8 @@ export default {
             storeList: [],
             nowStoreId: '',
             myMoneylist: {
-                activity_list: []
+                activity_list: [],
+                royalty_template: []
             },
             store_name: '全部门店',
             nowId: '',

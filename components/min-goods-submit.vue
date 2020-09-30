@@ -95,6 +95,7 @@ export default {
     left: 0;
     bottom: 0;
     background: #fff;
+    z-index: 2;
 
     .min-left {
         flex-basis: 150rpx;

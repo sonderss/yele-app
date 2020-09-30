@@ -25,7 +25,7 @@
                     </view>
                     <view class="steper">
                         <min-stepper :isAnimation="count > 0 ? false : true " :isFlag="isFlag" v-if="isFlag" v-model="count" @change="changeChioce"></min-stepper>
-                        <view v-else class="m-right-10" style="width:40rpx;height:40rpx;" @click.stop="changeChioceT">
+                        <view v-else class="m-right-10" style="width:48rpx;height:48rpx;" @click.stop="changeChioceT">
                             <image lazy-load src="/static/images/yellow-add.png" style="width:100%" />
                         </view>
                         <!-- <view class="isSku f24" v-if="step" @click="selSku(index,index2)">选规格</view> -->
@@ -166,7 +166,7 @@ export default {
                 position: absolute;
                 top: 0;
                 left: 0;
-                z-index: 100;
+                z-index: 1;
                 font-size: 26rpx;
                 font-family: PingFang SC;
                 font-weight: 500;

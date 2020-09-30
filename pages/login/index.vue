@@ -59,14 +59,18 @@ export default {
         uni.getStorage({
             key: 'userInfo',
             success: res => {
-                console.log(JSON.parse(res.data))
                 this.mobile = JSON.parse(res.data).phone
             }
         })
     },
     watch: {
         code(newValue) {
+            // #ifdef APP-PLUS
+            if (newValue.length === 6) return uni.getSystemInfoSync().platform === 'ios' ? '' : uni.hideKeyboard()
+            // #endif
+            // #ifdef H5
             newValue.length === 6 && uni.hideKeyboard()
+            // #endif
         }
     },
     methods: {

@@ -3,10 +3,9 @@
     <view v-if="list.length > 0 || isFlag ">
         <min-navTab ref="navTab" class="navtabs" :tabTitle="list" @changeTab="changeTab"></min-navTab>
         <view class="desc_info m-tb-20 f20">可赠送额度：{{personal_remaining_quota === -1 ? '无限制': personal_remaining_quota}}</view>
-        <view style="padding-top:80rpx"></view>
-        <swiper style="width:100vw;height:100vh" :current="currentTab" @change="swiperTab" @touchmove.stop.prevent="moveHandle">
+        <swiper style="width:100vw;height:80vh;" :current="currentTab" @change="swiperTab" @touchmove.stop.prevent="moveHandle">
             <swiper-item v-for="(listItem,listIndex) in list" :key="listItem.id">
-                <scroll-view style="height:85vh" id="scol" scroll-y @scrolltolower="lower1" :scroll-into-view="toView">
+                <scroll-view style="height:100%" :show-scrollbar="false" scroll-with-animation="true" id="scol" scroll-y @scrolltolower="lower1" :scroll-into-view="toView">
                     <view :id="'top'+listIndex"></view>
                     <view class="main p-lr-30" v-if="listItem.product.length > 0">
                         <view class="item">
@@ -43,7 +42,6 @@
                 </scroll-view>
             </swiper-item>
         </swiper>
-
         <!-- 已选商品 -->
         <min-popup :show="selected" @close='closeSelectedPop'>
             <view class="popview">
@@ -554,7 +552,6 @@ export default {
     // margin-top: 72rpx;
     flex-grow: 1;
     box-sizing: border-box;
-    overflow: hidden;
 
     .title {
         line-height: 64rpx;
@@ -876,16 +873,16 @@ export default {
     margin-top: 80rpx;
     padding: 0 30rpx;
     // #endif
-    position: fixed;
-    top: 100rpx;
-    left: 30rpx;
+    // position: fixed;
+    // // top: 100rpx;
+    // left: 30rpx;
 }
 
-#scol {
-    width: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-}
+// #scol {
+//     width: 100%;
+//     position: absolute;
+//     left: 0;
+//     top: 0;
+//     bottom: 0;
+// }
 </style>

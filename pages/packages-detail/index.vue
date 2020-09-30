@@ -45,7 +45,7 @@
         <view v-else>
             <view class="title min-border-bottom m-bottom-30 p-lr-20">
                 <span>
-                    <span class="left-txt min-ellipsis" style="width:120rpx;display:block;float:left">{{ item.combination_name }}</span>
+                    <span class="left-txt min-ellipsis" :style="{width: item.combination_name ? item.combination_name .length > 10 ? '300rpx':'auto' : '' ,display:'block',float:'left'}">{{ item.combination_name }}</span>
                     <text>{{item.combination_detail.length}}选{{ item.last_number }}</text>
                     <!-- <text class="f28">{{item.is_check === 1 ? '（不可重复选）' : ''}}</text> -->
                 </span>

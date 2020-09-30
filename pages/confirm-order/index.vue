@@ -57,7 +57,8 @@ export default {
                     params: {
                         desk_id: this.$parseURL().desk_id,
                         isOrder: true,
-                        data: this.$parseURL().data
+                        data: this.$parseURL().data,
+                        payId: this.payType
                     }
                 })
                 return
@@ -130,7 +131,8 @@ export default {
                     params: {
                         desk_id: this.$parseURL().desk_id,
                         order_id: this.$parseURL().order_id,
-                        open_status: 0
+                        open_status: 0,
+                        payId: this.payType
                     }
                 })
             }

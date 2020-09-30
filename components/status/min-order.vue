@@ -274,6 +274,7 @@ export default {
         },
         // 下单
         goOrder() {
+            this.index = 1
             let a = this.$getRoot('desk.order')
             if (!a) return this.$showToast('抱歉，暂无权限')
             this.$minRouter.push({

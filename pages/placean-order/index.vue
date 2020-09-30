@@ -15,6 +15,7 @@
             <view style="height:20rpx"></view>
             <list style="width: 100%;height: 800rpx;">
                 <cell v-for="(item,index) in mainArray" :key="index" :id="`item-${index}`">
+                    <cell class="item_name">{{item.cate_name}}</cell>
                     <cell v-for="(item2,index2) in item.product" :key="index2" :isFlag="item2.isFlag" @click.stop="goDetails(index,index2)">
                         <min-goods-chioce style="margin-right:25rpx" :image="item2.product_img" :discountdesc="item2.limited_activity_name" :discount="item2.is_limited === 1 ? true: false " :title="item2.product_name" :badgeTxt="item2.type === 'setmeal' ? '套餐': '' " :badge="item2.type === 'setmeal'? true : false " @changes="changeChioce(index,index2)" v-model="item2.step" @changesPop="changesPopNoStep(index,index2,item2.type)" :desc="item2.sku.length >=1 ?item2.sku[0].sku_full_name : item2.info " :price="item2.price" :isFlag="item2.isFlag">
                         </min-goods-chioce>
@@ -103,7 +104,7 @@
                 </view>
                 <!-- sku信息 -->
                 <view class="sku-view">
-                    <view class="f24 dissss" v-if="skuObj.sku[chioceIndex].is_limited">{{this.skuObj.limited_activity_name}}</view>
+                    <view class="f24 dissss" :style="{width: skuObj.limited_activity_name.length < 4 ?  '100rpx':'' }" v-if="skuObj.sku[chioceIndex].is_limited">{{this.skuObj.limited_activity_name}}</view>
                     <text class="f24 t">{{skuObj.product_name}}</text>
                     <text class="f24 m-tb-10 t">已选："{{skuObj.sku[chioceIndex].sku_full_name}}"</text>
                     <text class="f30 m">
@@ -322,13 +323,7 @@ export default {
             this.$minApi.getOrderProduceList().then(res => {
                 this.mainArray = res.list
                 this.$store.dispatch('goods/seOrderTempData', res.list)
-                this.mainArray.map(item => {
-                    if (item.cate_name.length >= 8) {
-                        let a = item.split('')
-                        a = a.splice(1, 6)
-                        console.log(a + '...')
-                    }
-                })
+
                 let temp = []
                 for (const val of this.mainArray) {
                     val.product.map(item2 => {
@@ -909,7 +904,7 @@ uni-page-body {
         .item {
             position: relative;
             text-align: center;
-            height: 82rpx;
+            height: 88rpx;
             box-sizing: border-box;
             color: #666666;
             width: 100%;
@@ -925,6 +920,7 @@ uni-page-body {
             -webkit-line-clamp: 2;
             word-wrap: break-word;
             word-break: break-all;
+            padding: 20rpx;
 
             &.active {
                 color: #333333;
@@ -967,6 +963,15 @@ uni-page-body {
             position: sticky;
             top: 0;
             z-index: 19;
+        }
+
+        .item_name {
+            color: #333333;
+            background-color: #f7f7f7;
+            font-weight: bold;
+            font-size: 26rpx;
+            margin-bottom: 20rpx;
+            display: block;
         }
     }
 

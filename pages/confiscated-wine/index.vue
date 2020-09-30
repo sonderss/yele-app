@@ -2,7 +2,7 @@
 <view class="list_box">
     <view class="left" v-if="mainArray.length !== 0">
         <scroll-view scroll-y="true" :style="{ 'height':scrollHeight }">
-            <view class="item" v-for="(item,index) in mainArray" :key="index" :class="{ 'active':index==leftIndex }" :data-index="index" @tap="leftTap(index)">{{item.cate_name ? item.cate_name : 'null'}}</view>
+            <view class="item  min-ellipsis" v-for="(item,index) in mainArray" :key="index" :class="{ 'active':index==leftIndex }" :data-index="index" @tap="leftTap(index)">{{item.cate_name ? item.cate_name : 'null'}}</view>
         </scroll-view>
     </view>
 
@@ -76,8 +76,8 @@
                                 </view>
                                 <view class="steper">
                                     <!-- @change="changeIndex($event,n)" -->
-                                    <min-stepper :isAnimation="false" v-if="isDel" v-model="item2.step" :min="0" @change="alDel($event,n)"></min-stepper>
-                                    <view v-if="!isDel" @click="delItem(n)">删除</view>
+                                    <min-stepper :isAnimation="false" v-if="isDel" v-model="item2.step" @change="alDel($event,n)"></min-stepper>
+                                    <!-- <view v-if="!isDel" @click="delItem(n)">删除</view> -->
                                 </view>
                             </view>
                         </view>
@@ -204,20 +204,20 @@ export default {
         }
     },
     watch: {
-        // selArr: {
-        //     handler(a, b) {
-        //         a.map((item, index) => {
-        //             if (item.step === 0) {
-        //                 this.$nextTick(() => {
-        //                     this.selArr.splice(index, 1);
-        //                     this.selNum.splice(index, 1);
-        //                 })
+        selArr: {
+            handler(a, b) {
+                a.map((item, index) => {
+                    if (item.step === 0) {
+                        this.$nextTick(() => {
+                            a.splice(index, 1);
+                            this.selNum.splice(index, 1);
+                        })
 
-        //             }
-        //         });
-        //     },
-        //     deep: true
-        // },
+                    }
+                });
+            },
+            deep: true
+        },
         intNet: function (a) {
             if (!a) {} else {
                 // 请求数据
@@ -232,7 +232,9 @@ export default {
                 this.mainArray = res;
                 this.mainArray.map(item => {
                     item.list.map(item2 => {
-                        item2.step = 0;
+                        this.$nextTick(() => {
+                            item2.step = 0;
+                        })
                     });
                 });
                 this.$nextTick(() => {
@@ -334,7 +336,6 @@ export default {
         },
         /** 添加商品事件 */
         addGoods(index, index2) {
-            console.log(this.mainArray[index].list[index2])
             // if (this.mainArray[index].list[index2].min_amount * 1 === 0) return this.$showToast('提成为0，添加失败')
             const a = index + "" + index2;
             // // 判断选择项是否重复
@@ -392,25 +393,23 @@ export default {
         },
         // 已选弹出层删除事件
         alDel(n, index) {
-            if (n === 0) {
-                for (let i = this.selArr.length - 1; i >= 0; i--) {
-                    if (index === i) {
-                        this.$nextTick(() => {
-                            this.selArr.splice(i, 1);
-                        })
-                    }
-                }
-                for (let i = this.selNum.length - 1; i >= 0; i--) {
-                    if (index === i) {
-                        this.$nextTick(() => {
-                            this.selNum.splice(i, 1);
-                        })
-                    }
-                }
-                // this.selArr.splice(index, 1);
-                // this.selNum.splice(index, 1);
 
-            }
+            // if (n === 0) {
+            //     for (let i = this.selArr.length - 1; i >= 0; i--) {
+            //         if (index === i) {
+            //             this.selArr.splice(index, 1);
+            //             // return this.selArr.splice(index, 1);
+            //         }
+            //     }
+            //     for (let i = this.selNum.length - 1; i >= 0; i--) {
+            //         if (index === i) {
+            //             return this.selNum.splice(i, 1);
+            //         }
+            //     }
+            //     // this.selArr.splice(index, 1);
+            //     // this.selNum.splice(index, 1);
+            //     // return
+            // }
         },
         // 选择规格事件
         selSku(index, index2) {

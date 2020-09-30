@@ -129,6 +129,7 @@ export default {
         // },
         // 下单
         goOrder() {
+            this.index = 1
             let a = this.$getRoot('desk.order')
             if (!a) return this.$showToast('抱歉，暂无权限')
             this.$minRouter.push({
@@ -141,6 +142,7 @@ export default {
         },
         // 存酒
         saveWine() {
+            this.index = 2
             let a = this.$getRoot('desk.saveWine')
             if (!a) return this.$showToast('抱歉，暂无权限')
             this.index = 2

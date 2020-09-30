@@ -73,7 +73,8 @@ export default {
             // 开台申请  orderGetRoot  {desk_id:this.$parseURL().desk_id,reason:''}
             this.$minApi.orderGetRoot({
                 desk_id: this.$parseURL().desk_id,
-                reason: this.value
+                reason: this.value,
+                payment_id: this.$parseURL().payId
             }).then(res => {
                 console.log(res)
                 if (res.length === 0) {

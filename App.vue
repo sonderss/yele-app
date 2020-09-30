@@ -120,8 +120,9 @@ export default {
         uni.getNetworkType({
             success: function (res) {
                 console.log(res.networkType);
-                if (res.networkType === 'none') return store.dispatch('status/setStatus', true)
-
+                if (uni.getSystemInfoSync().platform !== 'ios') {
+                    if (res.networkType === 'none') return store.dispatch('status/setStatus', true)
+                }
             }
         });
         uni.onNetworkStatusChange(res => {
