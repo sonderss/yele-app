@@ -7,10 +7,34 @@
     </view>
 
     <view class="main">
-        <scroll-view scroll-y="true" :style="{ 'height':scrollHeight}" @scroll="mainScroll" @scrolltolower="test" :scroll-into-view="scrollInto" scroll-with-animation="true">
+        <scroll-view scroll-y="true"  :show-scrollbar="false"  :style="{ 'height':scrollHeight}" @scroll="mainScroll" @scrolltolower="test" :scroll-into-view="scrollInto" scroll-with-animation="true">
             <view style="height:20rpx"></view>
-
-            <view class="item" v-for="(item,index) in mainArray" :key="index" :id="'item-'+index">
+            <list style="width:100%;height:100%">
+                <cell class="item" v-for="(item,index) in mainArray" :key="index" :id="'item-'+index">
+                    <cell class="goods" v-for="(item2,index2) in item.list" :key="index2">
+                        <image lazy-load :src="item2.product_img" mode="aspectFit" @error="imgerr($event,index,index2)" />
+                        <cell class="content-view">
+                            <cell class="right-view-title">
+                                <text class="f28 t" style="display:block">{{item2.product_name}}</text>
+                                <text class="f26 t" v-if="item2.sku.length >= 1" style="color:#666666">规格：{{item2.sku[0].sku}}</text>
+                            </cell>
+                            <cell class="right-view-bottom">
+                                <cell class="right-view-bottom-desc">
+                                    <text class="f20 t">
+                                        提成： <text style="color:red" class="f22">￥</text>
+                                        <text style="color:#FF0000;font-size:30">{{item2.sku.length >= 1 ? item2.sku[0].amount : item2.min_amount}}</text>
+                                    </text>
+                                </cell>
+                                <cell class="steper">
+                                    <min-stepper psize="20rpx" v-if="item2.sku.length <= 1" v-model="item2.step" @change="changeChioce($event,index,index2)"></min-stepper>
+                                    <cell class="isSku f24" v-if="item2.sku.length > 1 " @click.stop="selSku(index,index2)">选规格</cell>
+                                </cell>
+                            </cell>
+                        </cell>
+                    </cell>
+                </cell>
+            </list>
+            <!-- <view class="item" v-for="(item,index) in mainArray" :key="index" :id="'item-'+index">
                 <view class="goods" v-for="(item2,index2) in item.list" :key="index2">
                     <image lazy-load :src="item2.product_img" mode="aspectFit" @error="imgerr($event,index,index2)" />
                     <view class="content-view">
@@ -18,8 +42,6 @@
                             <text class="f28 t" style="display:block">{{item2.product_name}}</text>
                             <text class="f26 t" v-if="item2.sku.length >= 1" style="color:#666666">规格：{{item2.sku[0].sku}}</text>
                         </view>
-                        <!-- <view class="describe">第{{index2+1}}个商品的描述内容</view>
-              <view class="money">第{{index2+1}}个商品的价格</view>-->
                         <view class="right-view-bottom">
                             <view class="right-view-bottom-desc">
                                 <text class="f20 t">
@@ -29,15 +51,12 @@
                             </view>
                             <view class="steper">
                                 <min-stepper psize="20rpx" v-if="item2.sku.length <= 1" v-model="item2.step" @change="changeChioce($event,index,index2)"></min-stepper>
-                                <!-- <view v-if="item2.sku.length <= 1 && item2.min_amount*1 <= 0" class="m-right-10" style="width:40rpx;height:40rpx;" @click.stop="changeChioceT">
-                                    <image lazy-load src="/static/images/yellow-add.png" style="width:100%" />
-                                </view> -->
                                 <view class="isSku f24" v-if="item2.sku.length > 1 " @click="selSku(index,index2)">选规格</view>
                             </view>
                         </view>
                     </view>
                 </view>
-            </view>
+            </view> -->
             <view style="height:120rpx;"></view>
         </scroll-view>
     </view>
@@ -181,9 +200,12 @@ export default {
                 this.scrollHeight = `${res.windowHeight}px`;
             }
         });
+        this.$nextTick(() => {
+            this.getData();
+        })
     },
     mounted() {
-        this.getData();
+        // this.getData();
     },
     computed: {
         // 合计金额
@@ -232,9 +254,7 @@ export default {
                 this.mainArray = res;
                 this.mainArray.map(item => {
                     item.list.map(item2 => {
-                        this.$nextTick(() => {
-                            item2.step = 0;
-                        })
+                        this.$set(item2,'step',0)
                     });
                 });
                 this.$nextTick(() => {
@@ -259,11 +279,9 @@ export default {
             const new_p = selector => {
                 return new Promise((resolve, reject) => {
                     const view = uni.createSelectorQuery().select(selector);
-                    view
-                        .boundingClientRect(data => {
-                            resolve(data.top);
-                        })
-                        .exec();
+                    view.boundingClientRect(data => {
+                        resolve(data.top);
+                    }).exec();
                 });
             };
 

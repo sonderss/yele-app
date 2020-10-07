@@ -118,7 +118,8 @@ export default {
              * order_id 订单ID   opening_id apply_data  client_name:this.name,client_mobile:this.phone
              * [{"sku_id":"27","ratio":"100"}]
              */
-            if (!this.name || !this.$minCommon.checkMobile(this.phone)) return this.$showToast("客户信息错误")
+            if (!this.name) return this.$showToast("客户名称错误")
+            if (!this.$minCommon.checkMobile(this.phone)) return this.$showToast("手机号填写错误")
             const options = {
                 apply_data: []
             }

@@ -26,7 +26,7 @@
         <view class="main p-tb-20">
             <view>
                 当前状态：
-                <text style="color: #FF0000;">{{list.order_info.is_can_open === 0 ? (list.desk_info.desk_open_minimum === 0 || list.order_info.order_id === 0 ? '待确认':'不够开台条件') : '已够开台条件'}}</text>
+                <text style="color: #FF0000;">{{list.order_info.is_can_open === 0 ? (list.desk_info.desk_open_minimum === 0 || list.order_info.order_id === 0 ? '已经提交过申请了，请等待审核':'不够开台条件') : '已够开台条件'}}</text>
             </view>
             <view>开台订单：{{list.order_info.order_id === 0 ? '未进行点单':'￥'+list.order_info.order_total}}</view>
         </view>
