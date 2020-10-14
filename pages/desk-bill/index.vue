@@ -21,7 +21,7 @@
         <text class="m" @click="changeMenu(index)" :class="menuIndex === index ?  'active' : ''" v-for="(item,index) in title" :key="index">{{item}}</text>
     </view>
     <min-cell :card="false" class="m-top-20">
-        <view class="f30  top-view1" v-if="menuIndex !== 1 && !data.pay_status">
+        <view class="f30  top-view1" v-if="menuIndex !== 1 && !data.pay_status && data.unpay_price*1">
             <view class="left-view">
                 <text>未结订单</text>
                 <text class="status f26">待付金额：￥{{data.unpay_price}}</text>
@@ -46,8 +46,7 @@
     </min-cell>
 
     <min-cell :card="false" class="m-top-20" v-if="showData.length !== 0">
-
-        <view class="f30  top-view1 ">
+        <view class="f30  top-view1 " v-if="showData.length > 0">
             <view class="left-view">
                 <text>已结订单</text>
             </view>
@@ -133,6 +132,7 @@ export default {
         },
         async getDataList(id, page, limit = 10, isLoading = false) {
             return await this.$minApi.getOrderListDown({
+                order_type: 0,
                 opening_id: id,
                 page,
                 limit,

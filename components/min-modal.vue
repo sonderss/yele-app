@@ -1,5 +1,5 @@
 <template>
-<view class="min-modal min-modal-flex" :class="{'min-modal-show': show}">
+<view class="min-modal min-modal-flex" :class="{'min-modal-show': show}" @touchmove.stop.prevent="()=>{}">
     <view class="min-modal-mask" @touchmove.stop="()=>{}" @click="handleMaskClick"></view>
     <view class="min-modal-main" :class="{'min-modal-main-show': show}">
         <view :class="contentCenter ? 'min-modal-content-center':  'min-modal-content'">
@@ -12,7 +12,11 @@
             </view>
             <!-- end -->
             <view class="min-modal-body" v-if="content">
-                <view :class="isPading ? 'content_isPading':'content' " v-html="content"></view>
+                <scroll-view v-if="zengs" scroll-y='true' style="height:300rpx">
+                    <view :class="isPading ? 'content_isPading':'content' " v-html="content"></view>
+
+                </scroll-view>
+                <view v-else :class="isPading ? 'content_isPading':'content' " v-html="content"></view>
             </view>
             <view class="min-modal-body" v-else>
                 <slot></slot>
@@ -67,7 +71,8 @@ export default {
             isSetTitie: false,
             setDeskTop: '',
             setDeskTop2: '',
-            isPading: false
+            isPading: false,
+            zengs: false
         }
     },
     methods: {
@@ -88,6 +93,7 @@ export default {
             setDeskTop = '',
             setDeskTop2 = '',
             isPading = false,
+            zengs = false,
             success = () => {}
         }) {
             clearTimeout(this.timer)
@@ -109,6 +115,7 @@ export default {
             this.setDeskTop2 = setDeskTop2
             this.setDeskTop = setDeskTop
             this.isPading = isPading
+            this.zengs = zengs
         },
         handleHide() {
             this.show = false
@@ -130,6 +137,7 @@ export default {
                 this.setDeskTop = ''
                 this.isSetTitie = false
                 this.isPading = false
+                this.zengs = false
                 this.success = () => {}
             }, 300)
         },

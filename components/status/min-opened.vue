@@ -23,9 +23,12 @@
             <view v-if="list.desk_info.arrival_time">预抵时间：{{$minCommon.formatDate(new Date(list.desk_info.arrival_time * 1000), 'yyyy-MM-dd hh:mm:ss') }}</view>
         </view>
     </view>
-    <view class="card p-lr-20 m-bottom-20">
+    <view class="card p-lr-20 m-bottom-20" @click="order">
         <view class="top p-tb-30 min-border-bottom">
             <view>订单信息</view>
+            <view>
+                <image style="width:24rpx;height:24rpx" src='/static/images/arrow.png' />
+            </view>
         </view>
         <view class="main1 p-top-20">
             <view class="m-bottom-10" v-for="i in list.order_list" :key="i.order_sn" style="width:100%;display: flex;justify-content: space-between;">
@@ -39,8 +42,8 @@
     <view class="card p-lr-20 p-bottom-10 m-bottom-20" style="margin-bottom:200rpx">
         <view class="p-tb-30 min-border-bottom">操作信息</view>
         <view class="main p-tb-20">
-            <view v-if="list.desk_info.booking_id">营销人员：{{list.desk_info.book_user_name?list.desk_info.book_user_name:"暂无数据"}}</view>
-            <view v-if='list.desk_info.booking_id'>预约时间：{{$minCommon.formatDate(new Date(list.desk_info.book_time * 1000), 'yyyy-MM-dd hh:mm:ss')  }}</view>
+            <view>营销人员：{{list.desk_info.book_user_name ? list.desk_info.book_user_name : "无"}}</view>
+            <view>预约时间：{{list.desk_info.book_time ?  $minCommon.formatDate(new Date(list.desk_info.book_time * 1000), 'yyyy-MM-dd hh:mm:ss')  : '无' }}</view>
             <view>开台人员：{{list.desk_info.open_user_name}}</view>
             <view>开台时间：{{$minCommon.formatDate(new Date(list.desk_info.open_time *1000),'yyyy-MM-dd hh:mm:ss') }}</view>
         </view>
@@ -156,7 +159,9 @@ export default {
             this.$minRouter.push({
                 name: 'save-wine',
                 params: {
-                    open_id: this.list.desk_info.opening_id
+                    open_id: this.list.desk_info.opening_id,
+                    name: this.list.desk_info.client_name,
+                    phone: this.list.desk_info.client_mobile
                 }
             })
         },

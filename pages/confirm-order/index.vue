@@ -3,7 +3,7 @@
     <view class="p-top-20 p-lr-30" style="padding-bottom: 66rpx;">
         <view class="platform-info f28 p-lr-20 p-tb-20" :style="list.order_info.is_can_open === 0 ? 'background:#ffe4e4' : 'background:#fff'">
             <view>台位低消：￥{{list.order_info.minim_charge}}</view>
-            <view>开台条件：<text class="emp">{{list.order_info.minim_charge*1 === 0 ? '无低消' :  `${ list.order_info.minimum_percent}%低消(${list.order_info.desk_open_minimum})`}}</text></view>
+            <view>开台条件：<text class="emp">{{list.order_info.minim_charge*1 === 0 ? '无低消' :  `${ list.order_info.minimum_percent}%低消(￥${list.order_info.desk_open_minimum})`}}</text></view>
             <view v-if='!$parseURL().isOrder'>订单金额：￥{{list.order_info.order_total}}</view>
             <view>达成状态：{{list.order_info.is_can_open === 0 ? "未达成开台条件":"达成开台条件"}}</view>
         </view>
@@ -18,7 +18,7 @@
         </view>
         <min-pay v-if='!$parseURL().isOrder' v-model="payType" />
     </view>
-    <min-goods-submit @submit="submit" :leftText="'￥'+ totalAmount" leftTextDesc="应付：" leftTextColor="red" leftTextWidth='350rpx' :buttonText="buttonText" />
+    <min-goods-submit @submit="submit" :bgcolor='bgcolor' :leftText="'￥'+ totalAmount" leftTextDesc="合计：" leftTextColor="red" leftTextWidth='350rpx' :buttonText="buttonText" />
 </view>
 </template>
 
@@ -36,7 +36,8 @@ export default {
             },
             buttonText: '',
             totalAmount: '',
-            delArr: []
+            delArr: [],
+            bgcolor: 'rgba(255, 224, 0, 1)'
         }
     },
     watch: {
@@ -48,6 +49,7 @@ export default {
     },
     methods: {
         submit() {
+            if (this.bgcolor === '#CCC') return
             if (this.$parseURL().isOrder) {
                 // 没有订单 - 申请开台
                 console.log(this.$parseURL())
@@ -142,6 +144,7 @@ export default {
         }
     },
     mounted() {
+        console.log('系只能', this.$parseURL().isNewMasT)
         console.log('订单ID', this.$parseURL())
         if (this.$parseURL().isOrder) {
             // 没有订单
@@ -158,10 +161,24 @@ export default {
         }).then(res => {
             this.list = res
             this.totalAmount = this.list.order_info.actual_total
+
+            // 判断是否是点单并开台来的
+            // if (this.$parseURL().isNewMasT) {
+            //     if (this.list.order_info.is_can_open === 1) {
+            //         this.buttonText = '支付并开台'
+            //     } else {
+            //         this.buttonText = '支付并开台'
+            //         this.bgcolor = '#CCC'
+            //     }
+            //     return
+            // }
+
             if (this.list.order_info.is_can_open === 1) {
                 this.buttonText = '支付并开台'
             } else {
-                this.buttonText = '申请开台'
+                // this.buttonText = '申请开台'
+                this.buttonText = '支付并开台'
+                this.bgcolor = '#CCC'
             }
             console.log(this.list)
             // eslint-disable-next-line handle-callback-err

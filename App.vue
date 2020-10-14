@@ -119,14 +119,18 @@ export default {
         console.log('App Show')
         uni.getNetworkType({
             success: function (res) {
-                console.log(res.networkType);
-                if (uni.getSystemInfoSync().platform !== 'ios') {
-                    if (res.networkType === 'none') return store.dispatch('status/setStatus', true)
-                }
+                // uni.showToast({
+                //     title: res.networkType
+                // })
+                // if (uni.getSystemInfoSync().platform !== 'ios') {
+                if (res.networkType === 'none') return store.dispatch('status/setStatus', true)
+                // }
             }
         });
+        // if (uni.getSystemInfoSync().platform === 'ios') {
+        //     return store.dispatch('status/setStatus', false)
+        // }
         uni.onNetworkStatusChange(res => {
-            console.log(res)
             store.dispatch('status/setStatus', res.isConnected ? false : true)
         })
     },

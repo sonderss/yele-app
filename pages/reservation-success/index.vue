@@ -11,7 +11,7 @@
 
     </view>
     <view class="btns">
-        <view class="btn" @click="goOn">继续订台</view>
+        <view class="btn" @click="goOn">继续预约</view>
         <view class="btn_w" @click="backIndex">返回首页</view>
     </view>
 </view>

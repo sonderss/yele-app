@@ -220,7 +220,7 @@
         "enablePullDownRefresh": true,
         "app-plus": {
           "titleNView": {
-            "titleText": "订单记录",
+            "titleText": "下单记录",
             "backgroundColor": "#030313",
             "titleColor": "#FFE001"
           }
@@ -243,6 +243,7 @@
       "path": "pages/placean-order/index",
       "style": {
         "app-plus": {
+          "bounce": false,
           "titleNView": {
             "titleText": "下单",
             "backgroundColor": "#030313",
@@ -621,7 +622,7 @@
           "buttons": [{
             "text": "选择日期",
             "fontSize": "14px",
-            "width": "70px",
+            "width": "auto",
             "color": "#FFE001"
           }]
         }
@@ -708,7 +709,12 @@
           "titleNView": {
             "titleText": "赠送列表",
             "backgroundColor": "#030313",
-            "titleColor": "#FFE001"
+            "titleColor": "#FFE001",
+            "buttons": [{
+              "text": "赠送限制 ",
+              "fontSize": "28rpx",
+              "width": "auto"
+            }]
           }
         }
       }
@@ -720,7 +726,12 @@
           "titleNView": {
             "titleText": "商品详情",
             "backgroundColor": "#030313",
-            "titleColor": "#FFE001"
+            "titleColor": "#FFE001",
+            "buttons": [{
+              "text": "赠送限制 ",
+              "fontSize": "28rpx",
+              "width": "auto"
+            }]
           }
         }
       }
@@ -773,6 +784,19 @@
         "app-plus": {
           "titleNView": {
             "titleText": "邀请下线",
+            "backgroundColor": "#030313",
+            "titleColor": "#FFE001"
+          }
+        }
+      }
+    },
+    {
+      "path": "pages/open-list/index",
+      "style": {
+        "enablePullDownRefresh": true,
+        "app-plus": {
+          "titleNView": {
+            "titleText": "开台记录",
             "backgroundColor": "#030313",
             "titleColor": "#FFE001"
           }
@@ -1058,7 +1082,12 @@
           "titleNView": {
             "titleText": "套餐",
             "backgroundColor": "#030313",
-            "titleColor": "#FFE001"
+            "titleColor": "#FFE001",
+            "buttons": [{
+              "text": "赠送限制 ",
+              "fontSize": "28rpx",
+              "width": "auto"
+            }]
           }
         }
       }

@@ -43,8 +43,8 @@
     <view class="card p-lr-20 p-bottom-10 m-bottom-20" v-if="list.desk_info.booking_id !== 0">
         <view class="p-tb-30 min-border-bottom">操作信息</view>
         <view class="main p-tb-20">
-            <view>营销人员：{{list.desk_info.book_user_name}}</view>
-            <view>预约时间：{{$minCommon.formatDate(new Date(list.desk_info.book_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
+            <view>营销人员：{{list.desk_info.book_user_name ? list.desk_info.book_user_name : '无'}}</view>
+            <view>预约时间：{{list.desk_info.book_time ?  $minCommon.formatDate(new Date(list.desk_info.book_time*1000),'yyyy-MM-dd hh:mm:ss')  : '无'}}</view>
         </view>
     </view>
 

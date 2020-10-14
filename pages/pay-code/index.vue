@@ -48,36 +48,55 @@ export default {
         },
         getStatus() {
             this.timer = setInterval(() => {
-
+                // "http://api.app-store.dev.yeleonline.com/api/5ed706dd7e94f",
                 uni.request({
-                    url: "http://api.app-store.dev.yeleonline.com/api/5ed706dd7e94f",
+                    url: process.env.VUE_APP_PAY_URL,
                     header: {
                         "access-token": "HPkSFqbVhWpCRxVRpOTkyEubusFxBEEd",
                         "api-auth": this.$store.state.user.userInfo.apiAuth
                     },
+                    data: {
+                        transaction_id: this.$parseURL().id
+                    },
                     success: res => {
-                        console.log(res);
-                        this.time++
+                        // this.time++
                         // if(this.time === 3){
                         //   console.log(this.time);
                         //   clearInterval(this.timer)
                         // }
-                        if (res.paid) {
+                        if (res.data.data.paid === 1) {
+                            console.log('支付成功')
                             clearInterval(this.timer)
-                            this.$showToast('支付成功')
-                            setTimeout(() => {
-                                // 账单支付成功返回到账单页
-                                if (!this.$parseURL().order_id) return uni.navigateBack({
+                            if (!this.$parseURL().order_id) {
+                                uni.navigateBack({
                                     delta: 2
                                 });
-                                this.$minRouter.push({
-                                    name: 'redpay-success',
-                                    type: "redirectTo",
-                                    params: {
-                                        id: this.$parseURL().order_id
-                                    }
-                                })
-                            }, 2000)
+                                return
+                            }
+                            this.$minRouter.push({
+                                name: 'redpay-success',
+                                type: "redirectTo",
+                                params: {
+                                    id: this.$parseURL().order_id
+                                }
+                            })
+                            // this.$showToast('支付成功')
+                            // setTimeout(() => {
+                            //     // 账单支付成功返回到账单页
+                            //     if (!this.$parseURL().order_id) {
+                            //         uni.navigateBack({
+                            //             delta: 2
+                            //         });
+                            //         return
+                            //     }
+                            //     this.$minRouter.push({
+                            //         name: 'redpay-success',
+                            //         type: "redirectTo",
+                            //         params: {
+                            //             id: this.$parseURL().order_id
+                            //         }
+                            //     })
+                            // }, 2000)
                         }
                     }
                 })

@@ -26,15 +26,23 @@
                 </view>
             </view>
         </view>
-        <view class="btn-view m-top-20" style="  justify-content: space-between;">
-            <view class="btn" @click="commissiondetails">
+        <view class="btn-view m-top-20 m-bottom-20" style="  justify-content: space-between;">
+            <view class="btn" @click="withdrawalsrecord(3)">
+                <image class="m-bottom-10" src="/static/images/jixiao.png" />
+                <text>转账记录</text>
+            </view>
+            <view class="btn m-left-25" @click="releaserecord">
+                <image class="m-bottom-10" src="/static/images/zhichu.png" />
+                <text>冻结记录</text>
+            </view>
+            <!-- <view class="btn" @click="commissiondetails">
                 <image class="m-bottom-10" src="/static/images/ticheng.png" />
                 <text>提成明细</text>
             </view>
             <view class="btn" @click="withdrawalsrecord(0)">
                 <image class="m-bottom-10" src="/static/images/gongzi.png" />
                 <text>收支流水</text>
-            </view>
+            </view> -->
             <view class="btn" @click="withdrawalsrecord(1)">
                 <image class="m-bottom-10" src="/static/images/tixian.png" />
                 <text>发放记录</text>
@@ -44,7 +52,7 @@
                 <text>提现记录</text>
             </view>
         </view>
-        <view class="btn-view m-bottom-20" style="padding-top:0">
+        <!-- <view class="btn-view m-bottom-20" style="padding-top:0">
             <view class="btn" @click="withdrawalsrecord(3)">
                 <image class="m-bottom-10" src="/static/images/jixiao.png" />
                 <text>转账记录</text>
@@ -53,19 +61,19 @@
                 <image class="m-bottom-10" src="/static/images/zhichu.png" />
                 <text>冻结记录</text>
             </view>
-        </view>
+        </view> -->
 
         <view class="jion_view">
             <view class="title min-border-bottom">
-                <text>我参与的方案（{{myMoneylist.store_name}}）</text>
+                <text class="min-ellipsis">我参与的方案（{{myMoneylist.store_name}}）</text>
                 <view class="right" @click="showStore">
                     {{store_name}}
                     <image src="/static/images/downarrow24.png" />
                 </view>
             </view>
-            <view class="method-viewaaa m-top-20 min-border-bottom">
+            <view class="method-viewaaa m-top-20 min-border-bottom ">
                 <view class="left">工资方案</view>
-                <view class="right">
+                <view class="right min-ellipsis" style="width:calc(100% - 200rpx);text-align:right">
                     <text>{{ myMoneylist.salary_scheme ? myMoneylist.salary_scheme : '暂无数据'}}</text>
                 </view>
             </view>
@@ -520,7 +528,7 @@ export default {
     padding-bottom: 20rpx;
 
     .left {
-        width: auto;
+        width: 200rpx;
     }
 
     .rightaaa {

@@ -18,27 +18,48 @@
                     </view>
                     <view class="mid-desc">
                         <text class="f28 fcolor title min-ellipsis " v-if="i.product_name !== 'undefined'">{{i.product_name}}</text>
-                        <text class="tcolor f22 desc">{{i.sku}}</text>
+                        <text class="tcolor f22 desc" v-if="i.type  !== 'setmeal'">{{ `${i.sku}${i.sku ? '/':''}${i.unit_name}`}}</text>
+                        <view class="tcolor f22 desc" v-if="i.type  === 'setmeal'">
+                            <text class="tcolor f22 desc" v-for="(c,q) in i.setmeal_product" :key='q'>
+                                {{`${c.product_name}*${c.sku}/${c.unit_name}`}}
+                            </text>
+                        </view>
                     </view>
                 </view>
                 <view class="right-price">
                     <text class="fcolor f28 testF">￥ {{item.order_total}}</text>
                     <text class="tcolor f22 m-top-20">x {{i.quantity}}</text>
                 </view>
+                <!-- <view v-if="i.type === 'setmeal'" class="active-left-ps f22">套餐</view> -->
+            </view>
+            <view v-if="item.order_type === 0" class="m-bottom-10">
+                <text class="f20 origin sign" v-if="item.recreate_type !== null">{{desc[item.recreate_type].desc }}</text>
+            </view>
+            <view v-if="item.order_type === 1" class="m-bottom-10">
+                <text class="f20 origin sign">赠送单</text>
             </view>
         </view>
         <view v-if="item.order_product_list.length >= 2 && item.order_product_list.length !== 'undefined'">
             <view class="mid-view min-border-top ">
                 <view class="left-view">
                     <view class="left-photo m-right-20" v-for="(i,n) in item.order_product_list" :key="n">
-                        <image lazy-load :src="i.product_img" />
+                        <image lazy-load :src="i.product_img">
+                            <!-- <view v-if="i.type === 'setmeal'" class="active-left-pss f22">套餐</view> -->
+                        </image>
+
                     </view>
+
                 </view>
                 <view class="right-price">
                     <text class="fcolor f28">￥ {{item.order_total}}</text>
                 </view>
             </view>
-            <text class="f20 origin sign" v-if="item.order_type !== 'undefined'">{{order[item.order_type].desc }}</text>
+            <text v-if="item.order_type === 0" class="m-bottom-10">
+                <text class="f20 origin sign" v-if="item.recreate_type !== null">{{desc[item.recreate_type].desc }}</text>
+            </text>
+            <text v-if="item.order_type === 1" class="m-bottom-10">
+                <text class="f20 origin sign">赠送单</text>
+            </text>
             <text class="allin f22 tcolor">查看全部 >></text>
         </view>
         <view class="bottom-view min-border-top">
@@ -81,13 +102,27 @@ const order = [{
         color: 'origin'
     }
 ]
-
+// 0：改价，1：退货，2：换货
+const desc = [{
+        desc: '改价单',
+        color: 'green'
+    },
+    {
+        desc: '退货单',
+        color: 'blue'
+    },
+    {
+        desc: '换货单',
+        color: 'red'
+    },
+]
 export default {
     data() {
         return {
             isSetMeal: false,
             order,
-            nondata: false
+            nondata: false,
+            desc
         }
     },
     props: {
@@ -271,4 +306,31 @@ export default {
         color: #F7601B
     }
 }
+
+// .active-left-ps {
+//     width: 80rpx;
+//     height: 40rpx;
+//     background: #030313;
+//     color: #FFE001;
+//     display: block;
+//     text-align: center;
+//     line-height: 40rpx;
+//     position: absolute;
+//     border-radius: 0 20rpx 20rpx 0;
+//     left: -20rpx;
+//     top: 0rpx
+// }
+
+// .active-left-pss {
+//     width: 80rpx;
+//     height: 40rpx;
+//     background: #030313;
+//     color: #FFE001;
+//     display: block;
+//     text-align: center;
+//     line-height: 40rpx;
+//     position: absolute;
+//     border-radius: 0 20rpx 20rpx 0;
+//     top: 20rpx
+// }
 </style>

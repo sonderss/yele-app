@@ -6,9 +6,9 @@
             <view class="status" :class="$minCommon.getOrderStatus(list.order_status).color">{{$minCommon.getOrderStatus(list.order_status).desc}}</view>
         </view>
         <view class="goods-list p-top-10">
-            <view class="p-tb-10" v-for="item in list.order_product_list" :key="item.detail_id">
+            <view class="p-tb-10" v-for="(item,index) in list.order_product_list" :key="item.detail_id">
                 <!--已出品-->
-                <min-goods-item @ToDetail="goodsDeatil(item.id,item.type)" :produced="item.produce_status ? true:false" :name="item.product_name" :price="item.order_price" :icon="item.product_img" :specification="item.type === 'setmeal' ? item.setmeal_product:`${item.sku}${item.sku ? '/':''}${item.unit_name}`" :value="item.quantity"></min-goods-item>
+                <min-goods-item :class="index === list.order_product_list.length-1 ? 'p-bottom-20' : ''" @ToDetail="goodsDeatil(item.id,item.type)" :produced="item.produce_status ? true:false" :name="item.product_name" :price="item.order_price" :icon="item.product_img" :specification="item.type === 'setmeal' ? item.setmeal_product:`${item.sku}${item.sku ? '/':''}${item.unit_name}`" :value="item.quantity"></min-goods-item>
             </view>
         </view>
     </view>
@@ -23,10 +23,10 @@
             <view class="item">已付金额：￥{{list.origin_order.pay_price}}</view>
         </view>
     </view>
-    <view class="card p-lr-20 m-top-20" v-if="list.return_order.new_order_id && list.order_status === -5 ||list.order_status === -6 ">
+    <view class="card p-lr-20 m-top-20" v-if="list.return_order.new_order_id && list.order_status === -5 ||list.order_status === -6  || list.order_status === -4  || list.order_status === -3">
         <view class="top p-tb-20 min-border-bottom">
             <view class="title">变更信息</view>
-            <view class="btn" @click="viewNewOrder(list.return_order.new_order_id)">查看新订单</view>
+            <view class="btn" v-if="list.order_status !== -3" @click="viewNewOrder(list.return_order.new_order_id)">查看新订单</view>
         </view>
         <view class="main p-tb-30">
             <!-- 这里需要数据测试 
@@ -66,7 +66,7 @@
     </view>
     <view class="card p-lr-20 m-top-20">
         <view class="top p-tb-30 min-border-bottom">订单信息</view>
-        <view class="main p-tb-30">
+        <view class="main p-tb-30" v-if='list.order_type !== 1'>
             <view class="item">订&nbsp;单&nbsp;<span class='p-left-20'>号：</span>{{list.order_sn}}</view>
             <view class="item" v-if="list.order_status === 0 || list.order_status === -1">订单来源：{{list.source ? '门店':'平台'}}</view>
             <view class="item">支付类型：{{list.pay_type === 0 ? '先付' :'后付'}}</view>
@@ -84,6 +84,12 @@
             <view class="item" v-if="list.order_status !== 0 && list.order_status !== 5 && list.order_status !== -1  && list.order_status !== -6 && !list.pay_type">支付方式：{{method[list.payment_id]}}</view>
             <view class="item" v-if="list.order_status !== 1 && list.order_status !== 0 && list.order_status !== 5  && list.order_status !== -6">确&nbsp;认&nbsp;<span class='p-left-20'>人：</span>{{list.confirm_user_name}}</view>
             <view class="item" v-if="list.order_status !== 1 && list.order_status !== 0 && list.order_status !== 5  && list.order_status !== -6">确认时间：{{list.confirm_time ?  $minCommon.formatDate(new Date(list.confirm_time*1000),'yyyy/MM/dd hh:mm:ss' ) : '-'}}</view>
+        </view>
+        <view v-else class="main p-tb-30">
+            <view class="item">订&nbsp;单&nbsp;<span class='p-left-20'>号：</span>{{list.order_sn}}</view>
+            <view class="item">订单类型：赠送单</view>
+            <view class="item">下单时间：{{$minCommon.formatDate(new Date(list.create_time*1000),'yyyy/MM/dd hh:mm:ss' ) }}</view>
+            <view class="item">订单金额：￥{{list.order_total}}</view>
         </view>
     </view>
     <view class="card p-lr-20 m-top-20" v-if="list.is_signoff === 1">
@@ -122,7 +128,7 @@
         </view>
     </view>
     <view style="height:200rpx"></view>
-    <view v-if="list.order_status !== -5 && list.order_status !== -6">
+    <view v-if="list.order_status !== -5 && list.order_status !== -6 && list.order_status !== -4">
         <min-goods-submit @leftClick="leftClick" :leftText="leftText" @submit="submit" :totalAmount="totalAmount" :buttonText="buttonText" v-if="showSubmit" />
     </view>
     <min-modal ref="show"></min-modal>
@@ -138,12 +144,12 @@
             <view class="min-border-bottom mid_view">
                 <view class="moey_desc min-border-bottom p-bottom-30">金额</view>
                 <view class="main_view">
-                    <view class="f28 m-top-20">订单金额：￥{{list.unpay_price}}</view>
-                    <view class="f28 m-top-10">应付金额：￥{{list.actual_total}}</view>
+                    <!-- <view class="f28 m-top-20">订单金额：￥{{list.unpay_price}}</view> -->
+                    <view class="f28 m-top-10">应付金额：￥{{list.unpay_price}}</view>
                 </view>
                 <view class="f28 m-top-20 p-bottom-20" style="font-weight: bolder;">支付方式</view>
             </view>
-            <min-pay :isTitle="false" :mTop="false" v-model="payType" scene="2" />
+            <min-pay :isTitle="false" style="margin-top:0" :mTop="false" v-model="payType" scene="2" />
             <view class="btn_pay" @click="pay_money">支付</view>
         </view>
 

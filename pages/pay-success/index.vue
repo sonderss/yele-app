@@ -4,8 +4,8 @@
     <view class="title">{{list.pay_type ? '下单成功' : '支付成功'}} </view>
     <view class="card f28 p-tb-30 p-lr-30">
         <view>台&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 号：<text>{{list.desk_name}}</text></view>
-        <view>客户姓名：{{list.client_name}}</view>
-        <view>联系电话：{{list.client_mobile}}</view>
+        <view>客户姓名：{{list.client_name ? list.client_name : '暂无数据'}}</view>
+        <view>联系电话：{{list.client_mobile ?  list.client_mobile  : '暂无数据'}}</view>
         <view>订&nbsp;单&nbsp; 号：{{list.order_sn}}</view>
         <view>订单金额：￥{{list.order_total}}</view>
         <view>已付金额：{{list.pay_price}}</view>

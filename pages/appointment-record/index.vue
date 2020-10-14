@@ -2,11 +2,11 @@
 <view class="appointment-record">
     <view class="top-view" v-if="list.length !== 0">
         <view class="top-v" @click="change1">
-            <text :class="num === 0 ? 'status end' : 'status' ">预约时间</text>
+            <text :class="num === 0 ? 'status end f30' : 'status f30' ">预约时间</text>
             <image :class="animation ? 'arro animation right-arrow-a':  'arro animation'" src="/static/images/downarrow24.png" />
         </view>
         <view class="top-v" @click="change">
-            <text :class="num === 1 ? 'status end' : 'status' ">消费金额</text>
+            <text :class="num === 1 ? 'status end f30' : 'status f30' ">消费金额</text>
             <image :class="animation1 ? 'arro  animation right-arrow-a'  :  'arro  animation'" src="/static/images/downarrow24.png" />
         </view>
     </view>
@@ -18,14 +18,15 @@
                 <image src="/static/images/phone.png" @click.stop="makePhone(item.client_mobile)" />
             </view>
         </view>
-        <view class="item">预约时间：{{ $minCommon.formatDate(new Date( item.create_time * 1000), "yyyy-MM-dd hh:mm:ss")}}</view>
-        <view class="item">预抵时间：{{$minCommon.formatDate(new Date( item.arrival_time * 1000), "yyyy-MM-dd hh:mm:ss")}}</view>
+
         <view class="item">台 <text style="padding-left:60rpx">号：</text>{{ item.desk_name}}</view>
         <view class="item">
             台位状态：
-            <text :class="item.desk_status !== 1  ? 'status': 'status confirmed'">{{desk_status[item.desk_status] }}</text>
+            <text :class="item.desk_status !== 2  ? 'status': 'status confirmed'">{{desk_status[item.desk_status] }}</text>
         </view>
         <view class="item" v-if="item.desk_status !== 1  ">消费金额：￥{{item.bill_price}}</view>
+        <view class="item">预约时间：{{ $minCommon.formatDate(new Date( item.create_time * 1000), "yyyy-MM-dd hh:mm:ss")}}</view>
+        <view class="item">预抵时间：{{$minCommon.formatDate(new Date( item.arrival_time * 1000), "yyyy-MM-dd hh:mm:ss")}}</view>
         <view class="item" v-if="item.desk_status === 0">销台时间：{{$minCommon.formatDate(new Date( item.close_time * 1000), "yyyy-MM-dd hh:mm:ss")}}</view>
         <view class="btm-view min-border-top m-top-20" v-if="item.desk_status !== 1 ">
             <view class="o" @click.stop="queryOrder(item)">查看订单</view>

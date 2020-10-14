@@ -3,7 +3,7 @@
     <min-search placeholder="请输入门店名称搜索" @search="search" v-model="keys" />
     <view class="m-bottom-20"></view>
     <min-cell :card="false">
-        <min-cell-item v-for="(item, index) in getValue" :key="index" :img="item.head_img" :title="item.store_name" :label="item.address" :border="index !== getValue.length-1">
+        <min-cell-item v-for="(item, index) in getValue" :key="index" :img="item.head_img ? item.head_img : '/static/images/logo.png'" :title="item.store_name" :label="item.address" :border="index !== getValue.length-1">
             <min-btn size="xs" slot="tail" @click="applyStores(item, index)">申请</min-btn>
         </min-cell-item>
     </min-cell>
@@ -35,7 +35,7 @@ export default {
             let data = []
             if (this.keys) {
                 this.elseStoreList.filter(item => {
-                    if (item.store_name.includes(this.keys)) {
+                    if (item.store_name.toLowerCase().includes(this.keys.toLowerCase())) {
                         data.push(item)
                     }
                 })

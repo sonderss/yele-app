@@ -15,7 +15,7 @@
                                     <view class="right-view-title">
                                         <view class="f28 aaaa">{{item.product_name}}</view>
                                         <text class="f26 t" v-if="item.sku.length > 0 && item.sku[0].sku_full_name" style="display:block;font-weight:400">规格：{{item.sku[0].sku}}</text>
-                                        <text class="f26" style="color:#666666">可赠数量：{{item.commodity_count}}</text>
+                                        <text class="f26" style="color:#666666">可赠数量：{{item.commodity_count === -1 ? '无限制':item.commodity_count}}</text>
                                     </view>
                                     <view class="right-view-bottom">
                                         <view class="right-view-bottom-desc">
@@ -24,9 +24,9 @@
                                             </text>
                                         </view>
                                         <view class="steper">
-                                            <min-stepper v-model="item.step" @lesss="lesss($event,item)" :max="item.commodity_count" v-if="(item.type === 'setmeal') ? false : true " :showBtn="item.type === 'setmeal' ? true : false" @change="changeItem(item)" :isFlag="item.isFlag">
+                                            <min-stepper v-model="item.step" @lesss="lesss($event,item)" :max=" item.commodity_count === -1 ? 999 :item.commodity_count" v-if="(item.type === 'setmeal') ? false : true " :showBtn="item.type === 'setmeal' ? true : false" @change="changeItem(item)" :isFlag="item.isFlag">
                                             </min-stepper>
-                                            <view class="m-right-10" v-else style="width:40rpx;height:40rpx;" @click.stop="changeChioceT(item)">
+                                            <view class="m-right-10" v-else style="width:48rpx;height:48rpx;" @click.stop="changeChioceT(item)">
                                                 <image lazy-load src="/static/images/yellow-add.png" style="width:100%" />
                                             </view>
                                         </view>
@@ -71,7 +71,7 @@
                                     </view>
                                     <view class="steper">
 
-                                        <min-stepper :isAnimation='false' v-model="item2.step" :max="item2.commodity_count" :min='0' @change="alDel($event,n)"></min-stepper>
+                                        <min-stepper :isAnimation='false' v-model="item2.step" :max="item2.commodity_count === -1 ? 999 : item2.commodity_count" :min='0' @change="alDel($event,n)"></min-stepper>
                                     </view>
                                 </view>
                             </view>
@@ -81,12 +81,12 @@
                 </view>
                 <!-- <view class="empty-view"></view> -->
                 <view class="bottom-view-t">
-                    <min-goods-submit style="position:fixed" :totalLabel="personal_remaining_quota === -1 ? '赠送额度：无限制': totalLabel " icon="/static/images/cart.png" :totalAmount='moneySum' :goodsCount="num" buttonText='确定赠送' @submit="submit"></min-goods-submit>
+                    <min-goods-submit style="position:fixed" desc='所需额度合计：' :totalLabel="personal_remaining_quota === -1 ? '赠送额度：无限制': totalLabel " icon="/static/images/cart.png" :totalAmount='moneySum' :goodsCount="num" buttonText='确定赠送' @submit="submit"></min-goods-submit>
                 </view>
             </view>
         </min-popup>
 
-        <min-goods-submit style="position:fixed" :totalLabel="personal_remaining_quota === -1 ? '赠送额度：无限制': totalLabel" @leftClick='selectedEvent' icon="/static/images/cart.png" :totalAmount='moneySum' :goodsCount="num" buttonText='确定赠送' @submit='submit'></min-goods-submit>
+        <min-goods-submit style="position:fixed" :totalLabel="personal_remaining_quota === -1 ? '赠送额度：无限制': totalLabel" desc='所需额度合计：' @leftClick='selectedEvent' icon="/static/images/cart.png" :totalAmount='moneySum' :goodsCount="num" buttonText='确定赠送' @submit='submit'></min-goods-submit>
         <min-modal ref="test"></min-modal>
     </view>
     <min-404 v-else />
@@ -128,6 +128,17 @@ export default {
             return this.selArr = this.$store.state.goods.storeSelArr
         })
     },
+    onNavigationBarButtonTap(e) {
+        this.$refs.test.handleShow({
+            title: e.text,
+            content: this.content,
+            showCancel: false,
+            zengs: true,
+            success: (e) => {
+                console.log(e) // 这里拿到的是modalID: "modal"，id: 1
+            }
+        })
+    },
     watch: {
         selArr: {
             handler(a) {
@@ -140,17 +151,21 @@ export default {
                     // return
                 }
                 a.map((item, index) => {
-                    console.log("item", item)
                     this.list.map(item1 => {
                         if (item1.product && item1.product.length > 0) {
                             item1.product.map((item2, index2) => {
-                                console.log("item2", item2)
                                 if (item2.id === item.id) {
                                     if (item2.sku.length >= 1) {
                                         if (item2.sku[0].id === item.sku[0].id) {
                                             this.$nextTick(() => {
                                                 item2.step = item.step
 
+                                            })
+                                        }
+                                    } else {
+                                        if (item2.id === item.id) {
+                                            this.$nextTick(() => {
+                                                item2.step = item.step
                                             })
                                         }
                                     }
@@ -192,17 +207,24 @@ export default {
             this.list = res.list
             this.desk_remaining_quota = res.desk_remaining_quota
             this.personal_remaining_quota = res.personal_remaining_quota
+            //         this.content = `
+            //       1. 当前台消费金额￥${res.consumption_amount}，根据赠送方案，可赠送的商品金额为￥${res.desk_presentation_limit}。<br />
+            //       2. 当前用户的赠送额度为￥${res.personal_presentation_limit}，不能超过此额度。<br />
+            //       3. 不同商品的可赠数量不同，不能超过最高可赠数量。 <br />
+            //   `  
             this.content = `
-          1. 当前台消费金额￥${res.consumption_amount}，根据赠送方案，可赠送的商品金额为￥${res.desk_presentation_limit}。<br />
-          2. 当前用户的赠送额度为￥${res.personal_presentation_limit}，不能超过此额度。<br />
-          3. 不同商品的可赠数量不同，不能超过最高可赠数量。 <br />
-      `
+                1、针对当前登录用户，每月、每周、每天、每张台都会有一个总的额度限制。<br />
+                2、针对订台人，会分别对自己的台和对代送的台进行限制。<br />
+                3、针对当前台，会根据当前台的消费额度进行限制。<br />
+                4、针对赠送商品，各个商品会有不同的每月、每周、每天、每张台的数量限制。<br />
+                5、系统会结合以上限制取最低值为当前最高可用赠送额度。<br />
+            `
             this.$store.dispatch('goods/setselected_giveAwayInfo', {
                 consumption_amount: res.consumption_amount,
                 desk_presentation_limit: res.desk_presentation_limit,
                 personal_presentation_limit: res.personal_remaining_quota
             })
-            this.totalLabel = `赠送额度：${res.personal_remaining_quota}`
+            // this.totalLabel = `赠送额度：${res.personal_remaining_quota}`
             console.log(this.list, this.totalLabel)
             console.log('已选赠送商品全局变量', this.$store.state.goods.storeSelArr)
             console.log(this.$store.state.goods.giveAwayInfo)
@@ -327,9 +349,18 @@ export default {
             // 数量为0时从已选商品中删除掉该商品
             for (let i = 0; i < this.selArr.length; i++) {
                 if (this.selArr[i].id === item.id && e === 0) {
-                    if (this.selArr[i].sku[0].id === item.sku[0].id) {
-                        this.selArr.splice(i, 1)
-                        this.$store.dispatch('goods/setStoreSelArr', this.selArr)
+                    if (item.type === 'product') {
+                        if (this.selArr[i].sku[0].id === item.sku[0].id) {
+                            this.selArr.splice(i, 1)
+                            this.$store.dispatch('goods/setStoreSelArr', this.selArr)
+                        }
+                    }
+
+                    if (item.type === 'service') {
+                        if (this.selArr[i].id === item.id) {
+                            this.selArr.splice(i, 1)
+                            this.$store.dispatch('goods/setStoreSelArr', this.selArr)
+                        }
                     }
 
                 }
@@ -450,23 +481,23 @@ export default {
                 products: JSON.stringify(products)
             }).then(res => {
                 this.orderId = res.orderId
-                this.$showToast('提交成功')
+                // this.$showToast('提交成功')
 
                 console.log('获取到赠送单ID', this.orderId)
-                setTimeout(() => {
+                // setTimeout(() => {
 
-                    this.selArr = []
-                    this.$store.dispatch('goods/setStoreSelArr', [])
-                    console.log(this.list)
-                    this.list.map(item => {
-                        item.product.map(item2 => {
-                            this.$set(item2, "step", 0)
-                        })
+                this.selArr = []
+                this.$store.dispatch('goods/setStoreSelArr', [])
+                console.log(this.list)
+                this.list.map(item => {
+                    item.product.map(item2 => {
+                        this.$set(item2, "step", 0)
                     })
-                    uni.navigateTo({
-                        url: './giveawayorder?order_id=' + this.orderId
-                    })
-                }, 2000)
+                })
+                uni.navigateTo({
+                    url: './giveawayorder?order_id=' + this.orderId
+                })
+                // }, 2000)
             })
         },
         /** 清空已选商品 */

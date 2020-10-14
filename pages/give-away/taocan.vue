@@ -28,7 +28,7 @@
         </view>
     </view>
 
-    <min-goods-submit @leftClick='selectedEvent' @submit="submit" :totalLabel="$store.state.goods.giveAwayInfo.personal_presentation_limit == -1 ? '赠送额度：无限制':totalLabel" :goodsCount="countNums" buttonText='赠送' icon="/static/images/cart.png" :totalAmount="totalAmountE"></min-goods-submit>
+    <min-goods-submit @leftClick='selectedEvent' desc='所需额度合计：' @submit="submit" :totalLabel="$store.state.goods.giveAwayInfo.personal_presentation_limit == -1 ? '赠送额度：无限制':totalLabel" :goodsCount="countNums" buttonText='赠送' icon="/static/images/cart.png" :totalAmount="totalAmountE"></min-goods-submit>
     <!-- 已选商品 -->
     <min-popup :show="selected" @close='closeSelectedPop'>
         <view class="popview">
@@ -60,7 +60,7 @@
 
                                 </view>
                                 <view class="steper">
-                                    <min-stepper :isAnimation='false' v-model="item2.step" :min='0' @change="alDel($event,n)"></min-stepper>
+                                    <min-stepper :isAnimation='false' v-model="item2.step" :max="item2.commodity_count === -1 ? 999 : item2.commodity_count " :min='0' @change="alDel($event,n)"></min-stepper>
                                 </view>
                             </view>
                         </view>
@@ -71,6 +71,7 @@
 
         </view>
     </min-popup>
+    <min-modal ref="test"></min-modal>
 </view>
 </template>
 
@@ -89,7 +90,7 @@ export default {
             autoplay: true,
             interval: 2000,
             duration: 500,
-            totalLabel: '2',
+            totalLabel: '',
             buttonText: '2',
             count: 0,
             product_type: '',
@@ -110,7 +111,8 @@ export default {
             setmeal_id: '',
             desk_id: '',
             parseproducts: {},
-            top: 0
+            top: 0,
+            content: ''
             // isDel: true
         }
     },
@@ -131,13 +133,30 @@ export default {
             }
         }
     },
+    onNavigationBarButtonTap(e) {
+        this.$refs.test.handleShow({
+            title: e.text,
+            content: `
+                1、针对当前登录用户，每月、每周、每天、每张台都会有一个总的额度限制。<br />
+                2、针对订台人，会分别对自己的台和对代送的台进行限制。<br />
+                3、针对当前台，会根据当前台的消费额度进行限制。<br />
+                4、针对赠送商品，各个商品会有不同的每月、每周、每天、每张台的数量限制。<br />
+                5、系统会结合以上限制取最低值为当前最高可用赠送额度。<br />
+            `,
+            showCancel: false,
+            zengs: true,
+            success: (e) => {
+                console.log(e) // 这里拿到的是modalID: "modal"，id: 1
+            }
+        })
+    },
     onLoad(option) {
         console.log(option)
         this.setmeal_id = option.setmeal_id
         this.desk_id = option.desk_id
         this.parseproducts = JSON.parse(JSON.stringify(option.product))
         console.log(this.parseproducts)
-        this.totalLabel = `赠送额度：${this.$store.state.goods.giveAwayInfo.personal_presentation_limit}`
+        // this.totalLabel = `赠送额度：${this.$store.state.goods.giveAwayInfo.personal_presentation_limit}`
 
     },
     watch: {

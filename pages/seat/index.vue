@@ -4,23 +4,24 @@
     <movable-area class="mains">
         <movable-view v-if="isLaji" @scale='listenScal' class="max" direction="all" scale :scale-value="scales" inertia :out-of-bounds="true" :x="X" :y="Y">
             <!-- <view class="max" v-for="(item2,index2) in back" :key="index2" :style="{backgroundImage:url(`${item2}`)}"></view>    -->
-            <view class="main" v-if="list.length >0 " :style="{  backgroundImage: `url('${this.$store.state.status.seatList.desk_base_img}')`}">
+            <view class="main" :style="{width:isW,height:isH,backgroundImage: `url('${this.$store.state.status.seatList.desk_base_img}')`}">
                 <view class="item" v-for="(item,index) in list" :key="index" @click="toDetail(item.id,item.status)" :style="{
-                        left:`${item.cord.x  }rpx`,
-                        top:`${item.cord.y }rpx`,
-                        width:`${item.cord.w*2}rpx`,
-                        height:`${item.cord.h*2}rpx`,
+                        left:`${item.cord.x}px`,
+                        top:`${item.cord.y}px`,
+                        width:`${item.cord.w}px`,
+                        height:`${item.cord.h}px`,
                          backgroundImage: `url('${back[item.status]}')`,
                         backgroundPosition:`-${item.cord.x}px  -${item.cord.y}px`
                       }"></view>
             </view>
-            <view v-else class="main">
+
+            <!-- <view v-else class="main">
                 <view class="sassdds" :style="{    backgroundImage: `url(${$store.state.status.seatList.desk_base_img})`,}"></view>
-            </view>
+            </view> -->
         </movable-view>
     </movable-area>
 
-    <view class=" close" @click.stop="close">x
+    <view class=" close" @click.stop="close">
     </view>
     <view v-if="isShow" class="huifu" @click.stop="init">回到原点</view>
 </view>
@@ -38,6 +39,17 @@ export default {
             windowWidth,
             windowHeight
         } = uni.getSystemInfoSync();
+        uni.getImageInfo({
+            src: this.$store.state.status.seatList.desk_base_img,
+            success: res => {
+                console.log(res)
+                this.$nextTick(() => {
+                    this.isW = res.width + 'px'
+                    this.isH = res.height + 'px'
+                })
+
+            }
+        })
         // this.Height = windowHeight + 'rpx'
         // this.Width = windowWidth + 'rpx'
         // console.log(this.Height, this.Width)
@@ -46,6 +58,7 @@ export default {
     mounted() {
 
         this.list = JSON.parse(this.$store.state.status.seatList.desk_coordinate)
+        console.log(this.list)
         this.back.push(this.$store.state.status.seatList.desk_lock_img)
         this.back.push(this.$store.state.status.seatList.desk_base_img)
         this.back.push(this.$store.state.status.seatList.desk_book_img)
@@ -66,13 +79,14 @@ export default {
             X: '-150',
             Y: '100',
             scales: 1,
-            isLaji: true
+            isLaji: true,
+            isW: '',
+            isH: ''
 
         }
     },
     methods: {
         listenScal(e) {
-            console.log(e)
             this.isShow = true
         },
         init() {
@@ -134,29 +148,33 @@ export default {
     }
 
     .main {
-        width: 1286rpx;
-        height: 910rpx;
+        //  width: 720px;
+        // height: 509px;
         background-repeat: no-repeat;
         background-size: contain;
-        transform: rotate(90deg) scale(0.7);
+        transform: rotate(90deg) scale(0.7); //  scale(0.7)
         position: relative;
     }
 
     .item {
         background-repeat: no-repeat;
         position: absolute;
-        transform: scale(0.5);
-        transform-origin: 0 0 0;
+        transform: rotate(-360deg);
+        transform-origin: 0 0 0 0;
+
     }
 
     .close {
         position: fixed;
         right: 20rpx;
         top: 80rpx;
-        width: 50rpx;
-        height: 50rpx;
+        width: 40rpx;
+        height: 40rpx;
         font-size: 40rpx;
         font-weight: bold;
+        background-image: url('/static/images/close_seat.png');
+        background-size: contain;
+        background-repeat: no-repeat;
         transform: rotate(90deg);
     }
 

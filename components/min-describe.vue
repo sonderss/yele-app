@@ -12,6 +12,7 @@
     <view class="right-view" :style="sku2 ? 'justify-content: flex-end;':''">
         <view v-if="step">
             <min-stepper v-model="count" :isAnimation="Animation" :max="maxStep" @change="emitEvent" icon="/static/images/yellow-add.png"></min-stepper>
+            <view v-if="isShowNone" @click.stop="tests" class="testaaa"></view>
         </view>
 
         <text v-if="num">x {{num}}</text>
@@ -105,6 +106,10 @@ export default {
         errImage: {
             type: String,
             default: '/static/images/goods.png'
+        },
+        isShowNone: {
+            type: Boolean,
+            defalut: false
         }
     },
     data() {
@@ -128,6 +133,9 @@ export default {
         emitEvent(n) {
             this.$emit('changeCount', n)
         },
+        tests() {
+            this.$emit('testEvent')
+        }
     },
 }
 </script>
@@ -188,6 +196,18 @@ export default {
         align-items: center;
         justify-content: center;
         color: #666666;
+        position: relative;
+
+        .testaaa {
+            position: absolute;
+            right: 11rpx;
+            top: 22rpx;
+            width: 48rpx;
+            height: 48rpx;
+            background: url('/static/images/yellow-add.png') no-repeat;
+            background-position: center center;
+            background-size: contain;
+        }
 
         .txt-view1 {
             display: flex;

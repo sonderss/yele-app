@@ -16,7 +16,7 @@
             <!-- <view :class="item.product_count === 1 ? 'status confirmed':'status end'">{{list.product_count === 1 ? '待确认': '已取酒'}}</view> -->
         </view>
         <view class="main p-top-20">
-            <view class="item">客户姓名：{{list.order_info.client_name ? list.order_info.client_name : '暂无' }}</view>
+            <view class="item">客&nbsp;户&nbsp;姓&nbsp;名 <span style='padding-left:5rpx'>：</span>{{list.order_info.client_name ? list.order_info.client_name : '暂无' }}</view>
             <view class="item">客户手机号：{{list.order_info.client_mobile ? list.order_info.client_mobile : '暂无'}}</view>
 
         </view>
@@ -29,13 +29,13 @@
             <!-- <view :class="item.product_count === 1 ? 'status confirmed':'status end'">{{list.product_count === 1 ? '待确认': '已取酒'}}</view> -->
         </view>
         <view class="main p-top-20">
-            <view class="item">台号：{{list.order_info.desk_name}}</view>
-            <view class="item">低消：￥{{list.order_info.minim_charge}}</view>
-            <view class="item">当前账单金额：￥{{list.order_info.bill_price}}</view>
+            <view class="item">台<span style='padding-left:55rpx'>号：</span>{{list.order_info.desk_name}}</view>
+            <view class="item">低 <span style='padding-left:55rpx'>消：</span>￥{{list.order_info.minim_charge}}</view>
+            <view class="item">账单金额：￥{{list.order_info.bill_price}}</view>
         </view>
     </view>
     <view style="height:100rpx"></view>
-    <min-goods-submit leftText="合计" :totalAmount='list.order_info.order_total' buttonText='确定订单' @submit='submit'></min-goods-submit>
+    <min-goods-submit leftText="合计" desc='' :totalAmount='list.order_info.order_total' buttonText='确定订单' @submit='submit'></min-goods-submit>
     <min-modal ref="test"></min-modal>
 </view>
 </template>
@@ -129,7 +129,7 @@ export default {
 
     .main {
         .item {
-            margin-top: 20rpx;
+            margin-top: 10rpx;
             font-size: 28rpx;
 
             &:first-child {

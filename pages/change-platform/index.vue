@@ -6,7 +6,7 @@
         <view class="platform-wrap p-top-20" v-for="(item,index) in getNewData" :key="index">
             <view class="title">{{item.group_name}}</view>
             <view class="list">
-                <view :class="active1 == index && active2 === index2 ? 'item in-order': 'item leisure' " @click="chioce1(index,index2)" v-for="(item2, index2) in item.desk_lists" :key="index2">
+                <view :class="[active1 == index && active2 === index2 ? 'item in-order': 'item leisure',(index2%4) ==0 ? 'one':''] " @click="chioce1(index,index2)" v-for="(item2, index2) in item.desk_lists" :key="index2">
                     <view class="name">{{item2.desk_name}}</view>
                     <view class="status">{{statusArr[item2.desk_status].name }}</view>
                     <view class="count">{{$minCommon.getSeats(item2.seats)}}</view>
@@ -210,51 +210,66 @@ export default {
 .change-platform {
     .platform-wrap {
         background: #fff;
-        padding: 30rpx 20rpx;
+        // padding: 30rpx;
         margin-top: 20rpx;
+        border-radius: 10rpx;
+        padding-right: 0;
 
         .title {
             font-size: 30rpx;
-            padding-bottom: 30rpx;
+            padding-bottom: 10rpx;
+            padding-left: 30rpx;
+            padding-top: 20rpx;
         }
 
         .list {
+            padding: 30rpx;
+            padding-top: 0;
+            padding-right: 0;
             padding-left: 20rpx;
 
             .item {
+                width: 22%;
                 display: inline-block;
-                width: 140rpx;
                 border-radius: 10rpx;
                 padding: 20rpx 0;
+                height: 150rpx;
                 text-align: center;
+                margin-left: 20rpx;
+                margin-top: 20rpx;
 
-                // margin-left: 30rpx;
-                &:nth-child(n) {
-                    // margin: 0;
-                    // margin-top: 20rpx;
-                    margin-right: 20rpx;
-                    margin-bottom: 20rpx;
+                .status {
+                    margin: 4rpx 0;
+                    font-weight: bold;
+                    font-size: 28rpx;
                 }
 
-                &:nth-child(4n) {
-                    // margin: 0;
-                    // margin-top: 20rpx;
-                    margin-right: 0;
-                    margin-bottom: 20rpx;
+                .name {
+                    font-size: 28rpx;
+                    width: 100%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    padding: 0 10rpx;
                 }
+
+                .count {
+                    font-size: 24rpx;
+                }
+
+                // &:nth-child(4n+1) {
+                //   margin: 0;
+                //   margin-top: 20rpx;
+                // }
 
                 &:first-child {
-                    // margin: 0;
-                    margin-right: 20rpx;
+                    margin: 0;
+                    margin-top: 20rpx;
                 }
 
                 &>view {
                     font-size: 28rpx;
-                    color: #fff
-                }
-
-                .status {
-                    margin: 4rpx 0;
+                    color: #fff;
                 }
 
                 &.reserved {
@@ -262,7 +277,7 @@ export default {
                     background: #0090ff;
 
                     &>view {
-                        color: #fff
+                        color: #fff;
                     }
                 }
 
@@ -271,10 +286,31 @@ export default {
                     background: #ff0000;
                 }
 
-                &.be-confirm,
-                .clearing {
-                    // 待确认  清台中
+                &.be-confirm {
+                    // 待确认
                     background: #39ba01;
+                }
+
+                &.clearing {
+                    // 清台中
+                    background: #eeeeee;
+
+                    .status {
+                        margin: 4rpx 0;
+                        font-weight: bold;
+                        color: #333;
+                        font-size: 26rpx;
+                    }
+
+                    .name {
+                        font-size: 28rpx;
+                        color: #333;
+                    }
+
+                    .count {
+                        font-size: 24rpx;
+                        color: #666;
+                    }
                 }
 
                 &.in-order {
@@ -286,8 +322,21 @@ export default {
                     // 空闲中
                     background: #eeeeee;
 
-                    &>view {
-                        color: #666
+                    .status {
+                        margin: 4rpx 0;
+                        font-weight: bold;
+                        color: #333;
+                        font-size: 28rpx;
+                    }
+
+                    .name {
+                        font-size: 28rpx;
+                        color: #333;
+                    }
+
+                    .count {
+                        font-size: 24rpx;
+                        color: #666;
                     }
                 }
 
@@ -296,9 +345,14 @@ export default {
                     background: #eeeeee;
 
                     &>view {
-                        color: #ccc
+                        color: #ccc;
                     }
                 }
+            }
+
+            .one {
+                margin: 0;
+                margin-top: 20rpx;
             }
         }
     }

@@ -26,7 +26,7 @@
         <view class="main p-tb-20">
             <view>
                 当前状态：
-                <text style="color: #FF0000;">{{list.order_info.is_can_open === 0 ? (list.desk_info.desk_open_minimum === 0 || list.order_info.order_id === 0 ? '已经提交过申请了，请等待审核':'不够开台条件') : '已够开台条件'}}</text>
+                <text style="color: #FF0000;">{{list.order_info.is_can_open === 0 ? (list.desk_info.desk_open_minimum === 0 || list.order_info.order_id === 0 ? '待确认':'不满足开台条件，申请开台中') : '已够开台条件'}}</text>
             </view>
             <view>开台订单：{{list.order_info.order_id === 0 ? '未进行点单':'￥'+list.order_info.order_total}}</view>
         </view>
@@ -43,8 +43,8 @@
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
         <view class="p-tb-30 min-border-bottom">操作信息</view>
         <view class="main p-tb-20">
-            <view v-if="list.desk_info.book_time">预约时间：{{ $minCommon.formatDate(new Date(list.desk_info.book_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
-            <view v-if="list.desk_info.book_user_name">营销人员：{{list.desk_info.book_user_name}}</view>
+            <view>预约时间：{{list.desk_info.book_time ? $minCommon.formatDate(new Date(list.desk_info.book_time*1000),'yyyy-MM-dd hh:mm:ss') :'无' }}</view>
+            <view>营销人员：{{list.desk_info.book_user_name ? list.desk_info.book_user_name : '无'}}</view>
             <view v-if="list.desk_info.apply_time">申请时间：{{ $minCommon.formatDate(new Date(list.desk_info.apply_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
         </view>
     </view>

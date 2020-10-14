@@ -8,30 +8,51 @@
         </swiper-item>
     </swiper>
     <view class="goods-item p-lr-20 m-bottom-20" v-if="!noData">
-        <view class="top-view f28 f28">{{list.product_name}}</view>
+        <!-- <view class="top-view f28 f28">{{list.product_name}}</view> -->
+        <view class="f28  t" style="display:block">
+            <!-- {{item2.product_name}} -->
+            <view class='aaaa top-view f28' v-if="list.is_limited">
+                <text :class="list.limited_activity_name ? list.limited_activity_name.length < 4 ?   'discount_  min-ellipsis f26' :' discount min-ellipsis f26' : ''">
+                    {{list.limited_activity_name}}
+                </text>
+                <text class="t f26">{{list.product_name}} </text>
+
+            </view>
+            <!-- <view class='aaaa f26' v-if="item2.sku.is_limited">
+                                                <text :class="item2.limited_activity_name ? item2.limited_activity_name.length < 4 ?   'discount_  min-ellipsis f26' :' discount min-ellipsis f26' : ''">
+                                                    {{item2.limited_activity_name}}
+                                                </text>
+                                                <view class="t f26">{{item2.product_name}} </view>
+
+                                            </view> -->
+            <view class="top-view f28" v-else>{{list.product_name}}</view>
+        </view>
         <view class="botm-view">
             <view class="f22">
                 <text class="price" v-if="product_type === 'product' ">￥{{list.sku.length === 0 ? '暂无数据': list.sku[chioceIndex].sku_price}}</text>
                 <text class="price" v-if="product_type === 'service' ">￥{{list.price}}</text>
             </view>
-            <min-stepper v-if="!$parseURL().isPay" v-model="list.step" @change="goodsChange($event,list)"></min-stepper>
+            <min-stepper v-if="!$parseURL().isPay && list.sku.length <= 1" v-model="list.step" @change="goodsChange($event,list)"></min-stepper>
+            <view v-if="!$parseURL().isPay && list.sku.length > 1" class="isbtn f24" @click.stop="selSku">
+                {{product_type === 'product'  ? '选规格':'' }}
+            </view>
         </view>
     </view>
     <view v-if="!$parseURL().isPay">
         <min-describe @chincesku="selSku" :sku="list.sku[0].sku_full_name" leftTxt="规格" v-if="product_type === 'product' "></min-describe>
     </view>
-    <view class="introduction m-top-20 p-lr-20" v-if="!noData">
+    <view class="introduction m-top-20 p-lr-20" v-if="list.info">
         <view class="title min-border-bottom m-bottom-30">详细介绍</view>
         <view class="content p-bottom-30">{{list.info ? list.info : '暂无数据'}}</view>
     </view>
     <min-goods-submit v-if="!$parseURL().isPay" icon="../../static/images/cart.png" :goodsCount="countNums" :totalAmount="totalAmountE " :totalLabel="totalLabel" buttonText="去下单" @leftClick="leftClick" @submit="submit"></min-goods-submit>
     <!-- 选择规格 -->
-    <min-popup :show="isSelSku" @close="closeSelectedSkuPop" :heightSize="skuObj.sku.length < 3 ? '700' : '830' ">
+    <min-popup :show="isSelSku" @close="closeSelectedSkuPop" :heightSize="skuObj.sku.length < 3 ? '700' : '850' ">
         <view class="skuPop">
             <view class="skuTop">
                 <view class="leftView">
                     <view class="img-view">
-                        <image :src="skuObj.sku[chioceIndex].sku_img" @error="imgerraaaa" />
+                        <image :src="skuObj.sku[chioceIndex].sku_img ? skuObj.sku[chioceIndex].sku_img  : ''" @error="imgerraaaa" />
                     </view>
                     <!-- sku信息 -->
                     <!-- sku信息 -->
@@ -48,7 +69,7 @@
                 </view>
             </view>
             <view class="min-border-bottom m-lr-30"></view>
-            <scroll-view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'" scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')'}">
+            <scroll-view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'" scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')',height:skuObj.sku.length > 4 ? '290rpx':''}">
                 <!-- 可选择规格项 -->
                 <view>
                     <view class="f26">规格</view>
@@ -84,50 +105,72 @@
             </view>
             <view class="main-sel-view p-lr-30 m-top-20" style="margin-bottom:300rpx" @touchstart="start" @touchmove="move" @touchend="end">
                 <scroll-view scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')','height':'600rpx'}">
-                    <view class="item" v-for="(item2,n) in selArr" :key="n">
-                        <!-- <view v-if="!item2.test"> -->
-                        <image :src="item2.type !== 'setmeal' ? (item2.sku.sku_img ? item2.sku.sku_img  : item2.product_img  ):item2.product_img  " @error="imgerras($event,n)" />
-                        <view class="content-view">
-                            <view class="right-view-title">
-                                <text class="f28 t" style="display:block">{{item2.product_name}}</text>
-                                <text class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'product'">规格：{{item2.sku.sku}}</text>
-                                <text class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'setmeal'">
-                                    规格：
-                                    <template v-for="(desc,aa) in item2.combination">
-                                        <span :key="aa">
-                                            <template v-for="(desc1,abc) in desc.combination_detail">
-                                                <span :key="abc" class="m-left-10">{{desc1.name}}*{{desc1.num_}}</span>
-                                            </template>
-                                        </span>
+                    <list>
+                        <cell class="item" v-for="(item2,n) in selArr" :key="n">
+                            <!-- <view v-if="!item2.test"> -->
+                            <image :src="item2.type !== 'setmeal' ? (item2.sku.sku_img ? item2.sku.sku_img  : item2.product_img  ):item2.product_img  " @error="imgerras($event,n)" />
+                            <cell class="content-view">
+                                <cell class="right-view-title">
+                                    <cell class="f28  t" style="display:block">
+                                        <!-- {{item2.product_name}} -->
+                                        <cell class='aaaa f26' v-if="item2.is_limited || item2.sku.is_limited">
+                                            <cell :class="item2.limited_activity_name ? item2.limited_activity_name.length < 4 ?   'discount_  min-ellipsis f26' :' discount min-ellipsis f26' : ''">
+                                                {{item2.limited_activity_name}}
+                                            </cell>
+                                            <cell class="t f26">{{item2.product_name}} </cell>
 
-                                    </template>
+                                        </cell>
+                                        <!-- <view class='aaaa f26' v-if="item2.sku.is_limited">
+                                                <text :class="item2.limited_activity_name ? item2.limited_activity_name.length < 4 ?   'discount_  min-ellipsis f26' :' discount min-ellipsis f26' : ''">
+                                                    {{item2.limited_activity_name}}
+                                                </text>
+                                                <view class="t f26">{{item2.product_name}} </view>
 
-                                </text>
-                                <text class="f26 t  m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'service'">规格：{{ item2.info }}</text>
-                            </view>
-                            <view class="right-view-bottom">
-                                <view class="right-view-bottom-desc">
-                                    <text class="f20 t" v-if="item2.type === 'product'">
+                                            </view> -->
+                                        <cell class="t f26" v-else>{{item2.product_name}}</cell>
+                                    </cell>
+                                    <cell class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'product'">规格：{{item2.sku.sku}}</cell>
+                                    <cell class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'setmeal'">
+                                        规格：
+                                        <template v-for="(desc,aa) in item2.combination">
+                                            <span :key="aa">
+                                                <template v-for="(desc1,abc) in desc.combination_detail">
+                                                    <span :key="abc" class="m-left-10">{{desc1.name}}*{{desc1.num_}}</span>
+                                                </template>
+                                            </span>
 
-                                        <text style="color:#FF0000;font-size:30">￥{{item2.sku.sku_price}}</text>
-                                    </text>
-                                    <text class="f20 t" v-if="item2.type === 'service'">
+                                        </template>
 
-                                        <text style="color:#FF0000;font-size:30">￥{{item2.price}}</text>
-                                    </text>
-                                    <text class="f20 t" v-if="item2.type === 'setmeal'">
+                                    </cell>
+                                    <cell class="f26 t  m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'service'">规格：{{ item2.info }}</cell>
+                                </cell>
+                                <cell class="right-view-bottom">
+                                    <cell class="right-view-bottom-desc">
+                                        <cell class="f20 t" v-if="item2.type === 'product'">
 
-                                        <text style="color:#FF0000;font-size:30">￥{{item2.price}}</text>
-                                    </text>
-                                </view>
-                                <view class="steper">
-                                    <min-stepper v-model="item2.step" :isAnimation="false" :min="0" @change="aleradyGood($event,n)"></min-stepper>
-                                    <!-- <view v-if="!isDel" @click="delItem(n)">删除</view> -->
-                                </view>
-                            </view>
-                        </view>
-                        <!-- </view> -->
-                    </view>
+                                            <text style="color:#FF0000;font-size:30">￥{{item2.sku.sku_price}}</text>
+                                        </cell>
+                                        <cell class="f20 t" v-if="item2.type === 'service'">
+
+                                            <text style="color:#FF0000;font-size:30">￥{{item2.price}}</text>
+                                        </cell>
+                                        <cell class="f20 t" v-if="item2.type === 'setmeal'">
+
+                                            <text style="color:#FF0000;font-size:30">￥{{item2.price}}</text>
+                                        </cell>
+                                    </cell>
+                                    <cell class="steper">
+                                        <min-stepper v-model="item2.step" :isAnimation="false" :min="0" @change="aleradyGood($event,n)"></min-stepper>
+                                        <!-- <view v-if="!isDel" @click="delItem(n)">删除</view> -->
+                                    </cell>
+                                </cell>
+                            </cell>
+                            <!-- </view> -->
+                            <!-- 套餐标识 -->
+                            <cell class="isTaocan" v-if="item2.type === 'setmeal'">套餐</cell>
+                        </cell>
+                    </list>
+
                 </scroll-view>
             </view>
             <!-- <view class="empty-view"></view> -->
@@ -162,7 +205,8 @@ export default {
             isSelSku: false,
             skuObj: {
                 sku: [{
-                    sku_full_name: ''
+                    sku_full_name: '',
+                    sku_img: ''
                 }]
             },
             top: '',
@@ -178,17 +222,14 @@ export default {
         }
     },
     watch: {
-        // selArr: {
-        //     handler(a, b) {
-        //         a.map((item, index) => {
-        //             if (item.step === 0) {
-        //                 return this.delArr.push(index)
-        //             }
-        //         })
-        //         this.$store.dispatch('goods/setOrderSelArr', a)
-        //     },
-        //     deep: true,
-        // },
+        selArr: {
+            handler(a, b) {
+                if (a.length === 1 && a[0].step === 0) {
+                    this.selArr = []
+                }
+            },
+            deep: true,
+        },
         // delArr(a) {
         //     a.map(item => {
         //         this.selArr.splice(item, 1)
@@ -285,6 +326,20 @@ export default {
                         console.log(this.list)
                         this.itemss = []
                         this.itemss.push(this.list.product_img)
+                        this.skuObj = this.list
+                        this.selArr.map(item => {
+                            if (item.id === this.list.id && this.list.sku.length > 1) {
+                                this.list.sku.map((item2, index) => {
+                                    if (item2.id === item.sku.id) {
+                                        this.$set(this.list, 'step', item.step)
+                                        return this.chioceIndex = index
+                                    }
+                                })
+                            }
+                            if (item.id === this.list.id && this.list.sku.length <= 1) {
+                                this.$set(this.list, 'step', item.step)
+                            }
+                        })
                     })
                     .catch(() => {
                         this.noData = true
@@ -311,6 +366,22 @@ export default {
         selSku(index, index2) {
             this.isSelSku = true
             this.skuObj = this.list
+            // 已选商品如果存在该商品，就默认加上已选商品的数量
+            let abc = 0
+            this.selArr.map((item, index1) => {
+                if (item.type === 'product' && item.id === this.skuObj.id) {
+                    if (this.skuObj.sku[this.chioceIndex].id === item.sku.id) {
+                        abc = item.step
+                    }
+                    // this.skuObj.sku.map((item2, index2) => {
+                    //     if (item2.id === item.sku.id) {
+                    //         this.skuObj.step = item.step
+                    //     }
+                    // })
+                }
+            })
+
+            this.skuObj.step = abc
             // this.skuObj.step = 1
         },
         /**  关闭选择规格弹出层 */
@@ -328,6 +399,22 @@ export default {
         // 选择规格
         chioceO(index) {
             this.chioceIndex = index
+            let abc = 0
+            this.selArr.map((item, index1) => {
+                if (item.type === 'product' && item.id === this.skuObj.id) {
+                    if (this.skuObj.sku[this.chioceIndex].id === item.sku.id) {
+                        abc = item.step
+                    }
+                    // this.skuObj.sku.map((item2, index2) => {
+                    //     if (item2.id === item.sku.id) {
+                    //         this.skuObj.step = item.step
+                    //     }
+                    // })
+                }
+            })
+
+            this.skuObj.step = abc
+
         },
         // 已选商品关闭
         closeSelectedSkuPop1() {
@@ -533,8 +620,7 @@ export default {
         // 商品详情计数器
         goodsChange(e, list) {
             if (e === 0) {
-                console.log(list)
-                console.log(this.selArr)
+
             }
             this.$set(this.list, 'step', e)
             if (this.product_type === 'service') {
@@ -591,6 +677,42 @@ export default {
             line-height: 60rpx;
         }
 
+        .aaaa {
+            font-weight: bold;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .discount {
+            width: 120rpx;
+            height: 100%;
+            font-size: 22rpx;
+            font-family: PingFang SC;
+            font-weight: bold;
+            color: #fff;
+            background: #f80409;
+            padding: 5rpx;
+            margin-right: 10rpx;
+            // display: block;
+            line-height: 26rpx;
+        }
+
+        .discount_ {
+            width: auto;
+            height: 100%;
+            font-size: 22rpx;
+            font-family: PingFang SC;
+            font-weight: bold;
+            color: #fff;
+            background: #f80409;
+            padding: 5rpx;
+            margin-right: 10rpx;
+            // display: block;
+            line-height: 26rpx;
+        }
+
         .botm-view {
             display: flex;
             justify-content: space-between;
@@ -606,6 +728,16 @@ export default {
                 text-align: center;
                 line-height: 48rpx;
                 font-size: 24rpx;
+            }
+
+            .isbtn {
+                width: 100rpx;
+                height: 48rpx;
+                background: #ffe001;
+                border-radius: 24rpx;
+                color: #333333;
+                text-align: center;
+                line-height: 48rpx;
             }
 
             .price {
@@ -864,6 +996,7 @@ export default {
             display: flex;
             margin-bottom: 20rpx;
             height: 140rpx;
+            position: relative;
 
             &>image {
                 width: 140rpx;
@@ -889,6 +1022,42 @@ export default {
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
+
+                        .aaaa {
+                            font-weight: bold;
+                            width: 500rpx;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+
+                        .discount {
+                            width: 120rpx;
+                            height: 100%;
+                            font-size: 22rpx;
+                            font-family: PingFang SC;
+                            font-weight: bold;
+                            color: #fff;
+                            background: #f80409;
+                            padding: 5rpx;
+                            margin-right: 10rpx;
+                            // display: block;
+                            line-height: 26rpx;
+                        }
+
+                        .discount_ {
+                            width: auto;
+                            height: 100%;
+                            font-size: 22rpx;
+                            font-family: PingFang SC;
+                            font-weight: bold;
+                            color: #fff;
+                            background: #f80409;
+                            padding: 5rpx;
+                            margin-right: 10rpx;
+                            // display: block;
+                            line-height: 26rpx;
+                        }
                     }
                 }
 
@@ -911,6 +1080,23 @@ export default {
                         align-items: center;
                     }
                 }
+            }
+
+            .isTaocan {
+                width: 80rpx;
+                height: 40rpx;
+                background: rgba(3, 3, 19, 1);
+                border-radius: 0rpx 20rpx 20rpx 0rpx;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 1;
+                font-size: 26rpx;
+                font-family: PingFang SC;
+                font-weight: 500;
+                color: rgba(255, 224, 1, 1);
+                text-align: center;
+                line-height: 40rpx;
             }
         }
     }

@@ -31,7 +31,7 @@ $type: top bottom left right lr tb;
 }
 
 // ============================ 字体大小 ============================
-@each $size in 20, 22, 24, 26, 28, 30, 32, 34 {
+@each $size in 20, 22, 24, 26, 28, 30, 31, 32, 33, 34, 35, 36 {
   .f#{$size} {
     font-size: #{$size}rpx;
   }
@@ -48,6 +48,15 @@ $type: top bottom left right lr tb;
 }
 .red{
   color:red
+}
+.weight{
+  font-weight: bold;
+}
+.cfz{
+  color: #666;
+}
+.cjq{
+  color: #999;
 }
 // ============================ border-radius ============================
 .radius-4 {

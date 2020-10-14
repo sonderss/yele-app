@@ -17,7 +17,7 @@
         </view>
         <view class="main p-top-20">
             <view class="item">台<span style="padding-left:55rpx">号：</span>{{list.order_info.desk_name}}</view>
-            <view class="item">抵<span style="padding-left:55rpx">消：</span>{{list.order_info.minim_charge}}</view>
+            <view class="item">低<span style="padding-left:55rpx">消：</span>{{list.order_info.minim_charge}}</view>
             <view class="item">账单金额：￥{{list.order_info.bill_price}}</view>
             <view class="item">客户姓名：{{list.order_info.client_name ? list.order_info.client_name : '暂无'}}</view>
             <view class="item">联系方式：{{list.order_info.client_mobile ? list.order_info.client_mobile :'暂无'}}</view>
@@ -39,7 +39,7 @@
         </view>
     </view> -->
     <view style="height:100rpx"></view>
-    <min-goods-submit leftText="应付赠送额度" :totalAmount='list.payable_credit' buttonText='确定赠送' @submit='submit'></min-goods-submit>
+    <min-goods-submit leftText="应付赠送额度" desc='' :totalAmount='list.payable_credit' buttonText='确定赠送' @submit='submit'></min-goods-submit>
     <min-modal ref="test"></min-modal>
 </view>
 </template>

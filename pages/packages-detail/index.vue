@@ -8,7 +8,25 @@
         </swiper-item>
     </swiper>
     <view class="goods-item p-lr-20 m-bottom-20">
-        <view class="top-view f28 m-top-10 f28">{{list.product_name}}</view>
+        <!-- <view class="top-view f28 m-top-10 f28">{{list.product_name}}</view> -->
+        <view class="f28  t" style="display:block">
+            <!-- {{item2.product_name}} -->
+            <view class='aaaa top-view f28' v-if="list.is_limited">
+                <text :class="list.limited_activity_name ? list.limited_activity_name.length < 4 ?   'discount_  min-ellipsis f26' :' discount min-ellipsis f26' : ''">
+                    {{list.limited_activity_name}}
+                </text>
+                <text class="t f26">{{list.product_name}} </text>
+
+            </view>
+            <!-- <view class='aaaa f26' v-if="item2.sku.is_limited">
+                                                <text :class="item2.limited_activity_name ? item2.limited_activity_name.length < 4 ?   'discount_  min-ellipsis f26' :' discount min-ellipsis f26' : ''">
+                                                    {{item2.limited_activity_name}}
+                                                </text>
+                                                <view class="t f26">{{item2.product_name}} </view>
+
+                                            </view> -->
+            <view class="top-view f28" v-else>{{list.product_name}}</view>
+        </view>
         <view class="botm-view">
             <view class="f22 m-bottom-20">
                 <text class="price">￥{{list.price}}</text>
@@ -52,7 +70,7 @@
                 <text v-if="type !== 3" class="right-txt f26">已选 <text class="num1">{{item.goodsCount}}</text> 份</text>
             </view>
             <view class="content p-bottom-30" v-if="item.necessary !== 1">
-                <min-describe class="i" v-for="(item2,index2) in item.combination_detail" :key="index2" :isCan="item2.isCan" :leftIcon='true' :maxStep="item.is_check !== 1 ? (item.goodsCount !== item.last_number ? item.last_number : item.last_number - item.goodsCount) : item.last_number - item.goodsCount" :value="item2.step" @changeCount="changeCount($event,index,index2)" :leftTxt="item2.product_name +'*'+ item2.num " :leftIconValue='item2.product_img' :step='type === 3 ? false: true' :Animation="true"></min-describe>
+                <min-describe :isShowNone='item.goodsCount == item.last_number' @testEvent='tet' class="i" v-for="(item2,index2) in item.combination_detail" :key="index2" :isCan="item2.isCan" :leftIcon='true' :maxStep="item.is_check !== 1 ? (item.goodsCount !== item.last_number ? item.last_number : item.last_number - item.goodsCount) : item.last_number - item.goodsCount" :value="item2.step" @changeCount="changeCount($event,index,index2)" :leftTxt="item2.product_name +'*'+ item2.num " :leftIconValue='item2.product_img' :step='type === 3 ? false: true' :Animation="true"></min-describe>
             </view>
         </view>
 
@@ -225,6 +243,10 @@ export default {
             if (e.type === 'error') {
                 this.list.setmeal_images.push('/static/images/bid-goods.png')
             }
+        },
+        tet() {
+            console.log(12321123321)
+            this.$showToast('已达上限/不可再选')
         },
         addGoods(obj) {
             if (this.selArr.length === 0) {
@@ -430,6 +452,42 @@ export default {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        .aaaa {
+            font-weight: bold;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .discount {
+            width: 120rpx;
+            height: 100%;
+            font-size: 22rpx;
+            font-family: PingFang SC;
+            font-weight: bold;
+            color: #fff;
+            background: #f80409;
+            padding: 5rpx;
+            margin-right: 10rpx;
+            // display: block;
+            line-height: 26rpx;
+        }
+
+        .discount_ {
+            width: auto;
+            height: 100%;
+            font-size: 22rpx;
+            font-family: PingFang SC;
+            font-weight: bold;
+            color: #fff;
+            background: #f80409;
+            padding: 5rpx;
+            margin-right: 10rpx;
+            // display: block;
+            line-height: 26rpx;
         }
 
         .botm-view {

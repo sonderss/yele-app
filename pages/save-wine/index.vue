@@ -1,5 +1,5 @@
 <template>
-<view class="save-wine p-tb-20 p-lr-30">
+<view class="save-wine p-tb-20 p-lr-20">
     <view class="goods-wrap p-lr-20">
         <view class="p-tb-30 min-border-bottom">来源于订单</view>
         <view class="goods-list p-t-10 p-bottom-20" v-if="list.from_order.length > 0">
@@ -28,7 +28,7 @@
         <view class="none" v-else>暂无</view>
     </view>
     <!-- 来源于取酒 -->
-    <view class="goods-wrap m-top-20 p-lr-20">
+    <!-- <view class="goods-wrap m-top-20 p-lr-20">
         <view class="p-tb-30 min-border-bottom">来源于取酒</view>
         <view class="goods-list p-t-10 p-bottom-20" v-if="list.from_fetch.length > 0">
             <view class="p-top-20" v-for="(item,index) in list.from_fetch" :key="index">
@@ -47,14 +47,13 @@
                                     <view v-if="item.storage_type === 1">整瓶存</view>
                                 </view>
                             </view>
-                            <!-- <view class="goods-price">剩余50%</view> -->
                         </view>
                     </view>
                 </view>
             </view>
         </view>
         <view class="none" v-else>暂无</view>
-    </view>
+    </view> -->
     <view class="client_desc p-lr-20 m-top-20">
         <min-desc-input sign="*" desc="客户姓名" v-model="name"></min-desc-input>
         <min-desc-input sign="*" :border="false" desc="联系方式" v-model="phone" :maxlength="11"></min-desc-input>
@@ -68,6 +67,7 @@ export default {
     name: 'save-wine',
     navigate: ['navigateTo'],
     onLoad() {
+        console.log(this.$parseURL())
         this.$minApi.getSaveWineList({
                 opening_id: this.$parseURL().open_id
             })
@@ -79,9 +79,14 @@ export default {
                     item.num = 100
                 })
                 this.list = res
+                console.log(this.list)
+                if (this.$parseURL().name || this.$parseURL().phone) {
+                    this.name = this.$parseURL().name
+                    this.phone = this.$parseURL().phone
+                    return
+                }
                 this.name = res.client_name
                 this.phone = res.client_mobile
-                console.log(this.list)
             })
     },
     data() {
@@ -120,6 +125,7 @@ export default {
              */
             if (!this.name) return this.$showToast("客户名称错误")
             if (!this.$minCommon.checkMobile(this.phone)) return this.$showToast("手机号填写错误")
+            if (this.list.from_order.length <= 0) return this.$showToast("暂无可存的酒")
             const options = {
                 apply_data: []
             }
@@ -130,22 +136,22 @@ export default {
                         sku_id: item.sku_id,
                         // ratio: item.quantity,
                         ratio: item.num,
-                        unique_code: item.unique_code
+                        // unique_code: item.unique_code
                     })
                 }
             })
-            this.list.from_fetch.map((item, index) => {
-                if (item.flag) {
-                    options.order_id = item.order_id
-                    // options.apply_data.push(item.sku_id + item.quantity)
-                    options.apply_data.push({
-                        sku_id: item.sku_id,
-                        // ratio: item.quantity,
-                        ratio: item.num,
-                        unique_code: item.unique_code
-                    })
-                }
-            })
+            // this.list.from_fetch.map((item, index) => {
+            //     if (item.flag) {
+            //         options.order_id = item.order_id
+            //         // options.apply_data.push(item.sku_id + item.quantity)
+            //         options.apply_data.push({
+            //             sku_id: item.sku_id,
+            //             // ratio: item.quantity,
+            //             ratio: item.num,
+            //             unique_code: item.unique_code
+            //         })
+            //     }
+            // })
 
             options.client_name = this.name
             options.client_mobile = this.phone
@@ -172,6 +178,8 @@ export default {
                             })
                         }, 2000)
                     }
+                }).catch(err => {
+                    console.log(err)
                 })
         }
     }
@@ -194,7 +202,7 @@ export default {
         .goods-content {
             flex: 1;
             display: block;
-            padding-left: 20rpx;
+            padding-left: 10rpx;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -228,7 +236,7 @@ export default {
             margin-left: -20rpx;
 
             .slider {
-                flex: 0 0 68%;
+                flex: 0 0 60%;
             }
         }
     }

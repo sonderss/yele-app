@@ -139,6 +139,9 @@ export default {
                     setTimeout(() => {
                         this.$store.dispatch('user/setUserInfo', res)
                         this.$store.dispatch('status/setisGetUser', true) // 个人资料页重新获取数据
+                        // this.$minRouter.push({
+                        //     name: 'index'
+                        // })
                         uni.redirectTo({
                             url: '../index/index'
                         })

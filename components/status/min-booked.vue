@@ -37,14 +37,16 @@
     </view>
     <view class="btns">
         <view :class="index === 0 ? 'btn active' : 'btn' " @click="book">预约</view>
-        <view :class="index === 1 ? 'btn active' : 'btn' " @click="startOrder">开台</view>
+        <view v-if="isShowByn" :class="index === 1 ? 'btn active' : 'btn' " @click="startOrder">开台</view>
         <view :class="index === 2 ? 'btn active' : 'btn' " @click="saveWine">存酒</view>
+        <view v-if="!isShowByn" :class="index === 3 ? 'btn active' : 'btn' " @click="goGetHistory">历史</view>
+
         <view class="badge" ref='testDom'>
             <text class="more" style="color: #CCCCCC;" @click="showToastTxt" id='testDom'>&#xe61c;</text>
             <view class="toast anmatiin " v-if="toast">
-                <view class="bag_btn" @click="backBook">推迟到店</view>
-                <view class="bag_btn" @click="cancel">取消订台</view>
-                <view class="bag_btn" @click="goGetHistory">历史</view>
+                <view v-if="isShowByn" class="bag_btn" @click="goGetHistory">历史</view>
+                <view v-if="isShowByn" class="bag_btn" @click="backBook">推迟到店</view>
+                <view class="bag_btn" @click="cancel">取消预约</view>
                 <view class="bag"></view>
             </view>
         </view>
@@ -73,11 +75,16 @@ export default {
     data() {
         return {
             toast: false,
-            index: 0
+            index: 0,
+            isShowByn: true
         }
     },
     mounted() {
         console.log(this.idNum, this.date)
+        console.log()
+        if (this.$minCommon.formatDate(new Date(), 'yyyy-MM-dd') !== this.date) {
+            this.isShowByn = false
+        }
         // 监听关闭事件
         this.$nextTick(() => {
             // document.querySelector('body').addEventListener('click', this.handleBodyClick)

@@ -8,7 +8,25 @@
         </swiper-item>
     </swiper>
     <view class="goods-item p-lr-20 m-bottom-20">
-        <view class="top-view f28  f28">{{list.product_name}}</view>
+        <!-- <view class="top-view f28  f28">{{list.product_name}}</view> -->
+        <view class="f28  t" style="display:block">
+            <!-- {{item2.product_name}} -->
+            <view class='aaaa top-view f28' v-if="list.is_limited">
+                <text :class="list.limited_activity_name ? list.limited_activity_name.length < 4 ?   'discount_  min-ellipsis f26' :' discount min-ellipsis f26' : ''">
+                    {{list.limited_activity_name}}
+                </text>
+                <text class="t f26">{{list.product_name}} </text>
+
+            </view>
+            <!-- <view class='aaaa f26' v-if="item2.sku.is_limited">
+                                                <text :class="item2.limited_activity_name ? item2.limited_activity_name.length < 4 ?   'discount_  min-ellipsis f26' :' discount min-ellipsis f26' : ''">
+                                                    {{item2.limited_activity_name}}
+                                                </text>
+                                                <view class="t f26">{{item2.product_name}} </view>
+
+                                            </view> -->
+            <view class="top-view f28" v-else>{{list.product_name}}</view>
+        </view>
         <view class="botm-view">
             <view class="f28" style="color:#fe432a;font-weight:700">
                 ￥
@@ -24,9 +42,9 @@
         </view>
     </view>
     <min-describe v-if="!$parseURL().isPay" @chincesku="toDeatil" :sku2="list.combination[0].combination_name" leftTxt="套餐组合"></min-describe>
-    <view class="introduction m-top-20 p-lr-20">
+    <view class="introduction m-top-20 p-lr-20" v-if="list.info">
         <view class="title min-border-bottom m-bottom-30">详细介绍</view>
-        <view class="content p-bottom-30">
+        <view class="content p-bottom-30" v-if="list.info">
             {{list.info}}
         </view>
     </view>
@@ -51,7 +69,24 @@
                         <image :src="item2.type !== 'setmeal' ? (item2.sku.sku_img ? item2.sku.sku_img  : item2.product_img  ):item2.product_img " mode="" />
                         <view class="content-view">
                             <view class="right-view-title">
-                                <text class="f28 t" style="display:block">{{item2.product_name}}</text>
+                                <view class="f28  t" style="display:block">
+                                    <!-- {{item2.product_name}} -->
+                                    <view class='aaaa f26' v-if="item2.is_limited || item2.sku.is_limited">
+                                        <text :class="item2.limited_activity_name ? item2.limited_activity_name.length < 4 ?   'discount_  min-ellipsis f26' :' discount min-ellipsis f26' : ''">
+                                            {{item2.limited_activity_name}}
+                                        </text>
+                                        <text class="t f26">{{item2.product_name}} </text>
+
+                                    </view>
+                                    <!-- <view class='aaaa f26' v-if="item2.sku.is_limited">
+                                                <text :class="item2.limited_activity_name ? item2.limited_activity_name.length < 4 ?   'discount_  min-ellipsis f26' :' discount min-ellipsis f26' : ''">
+                                                    {{item2.limited_activity_name}}
+                                                </text>
+                                                <view class="t f26">{{item2.product_name}} </view>
+
+                                            </view> -->
+                                    <view class="t f26" v-else>{{item2.product_name}}</view>
+                                </view>
                                 <text class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'product' ">规格：{{item2.sku.sku}}</text>
                                 <text class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'setmeal'">
                                     规格：
@@ -77,6 +112,9 @@
                                     <min-stepper :isAnimation='false' v-model="item2.step" :min='0' @change="alDel($event,n)"></min-stepper>
                                 </view>
                             </view>
+
+                            <!-- 套餐标识 -->
+                            <view class="isTaocan" v-if="item2.type === 'setmeal'">套餐</view>
                         </view>
                     </view>
                 </scroll-view>
@@ -442,6 +480,42 @@ export default {
             line-height: 60rpx;
         }
 
+        .aaaa {
+            font-weight: bold;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .discount {
+            width: 120rpx;
+            height: 100%;
+            font-size: 22rpx;
+            font-family: PingFang SC;
+            font-weight: bold;
+            color: #fff;
+            background: #f80409;
+            padding: 5rpx;
+            margin-right: 10rpx;
+            // display: block;
+            line-height: 26rpx;
+        }
+
+        .discount_ {
+            width: auto;
+            height: 100%;
+            font-size: 22rpx;
+            font-family: PingFang SC;
+            font-weight: bold;
+            color: #fff;
+            background: #f80409;
+            padding: 5rpx;
+            margin-right: 10rpx;
+            // display: block;
+            line-height: 26rpx;
+        }
+
         .botm-view {
             display: flex;
             justify-content: space-between;
@@ -516,6 +590,7 @@ export default {
             display: flex;
             margin-bottom: 20rpx;
             height: 140rpx;
+            position: relative;
 
             &>image {
                 width: 140rpx;
@@ -541,6 +616,42 @@ export default {
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
+
+                        .aaaa {
+                            font-weight: bold;
+                            width: 500rpx;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+
+                        .discount {
+                            width: 120rpx;
+                            height: 100%;
+                            font-size: 22rpx;
+                            font-family: PingFang SC;
+                            font-weight: bold;
+                            color: #fff;
+                            background: #f80409;
+                            padding: 5rpx;
+                            margin-right: 10rpx;
+                            // display: block;
+                            line-height: 26rpx;
+                        }
+
+                        .discount_ {
+                            width: auto;
+                            height: 100%;
+                            font-size: 22rpx;
+                            font-family: PingFang SC;
+                            font-weight: bold;
+                            color: #fff;
+                            background: #f80409;
+                            padding: 5rpx;
+                            margin-right: 10rpx;
+                            // display: block;
+                            line-height: 26rpx;
+                        }
                     }
                 }
 
@@ -563,6 +674,23 @@ export default {
                         align-items: center;
                     }
                 }
+            }
+
+            .isTaocan {
+                width: 80rpx;
+                height: 40rpx;
+                background: rgba(3, 3, 19, 1);
+                border-radius: 0rpx 20rpx 20rpx 0rpx;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 1;
+                font-size: 26rpx;
+                font-family: PingFang SC;
+                font-weight: 500;
+                color: rgba(255, 224, 1, 1);
+                text-align: center;
+                line-height: 40rpx;
             }
         }
 

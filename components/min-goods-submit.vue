@@ -1,13 +1,13 @@
 <template>
 <view class="min-goods-submit min-border-top">
-    <view class="min-left  p-tb-25 p-left-30" style="flex-basis: 200rpx;" @click="$emit('leftClick')">
+    <view class="min-left  p-tb-25 p-left-30" style="flex-basis: 200rpx;" @click.stop="$emit('leftClick')">
         <min-badge class="min-goods-count" :style="{top:topV+'rpx',left:leftV+'rpx'}" :count="goodsCount" v-if="goodsCount * 1  > 0" />
         <image class="min-icon" v-if="icon" :src="icon" alt="icon" />
         <view class="f28" :style="{color:leftTextColor,width:leftTextWidth}" v-if="leftText"><text>{{leftTextDesc}}</text>{{leftText}}</view>
     </view>
     <view class="min-main p-tb-20 p-right-30">
         <view class="min-total f28" v-if="totalAmount">
-            合计：<text class="min-amount">￥{{totalAmount}}</text>
+            <text>{{desc}}</text><text class="min-amount">￥{{totalAmount}}</text>
         </view>
         <view class="f26" :style="{color:bottomcolot}" v-if="totalLabel">{{totalLabel}}</view>
     </view>
@@ -81,6 +81,10 @@ export default {
         bgcolor: {
             type: String,
             default: 'rgba(255, 224, 0, 1)'
+        },
+        desc: {
+            type: String,
+            default: '合计：'
         }
     }
 }

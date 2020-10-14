@@ -1,7 +1,7 @@
 <template>
 <view class="min-data-show">
     <view class="top_search">
-        <input :class="focus ? 'left' : 'center'" v-model="keyword" :placeholder="placeholder" @focus="focusValue" />
+        <input style="color:#333" :class="focus ? 'left' : 'center'" v-model="keyword" :placeholder="placeholder" @focus="focusValue" />
     </view>
     <view class="m-tb-20">
         <view class="nav_item min-border-bottom p-lr-20" v-if="ids !== '3'">
@@ -54,10 +54,10 @@
                 </view>
                 <view v-if="ids === '2'">
                     <view class="test_ui" v-for="(i,n) in getData.performance_list" :key="n">
-                        <view class="left">
+                        <view class="left" style="padding-right:0">
                             <text class="lefty_">{{i.role_name}}</text>
                             <text class="left_">{{i.opening_count}}</text>
-                            <text class="lefty_">{{i.performance}}</text>
+                            <text class="lefty_" style="text-align:right">{{i.performance}}</text>
                         </view>
                         <view class="right">
                             <text v-if="right">></text>

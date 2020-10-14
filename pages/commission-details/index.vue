@@ -394,11 +394,18 @@ export default {
             startime = stTime[1] + '年' + stTime[0]
             endtime = enTime[1] + '年' + enTime[0]
             if (startime === this.startTime1 && endtime === this.endTime1) return
-            console.log(startime, endtime)
-            this.startTime1 = startime
-            this.endTime1 = endtime
             this.value = []
             this.value.push(this.num)
+            let replacement = '年，月，日'
+            let s = startime.replace(/[(年) | (月)]/g, '-');
+            s = s.replace(/日/g, '')
+            let d = endtime.replace(/[(年) | (月)]/g, '-');
+            d = d.replace(/日/g, '')
+            if (new Date(s).getTime() >= new Date(d).getTime()) {
+                return this.$showToast('结束日期不可早于开始日期')
+            }
+            this.startTime1 = startime
+            this.endTime1 = endtime
             this.getData(
                 this.getDatetre(this.startTime1),
                 this.getDatetre(this.endTime1),

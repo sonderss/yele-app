@@ -2,30 +2,30 @@
 <view class="list_box">
     <view class="left" v-if="mainArray.length !== 0">
         <scroll-view scroll-y="true" :style="{ 'height':scrollHeight }">
-            <view class="item  min-ellipsis" v-for="(item,index) in mainArray" :key="index" :class="{ 'active':index==leftIndex }" :data-index="index" @tap="leftTap(index)">{{item.cate_name ? item.cate_name : 'null'}}</view>
+            <view class="item" v-for="(item,index) in mainArray" :key="index" :class="{ 'active':index==leftIndex }" :data-index="index" @tap="leftTap(index)">{{item.cate_name ? item.cate_name : 'null'}}</view>
         </scroll-view>
     </view>
 
     <view class="main">
-        <scroll-view scroll-y="true"  :show-scrollbar="false"  :style="{ 'height':scrollHeight}" @scroll="mainScroll" @scrolltolower="test" :scroll-into-view="scrollInto" scroll-with-animation="true">
-            <view style="height:20rpx"></view>
+        <scroll-view scroll-y="true" :show-scrollbar="false" :style="{ 'height':scrollHeight}" @scroll="mainScroll" @scrolltolower="test" :scroll-into-view="scrollInto" scroll-with-animation="true">
             <list style="width:100%;height:100%">
                 <cell class="item" v-for="(item,index) in mainArray" :key="index" :id="'item-'+index">
+                    <cell class="item_name">{{item.cate_name}}</cell>
                     <cell class="goods" v-for="(item2,index2) in item.list" :key="index2">
                         <image lazy-load :src="item2.product_img" mode="aspectFit" @error="imgerr($event,index,index2)" />
                         <cell class="content-view">
                             <cell class="right-view-title">
-                                <text class="f28 t" style="display:block">{{item2.product_name}}</text>
+                                <text class="f28 t weight" style="display:block">{{item2.product_name}}</text>
                                 <text class="f26 t" v-if="item2.sku.length >= 1" style="color:#666666">规格：{{item2.sku[0].sku}}</text>
                             </cell>
                             <cell class="right-view-bottom">
                                 <cell class="right-view-bottom-desc">
                                     <text class="f20 t">
-                                        提成： <text style="color:red" class="f22">￥</text>
-                                        <text style="color:#FF0000;font-size:30">{{item2.sku.length >= 1 ? item2.sku[0].amount : item2.min_amount}}</text>
+                                        <text style="color:red" class="f22 weight">提成:￥</text>
+                                        <text style="color:#FF0000;font-size:26" class="weight">{{item2.sku.length >= 1 ? item2.sku[0].amount : item2.min_amount}}</text>
                                     </text>
                                 </cell>
-                                <cell class="steper">
+                                <cell class="steper" style="width:100rpx">
                                     <min-stepper psize="20rpx" v-if="item2.sku.length <= 1" v-model="item2.step" @change="changeChioce($event,index,index2)"></min-stepper>
                                     <cell class="isSku f24" v-if="item2.sku.length > 1 " @click.stop="selSku(index,index2)">选规格</cell>
                                 </cell>
@@ -110,7 +110,7 @@
         </view>
     </min-popup>
     <!-- 选择规格 -->
-    <min-popup :show="isSelSku" @close="closeSelectedSkuPop" :heightSize="skuObj.sku.length < 3 ? '700' : '830'">
+    <min-popup :show="isSelSku" @close="closeSelectedSkuPop" :heightSize="skuObj.sku.length < 3 ? '700' : '850'">
         <!--  -->
         <view class="skuPop">
             <view class="skuTop">
@@ -122,16 +122,16 @@
                     <view class="sku-view">
                         <text class="f22 a">{{skuObj.product_name}}</text>
                         <text class="f22 m-tb-10 a">已选："{{skuObj.sku[chioceIndex].sku}}"</text>
-                        <text class="f22 m">
-                            提成:
-                            <text style="color:red" class="f22">￥</text>
-                            <text class="money">{{skuObj.sku[chioceIndex].amount}}</text>
+                        <text class="f22">
+                            提成：
+                            <text style="color:red" class="f22 weight">￥</text>
+                            <text class="money m weight">{{skuObj.sku[chioceIndex].amount}}</text>
                         </text>
                     </view>
                 </view>
             </view>
             <view class="min-border-bottom m-lr-30"></view>
-            <scroll-view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'" scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')'}">
+            <scroll-view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'" scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')',height:skuObj.sku.length >= 3 ? '280rpx':''}">
                 <!-- 可选择规格项 -->
                 <view>
                     <view class="f26">规格</view>
@@ -251,14 +251,18 @@ export default {
         /* 获取列表数据 */
         getData() {
             this.$minApi.getWineList().then(res => {
+                uni.showLoading({
+                    title: "加载中"
+                })
                 this.mainArray = res;
                 this.mainArray.map(item => {
                     item.list.map(item2 => {
-                        this.$set(item2,'step',0)
+                        this.$set(item2, 'step', 0)
                     });
                 });
                 this.$nextTick(() => {
                     this.getElementTop();
+                    uni.hideLoading()
                 });
             });
         },

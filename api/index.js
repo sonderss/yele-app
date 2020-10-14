@@ -40,6 +40,7 @@ minRequest.interceptors.request(request => {
 
 // 响应拦截器
 minRequest.interceptors.response(response => {
+  // console.log('这里是网络请求超时字段',response)
   const { code, data, msg } = response.data
   // 是否签约
   if (code === 1300000) {

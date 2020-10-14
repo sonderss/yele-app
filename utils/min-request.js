@@ -84,6 +84,11 @@ class MinRequest {
       requestTask = uni.request(obj)
       timer = setTimeout(() => {
         uni.hideLoading()
+		uni.showToast({
+			title:'网络请求超时，请重开网络',
+			icon:'none',
+			duration:2000
+		})
         reject(new Error('网络请求超时'))
         requestTask.abort()
       }, obj.timeOut)

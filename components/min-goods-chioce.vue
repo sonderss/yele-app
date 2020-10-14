@@ -1,7 +1,7 @@
 <template>
 <view class="min-goods-chioce">
     <view class="item">
-        <view class="goods">
+        <view class="goods" :style="discount ? 'padding-bottom:0' :''">
             <!-- @click="goodsAdd(index,index2)" -->
             <view class="image-view-com">
                 <view class="badge" v-if="badge">{{badgeTxt}}</view>
@@ -16,19 +16,29 @@
                     </view>
                     <text class="f26 abc m-top-10" v-if="isSku" style="color:#666666">{{desc}}</text>
                 </view>
-                <view class="right-view-bottom" @click.stop="ads">
+                <view class="right-view-bottom" :style="discount ? 'height:80rpx;padding-bottom:20rpx' :'height:48rpx'" @click.stop="ads">
                     <view class="right-view-bottom-desc">
                         <text v-if="price != 'null'" class="f20 t">
-                            ￥
-                            <text style="color:#FF0000;font-size:30">{{price}}</text>
+                            ￥<text style="color:#FF0000;font-size:30">{{price}}</text>
                         </text>
+                        <view v-if="discount" class="t aaaaa">
+                            ￥{{discountPrice}}
+                        </view>
                     </view>
-                    <view class="steper">
-                        <min-stepper :isAnimation="count > 0 ? false : true " :isFlag="isFlag" v-if="isFlag" v-model="count" @change="changeChioce"></min-stepper>
-                        <view v-else class="m-right-10" style="width:48rpx;height:48rpx;" @click.stop="changeChioceT">
-                            <image lazy-load src="/static/images/yellow-add.png" style="width:100%" />
+                    <view class="steper" v-if="producetype !== 'setmeal'">
+                        <view v-if="!isFlag" class="isbtn f24" @click.stop="changeChioceT">
+                            {{producetype === 'product' ? '选规格':'' }}
+                        </view>
+                        <view v-else>
+                            <min-stepper :isAnimation="count > 0 ? false : true " :isFlag="isFlag" v-if="isFlag" v-model="count" @change="changeChioce"></min-stepper>
+                            <view v-else class="m-right-10" style="width:48rpx;height:48rpx;" @click.stop="changeChioceT">
+                                <image lazy-load src="/static/images/yellow-add.png" style="width:100%" />
+                            </view>
                         </view>
                         <!-- <view class="isSku f24" v-if="step" @click="selSku(index,index2)">选规格</view> -->
+                    </view>
+                    <view v-else class="isbtn f24" @click.stop="changeChioceT">
+                        {{producetype === 'setmeal' ? '选组合':'' }}
                     </view>
                 </view>
             </view>
@@ -91,6 +101,14 @@ export default {
         discountdesc: {
             type: String,
             default: "限时优惠"
+        },
+        discountPrice: {
+            type: String,
+            default: "0.00"
+        },
+        producetype: {
+            type: String,
+            defalut: ''
         }
     },
     created() {
@@ -252,18 +270,27 @@ export default {
             }
 
             .right-view-bottom {
-                height: 48rpx;
+                height: 80rpx;
                 display: flex;
                 // position: relative;
                 justify-content: space-between;
+                align-items: center;
 
                 .right-view-bottom-desc {
                     display: flex;
+                    flex-direction: column;
 
                     // width: 200rpx;
                     .t {
                         font-weight: bold;
                         color: #f80409;
+                    }
+
+                    .aaaaa {
+                        color: #999;
+                        font-size: 20rpx;
+                        display: inline-block;
+                        text-decoration: line-through;
                     }
                 }
 
@@ -273,6 +300,16 @@ export default {
                     display: flex;
                     justify-content: flex-end;
                     align-items: center;
+                }
+
+                .isbtn {
+                    width: 100rpx;
+                    height: 48rpx;
+                    background: #ffe001;
+                    border-radius: 24rpx;
+                    color: #333333;
+                    text-align: center;
+                    line-height: 48rpx;
                 }
             }
         }

@@ -8,6 +8,7 @@
             <view class="item">订单金额：￥{{list.order_info.order_total}}</view>
             <view class="item">优惠金额：￥{{list.order_info.discount_total}}</view>
             <view class="item">应付金额：￥{{list.order_info.actual_total}}</view>
+            <view class="item">抹零金额：￥{{list.order_info.wipe_zero_price}}</view>
         </view>
     </view>
     <!-- 这里暂时测试 -->
@@ -86,7 +87,7 @@
     <!--支付方式-->
 
     <min-pay v-model="payMethod" />
-    <min-goods-submit leftText="应付" @submit="submit" :totalAmount="money" buttonText="支付" />
+    <min-goods-submit leftText="合计" desc='' @submit="submit" :totalAmount="money" buttonText="支付" />
 </view>
 </template>
 
@@ -195,7 +196,7 @@ export default {
             console.log(a)
             if (a * 1 < 0 || a * 1 > this.list.order_info.limit_discount_total * 1) {
                 if (this.discountType === 1) {
-                    this.$showToast('请重新输入合法值')
+                    this.$showToast('优惠金额不可大于应付金额')
                     this.$nextTick(() => {
                         this.qdyouhui = this.list.order_info.limit_discount_total * 1
                     })
@@ -260,7 +261,8 @@ export default {
                     }
                 })
             }
-            if (this.list.order_info.is_can_sign_off && this.isUseSign && (this.quanyou || this.aaa || this.k || this.kouchu)) {
+            //  && (this.quanyou || this.aaa || this.k || this.kouchu)
+            if (this.list.order_info.is_can_sign_off && this.isUseSign) {
                 // if(this.kouchu || this.quanyou  || this.k){
 
                 // }
@@ -278,9 +280,9 @@ export default {
                         obj.detail_id = item.detail_id
                         obj.type = item.type
                         if (this.discountType === 2) {
-                            if (item.singleAiscount !== 0) {
-                                obj.discount = item.singleAiscount
-                            }
+                            // if (item.singleAiscount !== 0) {
+                            obj.discount = item.singleAiscount
+                            // }
                         } else if (this.discountType === 3) {
                             if (item.youhui) {
                                 obj.discount = item.youhui * 1

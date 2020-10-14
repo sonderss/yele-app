@@ -106,6 +106,7 @@ export default {
                 text-align: right;
                 height: 98rpx;
                 display: block;
+                color: #333;
             }
         }
     }

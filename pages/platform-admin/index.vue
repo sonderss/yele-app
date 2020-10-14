@@ -44,11 +44,11 @@
     <min-popup :show="show" @close="close" heightSize="600">
         <picker-view :indicator-style="indicatorStyle" @change="bindChange" :value="value" style="height:400rpx;">
             <picker-view-column>
-                <view class="pickers item" v-for="(item,index) in datas" :key="index">{{item}}</view>
+                <view class="pickers item" :class="num === index ? 'active':  (index === num - 1 ? 'f36 cfz' : index === num - 2 ? 'f28 cjq': (index === num + 1 ? 'f36 cfz' : index === num + 2 ? 'f28 cjq' : 'f20' )  ) " v-for="(item,index) in datas" :key="index">{{item}}</view>
             </picker-view-column>
         </picker-view>
         <view class="btn_viewcjq">
-            <text @click="cancel">取消</text>
+            <text @click="cancel" class="cancl">取消</text>
             <view class="btn" @click.stop="sures">确认</view>
         </view>
     </min-popup>
@@ -111,11 +111,12 @@ export default {
             lastY: '',
             flag: true,
             datas: [],
+            newData: [],
             value: [],
             isPayS: "",
             indicatorStyle: `height: ${Math.round(
         uni.getSystemInfoSync().screenWidth / (750 / 100)
-      )}rpx;`,
+      )+20}rpx;`,
         }
     },
     onBackPress(options) {
@@ -161,7 +162,7 @@ export default {
         const page = pages[pages.length - 1]
         const currentWebview = page.$getAppWebview()
         currentWebview.setTitleNViewButtonStyle(0, {
-            text: `${month}月${day}日`,
+            text: `${month}月${day}日${this.$minCommon.getDay(new Date(this.date).getDay())}  `,
         })
         // const titleObj = currentWebview.getStyle().titleNView
         // titleObj.buttons[0].text = `${month}月${day}日`
@@ -170,15 +171,21 @@ export default {
         // })
         // #endif
         // this.getData(this.date)
-        if (this.$store.state.status.bookTime && this.$store.state.status.bookTime.includes(this.$minCommon.formatDate(new Date(), 'yyyy-MM-dd'))) {
-            console.log(this.$store.state.status.bookTime)
+        if (this.$store.state.status.bookTime && this.$store.state.status.bookTime[0] === this.$minCommon.formatDate(new Date(), 'yyyy-MM-dd')) {
             return (this.datas = this.$store.state.status.bookTime)
         }
+        let arr = []
         this.$minApi.getStoreSet({
             isLoading: true
         }).then(res => {
-            this.datas = res.book.date
-            this.$store.dispatch('status/setBookTime', res.book.date)
+            this.newData = res.book.date
+            res.book.date.map(item => {
+                let a = item.split('-')[1] + '月' + item.split('-')[2] + '日' + ' ' + this.$minCommon.getDay(new Date(item).getDay())
+                arr.push(a)
+            })
+            this.datas = arr
+            // console.log(this.datas)
+            this.$store.dispatch('status/setBookTime', arr)
         })
     },
     onShow() {
@@ -323,7 +330,6 @@ export default {
                         }
                     })
                 })
-                console.log('JSON.parse(res.desk_coordinate)', brr)
                 res.desk_coordinate = JSON.stringify(brr)
                 this.$store.dispatch('status/setSeatList', res)
             })
@@ -354,12 +360,13 @@ export default {
         // 日期选择器确认
         sures() {
             // 2020-05-29
-            let a = this.datas[this.num]
+            let a = this.newData[this.num]
             this.$store.dispatch('status/setMyDate', this.date)
             this.date = a
             let ti = this.date.split('-')
-
-            let t = ti[1] + '月' + ti[2] + '日'
+            let ass = this.date.split('-')[1] + '月' + this.date.split('-')[2] + '日' + ' ' + this.$minCommon.getDay(new Date(this.date).getDay()) + ' '
+            // let t = ti[1] + '月' + ti[2] + '日'
+            let t = ass
             this.value = []
             this.value.push(this.num)
             this.show = false

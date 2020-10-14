@@ -91,7 +91,10 @@ export default {
                 name: 'start-stage',
                 params: {
                     desk_id: this.idNum,
-                    status: this.list.desk_info.status
+                    status: this.list.desk_info.status,
+                    minm: this.list.desk_info.minim_charge,
+                    minimum_percent: this.list.desk_info.minimum_consume_percent,
+                    desk_open_minimum: this.list.desk_info.desk_open_minimum
                 }
             })
         },

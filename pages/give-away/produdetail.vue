@@ -13,16 +13,16 @@
         <view class="top-view f28  f28" v-if="product_type === 'setmeal' ">{{list.setmeal_name}}</view>
         <view class="botm-view" v-if="product_type === 'product' ">
             <view class="f22">
-                <text class="price">￥{{list.deduction_limit}}</text>
+                <text class="price">￥{{list.sku[0].deduction_limit}}</text>
             </view>
-            <min-stepper v-model="list.step" @change="changeServiceItem(list)"></min-stepper>
+            <min-stepper v-model="list.step" @change="changeServiceItem(list)" :max="commodity_count === '-1'? 999 :commodity_count "></min-stepper>
         </view>
         <!-- 服务商品 -->
         <view class="botm-view" v-if="product_type === 'service'">
             <view class="f22">
                 <text class="price">￥{{list.deduction_limit}}</text>
             </view>
-            <min-stepper v-model="list.step" :max="commodity_count" @change="changeServiceItem(list)"></min-stepper>
+            <min-stepper v-model="list.step" :max="commodity_count === '-1'? 999 :commodity_count " @change="changeServiceItem(list)"></min-stepper>
         </view>
     </view>
     <min-describe @chincesku="selSku" :sku="list.sku[0].sku_full_name" leftTxt="规格" v-if="product_type === 'product'"></min-describe>
@@ -34,7 +34,7 @@
         <view class="content p-bottom-30" v-if="product_type === 'setmeal'">{{list.info}}</view>
     </view>
 
-    <min-goods-submit v-if="type != 1 && type != 2 " icon="/static/images/cart.png" :goodsCount="countNums" :totalAmount="totalAmountE " :totalLabel="$store.state.goods.giveAwayInfo.personal_presentation_limit === -1 ? '赠送额度：无限制':totalLabel" buttonText="确定赠送" @leftClick="leftClick" @submit="submit"></min-goods-submit>
+    <min-goods-submit desc='所需额度合计：' v-if="type != 1 && type != 2 " icon="/static/images/cart.png" :goodsCount="countNums" :totalAmount="totalAmountE " :totalLabel="$store.state.goods.giveAwayInfo.personal_presentation_limit === -1 ? '赠送额度：无限制':totalLabel" buttonText="确定赠送" @leftClick="leftClick" @submit="submit"></min-goods-submit>
     <!-- 选择规格 -->
     <min-popup :show="isSelSku" @close='closeSelectedSkuPop' heightSize="750">
         <view class="skuPop">
@@ -64,7 +64,7 @@
             <view class="sku-item-num">
                 <view class="f26">数量</view>
                 <view class="m-tb-30">
-                    <min-stepper :isAnimation="false" :max="commodity_count" v-model="skuObj.step"></min-stepper>
+                    <min-stepper :isAnimation="false" :max="commodity_count === '-1'? 999 :commodity_count " v-model="skuObj.step"></min-stepper>
                 </view>
             </view>
             <view class="btn-sku" @click="skuChioce">确定</view>
@@ -96,12 +96,12 @@
                             </view>
                             <view class="right-view-bottom">
                                 <view class="right-view-bottom-desc">
-                                    <text class="f26" style="color:#FF0000">￥{{item2.sku.length >= 1 ? item2.sku[0].deduction_limit :item2.deduction_limit}}</text>
+                                    <text class="f26" style="color:#FF0000">￥{{item2.sku.length >= 1 ? item2.sku[0].deduction_limit : item2.deduction_limit}}</text>
 
                                 </view>
                                 <view class="steper">
                                     <!--  @change="aleradyGood($event,n)" -->
-                                    <min-stepper @change="aleradyGood($event,n)" :max="commodity_count" v-model="item2.step" :isAnimation="false" :min='0'></min-stepper>
+                                    <min-stepper @change="aleradyGood($event,n)" :max="item2.commodity_count === -1 ? 999 : item2.commodity_count " v-model="item2.step" :isAnimation="false" :min='0'></min-stepper>
                                 </view>
                             </view>
                         </view>
@@ -109,7 +109,7 @@
                 </scroll-view>
             </view>
             <view class="bottom-view-t">
-                <min-goods-submit style="position:fixed" :totalLabel="$store.state.goods.giveAwayInfo.personal_presentation_limit === -1 ? '赠送额度：无限制':totalLabel" leftText="已选" :totalAmount='totalAmountE' :goodsCount="countNums" buttonText='确定赠送' @submit="submit"></min-goods-submit>
+                <min-goods-submit style="position:fixed" desc='所需额度合计：' :totalLabel="$store.state.goods.giveAwayInfo.personal_presentation_limit === -1 ? '赠送额度：无限制':totalLabel" leftText="已选" :totalAmount='totalAmountE' :goodsCount="countNums" buttonText='确定赠送' @submit="submit"></min-goods-submit>
             </view>
         </view>
     </min-popup>
@@ -178,6 +178,21 @@ export default {
                 this.$store.dispatch('goods/setStoreSelArr', this.selArr)
             })
             return sum.toFixed(2)
+            // let sum = 0
+            // this.selArr.map(item => {
+            //     if (item.type === 'setmeal') {
+            //         sum += item.deduction_limit * item.step
+            //     }
+            //     if (item.type === 'service') {
+            //         sum += item.deduction_limit * item.step
+            //     }
+            //     if (item.type === 'product') {
+            //         sum += item.sku[0].deduction_limit * item.step
+
+            //     }
+            //     this.$store.dispatch('goods/setStoreSelArr', this.selArr)
+            // })
+            // return sum.toFixed(2)
         },
         // 监听所选数量
         countNums() {
@@ -195,8 +210,16 @@ export default {
         this.product_id = option.product_id
         this.product_type = option.product_type
         this.commodity_count = option.commodity_count
+        console.log(this.commodity_count)
         this.desk_id = option.desk_id
-        this.totalLabel = `赠送额度：${info.personal_presentation_limit}`
+        // this.totalLabel = `赠送额度：${info.personal_presentation_limit}`
+        this.content = `
+                1、针对当前登录用户，每月、每周、每天、每张台都会有一个总的额度限制。<br />
+                2、针对订台人，会分别对自己的台和对代送的台进行限制。<br />
+                3、针对当前台，会根据当前台的消费额度进行限制。<br />
+                4、针对赠送商品，各个商品会有不同的每月、每周、每天、每张台的数量限制。<br />
+                5、系统会结合以上限制取最低值为当前最高可用赠送额度。<br />
+            `
     },
     onShow() {
         return this.selArr = this.$store.state.goods.storeSelArr
@@ -206,6 +229,7 @@ export default {
             title: e.text,
             content: this.content,
             showCancel: false,
+            zengs: true,
             success: (e) => {
                 console.log(e) // 这里拿到的是modalID: "modal"，id: 1
             }
@@ -248,13 +272,16 @@ export default {
         //         }
         //     })
         // }
+
         if (this.product_type === 'product') {
             this.$minApi.getGiveAwayProductDetail({
                     sku_id: this.product_id,
                     desk_id: this.desk_id
                 })
                 .then(res => {
-                    this.list = res.info
+                    console.log('product', res)
+
+                    this.list = res
                     this.list.type = this.product_type
                     this.selArr.map(item => {
                         if (item.id !== this.list.id) {
@@ -263,7 +290,6 @@ export default {
                         }
                         return this.$set(this.list, "step", item.step)
                     })
-                    console.log('product', res)
                     this.item = []
                     this.item.push(this.list.product_img)
                 })

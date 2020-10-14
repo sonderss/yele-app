@@ -8,8 +8,8 @@
             <view class="item">客户姓名：{{list.fetch_info.client_name ? list.fetch_info.client_name : '暂无'}}</view>
             <view class="item">联系电话：{{list.fetch_info.client_mobile ? list.fetch_info.client_mobile :'暂无'}}</view>
             <view class="item">取酒台号：<text class="item spectio">{{list.fetch_info.desk_name ? list.fetch_info.desk_name : '暂无'}}</text></view>
-            <view class="item">取酒单号：{{list.fetch_info.fetch_sn}}</view>
             <view class="item">取酒人员：{{list.fetch_info.fetch_name ? list.fetch_info.fetch_name :'暂无'}}</view>
+            <view class="item">取酒单号：{{list.fetch_info.fetch_sn}}</view>
             <view class="item">取酒时间：{{$minCommon.formatDate(new Date(list.fetch_info.create_time*1000),'yyyy-MM-dd hh:mm:ss')}}</view>
             <view class="item" v-if="list.fetch_info.fetch_status !== 1">确认人员：{{list.fetch_info.confirm_name}}</view>
             <view class="item" v-if="list.fetch_info.fetch_status !== 1">确认时间：{{list.fetch_info.confirm_time != 0 ? $minCommon.formatDate(new Date(list.fetch_info.confirm_time*1000),'yyyy-MM-dd hh:mm:ss'):'0'}}</view>

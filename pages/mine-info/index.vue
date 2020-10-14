@@ -14,9 +14,10 @@
                 <picker @change="bindPickerChange1" :value="index1" :range="minzu">
                     <min-cell-item title="民族" :tail="minzu[index1]" :border="true" arrow></min-cell-item>
                 </picker>
-                <picker mode="date" @change="bindPickerChange2">
+                <!-- <picker mode='multiSelector' :value="index2" :range="dates" @change="bindPickerChange2">
                     <min-cell-item title="出生日期" :tail="date" :border="true" arrow></min-cell-item>
-                </picker>
+                </picker> -->
+                <min-cell-item title="出生日期" @eventParent="bindPickerChange3" :tail="date" :border="true" arrow></min-cell-item>
                 <min-cell-item title="手机" :tail="$minCommon.hideTel(userInfo.mobile ? userInfo.mobile : '暂无')" :border="false" @eventParent="setPhone"></min-cell-item>
             </min-cell>
             <view class="m-top-20"></view>
@@ -38,6 +39,10 @@
     </scroll-view>
     <view style="height:200rpx"></view>
     <min-modal ref="show"></min-modal>
+    <min-popup heightSize="500" :show="bis3" @close='closse'>
+        <min-p :isValue="date" :startTime="[1920,1,1]" :endTime="new Date().getFullYear()" @cancel="cancels" @sure="sures" />
+    </min-popup>
+
 </view>
 </template>
 
@@ -108,16 +113,30 @@ export default {
             sex: ["不限", "男", "女"],
             index: 0,
             index1: 0,
+            dates: [
+                [],
+                [],
+                [],
+            ],
+            dayLength: 0,
             date: "2020/3/20",
             userInfo: {},
             phone: "",
             lastString: "",
             version: "",
             lastY: '',
-            top: ''
+            top: '',
+            bis3: false
         };
     },
     onLoad() {
+        const time = new Date()
+        const year = time.getFullYear()
+        const month = time.getMonth() + 1
+        this.getDaysInOneMonth(year, month)
+        this.getYears()
+        this.getMonth()
+        this.getDays()
         // #ifdef APP-PLUS
         // 获取本地应用资源版本号
         plus.runtime.getProperty(plus.runtime.appid, (inf) => {
@@ -240,8 +259,12 @@ export default {
             this.setUserInfo();
         },
         bindPickerChange2: function (e) {
+            console.log(e)
             this.date = e.target.value.replace(/-/g, "/");
             this.setUserInfo();
+        },
+        bindPickerChange3: function (e) {
+            this.bis3 = true
         },
         // 获取银行卡后四位
         getCardLast(bank_card_num) {
@@ -323,6 +346,44 @@ export default {
         end() {
             return (this.top = 0)
         },
+        // 获得年份
+        getYears() {
+
+            for (let i = 1920; i <= new Date().getFullYear(); i++) {
+                this.dates[0].push(i)
+            }
+        },
+        // 获取月份
+        getMonth() {
+            // const time = new Date()
+            for (let i = 1; i <= 12; i++) {
+                this.dates[1].push(i)
+            }
+        },
+        getDays() {
+            this.days = []
+            for (let i = 1; i <= this.dayLength; i++) {
+                this.dates[2].push(i)
+            }
+        },
+        // 获取某年某月多少天
+        getDaysInOneMonth(year, month) {
+            month = parseInt(month, 10)
+            var d = new Date(year, month, 0)
+            this.dayLength = d.getDate()
+            this.getDays()
+            return d.getDate()
+        },
+        cancels(e) {
+            this.closse()
+        },
+        sures(e) {
+            this.date = e.a + '/' + e.b + '/' + e.c
+            this.setUserInfo();
+        },
+        closse() {
+            this.bis3 = false
+        }
     },
 };
 </script>

@@ -4,7 +4,10 @@
         <view class="f30 p-tb-25">台位信息</view>
         <view class="min-border-bottom" style="height:1rpx"></view>
         <view class="main min-flex min-flex-dir-top min-flex-align-top f28 p-bottom-10">
-            <text class="m-bottom-10 m-top-20">台 号：<text class="cardNum">{{$parseURL().desk_info.name}}</text></text>
+            <view style="width:100%" class="min-flex   min-flex-main-between m-bottom-10 m-top-20">
+                <view>台 号：<text class="cardNum">{{$parseURL().desk_info.name}}</text></view>
+                <view v-if="$parseURL().desk_info.price*1 < $parseURL().desk_info.charge*1" class="status-code">未够低消</view>
+            </view>
             <text class="m-bottom-10">分 组：{{$parseURL().desk_info.group_name}}</text>
             <text class="m-bottom-10">低 消：￥{{$parseURL().desk_info.charge}}</text>
             <text class="m-bottom-10">账单金额：￥{{$parseURL().desk_info.price}}</text>

@@ -12,6 +12,10 @@
   .card{
     background: #fff;
     border-radius: 10rpx;
+    .top{
+      display: flex;
+      justify-content: space-between;
+    }
     .main{
       position: relative;
       &>view{

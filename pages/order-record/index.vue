@@ -9,11 +9,17 @@
                 <text class="right-txt f28" :class="$minCommon.getOrderStatus(item.order_status).color">{{$minCommon.getOrderStatus(item.order_status).desc}}</text>
             </view>
             <view>
+
                 <view class="mid-view min-border-top ">
                     <view class="left-view" v-if="item.order_product_list.length > 1">
-                        <view class="left-photo m-right-20">
-                            <image class="m-right-20" lazy-load v-for="(i,index2) in item.order_product_list" :key="i.detail_id" :src="i.product_img" @error="imageErro($event,index,index2)" />
-                        </view>
+                        <template v-for="(i,index2) in item.order_product_list">
+                            <view class="left-photo m-right-20" :key="i.detail_id">
+                                <image class="m-right-20" lazy-load :src="i.product_img" @error="imageErro($event,index,index2)">
+                                </image>
+                                <!-- <view v-if="i.type === 'setmeal'" class="active-left-p f22">套餐</view> -->
+                            </view>
+                        </template>
+
                     </view>
                     <!-- 当图片不超过1张时 -->
                     <view class="mid-desc" v-if="item.order_product_list.length === 1">
@@ -27,6 +33,7 @@
                                 </template>
                             </text>
                         </view>
+                        <!-- <view v-if="item.order_product_list[0].type === 'setmeal'" class="active-left-p f22">套餐</view> -->
 
                     </view>
                     <view class="right-price" v-if="item.order_product_list.length === 1">
@@ -36,15 +43,21 @@
                     <view class="right-price" v-if="item.order_product_list.length > 1">
                         <text class="fcolor f28">￥ {{item.order_total}}</text>
                         <text class="allin f22 tcolor">查看全部 >></text>
+                        <view v-if="item.order_product_list.length === 0">该订单已变更</view>
                     </view>
-                    <view v-if="item.order_product_list.length === 0">该订单已变更</view>
-                </view>
-                <!-- <text class="f20 origin sign" >{{item.sign}}</text> -->
 
+                </view>
+                <view v-if="item.order_type === 0" class="order_type">
+                    <text class="f20 origin sign" v-if="item.recreate_type !== null">{{desc[item.recreate_type].desc }}</text>
+                </view>
+                <view v-if="item.order_type === 1" class="order_type">
+                    <text class="f20 origin sign">赠送单</text>
+                </view>
             </view>
+
             <view class="bottom-view min-border-top">
                 <text class="f24 tcolor">{{$minCommon.formatDate(new Date(item.create_time*1000),'yyyy-MM-dd hh:mm:ss')}}</text>
-                <text class="f28 fcolor">{{item.pay_type === 0 ? '先付款' : '后付款'}}*{{item.pay_status === 0 ? '未支付':'已支付'}}</text>
+                <text v-if="item.order_type !== 1" class="f28 fcolor">{{item.pay_type === 0 ? '先付款' : '后付款'}}*{{item.pay_status === 0 ? '未支付':'已支付'}}</text>
             </view>
         </view>
     </view>
@@ -106,11 +119,52 @@ const status = [{
     }
 
 ]
+const order = [{
+        desc: '普通单',
+        color: 'red'
+    },
+    {
+        desc: '改价单',
+        color: 'green'
+    },
+    {
+        desc: '部分退货',
+        color: 'red'
+    },
+    {
+        desc: '整单退货',
+        color: 'blue'
+    },
+    {
+        desc: '换货',
+        color: 'blue'
+    },
+    {
+        desc: '开台单',
+        color: 'origin'
+    }
+]
+// 0：改价，1：退货，2：换货
+const desc = [{
+        desc: '改价单',
+        color: 'green'
+    },
+    {
+        desc: '退货单',
+        color: 'blue'
+    },
+    {
+        desc: '换货单',
+        color: 'red'
+    },
+]
 export default {
     name: 'order-record',
     navigate: ['navigateTo'],
     data() {
         return {
+            order,
+            desc,
             status,
             isSetMeal: false,
             list: [],
@@ -248,9 +302,28 @@ export default {
         justify-content: space-between;
         height: 160rpx;
 
+        .active-left-p {
+            width: 80rpx;
+            height: 40rpx;
+            background: #030313;
+            color: #FFE001;
+            display: block;
+            text-align: center;
+            line-height: 40rpx;
+            position: absolute;
+            border-radius: 0 20rpx 20rpx 0;
+            left: -20rpx;
+            top: 0rpx
+        }
+
         .left-view {
+            display: flex;
+            justify-content: flex-start;
+
             .left-photo {
-                display: flex;
+
+                width: 100rpx;
+                height: 100rpx;
 
                 image {
                     flex-shrink: 0;
@@ -296,23 +369,29 @@ export default {
             justify-content: space-between;
             text-align: right;
             align-content: space-between;
+            position: relative;
             // .testF{
             //   font-family: "SimSun"
             // }
+        }
+
+    }
+
+    .order_type {
+        margin-bottom: 10rpx;
+
+        .sign {
+            width: 68rpx;
+            height: 24rpx;
+            background: rgba(254, 232, 230, 1);
+            border-radius: 5rpx;
+            padding: 0 5rpx;
         }
     }
 
     .allin {
         float: right;
         // margin-bottom: 20rpx;
-    }
-
-    .sign {
-        width: 68rpx;
-        height: 24rpx;
-        background: rgba(254, 232, 230, 1);
-        border-radius: 5rpx;
-        padding: 0 5rpx;
     }
 
     .bottom-view {
@@ -350,5 +429,17 @@ export default {
     .origin {
         color: #F7601B
     }
+}
+
+.active-left-p {
+    width: 80rpx;
+    height: 40rpx;
+    background: #030313;
+    color: #FFE001;
+    display: block;
+    text-align: center;
+    line-height: 40rpx;
+    position: absolute;
+    left: 0;
 }
 </style>

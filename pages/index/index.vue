@@ -11,7 +11,7 @@
         <view class="back-img-box">
             <view style="height: 178rpx;"></view>
             <view class="info min-flex min-flex-main-between m-lr-30">
-                <view class="min-flex min-flex-main-start">
+                <view class="min-flex min-flex-main-start" @click="toUSER">
                     <min-avatar size="md" :url="userInfo.head_img ? userInfo.head_img  :'/static/images/head.png'"></min-avatar>
                     <view class="m-left-20">
                         <view class="f30" style="font-weight:bold">{{ userInfo.user_name }}</view>
@@ -30,9 +30,9 @@
                         <view class="left_item">
                             <image class="img" src="/static/images/index/bar.png" />
                         </view>
-                        <view>
-                            <view class="f28">酒台管理</view>
-                            <view class="f22 assist-text">预约、下单、赠送、开台、存酒</view>
+                        <view class="right_item">
+                            <view class="f32 weight">桌台管理</view>
+                            <view class="f28 assist-text">预约、下单、开台、存酒</view>
                         </view>
                     </view>
                 </view>
@@ -40,7 +40,7 @@
                     <view class="yele-grid1">
                         <view class="min-flex min-flex-dir-top">
                             <image class="img" src="/static/images/index/bar1.png" />
-                            <view class="f24">充公酒</view>
+                            <view class="f28">充公酒</view>
                         </view>
                     </view>
                 </view>
@@ -48,6 +48,7 @@
         </view>
         <yele-grid :list="grid2"></yele-grid>
         <yele-grid :list="grid3"></yele-grid>
+        <yele-grid :list="grid4"></yele-grid>
     </scroll-view>
 </view>
 </template>
@@ -160,7 +161,7 @@ export default {
                 {
                     name: 'fetch-record',
                     url: '../fetch-record/index.vue',
-                    img: '/static/images/index/take.png',
+                    img: '/static/images/index/qu.png',
                     text: '取酒记录',
                     root: 'fetchWineRecord'
                 },
@@ -176,20 +177,38 @@ export default {
                     text: '转台记录',
                     name: 'turntable-record',
                     root: 'transferRecord'
-                }
-            ],
-            grid3: [{
-                    name: 'my-downline',
-                    img: '/static/images/index/my_d.png',
-                    text: '我的下线',
-                    root: 'myOffline'
                 },
                 {
-                    img: '/static/images/index/chart.png',
-                    name: 'statistics',
-                    url: 'statistics',
-                    text: '数据统计',
+                    img: '/static/images/index/take.png',
+                    text: '开台记录',
+                    name: 'open-list',
+                    root: 'openRecord'
+                },
+                {
+                    img: '',
+                    text: '',
+                    name: '',
+                    root: '',
+                    empty: true
+                }
+            ],
+            grid3: [
+
+                {
+                    img: '/static/images/index/ti.png',
+                    name: 'commission-details',
+                    url: 'commission-details',
+                    text: '提成明细',
                     root: 'statistics'
+                }, {
+                    img: '/static/images/index/shou.png',
+                    name: 'withdrawals-record',
+                    url: 'withdrawals-record',
+                    text: '收支流水',
+                    root: 'statistics',
+                    params: {
+                        type: 0
+                    }
                 },
                 {
                     name: 'my-income',
@@ -197,6 +216,20 @@ export default {
                     text: '我的收入',
                     root: 'finance',
                     url: 'my-income'
+                }
+            ],
+            grid4: [{
+                    img: '/static/images/index/chart.png',
+                    name: 'statistics',
+                    url: 'statistics',
+                    text: '数据统计',
+                    root: 'statistics'
+                },
+                {
+                    name: 'my-downline',
+                    img: '/static/images/index/my_d.png',
+                    text: '我的下线',
+                    root: 'myOffline'
                 },
                 {
                     url: '../mine-info/index',
@@ -229,6 +262,7 @@ export default {
                 this.$store.dispatch('user/setUserInfo', res)
                 this.$store.dispatch('status/setisReloadUserInfo', false)
             })
+            this.getData()
         }
     },
     computed: {
@@ -237,7 +271,11 @@ export default {
             return this.$store.state.user.userInfo
         }
     },
-
+    onBackPress(options) {
+        const pages = getCurrentPages(); //当前页
+        const beforePage = pages[pages.length - 2]; //上个页面
+        // if (beforePage.route === 'pages/login/index') return true
+    },
     methods: {
         navigateTo(root) {
             let result = this.$getRoot(root)
@@ -251,6 +289,11 @@ export default {
         refresh() {
             this.$nextTick(() => {
                 this.$refs.pullScroll.refresh()
+            })
+        },
+        toUSER() {
+            this.$minRouter.push({
+                name: 'mine-info'
             })
         },
         toCwine(root) {
@@ -462,13 +505,22 @@ export default {
         justify-content: center;
         align-items: center;
         padding: 10rpx 0;
-        padding-left: 50rpx;
-        margin-right: 20rpx;
+        padding-left: 30rpx;
 
         .img {
             width: 80rpx;
             height: 80rpx;
             display: block;
+        }
+    }
+
+    .right_item {
+        padding-right: 20rpx;
+
+        .assist-text {
+            display: flex;
+            padding-top: 10rpx;
+            color: #666;
         }
     }
 }

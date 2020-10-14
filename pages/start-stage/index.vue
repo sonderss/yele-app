@@ -127,7 +127,10 @@ export default {
                     params: {
                         msg: this.msg,
                         type: this.type,
-                        seil: this.seil
+                        seil: this.seil,
+                        minm: this.$parseURL().minm,
+                        minimum_percent: this.$parseURL().minimum_percent,
+                        desk_open_minimum: this.$parseURL().desk_open_minimum,
                     }
                 })
             } else {
