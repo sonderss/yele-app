@@ -82,7 +82,7 @@
             <view class="f28 p-bottom-30" v-if=" discountType === 3">扣除赠送额度：￥{{k ? k : 0}}</view>
 
         </view>
-        <view v-else class="top p-tb-20 min-border-bottom">不使用签折优惠</view>
+        <view v-else class="top p-tb-20">不使用签折优惠</view>
     </view>
     <!--支付方式-->
 
@@ -123,7 +123,7 @@ export default {
             delArr: [],
             quanyou: '',
             aaa: 0,
-            isUseSign: true
+            isUseSign: false
         }
     },
     onLoad() {

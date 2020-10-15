@@ -30,7 +30,7 @@
                             {{producetype === 'product' ? '选规格':'' }}
                         </view>
                         <view v-else>
-                            <min-stepper :isAnimation="count > 0 ? false : true " :isFlag="isFlag" v-if="isFlag" v-model="count" @change="changeChioce"></min-stepper>
+                            <min-stepper :isAnimation="true " :isFlag="isFlag" v-if="isFlag" v-model="count" @change="changeChioce"></min-stepper>
                             <view v-else class="m-right-10" style="width:48rpx;height:48rpx;" @click.stop="changeChioceT">
                                 <image lazy-load src="/static/images/yellow-add.png" style="width:100%" />
                             </view>

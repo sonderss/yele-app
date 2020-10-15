@@ -2,23 +2,25 @@
 <view class="platform-history p-top-20 p-lr-30">
     <view class="card p-lr-20 p-top-30 m-bottom-20" v-for="(item,index) in list" :key='index'>
         <view class="main p-bottom-30">
-            <view>客户姓名：为</view>
-            <view>联系电话：器</view>
-            <view>营销人员：去</view>
-            <view>台<span style="padding-left:55rpx">号</span>：请问</view>
-            <view>开台方式：请问</view>
-            <view>申请状态：<text :class="item.iss ? 'status_succeess':'status_loading'">请问</text></view>
-            <view v-if="!item.iss">申请时间：{{$minCommon.formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss') }}</view>
-            <view v-if="item.iss">通过人员：为</view>
-            <view v-if="item.iss">当班主管：器</view>
-            <view v-if="item.iss">通过时间：{{$minCommon.formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss') }}</view>
+            <view>客户姓名：{{item.client_name ? item.client_name :'暂无数据'}}</view>
+            <view>联系电话：{{item.client_mobile ? item.client_mobile:'暂无数据'}}</view>
+            <view>营销人员：{{item.sales_user_name ? item.sales_user_name :'暂无数据'}}</view>
+            <view>台<span style="padding-left:55rpx">号</span>：{{item.desk_name}}</view>
+            <view>开台方式：{{item.open_type === 1 ?  '下单开台': '申请开台'}}</view>
+            <view>申请状态：
+                <text :class="item.status === 1 ? 'status_succeess':'status_loading'">{{item.status === -1 ? '下单开台': item.status === 0 ? '申请中': '已通过' }}</text>
+            </view>
+            <view v-if="!item.status === 1">申请时间：{{$minCommon.formatDate(new Date(item.apply_time*1000), 'yyyy-MM-dd hh:mm:ss') }}</view>
+            <view v-if="item.status === 1">通过人员：{{item.operator_user_name ? item.operator_user_name : '暂无数据'}}</view>
+            <view v-if="item.status === 1">当班主管：{{item.manager_user_name ? item.manager_user_name : '暂无数据'}}</view>
+            <view v-if="item.status === 1">通过时间：{{$minCommon.formatDate(new Date(item.audit_time*1000), 'yyyy-MM-dd hh:mm:ss') }}</view>
         </view>
-        <view class="footer min-border-top p-tb-20" v-if="item.iss">
+        <view class="footer min-border-top p-tb-20" v-if="item.status === 1">
             <view class="amount"></view>
             <view class="btns">
                 <min-btn size="xs" type="white" border @click="viewOrder(item.id)">查看订单</min-btn>
                 <view style='width:20rpx'></view>
-                <min-btn size="xs" type="white" border class="m-left-20" @click="viewBill(item.id)">查看账单</min-btn>
+                <min-btn size="xs" type="white" border class="m-left-20" @click="viewBill(item.id,item.desk_id)">查看账单</min-btn>
             </view>
         </view>
     </view>
@@ -28,16 +30,14 @@
 </template>
 
 <script>
+//申请状态（-1：下单开台，0：申请中，1：已通过）
+
 export default {
     name: 'platform-history',
     navigate: ['navigateTo'],
     data() {
         return {
-            list: [{
-                iss: false
-            }, {
-                iss: true
-            }],
+            list: [],
             falg: false,
             nums: 2,
             des: "加载中",
@@ -45,22 +45,59 @@ export default {
         }
     },
     onLoad() {
-
+        this.getData(1, 10).then(res => {
+            console.log(res)
+            this.list = res.list
+        })
     },
     onReachBottom() {
         console.log('到底')
+        this.falg = true
+        this.getData(this.nums, 10, true).then(res => {
+            if (res.list.length === 0) {
+                this.load = false
+                this.des = '暂无更多数据'
+                setTimeout(() => {
+                    return this.falg = false
+                }, 1000)
+            }
+            this.list = this.list.concat([...res.list])
+            this.nums++
+        })
 
     },
     onPullDownRefresh() {
-
-        uni.stopPullDownRefresh();
+        this.getData(1, 10, true).then(res => {
+            this.list = res.list
+            this.nums = 2
+            this.falg = false
+            uni.stopPullDownRefresh();
+        })
     },
     methods: {
-        viewOrder(id) {
-
+        async getData(page, limit, isLoading = false) {
+            return this.$minApi.openList({
+                page,
+                limit,
+                isLoading: isLoading
+            })
         },
-        viewBill(id) {
-
+        viewOrder(id) {
+            this.$minRouter.push({
+                name: 'order-list',
+                params: {
+                    open_id: id
+                }
+            })
+        },
+        viewBill(id, desk_id) {
+            this.$minRouter.push({
+                name: 'desk-bill',
+                params: {
+                    desk_id: desk_id,
+                    open_id: id
+                }
+            })
         }
     },
 }

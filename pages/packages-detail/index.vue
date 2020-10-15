@@ -245,8 +245,7 @@ export default {
             }
         },
         tet() {
-            console.log(12321123321)
-            this.$showToast('已达上限/不可再选')
+            this.$showToast('已达上限')
         },
         addGoods(obj) {
             if (this.selArr.length === 0) {
@@ -306,7 +305,6 @@ export default {
             this.list.combination.map((item, index) => {
                 if (item.necessary === 1) {
                     item.combination_detail.map((item2, index2) => {
-                        console.log('asddsadsaaaaaaaaaaaaaaaaaaaaaaaaa.00')
                         this.changeCount(1, index, index2)
                     })
                 }

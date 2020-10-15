@@ -38,6 +38,7 @@
     <view class="btn">
         <min-btn :long="true" @click="next">{{btn_name}}</min-btn>
     </view>
+    <min-modal ref="show" />
 </view>
 </template>
 
@@ -55,7 +56,8 @@ export default {
             top: 0,
             lastY: '',
             i: 0,
-            btn_name: '预开台'
+            btn_name: '预开台',
+            test: false
         }
     },
     onLoad() {
@@ -105,6 +107,7 @@ export default {
             return (this.top = 0)
         },
         next() {
+            if (this.isPhone && this.isPhone.length !== 11 && !this.$minCommon.checkMobile(this.isPhone)) return this.$showToast("手机号填写错误")
             const obj = {}
             // 自来客 2 - 空闲,3 - 已预约
             if (this.data.type === 0) {
@@ -143,25 +146,63 @@ export default {
 
             // 申请开台
             if (this.i === 2) {
-                this.$minRouter.push({
-                    name: 'redapply-open',
-                    type: 'redirectTo',
-                    params: {
-                        isOrder: true,
-                        desk_id: this.data.msg.desk_id,
-                        data: {
-                            order_info: {
-                                client_mobile: this.isPhone,
+                this.$refs.show.handleShow({
+                    isReson: true,
+                    confirmText: '提交',
+                    success: (res) => {
+                        console.log(res)
+                        if (res.id === 1) {
+                            this.$minApi.orderGetRoot({
+                                desk_id: this.data.msg.desk_id,
+                                reason: res.resonValue,
+                                booking_id: this.$parseURL().msg.status === 3 ? '' : '',
+                                sales_uid: this.data.type === 1 ? this.$parseURL().seil.id : '',
                                 client_name: this.isName,
-                                minimum_percent: this.$parseURL().minimum_percent,
-                                minim_charge: this.$parseURL().minm,
-                                desk_open_minimum: this.$parseURL().desk_open_minimum,
-                                is_can_open: 0
-                            }
+                                client_mobile: this.isPhone,
+                                is_birthday: this.isShengri ? 1 : 0,
+                                remark: this.value
+                            }).then(res => {
+                                // if (res.length === 0) {
+                                this.$showToast('提交成功')
+                                setTimeout(() => {
+                                    this.$minRouter.push({
+                                        name: 'redsubmit-success',
+                                        params: {
+                                            desk_id: this.data.msg.desk_id,
+                                        },
+                                        type: "redirectTo"
+                                    })
+                                }, 2000)
+                                // }
+                            })
                         }
                     },
-                })
+                });
                 return
+                // this.$minRouter.push({
+                //     name: 'redapply-open',
+                //     type: 'redirectTo',
+                //     params: {
+                //         isOrder: true,
+                //         desk_id: this.data.msg.desk_id,
+                //         type: this.$parseURL().type,
+                //         seil: this.$parseURL().seil,
+                //         data: {
+                //             order_info: {
+                //                 client_mobile: this.isPhone,
+                //                 client_name: this.isName,
+                //                 booking_id: '',
+                //                 remark: this.value,
+                //                 is_birthday: this.isShengri ? 1 : 0,
+                //                 minimum_percent: this.$parseURL().minimum_percent,
+                //                 minim_charge: this.$parseURL().minm,
+                //                 desk_open_minimum: this.$parseURL().desk_open_minimum,
+                //                 is_can_open: 0
+                //             }
+                //         }
+                //     },
+                // })
+                // return
             }
             if (this.i === 1) {
                 this.$minApi.startOrder({

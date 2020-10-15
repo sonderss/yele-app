@@ -181,7 +181,7 @@
                     <view class="item p-right-20" style="width:150rpx">{{item.desk_name ? item.desk_name : '暂无数据'}}</view>
                     <view class="item p-left-10">{{item.sales_user_name ? item.sales_user_name : '暂无数据'}}</view>
                     <view class="item min-flex  min-flex-main-center">
-                        <view style="text-align:left;flex:1">￥{{item.receivable_price}}</view>
+                        <view style="text-align:center;flex:1">￥{{item.receivable_price}}</view>
                         <image class="item p-left-10" src="/static/images/arrow.png" style="width:24rpx;height:24rpx" />
                     </view>
 

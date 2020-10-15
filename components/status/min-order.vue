@@ -14,7 +14,7 @@
             <view>开台条件：{{list.desk_info.desk_open_minimum === 0 ? '无低消':  list.desk_info.minimum_consume_percent+'%低消'+ `(￥${list.desk_info.desk_open_minimum})`}}</view>
         </view>
     </view>
-    <view class="card p-lr-20 p-bottom-10 m-bottom-20">
+    <!-- <view class="card p-lr-20 p-bottom-10 m-bottom-20">
         <view class="p-tb-30 min-border-bottom">点单信息</view>
         <view class="main p-tb-20">
             <view>
@@ -30,7 +30,7 @@
                 <min-btn size="xs" type="white" border class="m-left-20" @click="checkorder(list.order_info.is_can_open)">查看订单</min-btn>
             </view>
         </view>
-    </view>
+    </view> -->
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
         <view class="p-tb-30 min-border-bottom">客户信息</view>
         <view class="main p-tb-20">

@@ -161,7 +161,8 @@ export default {
                 params: {
                     open_id: this.list.desk_info.opening_id,
                     name: this.list.desk_info.client_name,
-                    phone: this.list.desk_info.client_mobile
+                    phone: this.list.desk_info.client_mobile,
+                    desk_id: this.idNum
                 }
             })
         },

@@ -19,6 +19,7 @@
         </view>
     </view>
     <min-404 v-if="getNewData.length === 0 "></min-404>
+    <min-pulldown :isFlag="falg" :desc="des" :loading="load" />
 </view>
 </template>
 
@@ -116,11 +117,12 @@ export default {
     mounted() {
         // 获取存酒记录
         this.getData(1, 10).then(res => {
-            res.list.map(item => {
-                if (item.deposit_status === 2) {
-                    this.list.push(item)
-                }
-            })
+            // res.list.map(item => {
+            //     if (item.deposit_status === 2) {
+            //         this.list.push(item)
+            //     }
+            // })
+            this.list = res.list
             console.log(this.list)
         })
         // this.$minApi.getWinekeepingrecord()
@@ -132,7 +134,7 @@ export default {
     },
     methods: {
         async getData(page, limit, isLoading) {
-            return await this.$minApi.getWinekeepingrecord({
+            return await this.$minApi.getCanGetWine({
                 page,
                 limit,
                 isLoading

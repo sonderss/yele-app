@@ -74,21 +74,27 @@ export default {
             this.$minApi.orderGetRoot({
                 desk_id: this.$parseURL().desk_id,
                 reason: this.value,
-                payment_id: this.$parseURL().payId
+                payment_id: this.$parseURL().payId,
+                booking_id: this.$parseURL().data.order_info.booking_id,
+                sales_uid: this.$parseURL().type === 0 ? 0 : this.$parseURL().seil.id,
+                client_name: this.$parseURL().data.order_info.client_name,
+                client_mobile: this.$parseURL().data.order_info.client_mobile,
+                is_birthday: this.$parseURL().data.order_info.is_birthday,
+                remark: this.$parseURL().data.order_info.remark,
             }).then(res => {
                 console.log(res)
-                if (res.length === 0) {
-                    this.$showToast('提交成功')
-                    setTimeout(() => {
-                        this.$minRouter.push({
-                            name: 'redsubmit-success',
-                            params: {
-                                desk_id: this.$parseURL().desk_id
-                            },
-                            type: "redirectTo"
-                        })
-                    }, 2000)
-                }
+                // if (res.length === 0) {
+                this.$showToast('提交成功')
+                setTimeout(() => {
+                    this.$minRouter.push({
+                        name: 'redsubmit-success',
+                        params: {
+                            desk_id: this.$parseURL().desk_id
+                        },
+                        type: "redirectTo"
+                    })
+                }, 2000)
+                // }
             })
         }
     }

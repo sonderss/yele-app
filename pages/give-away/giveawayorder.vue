@@ -52,6 +52,7 @@ export default {
         return {
             order_id: '',
             content: '',
+            desk_id: '',
             list: {
                 order_info: {
                     desk_name: ''
@@ -63,8 +64,9 @@ export default {
         }
     },
     onLoad(option) {
-        // console.log(option)
+        console.log(option.desk_id)
         this.order_id = option.order_id
+        this.desk_id = option.desk_id
         // console.log(this.$store.state.goods.giveAwayInfo)
         const res = this.$store.state.goods.giveAwayInfo
         this.content = `
@@ -83,9 +85,19 @@ export default {
                 // this.$store.dispatch('user/setUserInfo', res)
                 this.$showToast('赠送成功')
                 setTimeout(() => {
-                    uni.redirectTo({
-                        url: '../platform-admin/index'
-                    });
+                    // uni.redirectTo({
+                    //     url: '../platform-admin/index'
+                    // });
+                    this.$minRouter.push({
+                        name: 'redplatform-detail',
+                        type: 'redirectTo',
+                        params: {
+                            id: this.desk_id,
+                            date: this.$store.state.status.date.date,
+                            status: 6,
+                            isPaySuccess: true
+                        },
+                    })
                     // this.$minRouter.push({
                     //   name: 'platform-admin'
                     // })

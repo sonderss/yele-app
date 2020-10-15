@@ -11,7 +11,11 @@
         <view class="botm">
             <text class="f26">提成合计￥{{total}}</text>
         </view>
+        <view class="f24 botmss">
+            数据仅供参考,提成以实际发放为主
+        </view>
     </view>
+    <view class="m-tb-20" style="height:20rpx"> </view>
     <view class="m-top-20 bg" v-if="list.length > 0">
         <view v-for="(item,index) in list" :key="index" class="p-lr-20  " @click="toDeatil(item.id)">
             <!-- p-tb-30 p-lr-20  cell-item min-flex min-flex-main-between  min-border-botto-->
@@ -499,6 +503,16 @@ export default {
         text {
             color: rgba(102, 102, 102, 1);
         }
+    }
+
+    .botmss {
+        margin-top: 10rpx;
+        width: 100%;
+        height: 40rpx;
+        background: #FFD99F;
+        text-align: center;
+        color: #ff0000;
+        line-height: 40rpx;
     }
 }
 

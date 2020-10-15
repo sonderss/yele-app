@@ -193,7 +193,7 @@ export default {
         // })
     },
     mounted() {
-        console.log("我说", this.$parseURL().res)
+        console.log("我说", this.$parseURL().desk_id)
         let res = this.$parseURL().res
         if (this.$parseURL().res.list.length > 0) {
             res.list.map((item, index) => {
@@ -495,7 +495,7 @@ export default {
                     })
                 })
                 uni.navigateTo({
-                    url: './giveawayorder?order_id=' + this.orderId
+                    url: './giveawayorder?order_id=' + this.orderId + '&desk_id=' + this.$parseURL().desk_id
                 })
                 // }, 2000)
             })

@@ -1,6 +1,7 @@
 <template>
 <view class="min-goods-submit min-border-top">
-    <view class="min-left  p-tb-25 p-left-30" style="flex-basis: 200rpx;" @click.stop="$emit('leftClick')">
+    <!-- style="flex-basis: 200rpx;" -->
+    <view class="min-left  p-tb-25 p-left-30" @click.stop="$emit('leftClick')">
         <min-badge class="min-goods-count" :style="{top:topV+'rpx',left:leftV+'rpx'}" :count="goodsCount" v-if="goodsCount * 1  > 0" />
         <image class="min-icon" v-if="icon" :src="icon" alt="icon" />
         <view class="f28" :style="{color:leftTextColor,width:leftTextWidth}" v-if="leftText"><text>{{leftTextDesc}}</text>{{leftText}}</view>
@@ -102,7 +103,7 @@ export default {
     z-index: 2;
 
     .min-left {
-        flex-basis: 150rpx;
+        // flex-basis: 100rpx;
         line-height: 48rpx;
         position: relative;
 

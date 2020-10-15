@@ -32,13 +32,13 @@
                 <text class="price" v-if="product_type === 'product' ">￥{{list.sku.length === 0 ? '暂无数据': list.sku[chioceIndex].sku_price}}</text>
                 <text class="price" v-if="product_type === 'service' ">￥{{list.price}}</text>
             </view>
-            <min-stepper v-if="!$parseURL().isPay && list.sku.length <= 1" v-model="list.step" @change="goodsChange($event,list)"></min-stepper>
+            <min-stepper :isAnimation="list.step > 0 ? false : true " v-if="!$parseURL().isPay && list.sku.length <= 1" v-model="list.step" @change="goodsChange($event,list)"></min-stepper>
             <view v-if="!$parseURL().isPay && list.sku.length > 1" class="isbtn f24" @click.stop="selSku">
                 {{product_type === 'product'  ? '选规格':'' }}
             </view>
         </view>
     </view>
-    <view v-if="!$parseURL().isPay">
+    <view v-if="!$parseURL().isPay && !noData ">
         <min-describe @chincesku="selSku" :sku="list.sku[0].sku_full_name" leftTxt="规格" v-if="product_type === 'product' "></min-describe>
     </view>
     <view class="introduction m-top-20 p-lr-20" v-if="list.info">
@@ -212,7 +212,7 @@ export default {
             top: '',
             lastY: '',
             chioceIndex: 0,
-            noData: false,
+            noData: true,
             selected: false,
             selArr: [],
             errImg: false,
@@ -340,6 +340,7 @@ export default {
                                 this.$set(this.list, 'step', item.step)
                             }
                         })
+                        this.noData = false
                     })
                     .catch(() => {
                         this.noData = true
@@ -356,6 +357,7 @@ export default {
                         console.log(this.list)
                         this.itemss = []
                         this.itemss.push(this.list.product_img)
+                        this.noData = false
                     })
                     .catch(() => {
                         this.noData = true

@@ -2,8 +2,9 @@
 <view class="seat">
 
     <movable-area class="mains">
-        <movable-view v-if="isLaji" @scale='listenScal' class="max" direction="all" scale :scale-value="scales" inertia :out-of-bounds="true" :x="X" :y="Y">
+        <movable-view v-if="isLaji" :style="{width:isW,height:isH,top:'100px',left: IsLeft}" @scale='listenScal' class="max" direction="all" scale :scale-value="scales" inertia :out-of-bounds="true" :x="X" :y="Y">
             <!-- <view class="max" v-for="(item2,index2) in back" :key="index2" :style="{backgroundImage:url(`${item2}`)}"></view>    -->
+
             <view class="main" :style="{width:isW,height:isH,backgroundImage: `url('${this.$store.state.status.seatList.desk_base_img}')`}">
                 <view class="item" v-for="(item,index) in list" :key="index" @click="toDetail(item.id,item.status)" :style="{
                         left:`${item.cord.x}px`,
@@ -47,9 +48,36 @@ export default {
                     this.isW = res.width + 'px'
                     this.isH = res.height + 'px'
                 })
+                uni.getSystemInfo({
+                    success: (ress) => {
+                        this.Width = ress.windowWidth
+                        this.Height = ress.windowHeight
+                        // this.X = (ress.windowWidth - res.height - 50) > 0 ? `-${(ress.windowWidth -  res.height - 50 )  }` : (ress.windowWidth - res.height - 50)
+                        // // this.X = (ress.windowWidth - (res.height + 60)) / 2 > 0 ? '-' + (ress.windowWidth - (res.height + 60)) : (ress.windowWidth - (res.height + 60))
+                        // this.Y = (ress.windowHeight - res.width) > 0 ? (ress.windowHeight - res.width) : (ress.windowHeight - res.width) * -1
+                        console.log(this.Width, this.Height)
+                        if (this.Width <= 375) {
+                            this.IsLeft = '-170px'
+                        }
+                        if (this.Width >= 414) {
+                            this.IsLeft = '-150px'
+                        }
+                        if (this.Width === 320) {
+                            return this.IsLeft = '-200px'
+                        }
+
+                        if (this.Width <= 450) {
+                            this.IsLeft = '-160px'
+                        }
+                        if (this.Width <= 360) {
+                            this.IsLeft = '-180px'
+                        }
+                    }
+                });
 
             }
         })
+
         // this.Height = windowHeight + 'rpx'
         // this.Width = windowWidth + 'rpx'
         // console.log(this.Height, this.Width)
@@ -76,12 +104,13 @@ export default {
             Width: '',
             Height: '',
             isShow: false,
-            X: '-150',
-            Y: '100',
+            X: '',
+            Y: '',
             scales: 1,
             isLaji: true,
             isW: '',
-            isH: ''
+            isH: '',
+            IsLeft: '-150'
 
         }
     },
@@ -152,7 +181,7 @@ export default {
         // height: 509px;
         background-repeat: no-repeat;
         background-size: contain;
-        transform: rotate(90deg) scale(0.7); //  scale(0.7)
+        transform: rotate(90deg) scale(0.6); //  scale(0.7)
         position: relative;
     }
 
@@ -168,8 +197,8 @@ export default {
         position: fixed;
         right: 20rpx;
         top: 80rpx;
-        width: 40rpx;
-        height: 40rpx;
+        width: 34rpx;
+        height: 34rpx;
         font-size: 40rpx;
         font-weight: bold;
         background-image: url('/static/images/close_seat.png');

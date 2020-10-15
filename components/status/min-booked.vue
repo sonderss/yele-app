@@ -117,7 +117,10 @@ export default {
                 name: 'stage-make',
                 params: {
                     booking_id: this.list.desk_info.booking_id,
-                    id: this.idNum
+                    id: this.idNum,
+                    minm: this.list.desk_info.minim_charge,
+                    minimum_percent: this.list.desk_info.minimum_consume_percent,
+                    desk_open_minimum: this.list.desk_info.desk_open_minimum
                 }
             })
         },

@@ -19,9 +19,9 @@
             <view v-else class="white">{{ countDown }} s</view>
         </view>
     </view>
-    <view class="user_info m-lr-30 p-lr-30 p-top-20">
-        <!-- <min-radio @change="ischange" v-model="a" :label="isCh" active="/static/images/active_sel.png" " /> -->
-        <image :src="src_" @click="ischange" />
+    <view :class="addAnimation ? ' user_info  user_info_anmin m-lr-30 p-lr-30 p-top-30' : ' user_info   m-lr-30 p-lr-30 p-top-30' ">
+        <!-- <min-radio @change=" ischange" v-model="a" :label="isCh" active="/static/images/active_sel.png" " /> -->
+        <image :src=" src_" @click="ischange" />
         <view style="color:#666666" class="f20">我已同意夜乐<text class="d" @click="toUser(1)">《用户协议》</text>和<text class="d" @click="toUser(2)">《隐私政策》</text></view>
     </view>
     <view style="height: 70rpx"></view>
@@ -47,7 +47,8 @@ export default {
             isFouce: false,
             test: false,
             ndsl: false,
-            isChangeSel: true
+            isChangeSel: false,
+            addAnimation: false
         }
     },
     computed: {
@@ -115,7 +116,14 @@ export default {
             if (this.$store.state.status.intNet) return this.$showToast('无网络连接')
             // #endif
             if (!this.$minCommon.checkMobile(this.mobile) || this.code.length !== 6) return this.$showToast('请正确填写信息')
-            if (!this.isChangeSel) return this.$showToast('请先同意《用户协议》和《隐私政策》')
+            if (!this.isChangeSel) {
+                this.addAnimation = true
+                this.$showToast('请先同意《用户协议》和《隐私政策》')
+                setTimeout(() => {
+                    this.addAnimation = false
+                }, 500)
+                return
+            }
             if (this.flag) return
             this.flag = true
             this.$minApi
@@ -230,6 +238,24 @@ export default {
         .d {
             color: #3699FF;
             font-size: 20rpx;
+        }
+    }
+
+    .user_info_anmin {
+        animation: test 0.15s linear infinite;
+    }
+
+    @keyframes test {
+        0% {
+            transform: translateX(rpx);
+        }
+
+        50% {
+            transform: translateX(20rpx);
+        }
+
+        100% {
+            transform: translateX(0rpx);
         }
     }
 }

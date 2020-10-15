@@ -21,7 +21,7 @@
             </view>
         </view>
     </view>
-    <view class="card p-lr-20 p-bottom-10 m-tb-20">
+    <!-- <view class="card p-lr-20 p-bottom-10 m-tb-20">
         <view class="p-tb-30 min-border-bottom">点单信息</view>
         <view class="main p-tb-20">
             <view>
@@ -30,7 +30,7 @@
             </view>
             <view>开台订单：{{list.order_info.order_id === 0 ? '未进行点单':'￥'+list.order_info.order_total}}</view>
         </view>
-    </view>
+    </view> -->
     <view class="card p-lr-20 p-bottom-10 m-bottom-20">
         <view class="p-tb-30 min-border-bottom">客户信息</view>
         <view class="main p-tb-20">

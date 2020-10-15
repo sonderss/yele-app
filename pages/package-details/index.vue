@@ -1,13 +1,13 @@
 <template>
 <view class="product-details p-tb-20 p-lr-30">
-    <swiper class="swiper" :indicatorDots="false" :circular="true" :autoplay="autoplay" :interval="interval" :duration="duration">
+    <swiper v-if="!noData" class="swiper" :indicatorDots="false" :circular="true" :autoplay="autoplay" :interval="interval" :duration="duration">
         <swiper-item v-for="(item,index) in list.setmeal_images" :key="index">
             <view class="swiper-item">
                 <image :src="item" @error="imgerra" />
             </view>
         </swiper-item>
     </swiper>
-    <view class="goods-item p-lr-20 m-bottom-20">
+    <view v-if="!noData" class="goods-item p-lr-20 m-bottom-20">
         <!-- <view class="top-view f28  f28">{{list.product_name}}</view> -->
         <view class="f28  t" style="display:block">
             <!-- {{item2.product_name}} -->
@@ -41,7 +41,7 @@
 
         </view>
     </view>
-    <min-describe v-if="!$parseURL().isPay" @chincesku="toDeatil" :sku2="list.combination[0].combination_name" leftTxt="套餐组合"></min-describe>
+    <min-describe v-if="!$parseURL().isPay && !noData" @chincesku="toDeatil" :sku2="list.combination[0].combination_name" leftTxt="套餐组合"></min-describe>
     <view class="introduction m-top-20 p-lr-20" v-if="list.info">
         <view class="title min-border-bottom m-bottom-30">详细介绍</view>
         <view class="content p-bottom-30" v-if="list.info">
@@ -122,6 +122,7 @@
 
         </view>
     </min-popup>
+    <min-404 v-if="noData" />
 </view>
 </template>
 
@@ -144,6 +145,7 @@ export default {
             buttonText: '2',
             count: 0,
             product_type: '',
+            noData: true,
             list: {
                 combination: [{
                     combination_name: ''
@@ -263,6 +265,7 @@ export default {
                         obj.aaaaa = aaaaa
                         this.addGoods(obj)
                     }
+                    this.noData = false
                 })
         },
         back(a) {

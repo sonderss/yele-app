@@ -15,7 +15,7 @@
                     <min-avatar size="md" :url="userInfo.head_img ? userInfo.head_img  :'/static/images/head.png'"></min-avatar>
                     <view class="m-left-20">
                         <view class="f30" style="font-weight:bold">{{ userInfo.user_name }}</view>
-                        <view class="f24 m-top-20">{{ userInfo.store_name }} | {{ userInfo.position_name }}</view>
+                        <view class="f24 m-top-20  min-ellipsis" style="width:400rpx">{{ userInfo.store_name }} | {{ userInfo.position_name }}</view>
                     </view>
                 </view>
                 <view class="min-flex min-flex-main-center" @click="navigateTo('changeStore')">
@@ -182,7 +182,7 @@ export default {
                     img: '/static/images/index/take.png',
                     text: '开台记录',
                     name: 'open-list',
-                    root: 'openRecord'
+                    root: 'openingRecord'
                 },
                 {
                     img: '',
@@ -198,7 +198,7 @@ export default {
                     img: '/static/images/index/ti.png',
                     name: 'commission-details',
                     url: 'commission-details',
-                    text: '提成明细',
+                    text: '我的提成',
                     root: 'statistics'
                 }, {
                     img: '/static/images/index/shou.png',

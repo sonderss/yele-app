@@ -67,6 +67,11 @@ class MinRequest {
         if (!res.isConnected) {
           console.log(res)
           uni.hideLoading()
+          uni.showToast({
+            title:'网络未连接',
+            icon:'none',
+            duration:2000
+          })
           clearTimeout(timer)
           return resolve(MinRequest._requestAfter(res))
         }
@@ -84,11 +89,11 @@ class MinRequest {
       requestTask = uni.request(obj)
       timer = setTimeout(() => {
         uni.hideLoading()
-		uni.showToast({
-			title:'网络请求超时，请重开网络',
-			icon:'none',
-			duration:2000
-		})
+        uni.showToast({
+          title:'网络请求超时',
+          icon:'none',
+          duration:2000
+        })
         reject(new Error('网络请求超时'))
         requestTask.abort()
       }, obj.timeOut)

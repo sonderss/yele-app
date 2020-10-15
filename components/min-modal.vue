@@ -11,6 +11,11 @@
                 <view class="m-top-10">{{setDeskTop2}}</view>
             </view>
             <!-- end -->
+            <!-- 这里为申请原因特意增加 -->
+            <view v-if="isReson" class="min-modal-title-set" style="padding:0;text-align: left;">
+                <min-remarks title='申请原因' maxlength='100' textAlign='center' color='#999' placeholder='请填写申请原因...' v-model='resonValue'></min-remarks>
+            </view>
+            <!-- end -->
             <view class="min-modal-body" v-if="content">
                 <scroll-view v-if="zengs" scroll-y='true' style="height:300rpx">
                     <view :class="isPading ? 'content_isPading':'content' " v-html="content"></view>
@@ -72,7 +77,9 @@ export default {
             setDeskTop: '',
             setDeskTop2: '',
             isPading: false,
-            zengs: false
+            zengs: false,
+            isReson: false,
+            resonValue: ''
         }
     },
     methods: {
@@ -94,6 +101,8 @@ export default {
             setDeskTop2 = '',
             isPading = false,
             zengs = false,
+            isReson = false,
+            resonValue = '',
             success = () => {}
         }) {
             clearTimeout(this.timer)
@@ -116,6 +125,7 @@ export default {
             this.setDeskTop = setDeskTop
             this.isPading = isPading
             this.zengs = zengs
+            this.isReson = isReson
         },
         handleHide() {
             this.show = false
@@ -138,6 +148,7 @@ export default {
                 this.isSetTitie = false
                 this.isPading = false
                 this.zengs = false
+                this.isReson = false
                 this.success = () => {}
             }, 300)
         },
@@ -161,7 +172,8 @@ export default {
             }
             this.success({
                 modalID: this.modalID,
-                id
+                id,
+                resonValue: this.resonValue
             })
             this.handleHide()
         }

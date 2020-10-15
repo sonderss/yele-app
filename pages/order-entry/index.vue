@@ -65,7 +65,8 @@ export default {
         presentation() {
             // 请求赠送列表并带过去页面
             this.$minApi.getGiveAwayList({
-                desk_id: this.$parseURL().desk_id
+                desk_id: this.$parseURL().desk_id,
+                timeOut: 2
             }).then(res => {
                 if (res.list.length > 0) {
                     this.$minRouter.push({

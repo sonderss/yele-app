@@ -44,6 +44,8 @@ export default {
   clearOrder: data => minRequest.get('/5e71d5877cf60', data),
   // 销台
   delOrder: data => minRequest.get('/5e71d58cd6f3c', data),
+  //  开台记录
+  openList: data => minRequest.get('/5f8813e2d9f51',data),
   // 开台申请
   orderGetRoot: data => minRequest.post('/5e7b1643442ff', data),
   // 获取预约详情
@@ -72,6 +74,8 @@ export default {
   getPackageDetails: data => minRequest.get('/5e8ee33b60dcb', data),
   // 取酒记录
   getWindeList: data => minRequest.get('/5e86f19546fa3', data),
+  // 可取酒的存酒记录
+  getCanGetWine: data => minRequest.get('/5f5708a558aa3',data),
   // 取酒记录详情
   getWineDetail: data => minRequest.get('/5e86ff46c9c1d', data),
   //  下单记录

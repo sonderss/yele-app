@@ -157,6 +157,7 @@ export default {
             options.client_mobile = this.phone
             options.opening_id = this.$parseURL().open_id
             console.log(options);
+            if (options.apply_data.length === 0) return this.$showToast("请选择要存的酒")
             this.$minApi.saveWinePost({
                     client_name: this.name,
                     client_mobile: this.phone,
@@ -174,8 +175,16 @@ export default {
                         })
                         setTimeout(() => {
                             this.$minRouter.push({
-                                name: 'platform-admin'
+                                name: 'redplatform-detail',
+                                type: "redirectTo",
+                                params: {
+                                    id: this.$parseURL().desk_id,
+                                    date: this.$store.state.status.date.date
+                                },
                             })
+                            // this.$minRouter.push({
+                            //     name: 'platform-admin'
+                            // })
                         }, 2000)
                     }
                 }).catch(err => {
