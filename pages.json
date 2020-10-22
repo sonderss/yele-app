@@ -1,10 +1,21 @@
 {
-  "pages": [{
+  "pages": [
+	  {
       "path": "pages/start",
       "style": {
         "app-plus": {
           "titleNView": false
         }
+      }
+    },
+    {
+      "path": "pages/yinsi/index",
+      "style": {
+        "app-plus": {
+          "titleNView": false,
+          "bounce": false
+        },
+        "navigationBarTextStyle": "black"
       }
     },
     {
@@ -207,9 +218,14 @@
         "enablePullDownRefresh": true,
         "app-plus": {
           "titleNView": {
-            "titleText": "充公记录",
+            "titleText": "我的充公记录",
             "backgroundColor": "#030313",
-            "titleColor": "#FFE001"
+            "titleColor": "#FFE001",
+            "buttons":[{
+              "width": "auto",
+              "text": "所有充公记录",
+              "fontSize": "28rpx"
+            }]
           }
         }
       }
@@ -220,9 +236,14 @@
         "enablePullDownRefresh": true,
         "app-plus": {
           "titleNView": {
-            "titleText": "下单记录",
+            "titleText": "我的下单记录",
             "backgroundColor": "#030313",
-            "titleColor": "#FFE001"
+            "titleColor": "#FFE001",
+            "buttons": [{
+              "width": "auto",
+              "text": "所有下单记录",
+              "fontSize": "28rpx"
+            }]
           }
         }
       }
@@ -354,9 +375,14 @@
         "enablePullDownRefresh": true,
         "app-plus": {
           "titleNView": {
-            "titleText": "取酒记录",
+            "titleText": "我的取酒记录",
             "backgroundColor": "#030313",
-            "titleColor": "#FFE001"
+            "titleColor": "#FFE001",
+            "buttons": [{
+              "width": "auto",
+              "text": "所有取酒记录",
+              "fontSize": "28rpx"
+            }]
           }
         }
       }
@@ -367,9 +393,14 @@
         "enablePullDownRefresh": true,
         "app-plus": {
           "titleNView": {
-            "titleText": "存酒记录",
+            "titleText": "我的存酒记录",
             "backgroundColor": "#030313",
-            "titleColor": "#FFE001"
+            "titleColor": "#FFE001",
+            "buttons": [{
+              "width": "auto",
+              "text": "所有存酒记录",
+              "fontSize": "28rpx"
+            }]
           }
         }
       }
@@ -695,9 +726,14 @@
         "enablePullDownRefresh": true,
         "app-plus": {
           "titleNView": {
-            "titleText": "赠送记录",
+            "titleText": "我的赠送记录",
             "backgroundColor": "#030313",
-            "titleColor": "#FFE001"
+            "titleColor": "#FFE001",
+            "buttons": [{
+              "text": "所有赠送记录 ",
+              "fontSize": "28rpx",
+              "width": "auto"
+            }]
           }
         }
       }
@@ -796,9 +832,14 @@
         "enablePullDownRefresh": true,
         "app-plus": {
           "titleNView": {
-            "titleText": "开台记录",
+            "titleText": "我的开台记录",
             "backgroundColor": "#030313",
-            "titleColor": "#FFE001"
+            "titleColor": "#FFE001",
+            "buttons": [{
+              "text": "所有开台记录",
+              "fontSize": "28rpx",
+              "width": "auto"
+            }]
           }
         }
       }
@@ -822,9 +863,14 @@
         "enablePullDownRefresh": true,
         "app-plus": {
           "titleNView": {
-            "titleText": "预约记录",
+            "titleText": "我的预约记录",
             "backgroundColor": "#030313",
-            "titleColor": "#FFE001"
+            "titleColor": "#FFE001",
+            "buttons": [{
+              "text": "所有预约记录",
+              "fontSize": "28rpx",
+              "width": "auto"
+            }]
           }
         }
       }
@@ -1067,9 +1113,14 @@
         "enablePullDownRefresh": true,
         "app-plus": {
           "titleNView": {
-            "titleText": "转台记录",
+            "titleText": "我的转台记录",
             "backgroundColor": "#030313",
-            "titleColor": "#FFE001"
+            "titleColor": "#FFE001",
+            "buttons": [{
+              "text": "所有转台记录",
+              "fontSize": "28rpx",
+              "width": "auto"
+            }]
           }
         }
       }

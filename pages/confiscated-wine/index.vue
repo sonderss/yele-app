@@ -135,8 +135,8 @@
                 <!-- 可选择规格项 -->
                 <view>
                     <view class="f26">规格</view>
-                    <view class="item-view">
-                        <view :class="chioceIndex ===index ?   'item-active t' : 'item t' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku}}</view>
+                    <view class="item-view p-right-20">
+                        <view :style="{'margin-right': (index+1) % 3===0 ? '0' : '20rpx'}" :class="chioceIndex ===index ?   'item-active t' : 'item t' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku}}</view>
                     </view>
                 </view>
             </scroll-view>
@@ -230,6 +230,7 @@ export default {
             handler(a, b) {
                 a.map((item, index) => {
                     if (item.step === 0) {
+                        console.log('擦肩')
                         this.$nextTick(() => {
                             a.splice(index, 1);
                             this.selNum.splice(index, 1);
@@ -444,15 +445,16 @@ export default {
         },
         changeChioce(e, index, index2) {
             if (e === 0) {
-                this.selArr.splice(index, 1);
-                this.selNum.splice(index, 1);
+                // console.log(2112312)
+                // this.selArr.splice(index, 1);
+                // this.selNum.splice(index, 1);
                 return
             }
             this.addGoods(index, index2);
-            const params = {};
-            params.id = this.mainArray[index].list[index2].sku[0].confiscate_product_id;
-            params.product_num = this.mainArray[index].list[index2].step + 1;
-            this.postItem(params);
+            // const params = {};
+            // params.id = this.mainArray[index].list[index2].sku[0].confiscate_product_id;
+            // params.product_num = this.mainArray[index].list[index2].step + 1;
+            // this.postItem(params);
         },
         // 选择规格
         chioceO(index) {

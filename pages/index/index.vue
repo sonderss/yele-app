@@ -130,6 +130,7 @@ export default {
             lastY: '',
             flag: Boolean,
             testArr: [],
+            isT: false,
             grid2: [{
                     url: '../order-record/index.vue',
                     name: 'order-record',
@@ -319,6 +320,7 @@ export default {
                     date: this.$minCommon.formatDate(new Date(), 'yyyy-MM-dd')
                 })
                 .then(res => {
+                    console.log(res)
                     this.getSeatData(res)
                 })
                 // eslint-disable-next-line handle-callback-err
@@ -350,6 +352,7 @@ export default {
                 })
                 res.desk_coordinate = JSON.stringify(brr)
                 this.$store.dispatch('status/setSeatList', res)
+
             })
         },
         start(e) {
@@ -370,13 +373,22 @@ export default {
         },
         end(e) {
             if (this.top >= 300) {
-                this.getData()
-                this.$minRouter.push({
-                    name: 'seat',
-                    params: {
-                        url: 'index'
-                    }
-                })
+                this.$minApi
+                    .GetTableList({
+                        date: this.$minCommon.formatDate(new Date(), 'yyyy-MM-dd'),
+                        isLoading: true
+                    })
+                    .then(res => {
+                        console.log(res)
+                        this.getSeatData(res)
+                        this.$minRouter.push({
+                            name: 'seat',
+                            params: {
+                                url: 'index'
+                            }
+                        })
+                    })
+
             }
             return (this.top = 0)
         },

@@ -58,6 +58,7 @@ export default {
                 .then(res => {
                     console.log(res)
                     this.info = res
+                    this.$showToast('发送成功')
                 })
             this.$minCommon.setCountDown(num => {
                 // 倒计时
@@ -96,7 +97,7 @@ export default {
                     console.log(res)
                     this.$store.dispatch('user/setUserInfoAuth', res.apiAuth)
                     this.$store.dispatch('status/setisGetUser', true)
-                    this.$store.dispatch('user/setisNeed', true)
+                    this.$store.dispatch('status/setisNeed', true)
                     this.$showToast('绑定成功')
                     setTimeout(() => {
                         uni.navigateBack({

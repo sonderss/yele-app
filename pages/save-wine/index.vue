@@ -1,12 +1,12 @@
 <template>
 <view class="save-wine p-tb-20 p-lr-20">
     <view class="goods-wrap p-lr-20">
-        <view class="p-tb-30 min-border-bottom">来源于订单</view>
+        <!-- <view class="p-tb-30 min-border-bottom">来源于订单</view> -->
         <view class="goods-list p-t-10 p-bottom-20" v-if="list.from_order.length > 0">
             <view class="p-top-20" v-for="(item,index) in list.from_order" :key="index">
                 <view style="background: #fff;">
                     <view class="goods-item">
-                        <min-checkbox v-model="item.flag"></min-checkbox>
+                        <min-checkbox :isCenter="true" v-model="item.flag"></min-checkbox>
                         <image class="goods-icon" :src="item.product_img" @error="imgError($event,index,0)" />
                         <view class="goods-content">
                             <view class="goods-name">{{item.sku_full_name}}</view>
@@ -15,7 +15,7 @@
                                     <min-slider v-if="item.storage_type === 2" v-model="item.num" :max="100" />
                                 </view>
                                 <view class="stepper">
-                                    <min-stepper v-if="item.storage_type === 2" :isAnimation="false" v-model="item.num" max="100" unit="%" />
+                                    <min-stepper psize='70rpx' v-if="item.storage_type === 2" :isAnimation="false" v-model="item.num" max="100" unit="%" />
                                     <view v-if="item.storage_type === 1">整瓶存</view>
                                 </view>
                             </view>

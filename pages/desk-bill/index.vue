@@ -46,7 +46,7 @@
     </min-cell>
 
     <min-cell :card="false" class="m-top-20" v-if="showData.length !== 0">
-        <view class="f30  top-view1 " v-if="showData.length > 0">
+        <view class="f30  top-view1 " v-if="showData.length > 0 && isHaveS">
             <view class="left-view">
                 <text>已结订单</text>
             </view>
@@ -88,7 +88,8 @@ export default {
             des: '加载中',
             page: 2,
             load: true,
-            isNone: true
+            isNone: true,
+            isHaveS: false
         }
     },
     watch: {
@@ -99,6 +100,14 @@ export default {
             } else if (a === 1) {
                 this.showData = this.market
             }
+        },
+        showData(a) {
+            console.log(a)
+            a.map(item => {
+                if (item.pay_status === 1) {
+                    this.isHaveS = true
+                }
+            })
         }
     },
     methods: {

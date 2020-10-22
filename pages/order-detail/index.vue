@@ -68,7 +68,7 @@
         <view class="top p-tb-30 min-border-bottom">订单信息</view>
         <view class="main p-tb-30" v-if='list.order_type !== 1'>
             <view class="item">订&nbsp;单&nbsp;<span class='p-left-20'>号：</span>{{list.order_sn}}</view>
-            <view class="item" v-if="list.order_status === 0 || list.order_status === -1">订单来源：{{list.source ? '门店':'平台'}}</view>
+            <view class="item" v-if="list.order_status === 0 || list.order_status === -1">订单来源：{{list.source ? '平台':'门店'}}</view>
             <view class="item">支付类型：{{list.pay_type === 0 ? '先付' :'后付'}}</view>
             <view class="item">下单人员：{{list.order_user_name ? list.order_user_name  : '暂无数据'}}</view>
             <view class="item">下单时间：{{$minCommon.formatDate(new Date(list.create_time*1000),'yyyy/MM/dd hh:mm:ss' ) }}</view>

@@ -23,7 +23,7 @@
             <view class="m-top-20"></view>
             <min-cell :card="false">
                 <min-cell-item title="实名认证" :tailcolor="userInfo.is_certify === 1 ? false: true " :tail="userInfo.is_certify === 1 ? '已认证':'未认证'" :border="true" arrow tailType="red" @eventParent="toFace"></min-cell-item>
-                <min-cell-item title="提现银行卡" :tailcolor="userInfo.bank_card_name ?  false : true " tailType="red" :isWidth="false" :border="true" arrow :tail="userInfo.bank_card_name ? userInfo.bank_card_name+`(${lastString})` : '未绑定'" @eventParent="payMethods(userInfo.bank_card_name)"></min-cell-item>
+                <min-cell-item title="提现银行卡" :tailcolor="userInfo.bank_card_name ?  false : true " tailType="red" :isWidth="false" :border="true" arrow :tail="userInfo.bank_card_name ? userInfo.bank_card_name+`(${lastString})` : '未绑定'" @eventParent="payMethods(userInfo.bank_card_num)"></min-cell-item>
                 <min-cell-item title="提现密码" :tailcolor="userInfo.is_cash_pwd ? false  : true" tailType="red" :border="false" arrow :tail="userInfo.is_cash_pwd ? '已设置':'未设置'" @eventParent="toSetPsd"></min-cell-item>
             </min-cell>
         </view>
@@ -296,6 +296,7 @@ export default {
         },
         // payMethods drawing-way
         payMethods(item) {
+            if (this.userInfo.is_certify !== 1) return this.$showToast('请先实名认证')
             this.$minRouter.push({
                 name: "drawing-way",
                 params: {

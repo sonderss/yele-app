@@ -20,8 +20,8 @@
             </min-cell>
             <view class="m-tb-20"></view>
             <min-cell class="mid-view" :card="false">
-                <min-desc-input desc="客户姓名" v-model="name1" sign="*" :maxlength="5" placeholder="请输入姓名"></min-desc-input>
-                <min-desc-input desc="联系电话" v-model="phone" sign="*" :maxlength="11" placeholder="请输入联系电话"></min-desc-input>
+                <min-desc-input desc="客户姓名" v-model="name1" sign=" " :maxlength="5" placeholder="请输入姓名"></min-desc-input>
+                <min-desc-input desc="联系电话" v-model="phone" sign=" " :maxlength="11" placeholder="请输入联系电话"></min-desc-input>
 
                 <view @click="goChioce">
                     <min-desc-input sign="*" desc="预约日期" :isRightRrrow="true" :value="dates" placeholder="请选择预约日期" :disabled="true"></min-desc-input>
@@ -330,22 +330,24 @@ export default {
                 remark: this.value,
                 is_across: this.isKua
             }
-            if (!data.client_name) {
-                uni.showToast({
-                    title: '请输入姓名',
-                    icon: 'none'
-                })
-            } else if (data.client_name.indexOf('&') !== -1) {
-                uni.showToast({
-                    title: '姓名含有非法字符',
-                    icon: 'none'
-                })
-            } else if (!this.$minCommon.checkMobile(data.client_mobile)) {
-                uni.showToast({
-                    title: '请输入有效电话姓名',
-                    icon: 'none'
-                })
-            } else if (!data.business_date) {
+            // if (!data.client_name) {
+            //     uni.showToast({
+            //         title: '请输入姓名',
+            //         icon: 'none'
+            //     })
+            // } else if (data.client_name.indexOf('&') !== -1) {
+            //     uni.showToast({
+            //         title: '姓名含有非法字符',
+            //         icon: 'none'
+            //     })
+            // } 
+            // if (!this.$minCommon.checkMobile(data.client_mobile)) {
+            //     uni.showToast({
+            //         title: '请输入有效电话姓名',
+            //         icon: 'none'
+            //     })
+            // } 
+           if (!data.business_date) {
                 uni.showToast({
                     title: '请选择预定日期',
                     icon: 'none'

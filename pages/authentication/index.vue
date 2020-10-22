@@ -3,7 +3,7 @@
     <view class="main">
         <view class="top">
             <view class="title">身份验证</view>
-            <view class="desc">请输入支付密码，以验证身份</view>
+            <view class="desc">请输入提现密码，以验证身份</view>
         </view>
 
         <view class="bom">
@@ -92,11 +92,13 @@ export default {
                 });
         },
         jiebang() {
-            this.$minApi.jieBankCard().then(res => {
+            this.$minApi.jieBankCard({
+                bank_card_num: this.$parseURL().card_num
+            }).then(res => {
                 console.log(res);
                 this.$showToast("解绑成功")
                 this.$store.dispatch('user/setUserInfoAuth', res.apiAuth)
-                this.$store.dispatch('user/setisNeed', true) //是否需要重新获取银行卡绑定信息
+                this.$store.dispatch('status/setisNeed', true) //是否需要重新获取银行卡绑定信息
                 this.$store.dispatch('status/setisGetUser', true)
                 setTimeout(() => {
                     uni.navigateBack({

@@ -47,6 +47,20 @@ export default {
             })
         }
     },
+    onBackPress(options) {
+        if (this.list.order_info.is_can_open === 0) {
+            // 不满足开台条件
+            this.$minRouter.push({
+                name: 'redplacean-order',
+                type: 'redirectTo',
+                params: {
+                    desk_id: this.$parseURL().desk_id,
+                    minim_charge: this.list.order_info.minim_charge
+                }
+            })
+            return true
+        }
+    },
     methods: {
         submit() {
             if (this.bgcolor === '#CCC') return

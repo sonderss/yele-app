@@ -42,6 +42,7 @@ export default {
             nums: 2,
             des: "加载中",
             load: true,
+            isAll:false
         }
     },
     onLoad() {
@@ -50,9 +51,30 @@ export default {
             this.list = res.list
         })
     },
+    onNavigationBarButtonTap() {
+      this.isAll = true
+      this.getAllData(1,10).then(res => {
+            console.log(res)
+            this.list = res.list
+      })
+    },
     onReachBottom() {
         console.log('到底')
         this.falg = true
+        if(this.isAll){
+            this.getAllData(this.nums, 10, true).then(res => {
+                if (res.list.length === 0) {
+                    this.load = false
+                    this.des = '暂无更多数据'
+                    setTimeout(() => {
+                        return this.falg = false
+                    }, 1000)
+                }
+                this.list = this.list.concat([...res.list])
+                this.nums++
+            })
+            return
+        }
         this.getData(this.nums, 10, true).then(res => {
             if (res.list.length === 0) {
                 this.load = false
@@ -67,6 +89,16 @@ export default {
 
     },
     onPullDownRefresh() {
+
+         if(this.isAll){
+                this.getAllData(1, 10, true).then(res => {
+                     this.list = res.list
+                    this.nums = 2
+                    this.falg = false
+                    uni.stopPullDownRefresh();
+                })
+             return
+         }
         this.getData(1, 10, true).then(res => {
             this.list = res.list
             this.nums = 2
@@ -75,6 +107,13 @@ export default {
         })
     },
     methods: {
+        async getAllData (page, limit, isLoading = false) {
+            return this.$minApi.openAllList({
+                page,
+                limit,
+                isLoading: isLoading
+            })
+        },
         async getData(page, limit, isLoading = false) {
             return this.$minApi.openList({
                 page,

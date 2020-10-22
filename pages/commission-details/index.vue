@@ -12,7 +12,7 @@
             <text class="f26">提成合计￥{{total}}</text>
         </view>
         <view class="f24 botmss">
-            数据仅供参考,提成以实际发放为主
+            数据仅供参考, 提成以实际发放为准
         </view>
     </view>
     <view class="m-tb-20" style="height:20rpx"> </view>
@@ -20,15 +20,23 @@
         <view v-for="(item,index) in list" :key="index" class="p-lr-20  " @click="toDeatil(item.id)">
             <!-- p-tb-30 p-lr-20  cell-item min-flex min-flex-main-between  min-border-botto-->
             <view :class="index !== list.length-1 ? 'cell-item min-flex min-flex-main-between  min-border-bottom ':'cell-item min-flex min-flex-main-between'" style="width:100%;height:130rpx">
-                <view class="min-flex">
-                    <view style="width:400rpx">
+                <view style='width:100%' class="min-flex min-flex-dir-top min-flex-align-top min-flex-main-between">
+                    <view style="width:660rpx">
                         <view class="f28 min-ellipsis">{{item.commission_name}}</view>
-                        <view class="label m-top-10 f24 assist-text min-ellipsis">{{$minCommon.formatDate(new Date(item.create_time*1000),'yyyy/MM/dd hh:mm:ss') }}</view>
+                        <!-- <view class="label m-top-10 f24 assist-text min-ellipsis">
+                           {{$minCommon.formatDate(new Date(item.create_time*1000),'yyyy/MM/dd hh:mm:ss') }}
+                        </view> -->
                     </view>
+                     <view class="min-flex  flex-end min-flex-main-between " style='width:100%'>
+                        <view class="label m-top-10 f24 assist-text min-ellipsis">
+                           {{$minCommon.formatDate(new Date(item.create_time*1000),'yyyy/MM/dd hh:mm:ss') }}
+                        </view>
+                       <view style='flex:1;text-align:right' :class=" item.commission *1 <= 0 ? 'ablack min-ellipsis' : 'ared min-ellipsis'">{{item.commission * 1 > 0 ? '+' + item.commission : item.commission}}</view>
+                     </view>
                 </view>
-                <view class="min-flex flex-end min-flex-dir-top">
-                    <view :class=" item.commission *1 <= 0 ? 'ablack' : 'ared'">{{item.commission * 1 > 0 ? '+' + item.commission : item.commission}}</view>
-                </view>
+                <!-- <view class="min-flex flex-end min-flex-dir-top">
+                       <view :class=" item.commission *1 <= 0 ? 'ablack' : 'ared'">{{item.commission * 1 > 0 ? '+' + item.commission : item.commission}}</view>
+                </view> -->
             </view>
         </view>
     </view>
@@ -255,8 +263,12 @@ export default {
             now_time + 24 * 60 * 60 * 1000 * i - now_day
           ).getDate())}`)
         console.log(cnmtime[1].split("-"))
-        this.startTime1 = year + '年' + month + '月' + day + '日'
-        this.endTime1 = `${cnmtime[1].split("-")[0]}年${cnmtime[1].split("-")[1]}月${cnmtime[1].split("-")[2]}日`
+        let sevenOld =  this.getOldTime(-6)
+         let NowDate =  this.getOldTime(0)
+        console.log(sevenOld.split('-'))
+        this.startTime1 = sevenOld.split('-')[0] + '年' + sevenOld.split('-')[1] + '月' + sevenOld.split('-')[2] + '日'
+        // this.endTime1 = `${cnmtime[1].split("-")[0]}年${cnmtime[1].split("-")[1]}月${cnmtime[1].split("-")[2]}日`
+         this.endTime1  = NowDate.split('-')[0] + '年' + NowDate.split('-')[1] + '月' + NowDate.split('-')[2] + '日'
         console.log(this.endTime1)
         this.startTime = `${month}月${day}日 ${year}`
         this.endTime = `${cnmtime[1].split("-")[1]}月${cnmtime[1].split("-")[2] }日 ${cnmtime[1].split("-")[0]}`
@@ -267,7 +279,6 @@ export default {
             this.startTime1 = `${a[0]}年${a[1]}月${a[2]}日`
             this.endTime1 = `${b[0]}年${b[1]}月${b[2]}日`
             this.store_id = this.$parseURL().store_id
-
             //    this.startTime = `${month}月${day}日 ${year}`
             // this.endTime = `${month}月${
             //   day * 1 <= 9 ? '0' + (day * 1 + 1) : day * 1 + 1
@@ -286,6 +297,12 @@ export default {
         )
     },
     methods: {
+        getOldTime(day){
+            let today = new Date()
+         　　var targetday_milliseconds=today.getTime() + 1000*60*60*24*day;
+ 　　        today.setTime(targetday_milliseconds); 
+            return this.$minCommon.formatDate(new Date( today.getTime()),'yyyy-MM-dd')
+        },
         // 获取数据
         getData(start_time, end_time, store_id, page, limit = 10) {
             this.$minApi
@@ -331,13 +348,15 @@ export default {
             }
         },
         getDays() {
+            let a  = this.getOldTime(-6)
+            let b =  this.getOldTime(0)
             //  this.dayLength
-            for (let q = 1; q <= 12; q++) {
-                this.getDaysInOneMonth(2020, q)
-                if (q <= 9) {
+            for (let q = a.split('-')[1]; q <= b.split('-')[1]; q++) {
+                this.getDaysInOneMonth(b.split('-')[0] , q)
+                if (q*1 <= 9) {
                     q = '0' + q
                 }
-                for (let i = 1; i <= this.dayLength; i++) {
+                for (let i = a.split('-')[2]; i <= b.split('-')[2]; i++) {
                     if (i <= 9) {
                         i = '0' + i
                     }
@@ -522,7 +541,7 @@ export default {
 
 .cell-item {
     .label {
-        width: 410rpx;
+        width: 300rpx;
     }
 
     .ablack {

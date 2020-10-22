@@ -11,8 +11,8 @@
     </view>
     <view class="right-view" :style="sku2 ? 'justify-content: flex-end;':''">
         <view v-if="step">
-            <min-stepper v-model="count" :isAnimation="Animation" :max="maxStep" @change="emitEvent" icon="/static/images/yellow-add.png"></min-stepper>
-            <view v-if="isShowNone" @click.stop="tests" class="testaaa"></view>
+            <min-stepper v-model="count" :isShowNone="isShowNone" :isAnimation="Animation" :max="maxStep" @change="emitEvent" icon="/static/images/yellow-add.png"></min-stepper>
+            <!-- <image src='/static/images/yellow-add.png' v-if="isShowNone" @click.stop="tests" class="testaaa" /> -->
         </view>
 
         <text v-if="num">x {{num}}</text>
@@ -200,13 +200,16 @@ export default {
 
         .testaaa {
             position: absolute;
-            right: 11rpx;
-            top: 22rpx;
+            right: 0rpx;
+            top: 16rpx;
+            padding: 10rpx;
             width: 48rpx;
             height: 48rpx;
-            background: url('/static/images/yellow-add.png') no-repeat;
-            background-position: center center;
-            background-size: contain;
+            // background: url('/static/images/add.png') no-repeat;
+            // background-position: center center;
+            // background: url('/static/images/yellow-add.png') no-repeat;
+            // // background-position: center center;
+            // background-size: 48rpx 48rpx;
         }
 
         .txt-view1 {

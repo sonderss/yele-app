@@ -76,6 +76,10 @@ export default {
         psize: {
             type: String,
             default: ""
+        },
+        isShowNone:{
+             type:Boolean,
+             default:false
         }
     },
     created() {
@@ -90,10 +94,11 @@ export default {
             this.emit(this.stepperCacheNum)
             this.$emit('input', this.stepperCacheNum)
             this.$emit('lesss', this.stepperCacheNum)
-
             if (this.stepperCacheNum === Number(this.min) && this.isAnimation) this.lessAnimation()
         },
         add() {
+            // 这里是处理套餐详情特加代码
+            if(this.isShowNone) return this.$showToast('已达上限')
             if (this.value === Number(this.max)) return
             this.stepperNum >= this.max ? this.stepperNum = this.max : this.stepperNum += Math.ceil(this.step * 10) / 10
             this.stepperCacheNum = Number(this.stepperNum.toFixed(1))

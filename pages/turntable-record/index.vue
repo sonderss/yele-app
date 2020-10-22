@@ -42,10 +42,26 @@ export default {
             falg: false,
             num: 2,
             des: "加载中",
-            load: true
+            load: true,
+            isAll:false
         };
     },
+    onNavigationBarButtonTap() {
+      this.isAll = true
+      this.getAllData(1,10).then(res => {
+            this.list = res.list
+            this.num++
+      })
+    },
     methods: {
+        async getAllData(page, limit = 10, isLoading){
+            return await this.$minApi.changeAllStoreList({
+                limit,
+                page,
+                isLoading
+            })
+            
+        },
         async getData(page, limit = 10, isLoading) {
             return await this.$minApi.changeStoreList({
                 limit,
@@ -74,6 +90,20 @@ export default {
     onReachBottom() {
         console.log('到底')
         this.falg = true
+        if(this.isAll){
+            this.getAllData(this.num, 10, true).then(res => {
+                if (res.list.length === 0) {
+                    this.load = false
+                    this.des = '暂无更多数据'
+                    setTimeout(() => {
+                        return this.falg = false
+                    }, 1000)
+                }
+                this.num++
+                this.list = this.list.concat([...res.list])
+            })
+            return
+        }
         this.getData(this.num, 10, true).then(res => {
             if (res.list.length === 0) {
                 this.load = false
@@ -88,6 +118,14 @@ export default {
     },
     onPullDownRefresh() {
         console.log('refresh');
+        if(this.isAll){
+            this.getAllData(1, 10, true).then(res => {
+                   this.num = 2
+                    this.list = res.list
+                    uni.stopPullDownRefresh();
+            })
+            return
+        }
         this.getData(1, 10, true).then(res => {
             this.num = 2
             this.list = res.list

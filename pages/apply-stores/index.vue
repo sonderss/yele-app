@@ -46,7 +46,7 @@ export default {
         }
     },
     mounted() {
-        this.getData(1, 10).then(res => {
+        this.getData(1, 12).then(res => {
             this.elseStoreList = res.list
         })
     },
@@ -60,7 +60,7 @@ export default {
     onReachBottom() {
         if (this.isAll) return true
         this.falg = true
-        this.getData(this.nums, 10, true).then(res => {
+        this.getData(this.nums, 12, true).then(res => {
             if (res.list.length === 0) {
                 this.load = false
                 this.des = '暂无更多数据'
@@ -76,7 +76,7 @@ export default {
     onPullDownRefresh() {
         // console.log('refresh');
         this.isAll = false
-        this.getData(1, 10, true).then(res => {
+        this.getData(1, 12, true).then(res => {
             this.elseStoreList = res.list
             this.nums = 2
             uni.stopPullDownRefresh();

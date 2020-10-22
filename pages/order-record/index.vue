@@ -171,12 +171,32 @@ export default {
             falg: false,
             des: "加载中",
             page: 1,
-            load: true
+            load: true,
+            isAll:false
         }
     },
     onReachBottom() {
         console.log('到底')
         this.falg = true
+       if(this.isAll){
+            this.getAllData(this.page, 10, true).then(res => {
+                if (res.list.length === 0) {
+                    this.load = false
+                    this.des = '暂无更多数据'
+                    setTimeout(() => {
+                        return this.falg = false
+                    }, 1000)
+                }
+                this.page++
+                this.list = this.list.concat([...res.list])
+                this.list.map(item => {
+                    if (item.order_product_list.length > 4) {
+                        item.order_product_list.splice(4)
+                    }
+                })
+            })
+            return
+        }
         this.getData(this.page, 10, true).then(res => {
             if (res.list.length === 0) {
                 this.load = false
@@ -196,11 +216,33 @@ export default {
     },
     onPullDownRefresh() {
         console.log('refresh');
+        if(this.isAll){
+            this.getAllData(1, 10, true).then(res => {
+                this.list = res.list
+                this.page = 2
+                uni.stopPullDownRefresh();
+            })
+            return
+        }
         this.getData(1, 10, true).then(res => {
             this.list = res.list
             this.page = 2
             uni.stopPullDownRefresh();
         })
+    },
+    onNavigationBarButtonTap() {
+      this.isAll = true
+      this.getAllData(1,10).then(res => {
+          console.log(res)
+           this.list = []
+          this.list = res.list
+            this.page++
+            this.list.map(item => {
+                if (item.order_product_list.length > 4) {
+                    item.order_product_list.splice(4)
+                }
+            })
+      })
     },
     mounted() {
         this.getData(1, 10).then(res => {
@@ -216,6 +258,13 @@ export default {
         })
     },
     methods: {
+        async getAllData(page, limit, isLoading) {
+            return await this.$minApi.getAllOrderList({
+                page,
+                limit,
+                isLoading
+            })
+        },
         async getData(page, limit, isLoading) {
             return await this.$minApi.getOrderList({
                 page,

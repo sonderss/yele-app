@@ -9,9 +9,10 @@ export default {
   getWineList: () => minRequest.get('/5e424cc4ded0a'),
   // 获取充公酒记录5e424f7f8c0c0?page=1&limit=100
   getConfiscatedWinereCords: data => minRequest.get('/5e424f7f8c0c0', data),
+  // 所以充公记录 5f898efd01945
+  getAllConfiscatedWinereCords: data => minRequest.get('/5f898efd01945', data),
   // 获取充公酒详情
   getWinereDetail: data => minRequest.get('/5e424fd3c4f69?id=', data),
-
   // 添加充公酒记录
   addWinePubList: data => minRequest.post('/5e424fff89293', data),
   // 获取桌台列表
@@ -28,6 +29,8 @@ export default {
   getOrderDetail: data => minRequest.get('/5e1da82751805', data),
   // 获取预约记录
   getBookList: data => minRequest.get('/5e7334b369aae', data),
+  // 所有预约记录 5f8a4e9c59bcb
+  getAllBookList: data => minRequest.get('/5f8a4e9c59bcb',data),
   // 取消订台
   cancelBooked: data => minRequest.post('/5e708fbae877f', data),
   // 推迟到店
@@ -46,6 +49,8 @@ export default {
   delOrder: data => minRequest.get('/5e71d58cd6f3c', data),
   //  开台记录
   openList: data => minRequest.get('/5f8813e2d9f51',data),
+  // 所有开台记录 5f89492b40976
+  openAllList: data => minRequest.get('/5f89492b40976',data),
   // 开台申请
   orderGetRoot: data => minRequest.post('/5e7b1643442ff', data),
   // 获取预约详情
@@ -60,6 +65,8 @@ export default {
   getServeDetail: data => minRequest.get('/5e85950939108', data),
   // 存酒记录 5e85b1140a67a
   getWinekeepingrecord: data => minRequest.get('/5e85b1140a67a', data),
+  // 所有存酒记录 5f8998ea40f94
+  getAllWinekeepingrecord: data => minRequest.get('/5f8998ea40f94', data),
   // 存酒详情 5e85b92de7139?id=1
   getWinestoragedetails: data => minRequest.get('/5e85b92de7139', data),
   // 获取开台历史 5e1eae7d5198f?desk_id=1
@@ -74,12 +81,16 @@ export default {
   getPackageDetails: data => minRequest.get('/5e8ee33b60dcb', data),
   // 取酒记录
   getWindeList: data => minRequest.get('/5e86f19546fa3', data),
+  // 所有取酒记录 5f8995eeedd3d
+  getAllWindeList: data => minRequest.get('/5f8995eeedd3d', data),
   // 可取酒的存酒记录
   getCanGetWine: data => minRequest.get('/5f5708a558aa3',data),
   // 取酒记录详情
   getWineDetail: data => minRequest.get('/5e86ff46c9c1d', data),
   //  下单记录
   getOrderList: data => minRequest.get('/5e87093063fea', data),
+  // 5f8a575d616cd 全部下单记录
+  getAllOrderList: data => minRequest.get('/5f8a575d616cd',data),
   // 获取下单商品列表
   getOrderProduceList: () => minRequest.get('/5e842f516f7ac'),
   // 获取下单商品详情
@@ -98,6 +109,8 @@ export default {
   getGiveAwaySetmealDetail: data => minRequest.get('/5e98065704a3f', data),
   // 赠送记录列表 5e9d781dd92c9
   giveAwayList: data => minRequest.get('/5e9d781dd92c9', data),
+  // 全部赠送记录 5f8a4b80c697c
+  giveAllAwayList: data => minRequest.get('/5f8a4b80c697c', data),
   // 赠送商品下单 5e9d7817aea4c
   giveAwayOrder: data => minRequest.post('/5e9d7817aea4c', data),
   // 赠送订单预览  5e9ea4671e89c/?order_id=223
@@ -202,6 +215,8 @@ export default {
   changeStore: data => minRequest.post('/5ed6264de8652', data),
   // 转台记录  5ed8bbc6dd1ed?page=1&limit=
   changeStoreList: data => minRequest.get('/5ed8bbc6dd1ed', data),
+  // 所有转台记录 5f898b5b7e433
+  changeAllStoreList: data => minRequest.get('/5f898b5b7e433', data),
   // 发放记录列表 5ede025dd130e?date=2020-06&page=1&limit=20
   faFangList: data => minRequest.get('/5ede025dd130e', data),
   // 发放记录详情 5edf04c01ab0c?group_id=80
@@ -213,7 +228,7 @@ export default {
   // 设置提现密码 5edf3da4e9599
   setTXpsd: data => minRequest.post('/5edf3da4e9599', data),
   // 解绑银行卡 5ee05bdb90e53
-  jieBankCard: () => minRequest.post('/5ee05bdb90e53'),
+  jieBankCard: data => minRequest.post('/5ee05bdb90e53',data),
   // 身份验证 5edf3dab635c0
   cardYanZ: data => minRequest.post('/5edf3dab635c0', data),
   // 获取发卡行信息 5edf641c4199d?bank_card_num=4323132135444121

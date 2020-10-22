@@ -5,8 +5,8 @@
     <view class="tips">记得提醒客户准时到店哦</view>
     <view class="card f28 p-tb-30 p-lr-30">
         <view>预定台号：<text>{{data.desk_name}}</text></view>
-        <view>客户姓名：{{data.client_name}}</view>
-        <view>联系电话：{{data.client_mobile}}</view>
+        <view>客户姓名：{{data.client_name ? data.client_name :'暂无数据'}}</view>
+        <view>联系电话：{{data.client_mobile ? data.client_mobile : '暂无数据'}}</view>
         <view>预抵时间：{{data.arrival_time}}</view>
 
     </view>

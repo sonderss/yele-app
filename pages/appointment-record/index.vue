@@ -22,7 +22,7 @@
         <view class="item">台 <text style="padding-left:60rpx">号：</text>{{ item.desk_name}}</view>
         <view class="item">
             台位状态：
-            <text :class="item.desk_status !== 2  ? 'status': 'status confirmed'">{{desk_status[item.desk_status] }}</text>
+            <text :class="item.desk_status === 1  ? 'status confirmed': 'status '">{{desk_status[item.desk_status] }}</text>
         </view>
         <view class="item" v-if="item.desk_status !== 1  ">消费金额：￥{{item.bill_price}}</view>
         <view class="item">预约时间：{{ $minCommon.formatDate(new Date( item.create_time * 1000), "yyyy-MM-dd hh:mm:ss")}}</view>
@@ -58,11 +58,47 @@ export default {
             des: "加载中",
             page: 2,
             load: true,
-            desk_status
+            desk_status,
+            isAll:false
         };
+    },
+     onNavigationBarButtonTap() {
+      this.isAll = true
+      const data = {
+            order: "time",
+            sort: "desc",
+            page: 1,
+            limit: 10
+        };
+      this.getAllData(data)
     },
     onReachBottom() {
         this.falg = true;
+        if(this.isAll){
+            this.$minApi
+            .getAllBookList({
+                order: this.animation ? "time" : "price",
+                sort: this.animation ? "desc" : "asc",
+                page: this.page,
+                limit: 10
+            })
+            .then(res => {
+                if (res.list.length === 0) {
+                    this.load = false;
+                    this.des = "暂无更多数据";
+                    setTimeout(() => {
+                        return (this.falg = false);
+                    }, 1000);
+                }
+                this.page++;
+                this.list = this.list.concat([...res.list]);
+                // this.list.map(item => {
+                //     item.arrival_time = this.$minCommon.formatDate(new Date(item.arrival_time * 1000), "yyyy-MM-dd hh:mm:ss");
+                //     item.create_time = this.$minCommon.formatDate(new Date(item.create_time * 1000), "yyyy-MM-dd hh:mm:ss");
+                // });
+            });
+            return
+        }
         this.$minApi
             .getBookList({
                 order: this.animation ? "time" : "price",
@@ -87,6 +123,21 @@ export default {
             });
     },
     onPullDownRefresh() {
+         if(this.isAll){
+            this.$minApi
+            .getAllBookList({
+              order: "time",
+                sort: "desc",
+                page: 1,
+                limit: 10
+            })
+            .then(res => {
+                this.list = res.list;
+                this.page = 2;
+                uni.stopPullDownRefresh();
+            });
+            return
+        }
         this.$minApi
             .getBookList({
                 order: "time",
@@ -110,6 +161,12 @@ export default {
         this.getData(data);
     },
     methods: {
+         getAllData (data) {
+             this.$minApi.getAllBookList(data).then(res => {
+                  this.list = []
+                 this.list = res.list;
+             })  
+        },
         getData(data) {
             this.$minApi.getBookList(data).then(res => {
                 console.log(res);
@@ -136,6 +193,7 @@ export default {
                     page: 1,
                     limit: 10
                 };
+                 if(this.isAll) return this.getAllData(data)
                 this.getData(data);
             } else {
                 const data = {
@@ -144,6 +202,7 @@ export default {
                     page: 1,
                     limit: 10
                 };
+                 if(this.isAll) return this.getAllData(data)
                 this.getData(data);
             }
         },
@@ -175,6 +234,7 @@ export default {
                     page: 1,
                     limit: 10
                 };
+                if(this.isAll) return this.getAllData(data)
                 this.getData(data);
             } else {
                 const data = {
@@ -183,6 +243,7 @@ export default {
                     page: 1,
                     limit: 10
                 };
+                if(this.isAll) return this.getAllData(data)
                 this.getData(data);
             }
         },

@@ -7,7 +7,7 @@
             <swiper-item v-for="(listItem,listIndex) in list" :key="listItem.id">
                 <scroll-view style="height:100%" :show-scrollbar="false" scroll-with-animation="true" id="scol" scroll-y @scrolltolower="lower1" :scroll-into-view="toView">
                     <view :id="'top'+listIndex"></view>
-                    <view class="main p-lr-30" v-if="listItem.product.length > 0">
+                    <view class="main p-lr-30" style=" padding-bottom: 50px;" v-if="listItem.product.length > 0">
                         <view class="item">
                             <view class="goods" v-for="(item,index) in listItem.product" :key="index" @click.stop="toDetail(item)">
                                 <image lazy-load :src="item.product_img.length>10 ?  item.product_img : '/static/images/goods.png' " />

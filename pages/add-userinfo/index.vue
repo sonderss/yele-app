@@ -24,11 +24,11 @@
             </view>
             <view @click="chince(1)" :class="i === 1 ? 'chioce_active' :  'chioce'">
                 <text class="t">点单并开台</text>
-                <text class="desc">点够{{$parseURL().minm}}元并正式开台</text>
+                <text class="desc">点够{{desk_open_minimum}}元并正式开台</text>
             </view>
             <view @click="chince(2)" :class="i === 2 ? 'chioce_active' :  'chioce'">
                 <text class="t">申请免低消开台</text>
-                <text class="desc">申请不够{{$parseURL().minm}}元也可开台</text>
+                <text class="desc">无需下单也可开台</text>
             </view>
         </view>
         <min-remarks v-model='value'></min-remarks>
@@ -57,12 +57,19 @@ export default {
             lastY: '',
             i: 0,
             btn_name: '预开台',
-            test: false
+            test: false,
+            desk_open_minimum:''
         }
     },
     onLoad() {
         console.log(this.$parseURL())
         this.data = this.$parseURL()
+        if(this.$parseURL().desk_open_minimum.split('.')[1] === '00'){
+           let a =   this.$parseURL().desk_open_minimum.split('.')[0]
+           this.desk_open_minimum  = a
+           return
+        }
+         this.desk_open_minimum = this.$parseURL().desk_open_minimum
     },
     mounted() {
         // console.log(this.$route.params.name)

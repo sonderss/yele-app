@@ -7,7 +7,7 @@
             </view>
         </swiper-item>
     </swiper>
-    <view class="goods-item p-lr-20 m-bottom-20">
+    <view class="goods-item p-lr-20 m-bottom-20 p-top-20">
         <!-- <view class="top-view f28 m-top-10 f28">{{list.product_name}}</view> -->
         <view class="f28  t" style="display:block">
             <!-- {{item2.product_name}} -->
@@ -70,7 +70,7 @@
                 <text v-if="type !== 3" class="right-txt f26">已选 <text class="num1">{{item.goodsCount}}</text> 份</text>
             </view>
             <view class="content p-bottom-30" v-if="item.necessary !== 1">
-                <min-describe :isShowNone='item.goodsCount == item.last_number' @testEvent='tet' class="i" v-for="(item2,index2) in item.combination_detail" :key="index2" :isCan="item2.isCan" :leftIcon='true' :maxStep="item.is_check !== 1 ? (item.goodsCount !== item.last_number ? item.last_number : item.last_number - item.goodsCount) : item.last_number - item.goodsCount" :value="item2.step" @changeCount="changeCount($event,index,index2)" :leftTxt="item2.product_name +'*'+ item2.num " :leftIconValue='item2.product_img' :step='type === 3 ? false: true' :Animation="true"></min-describe>
+                <min-describe :isShowNone='item.goodsCount == item.last_number' class="i" v-for="(item2,index2) in item.combination_detail" :key="index2" :isCan="item2.isCan" :leftIcon='true' :maxStep="item.is_check !== 1 ? (item.goodsCount !== item.last_number ? item.last_number : item.last_number) : item.last_number - item.goodsCount" :value="item2.step" @changeCount="changeCount($event,index,index2)" :leftTxt="item2.product_name +'*'+ item2.num " :leftIconValue='item2.product_img' :step='type === 3 ? false: true' :Animation="item2.step ? false : true"></min-describe>
             </view>
         </view>
 
@@ -188,7 +188,13 @@ export default {
                         this.list.setmeal_images.push(this.list.product_img)
                     }
                     this.list.combination.map((item, index) => {
-                        this.$set(item, 'goodsCount', 0)
+                        item.combination_detail.map((item2, index2) => {
+                            if (index2 === 0) {
+                                this.$set(item2, 'step', 1)
+                                this.$set(item, 'goodsCount', 1)
+
+                            }
+                        })
                         // if (item.necessary === 1) {
                         //     item.combination_detail.map((item2, index2) => {
                         //         this.changeCount(1, index, index2)
@@ -325,26 +331,26 @@ export default {
                 })
                 iytem.myIsSetID = this.$minCommon.getMySkuID(lastStr)
             })
-            // 有必选的情况
-            if (this.isHaveBi) {
-                // 这里默认添加必须商品
-                // this.list.combination.map((item, index) => {
-                //     if (item.necessary === 1) {
-                //         item.combination_detail.map((item2, index2) => {
-                //             console.log('asddsadsaaaaaaaaaaaaaaaaaaaaaaaaa.00')
-                //             this.changeCount(1, index, index2)
-                //         })
-                //     }
+            // // 有必选的情况
+            // if (this.isHaveBi) {
+            //     // 这里默认添加必须商品
+            //     // this.list.combination.map((item, index) => {
+            //     //     if (item.necessary === 1) {
+            //     //         item.combination_detail.map((item2, index2) => {
+            //     //             console.log('asddsadsaaaaaaaaaaaaaaaaaaaaaaaaa.00')
+            //     //             this.changeCount(1, index, index2)
+            //     //         })
+            //     //     }
 
-                // })
-                console.log("这里默认添加必须商品")
-                const result = this.selArr.some(item => {
-                    if (item.necessary && item.last_number === item.combination_detail.length) return true
+            //     // })
+            //     console.log("这里默认添加必须商品")
+            //     const result = this.selArr.some(item => {
+            //         if (item.necessary && item.last_number === item.combination_detail.length) return true
 
-                })
-                if (!result) return this.$showToast('请选择必选商品')
-            }
-            if (this.selArr.length === 0) return this.$showToast('请选择符合要求的份数')
+            //     })
+            //     if (!result) return this.$showToast('请选择必选商品')
+            // }
+            // if (this.selArr.length === 0) return this.$showToast('请选择符合要求的份数')
             // 没有必选的情况
             const result11 = this.selArr.some(item => {
                 if (!item.necessary) {

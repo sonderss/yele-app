@@ -48,6 +48,20 @@ export default {
     onReachBottom() {
         console.log('到底')
         this.falg = true
+           if( this.isAll){
+                this.getAllWineList(this.page, 10, true).then(res => {
+                    if (res.list.length === 0) {
+                        this.load = false
+                        this.des = '暂无更多数据'
+                        setTimeout(() => {
+                            return this.falg = false
+                        }, 1000)
+                    }
+                    this.page++
+                    this.list = this.list.concat([...res.list])
+                })
+               return
+           }
         this.getWineList(this.page, 10, true).then(res => {
             if (res.list.length === 0) {
                 this.load = false
@@ -62,6 +76,14 @@ export default {
     },
     onPullDownRefresh() {
         console.log('refresh');
+        if( this.isAll){
+            this.getAllWineList(1, 10, true).then(res => {
+                this.list = res.list
+                this.page = 2
+                uni.stopPullDownRefresh();
+            })
+            return
+        }
         this.getWineList(1, 10, true).then(res => {
             this.list = res.list
             this.page = 2
@@ -97,8 +119,23 @@ export default {
             falg: false,
             des: "加载中",
             page: 2,
-            load: true
+            load: true,
+            isAll:false
         }
+    },
+     onNavigationBarButtonTap() {
+      this.isAll = true
+      this.getAllWineList(1,10).then(res => {
+                this.list = res.list
+                this.page++
+                this.list.map(item => {
+                    if (item.detail.length > 3) {
+                        this.$set(item, 'isMore', true)
+                    } else {
+                        this.$set(item, 'isMore', false)
+                    }
+                })
+      })
     },
     methods: {
         showMore(index2) {
@@ -107,6 +144,24 @@ export default {
             } else {
                 this.$set(this.list[index2], 'isMore', true)
             }
+        },
+        getAllWineList(page, limit, isLoading) {
+            const option = {
+                page,
+                limit,
+                isLoading
+            }
+            return new Promise((resolve, reject) => {
+                this.$minApi
+                    .getAllConfiscatedWinereCords(option)
+                    .then(res => {
+                        resolve(res)
+                    })
+                    .catch(err => {
+                        // eslint-disable-next-line prefer-promise-reject-errors
+                        reject('promise返回错误' + err)
+                    })
+            })
         },
         getWineList(page, limit, isLoading) {
             const option = {

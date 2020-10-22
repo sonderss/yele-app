@@ -17,7 +17,7 @@
                 <cell v-for="(item,index) in mainArray" :key="index" :id="`item-${index}`">
                     <cell class="item_name">{{item.cate_name}}</cell>
                     <cell v-for="(item2,index2) in item.product" :key="index2" @click.stop="goDetails(index,index2)">
-                        <min-goods-chioce :producetype='item2.type' style="margin-right:25rpx" :image="item2.product_img" :discountdesc="item2.limited_activity_name" :discountPrice="item2.original_price" :discount="item2.is_limited === 1 ? true: false " :title="item2.product_name" :badgeTxt="item2.type === 'setmeal' ? '套餐': '' " :badge="item2.type === 'setmeal'? true : false " @changes="changeChioce(index,index2)" v-model="item2.step" @changesPop="changesPopNoStep(index,index2,item2.type)" :desc="item2.sku.length >=1 ?item2.sku[0].sku_full_name : item2.info " :price="item2.price" :isFlag="item2.isFlag">
+                        <min-goods-chioce :producetype='item2.type' style="margin-right:25rpx" :image="item2.product_img" :discountdesc="item2.limited_activity_name" :discountPrice="item2.original_price" :discount="item2.is_limited === 1 ? true: false " :title="item2.product_name" :badgeTxt="item2.type === 'setmeal' ? '套餐': '' " :badge="item2.type === 'setmeal'? true : false " @changes="changeChioce(index,index2)" v-model="item2.step" @changesPop="changesPopNoStep(index,index2,item2.type)" :desc="item2.sku.length >=1 ? `规格：${item2.sku[0].sku}` : item2.info " :price="item2.price" :isFlag="item2.isFlag">
                         </min-goods-chioce>
                     </cell>
                 </cell>
@@ -53,18 +53,19 @@
                 </view>
             </view>
             <view class="min-border-bottom m-lr-30"></view>
-            <scroll-view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'" scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')',height:skuObj.sku.length > 3 ? '280rpx':''}">
+            <scroll-view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'" scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')',height:skuObj.sku.length >= 3 ? '280rpx':''}">
                 <!-- 可选择规格项 -->
                 <view>
                     <view class="f26">规格</view>
-                    <view class="item-view">
-                        <view :class="chioceIndex ===index ?   'item-active t' : 'item t' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku_full_name}}</view>
+                    <view class="item-view p-right-20">
+                        <!--  chioceIndex === index ?   ' t' : 'item t'  -->
+                        <view :style="{'margin-right': (index+1) % 3===0 ? '0' : '20rpx'}" :class="['t' ,{'item-active': chioceIndex === index ? true :false ,'item':  chioceIndex !== index} ]" @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku}}</view>
                     </view>
                 </view>
             </scroll-view>
             <view class="min-border-bottom m-lr-30"></view>
             <!-- 数量 -->
-            <view class="sku-item">
+            <view class="sku-item1">
                 <view class="f26">数量</view>
                 <view class="m-tb-30">
                     <min-stepper :isAnimation="false" :min='1' v-model="skuObj.step"></min-stepper>
@@ -179,7 +180,7 @@
                                             </view> -->
                                             <view class="t f26" v-else>{{item2.product_name}}</view>
                                         </view>
-                                        <view class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'product'">规格：{{item2.sku.sku_full_name}}</view>
+                                        <view class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'product'">规格：{{item2.sku.sku}}</view>
                                         <view class="f24 t m-top-10" style="color:#666666;display:block;font-weight:normal" v-if="item2.type === 'setmeal'">
                                             规格：
                                             <template v-for="(desc,aa) in item2.combination">
@@ -291,7 +292,7 @@ export default {
             },
         })
         this.android = uni.getSystemInfoSync().platform
-        this.totalLabel = `台位低消：${this.$parseURL().minim_charge}`
+        // this.totalLabel = `台位低消：${this.$parseURL().minim_charge}`
         // if (this.$store.state.goods.orderTempData.length > 0) {
         //     uni.showLoading({
         //         title: '加载中'
@@ -767,7 +768,7 @@ export default {
             this.skuObj = this.mainArray[index].product[index2]
             console.log(this.skuObj)
             // 已选商品如果存在该商品，就默认加上已选商品的数量
-            let abc = 0
+            let abc = 1
             this.selArr.map((item, index1) => {
                 if (item.type === 'product' && item.id === this.skuObj.id) {
                     if (this.skuObj.sku[this.chioceIndex].id === item.sku.id) {
@@ -900,7 +901,7 @@ export default {
         // 选择规格
         chioceO(index) {
             this.chioceIndex = index
-            let abc = 0
+            let abc = 1
             this.selArr.map((item, index1) => {
                 if (item.type === 'product' && item.id === this.skuObj.id) {
                     if (this.skuObj.sku[this.chioceIndex].id === item.sku.id) {
@@ -1266,8 +1267,17 @@ export default {
         }
     }
 
-    .sku-item {
+    .sku-item1 {
         margin: 0 30rpx;
+        padding: 30rpx 0;
+        padding-bottom: 10rpx;
+        height: 130rpx;
+    }
+
+    .sku-item {
+
+        margin: 0 15rpx;
+        margin-left: 10rpx;
         padding: 30rpx 0;
         padding-bottom: 10rpx;
         overflow: auto;
@@ -1282,7 +1292,7 @@ export default {
             flex-wrap: wrap;
 
             .t {
-                width: 320rpx;
+                width: 230rpx;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -1318,7 +1328,8 @@ export default {
     }
 
     .sku-item-num {
-        margin: 0 30rpx;
+        margin: 0 15rpx;
+        margin-left: 10rpx;
         padding: 30rpx 0;
         padding-bottom: 10rpx;
         height: 130rpx;

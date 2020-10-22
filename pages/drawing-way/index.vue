@@ -2,7 +2,8 @@
 <view class="drawing-way m-lr-30 p-top-20">
     <view class="card p-lr-20" v-if="userInfo.bank_card_num">
         <view class="left">
-            <image class="icon" src="/static/images/goods.png" />
+            <image v-if="!isZhao" class="icon" src="/static/images/bank/zhaoshang.png" />
+            <view v-else class="icon-fon">{{isZhao}}</view>
             <p class="m-left-20 f30">{{userInfo.bank_card_name}}({{lastString}})</p>
         </view>
         <view style="color:#FF0000;font-size:25rpx" @click="jiebang">解绑</view>
@@ -27,6 +28,7 @@ export default {
             userInfo: {},
             lastString: '',
             url: '',
+            isZhao: ''
         }
     },
     onShow() {
@@ -37,13 +39,14 @@ export default {
             }).then(res => {
                 console.log(res)
                 this.userInfo = res
-                this.$store.dispatch('user/setisNeed', false) //是否需要重新获取银行卡绑定信息
+                this.$store.dispatch('status/setisNeed', false) //是否需要重新获取银行卡绑定信息
             })
             return
         }
         this.userInfo = this.$store.state.user.userInfos
         if (this.userInfo.bank_card_num) {
             this.getCardLast(this.userInfo.bank_card_num)
+            this.getWord(this.userInfo.bank_card_name)
         }
         // console.log(this.$store.state.status.vipUser)
     },
@@ -59,6 +62,14 @@ export default {
         // })
     },
     methods: {
+        // 获取银行卡第一个字
+        getWord(bank_card_num) {
+            // #e7e7e7
+            let str = bank_card_num.split('')
+            if (str[0] !== '招') {
+                this.isZhao = str[0]
+            }
+        },
         // 获取银行卡后四位
         getCardLast(bank_card_num) {
             if (this.lastString.length !== 4) {
@@ -78,6 +89,9 @@ export default {
         jiebang() {
             this.$minRouter.push({
                 name: 'authentication',
+                params: {
+                    card_num: this.userInfo.bank_card_num
+                }
             })
         },
         getVipInfo() {
@@ -136,6 +150,17 @@ export default {
             .icon {
                 width: 44rpx;
                 height: 44rpx;
+            }
+
+            .icon-fon {
+                width: 44rpx;
+                height: 44rpx;
+                background: #e7e7e7;
+                border-radius: 50%;
+                font-size: 20rpx;
+                color: 333333;
+                text-align: center;
+                line-height: 44rpx;
             }
         }
     }

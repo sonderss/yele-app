@@ -26,11 +26,11 @@
         </view>
         <view @click="chince(1)" :class="i === 1 ? 'chioce_active' :  'chioce'">
             <text class="t">点单并开台</text>
-            <text class="desc">点够{{$parseURL().minm}}元并正式开台</text>
+            <text class="desc">点够{{desk_open_minimum}}元并正式开台</text>
         </view>
         <view @click="chince(2)" :class="i === 2 ? 'chioce_active' :  'chioce'">
             <text class="t">申请免低消开台</text>
-            <text class="desc">申请不够{{$parseURL().minm}}元也可开台</text>
+            <text class="desc">无需下单也可开台</text>
         </view>
     </view>
     <view class="btn">
@@ -47,6 +47,11 @@ export default {
     onLoad() {
         console.log(this.$parseURL())
         this.booking_id = this.$parseURL().booking_id
+         this.desk_open_minimum = this.$parseURL().desk_open_minimum
+        if(this.$parseURL().desk_open_minimum.split('.')[1] === '00'){
+           let a =   this.$parseURL().desk_open_minimum.split('.')[0]
+           this.desk_open_minimum  = a
+        }
         this.id = this.$parseURL().id
         this.$minApi.getBookedDetail({
             booking_id: this.booking_id
@@ -63,7 +68,8 @@ export default {
             booking_id: '',
             id: '',
             i: 0,
-            btn_name: '预开台'
+            btn_name: '预开台',
+            desk_open_minimum:''
         }
     },
     methods: {

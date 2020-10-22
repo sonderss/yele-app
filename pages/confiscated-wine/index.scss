@@ -355,7 +355,8 @@ uni-page-body {
   }
 
   .sku-item {
-    margin: 0 30rpx;
+     margin: 0 15rpx;
+    // margin: 0 30rpx;
     padding: 30rpx 0;
     padding-bottom: 10rpx;
     overflow: auto;
@@ -370,7 +371,7 @@ uni-page-body {
         flex-wrap: wrap;
 
         .t {
-          width: 320rpx;
+          width: 230rpx;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;

@@ -319,6 +319,7 @@ export default {
         selSku(index, index2) {
             this.isSelSku = true
             Object.assign(this.skuObj, this.list)
+            console.log(this.list)
             this.skuObj.step = 1
             this.skuObj.sku[0].deduction_limit = this.list.deduction_limit
             console.log('skuObj', this.skuObj)

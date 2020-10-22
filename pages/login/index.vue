@@ -30,6 +30,7 @@
             <text style="font-size:30rpx">登 录</text>
         </min-btn>
     </view>
+    <!-- <min-y :isShow="isShow" /> -->
 </view>
 </template>
 
@@ -48,7 +49,8 @@ export default {
             test: false,
             ndsl: false,
             isChangeSel: false,
-            addAnimation: false
+            addAnimation: false,
+            isShow: false
         }
     },
     computed: {

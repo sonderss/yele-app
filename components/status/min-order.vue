@@ -40,13 +40,23 @@
             <view v-if="list.desk_info.arrival_time">预抵时间：{{$minCommon.formatDate(new Date(list.desk_info.arrival_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
         </view>
     </view>
-    <view class="card p-lr-20 p-bottom-10 m-bottom-20" v-if="list.desk_info.booking_id !== 0">
+    <view class="card p-lr-20 p-bottom-10 m-bottom-20" style="margin-bottom:200rpx">
+        <view class="p-tb-30 min-border-bottom">操作信息</view>
+        <view class="main p-tb-20">
+            <view>营销人员：{{list.desk_info.book_user_name ? list.desk_info.book_user_name : "无"}}</view>
+            <view>预约时间：{{list.desk_info.book_time ?  $minCommon.formatDate(new Date(list.desk_info.book_time * 1000), 'yyyy-MM-dd hh:mm:ss')  : '无' }}</view>
+            <view>开台人员：{{list.desk_info.open_user_name}}</view>
+            <view>开台时间：{{$minCommon.formatDate(new Date(list.desk_info.open_time *1000),'yyyy-MM-dd hh:mm:ss') }}</view>
+        </view>
+    </view>
+    <!-- <view class="card p-lr-20 p-bottom-10 m-bottom-20">
         <view class="p-tb-30 min-border-bottom">操作信息</view>
         <view class="main p-tb-20">
             <view>营销人员：{{list.desk_info.book_user_name ? list.desk_info.book_user_name : '无'}}</view>
+            <view>开台人员：{{list.desk_info.open_user_name ? list.desk_info.open_user_name : '无'}}</view>
             <view>预约时间：{{list.desk_info.book_time ?  $minCommon.formatDate(new Date(list.desk_info.book_time*1000),'yyyy-MM-dd hh:mm:ss')  : '无'}}</view>
         </view>
-    </view>
+    </view> -->
 
     <view class="btns">
         <view :class="index === 0 ? 'btn active' : 'btn' " @click="book">预约</view>

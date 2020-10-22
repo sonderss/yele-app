@@ -2,7 +2,7 @@
 <view class="seat">
 
     <movable-area class="mains">
-        <movable-view v-if="isLaji" :style="{width:isW,height:isH,top:'100px',left: IsLeft}" @scale='listenScal' class="max" direction="all" scale :scale-value="scales" inertia :out-of-bounds="true" :x="X" :y="Y">
+        <movable-view v-if="isLaji" :style="{width:isW,height:isH,top:'100px',left: IsLeft}" :scale-min='1' @scale='listenScal' class="max" direction="all" scale :scale-value="scales" inertia :out-of-bounds="true" :x="X" :y="Y">
             <!-- <view class="max" v-for="(item2,index2) in back" :key="index2" :style="{backgroundImage:url(`${item2}`)}"></view>    -->
 
             <view class="main" :style="{width:isW,height:isH,backgroundImage: `url('${this.$store.state.status.seatList.desk_base_img}')`}">
@@ -120,8 +120,9 @@ export default {
         },
         init() {
             this.$nextTick(() => {
-                this.X = '-150'
-                this.Y = '100'
+                // this.X = '-150'
+                // this.Y = '100'
+
                 this.scales = 1
                 this.isLaji = false
                 setTimeout(() => {
@@ -171,9 +172,9 @@ export default {
     .max {
         width: auto;
         height: auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        // display: flex;
+        // justify-content: center;
+        // align-items: center;
     }
 
     .main {

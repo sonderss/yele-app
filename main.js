@@ -61,6 +61,7 @@ import MinPullDown from '@/components/min-pulldown.vue'
 import MinRefush from '@/components/min-refush.vue'
 import MinQrcode from '@/components/min-qrcode.vue'
 import MinP from '@/components/min-p.vue'
+import MinY from '@/components/min-y.vue'
 Vue.component('min-avatar', MinAvatar)
 Vue.component('min-btn', MinBtn)
 Vue.component('min-cell', MinCell)
@@ -110,6 +111,7 @@ Vue.component('min-pulldown',MinPullDown)
 Vue.component('min-refush',MinRefush)
 Vue.component('min-qrcode',MinQrcode)
 Vue.component('min-p',MinP)
+Vue.component('min-y',MinY)
 Vue.config.productionTip = false
 App.mpType = 'app'
 Vue.use(MinRouter)

@@ -1,15 +1,22 @@
 <script>
 import store from './store/index'
-
 const APP_BASE_URL = process.env.VUE_APP_BASE_URL
 const APP_UPDATE_URL = process.env.VUE_APP_UPDATE_URL
 
 export default {
     onLaunch: function () {
+
         console.log('App Launch')
         // #ifdef APP-PLUS
-        if (!plus.runtime.isAgreePrivacy()) {
-            // alert('laji')
+        if (uni.getSystemInfoSync().platform !== 'ios') {
+            if (!plus.runtime.isAgreePrivacy()) {
+                uni.navigateTo({
+                    url: "pages/yinsi/index",
+                    animationType: "none",
+                    animationDuration: 0
+                });
+                return
+            }
         }
         // #endif
         // #ifdef APP-PLUS

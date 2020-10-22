@@ -1,6 +1,6 @@
 <template>
 <view class="forfeiture-record p-tb-20 p-lr-30">
-    <view class="card p-lr-20 m-bottom-20" v-for="(item,index) in list" :key="index">
+    <view class="card p-lr-20 m-bottom-20" v-for="(item,index) in list" :key="index" @click.stop="toOrder(item.order_id)">
         <view class="top p-tb-30 min-border-bottom">
             <view class="ordern">{{item.desk_name}}</view>
             <view class="status confirmed">顾客：{{item.client_name ? item.client_name : '暂无数据'}}</view>
@@ -11,7 +11,7 @@
                 <text>￥{{item2.commodity_price}}</text>
             </view>
         </view>
-        <view v-if="item.product.length > 3 " class="over-view  p-tb-20" @click="showMore(index)">
+        <view v-if="item.product.length > 3 " class="over-view  p-tb-20" @click.stop="showMore(index)">
             {{item.isMore ? '展开更多' : '收起'}}<text :class="item.isMore ? ' f22 botm1' : ' f22 botm'"></text>
         </view>
         <view class="timer  min-border-top m-top-20">
@@ -36,12 +36,27 @@ export default {
             falg: false,
             des: "加载中",
             page: 1,
-            load: true
+            load: true,
+            isAll: false
         }
     },
     onReachBottom() {
         console.log('到底')
         this.falg = true
+        if (this.isAll) {
+            this.getAllData(1, 10, true).then(res => {
+                if (res.list.length === 0) {
+                    this.load = false
+                    this.des = '暂无更多数据'
+                    setTimeout(() => {
+                        return this.falg = false
+                    }, 1000)
+                }
+                this.page++
+                this.list = this.list.concat([...res.list])
+            })
+            return
+        }
         this.getData(10, this.page, true).then(res => {
             if (res.list.length === 0) {
                 this.load = false
@@ -56,10 +71,32 @@ export default {
     },
     onPullDownRefresh() {
         console.log('refresh');
+        if (this.isAll) {
+            this.getAllData(1, 10, true).then(res => {
+                this.list = res.list
+                this.page = 2
+                uni.stopPullDownRefresh();
+            })
+            return
+        }
         this.getData(10, 1, true).then(res => {
             this.list = res.list
             this.page = 2
             uni.stopPullDownRefresh();
+        })
+    },
+    onNavigationBarButtonTap() {
+        this.isAll = true
+        this.getAllData(1, 10).then(res => {
+            this.list = res.list
+            this.page++
+            this.list.map(item => {
+                if (item.product.length > 3) {
+                    this.$set(item, 'isMore', true)
+                } else {
+                    this.$set(item, 'isMore', false)
+                }
+            })
         })
     },
     mounted() {
@@ -77,6 +114,13 @@ export default {
         })
     },
     methods: {
+        async getAllData(limit, page, isLoading) {
+            return await this.$minApi.giveAllAwayList({
+                limit,
+                page,
+                isLoading
+            })
+        },
         async getData(limit, page, isLoading) {
             return await this.$minApi.giveAwayList({
                 limit,
@@ -90,6 +134,14 @@ export default {
             } else {
                 this.$set(this.list[index2], 'isMore', true)
             }
+        },
+        toOrder(orderid) {
+            this.$minRouter.push({
+                name: 'order-detail',
+                params: {
+                    ordr_id: orderid
+                }
+            })
         }
     }
 }

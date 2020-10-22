@@ -27,12 +27,33 @@ export default {
             falg: false,
             des: "加载中",
             page: 2,
-            load: true
+            load: true,
+            isAll:false
         }
+    },
+     onNavigationBarButtonTap() {
+      this.isAll = true
+      this.getAllData(1,10).then(res => {
+          this.list = res.list
+      })
     },
     onReachBottom() {
         console.log('到底')
         this.falg = true
+        if(this.isAll){
+            this.getAllData(this.page, 10, true).then(res => {
+                    if (res.list.length === 0) {
+                        this.load = false
+                        this.des = '暂无更多数据'
+                        setTimeout(() => {
+                            return this.falg = false
+                        }, 1000)
+                    }
+                    this.page++
+                    this.list = this.list.concat([...res.list])
+            })
+            return
+        }
         this.getData(this.page, 10, true).then(res => {
             if (res.list.length === 0) {
                 this.load = false
@@ -47,6 +68,14 @@ export default {
     },
     onPullDownRefresh() {
         console.log('refresh');
+        if(this.isAll){
+            this.getAllData(1, 10, true).then(res => {
+                this.list = res.list
+                this.page = 2
+                uni.stopPullDownRefresh();
+            })
+            return
+        }
         this.getData(1, 10, true).then(res => {
             this.list = res.list
             this.page = 2
@@ -60,6 +89,13 @@ export default {
         })
     },
     methods: {
+        async getAllData(page, limit, isLoading){
+            return await this.$minApi.getAllWindeList({
+                page,
+                limit,
+                isLoading
+            }) 
+        },
         async getData(page, limit, isLoading) {
             return await this.$minApi.getWindeList({
                 page,

@@ -69,18 +69,18 @@
                 </view>
             </view>
             <view class="min-border-bottom m-lr-30"></view>
-            <scroll-view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'" scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')',height:skuObj.sku.length > 4 ? '290rpx':''}">
+            <scroll-view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'" scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')',height:skuObj.sku.length >= 3 ? '280rpx':''}">
                 <!-- 可选择规格项 -->
                 <view>
                     <view class="f26">规格</view>
                     <view class="item-view">
-                        <view :class="chioceIndex ===index ?   'item-active' : 'item' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku}}</view>
+                        <view :style="{'margin-right': (index+1) % 3===0 ? '0' : '20rpx'}" :class="chioceIndex ===index ?   'item-active' : 'item' " @click="chioceO(index)" v-for="(item,index) in skuObj.sku" :key="index">{{item.sku}}</view>
                     </view>
                 </view>
             </scroll-view>
             <view class="min-border-bottom m-lr-30"></view>
             <!-- 数量 -->
-            <view class="sku-item" style="height:auto">
+            <view class="sku-item1" style="height:auto">
                 <view class="f26">数量</view>
                 <view class="m-tb-30">
                     <min-stepper v-model="list.step" :isAnimation="false" :min="1" @change="goodsChange($event,skuObj)"></min-stepper>
@@ -844,8 +844,15 @@ export default {
     }
 }
 
-.sku-item {
+.sku-item1 {
     margin: 0 30rpx;
+    padding: 30rpx 0;
+    padding-bottom: 10rpx;
+    height: 130rpx;
+}
+
+.sku-item {
+    margin: 0 15rpx;
     padding: 30rpx 0;
     padding-bottom: 10rpx;
     overflow: auto;
@@ -867,7 +874,8 @@ export default {
             margin-bottom: 20rpx;
             text-align: center;
             line-height: 58rpx;
-            width: 320rpx;
+            // width: 320rpx;
+            width: 230rpx;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -885,7 +893,8 @@ export default {
             text-align: center;
             line-height: 58rpx;
             color: #fe432a;
-            width: 320rpx;
+            // width: 320rpx;
+            width: 230rpx;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -895,7 +904,7 @@ export default {
 }
 
 .sku-item-num {
-    margin: 0 30rpx;
+    margin: 0 15rpx;
     padding: 30rpx 0;
     padding-bottom: 10rpx;
     height: 130rpx;
@@ -917,7 +926,8 @@ export default {
             text-align: center;
             line-height: 58rpx;
             font-size: 26rpx;
-            width: 320rpx;
+            // width: 320rpx;
+            width: 230rpx;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -935,7 +945,8 @@ export default {
             text-align: center;
             line-height: 58rpx;
             font-size: 26rpx;
-            width: 320rpx;
+            // width: 320rpx;
+            width: 230rpx;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
