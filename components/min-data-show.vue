@@ -9,18 +9,19 @@
         </view>
         <view class="main_data p-lr-20">
             <view class="time_desc">
-                <view class=" f20 p-top-30 m-tb-20 "  style='width:450rpx' v-if="current === 0">更新时间：{{getNowTime}}</view>
+                <view class=" f20 p-top-30 m-tb-20 " style='width:450rpx;color:#666' v-if="current === 0">更新时间：{{getNowTime}}</view>
                 <view class="f20 p-top-30  m-tb-20 " v-else>更新时间：{{getStartTime}} - {{getEndTime}}</view>
                 <text class="f20 p-top-30" v-if="ids === '0'">业绩合计：￥{{list.performance_total}}</text>
-                <text class="f20 p-top-30" v-if="ids === '1'">订台合计：{{list.booking_total}}</text>
                 <text class="f20 p-top-30" v-if="ids === '1'">开台合计：{{list.opening_total}}</text>
                 <text class="f20 p-top-30" v-if="ids === '2'">开台合计：{{list.opening_total}}</text>
-                <text class="f20 p-top-30" v-if="ids === '2'">业绩合计：￥{{list.performance_total}}</text>
                 <text class="f20 p-top-30" v-if="ids === '7'">业绩合计：￥{{list.role_performance_total}}</text>
                 <text class="f20 p-top-30" v-if="ids === '6'">业绩合计：￥{{list.performance_totals}}</text>
                 <text class="f20 p-top-30" v-if="ids === '4'">业绩合计：￥{{list.sales_totals}}</text>
-                <text class="f20 p-top-30" style='flex:1'  v-if="ids === '5'">销售额合计：￥{{list.sales_totals}}</text>
+                <text class="f20 p-top-30" style='flex:1' v-if="ids === '5'">销售额合计：￥{{list.sales_totals}}</text>
             </view>
+            <text class="f20 p-top-30" style="color:#666" v-if="ids === '1'">订台合计：{{list.booking_total}}</text>
+            <text class="f20 p-top-30" style="color:#666" v-if="ids === '2'">业绩合计：￥{{list.performance_total}}</text>
+
             <view class="main_table">
                 <view class="title_list min-border-bottom">
                     <view class="title_item" v-for="(item,index) in titles" :key="index" @click="changeSuo(ids,index)">
@@ -30,49 +31,49 @@
                 </view>
                 <view v-if="ids === '0'">
                     <view class="test_ui" @click="toDetail(i.user_id)" v-for="(i,n) in getData.performance_list" :key="n">
-                        <view class="left">
-                            <text class="lefty_" style="text-align:left">{{i.user_name}}</text>
-                            <text class="left_">{{i.mobile}}</text>
-                            <text class="lefty_">{{i.performance}}</text>
+                        <view class="left" style="padding:0">
+                            <text class="lefty_s min-ellipsis">{{i.user_name}}</text>
+                            <text class="lefty_s min-ellipsis">{{i.mobile}}</text>
+                            <text class="lefty_s min-ellipsis">{{i.performance ? i.performance :'暂无数据'}}</text>
                         </view>
-                        <view class="right">
-                            <text v-if="right">></text>
+                        <view class="rights">
+                            <image v-if="right" src='/static/images/arrow.png' />
                         </view>
                     </view>
                 </view>
                 <view v-if="ids === '1'">
                     <view class="test_ui" @click="toDetail(i.user_id)" v-for="(i,n) in getData.operating_info" :key="n">
-                        <view class="left">
-                            <text class="lefty_" style="text-align:left">{{i.user_name}}</text>
-                            <text class="left_">{{i.booking_count}}</text>
-                            <text class="lefty_" style="text-align:right;padding-right:20rpx">{{i.opening_count}}</text>
+                        <view class="left" style="padding:0">
+                            <text class="lefty_s min-ellipsis ">{{i.user_name}}</text>
+                            <text class="lefty_s min-ellipsis ">{{i.booking_count}}</text>
+                            <text class="lefty_s min-ellipsis ">{{i.opening_count}}</text>
                         </view>
-                        <view class="right">
-                            <text v-if="right">></text>
+                        <view class="rights">
+                            <image v-if="right" src='/static/images/arrow.png' />
                         </view>
                     </view>
                 </view>
                 <view v-if="ids === '2'">
                     <view class="test_ui" v-for="(i,n) in getData.performance_list" :key="n">
-                        <view class="left" style="padding-right:0">
-                            <text class="lefty_">{{i.role_name}}</text>
-                            <text class="left_">{{i.opening_count}}</text>
-                            <text class="lefty_" style="text-align:right">{{i.performance}}</text>
+                        <view class="left" style="padding:0">
+                            <text class="lefty_s min-ellipsis ">{{i.role_name}}</text>
+                            <text class="lefty_s min-ellipsis ">{{i.opening_count}}</text>
+                            <text class="lefty_s min-ellipsis ">{{i.performance}}</text>
                         </view>
-                        <view class="right">
-                            <text v-if="right">></text>
+                        <view class="rights">
+                            <image v-if="right" src='/static/images/arrow.png' />
                         </view>
                     </view>
                 </view>
                 <view v-if="ids === '3'">
                     <view class="test_ui" v-for="(i,n) in getData.no_performance_list" :key="n">
-                        <view class="left">
-                            <text class="lefty_" style="text-align:left;padding-left:10rpx">{{i.user_name}}</text>
-                            <text class="left_" style="width:320rpx;text-align:left">{{i.last_create_time}}</text>
-                            <text class="lefty_" style="text-align:left">{{i.no_performance_day}}</text>
+                        <view class="left" style="padding:0">
+                            <text class="lefty_s min-ellipsis ">{{i.user_name}}</text>
+                            <text class="lefty_s min-ellipsis ">{{i.last_create_time}}</text>
+                            <text class="lefty_s min-ellipsis ">{{i.no_performance_day}}</text>
                         </view>
-                        <view class="right">
-                            <text v-if="right">></text>
+                        <view class="rights">
+                            <image v-if="right" src='/static/images/arrow.png' />
                         </view>
                     </view>
                 </view>
@@ -80,21 +81,21 @@
 
                     <view v-if="flag">
                         <view class="test_ui" v-for="(i,n) in listTest.product_list" :key="n" @click="toDetail(i.uid)">
-                            <view class="left">
-                                <text class="lefty_" style="textAlign:left">{{i.product_name}}</text>
-                                <text class="left_" style="textAlign:right;padding-right:20rpx">{{i.cate_name ? i.cate_name:'暂无'}}</text>
-                                <text class="left_" style="padding-left:30rpx">{{i.quantity}}</text>
-                                <text class="left_" style="textAlign:right">{{i.total}}</text>
+                            <view class="left" style="padding:0">
+                                <text class="lefty_s min-ellipsis ">{{i.product_name}}</text>
+                                <text class="lefty_s min-ellipsis ">{{i.cate_name ? i.cate_name:'暂无'}}</text>
+                                <text class="lefty_s min-ellipsis ">{{i.quantity}}</text>
+                                <text class="lefty_s min-ellipsis ">{{i.total}}</text>
                             </view>
                         </view>
                     </view>
                     <view v-else>
                         <view class="test_ui" v-for="(i,n) in getData.product_list" :key="n" @click="toDetail(i.uid)">
-                            <view class="left">
-                                <text class="lefty_" style="textAlign:left">{{i.product_name}}</text>
-                                <text class="left_" style="textAlign:right;padding-right:20rpx">{{i.cate_name ? i.cate_name:'暂无'}}</text>
-                                <text class="left_" style="padding-left:30rpx">{{i.quantity}}</text>
-                                <text class="left_" style="textAlign:right">{{i.total}}</text>
+                            <view class="left" style="padding:0">
+                                <text class="lefty_s min-ellipsis ">{{i.product_name}}</text>
+                                <text class="lefty_s min-ellipsis ">{{i.cate_name ? i.cate_name:'暂无'}}</text>
+                                <text class="lefty_s min-ellipsis ">{{i.quantity}}</text>
+                                <text class="lefty_s min-ellipsis ">{{i.total}}</text>
                             </view>
                         </view>
                     </view>
@@ -103,28 +104,28 @@
 
                     <view v-if="flag">
                         <view class="test_ui" v-for="(i,n) in listTest.set_meal_list" :key="n" @click="toDetail(i.uid)">
-                            <view class="left">
-                                <text class="lefty_" style="textAlign:left">{{i.setmeal_name}}</text>
-                                <text class="left_" style="padding-left:60rpx">{{i.quantity}}</text>
-                                <text class="left_" style="textAlign:right">{{i.total}}</text>
+                            <view class="left" style="padding:0">
+                                <text class="lefty_s min-ellipsis ">{{i.setmeal_name}}</text>
+                                <text class="lefty_s min-ellipsis ">{{i.quantity}}</text>
+                                <text class="lefty_s min-ellipsis ">{{i.total}}</text>
                             </view>
                         </view>
                     </view>
                     <view v-else>
                         <view class="test_ui" v-for="(i,n) in getData.set_meal_list" :key="n" @click="toDetail(i.uid)">
-                            <view class="left">
-                                <text class="lefty_" style="textAlign:left">{{i.setmeal_name}}</text>
-                                <text class="left_" style="padding-left:60rpx">{{i.quantity}}</text>
-                                <text class="left_" style="textAlign:right">{{i.total}}</text>
+                            <view class="left" style="padding:0">
+                                <text class="lefty_s min-ellipsis ">{{i.setmeal_name}}</text>
+                                <text class="lefty_s min-ellipsis ">{{i.quantity}}</text>
+                                <text class="lefty_s min-ellipsis ">{{i.total}}</text>
                             </view>
                         </view>
                     </view>
                 </view>
                 <view v-if="ids === '7'">
                     <view class="test_ui" v-for="(i,n) in getData.role_performance_list" :key="n">
-                        <view class="left">
-                            <text class="lefty_" style="width:200rpx;textAlign:left">{{i.role_name}}</text>
-                            <text class="left_" style="textAlign:right">{{i.role_performance}}</text>
+                        <view class="left" style="padding:0">
+                            <text class="lefty_s min-ellipsis ">{{i.role_name}}</text>
+                            <text class="lefty_s min-ellipsis ">{{i.role_performance}}</text>
                         </view>
 
                     </view>
@@ -132,25 +133,25 @@
                 <view v-if="ids === '6'">
                     <view v-if="flag">
                         <view class="test_ui" v-for="(i,n) in listTest.sales_list" :key="n" @click="toDetail(i.uid)">
-                            <view class="left">
-                                <text class="lefty_" style="textAlign:left">{{i.user_name}}</text>
-                                <text class="left_">{{i.role_name}}</text>
-                                <text class="" style="textAlign:right">{{i.performance}}</text>
+                            <view class="left" style="padding:0">
+                                <text class="lefty_s min-ellipsis ">{{i.user_name}}</text>
+                                <text class="lefty_s min-ellipsis ">{{i.role_name}}</text>
+                                <text class="lefty_s min-ellipsis ">{{i.performance}}</text>
                             </view>
-                            <view class="right">
-                                <text v-if="right">></text>
+                            <view class="rights">
+                                <image v-if="right" src='/static/images/arrow.png' />
                             </view>
                         </view>
                     </view>
                     <view v-else>
                         <view class="test_ui" v-for="(i,n) in getData.sales_list" :key="n" @click="toDetail(i.uid)">
-                            <view class="left">
-                                <text class="lefty_" style="textAlign:left">{{i.user_name}}</text>
-                                <text class="left_">{{i.role_name}}</text>
-                                <text class="" style="textAlign:right">{{i.performance ? i.performance : '暂无数据'}}</text>
+                            <view class="left" style="padding:0">
+                                <text class="lefty_s min-ellipsis ">{{i.user_name}}</text>
+                                <text class="lefty_s min-ellipsis ">{{i.role_name}}</text>
+                                <text class="lefty_s min-ellipsis ">{{i.performance ? i.performance : '暂无数据'}}</text>
                             </view>
-                            <view class="right">
-                                <text v-if="right">></text>
+                            <view class="rights">
+                                <image v-if="right" src='/static/images/arrow.png' />
                             </view>
                         </view>
                     </view>
@@ -234,6 +235,26 @@ export default {
             flag: false
         }
     },
+    created() {
+        if (this.id === '0') {
+            this.placeholder = ''
+        } else if (this.ids === '1') {
+            this.placeholder = '请输入姓名搜索'
+        } else if (this.ids === '2') {
+            this.placeholder = '请输入角色名搜索'
+        } else if (this.ids === '3') {
+            this.placeholder = '请输入姓名搜索'
+        } else if (this.ids === '7') {
+            this.placeholder = '请输入角色名搜索'
+        } else if (this.ids === '6') {
+            this.placeholder = '请输入姓名搜索'
+        } else if (this.ids === '4') {
+            this.placeholder = '请输入商品名搜索'
+        } else if (this.ids === '5') {
+            this.placeholder = '请输入套餐名搜索'
+        }
+
+    },
     watch: {
         getData(a) {
             if (this.ids === '1') {
@@ -307,7 +328,6 @@ export default {
                 this.listTest.product_list.map(item => {
                     if (item.cate_id === a.cate_id) {
                         this.flag = true
-
                         data.product_list.push(item)
                         data.cate_list = this.listTest.cate_list
                     }
@@ -401,6 +421,7 @@ export default {
             }
             if (this.ids === '4') {
                 this.rol = this.getData.cate_list[this.num]
+                console.log(this.rol)
             }
             this.num = 0
             this.show = false
@@ -430,7 +451,8 @@ export default {
                 no_performance_list: [],
                 sales_list: [],
                 role_performance_list: [],
-                product_list: []
+                product_list: [],
+                set_meal_list: []
             }
             if (this.keyword) {
                 if (this.ids === '0') {
@@ -473,6 +495,12 @@ export default {
                     this.list.product_list.filter(item => {
                         if (item.product_name.includes(this.keyword)) {
                             data.product_list.push(item)
+                        }
+                    })
+                } else if (this.ids === '5') {
+                    this.list.set_meal_list.filter(item => {
+                        if (item.setmeal_name.includes(this.keyword)) {
+                            data.set_meal_list.push(item)
                         }
                     })
                 }
@@ -560,7 +588,7 @@ export default {
             align-items: center;
 
             text {
-                color: #333333;
+                color: #666;
             }
         }
 
@@ -574,12 +602,12 @@ export default {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: 0 30rpx;
-                padding-left: 30rpx;
+                // padding: 0 30rpx;
+                // padding-left: 30rpx;
 
                 .title_item {
-                    display: flex;
-                    align-items: center;
+                    width: 33.3%;
+                    text-align: center;
 
                     text {
                         font-size: 30rpx;
@@ -598,33 +626,19 @@ export default {
                     width: 100%;
                     display: flex;
                     justify-content: space-between;
-                    padding: 0 30rpx;
 
-                    .left_ {
-                        display: block;
-                        width: 40%;
+                    .lefty_s {
+                        width: 33.3%;
                         text-align: center;
-                        line-height: 100%;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                    }
-
-                    .lefty_ {
-                        display: block;
-                        width: 20%;
-                        text-align: center;
-                        line-height: 100%;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
                     }
                 }
 
-                .right {
+                .rights {
                     width: 25rpx;
                     height: 25rpx;
+                    position: absolute;
                     line-height: 25rpx;
+                    right: 40rpx;
                 }
 
             }

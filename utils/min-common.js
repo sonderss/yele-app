@@ -216,7 +216,7 @@ class MinCommon {
         return { desc: '待确认', color: 'green' }
 
       case 2:
-        return { desc: '待出品', color: 'blue' }
+        return { desc: '待出品', color: 'green' }
 
       case 3:
         return { desc: '出品中', color: 'blue' }
@@ -297,6 +297,52 @@ class MinCommon {
              str += card[card.length - item]
           })
           return str
+  }
+
+  // 获取银行卡对应的图标
+  static getBankIcon(card_code){
+    switch (card_code + ''){
+      case '01021':
+        return '/static/images/bank/gongshang.png'
+      case '01022':
+        return '/static/images/bank/gongshang.png'
+      case '0102':
+        return '/static/images/bank/gongshang.png'
+      case '0103':
+        return '/static/images/bank/nongye.png'
+      case '0104':  
+        return '/static/images/bank/zhongguo.png'
+      case '0105':
+        return '/static/images/bank/jianshe.png'
+      case '0301':
+        return '/static/images/bank/jiaotong.png'
+      case '0100':
+        return '/static/images/bank/youzheng.png'
+      case '0305':
+        return '/static/images/bank/minsheng.png'
+      case '0310':
+        return '/static/images/bank/pufa.png'
+      case '0306':
+        return '/static/images/bank/guangfa.png'
+      case '0302':
+        return  '/static/images/bank/zhongxin.png'
+      case '0303':
+        return  '/static/images/bank/guangda.png'
+      case '0308':
+        return'/static/images/bank/zhaoshang.png'
+      case '0309':
+        return  '/static/images/bank/xingye.png'
+      case '0304':
+        return  '/static/images/bank/huaxia.png'
+      case '0307':
+        return  '/static/images/bank/pingan.png'
+      case '4012900':
+        return  '/static/images/bank/shanghai.png'
+      case '04504520':
+        return  '/static/images/bank/qingdao.png'
+      default:
+        return'/static/images/bank/zhaoshang.png'
+    }
   }
 }
 

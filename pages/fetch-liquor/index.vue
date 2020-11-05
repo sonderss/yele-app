@@ -148,7 +148,7 @@ export default {
                     client_name: this.list[index].client_name,
                     client_mobile: this.list[index].client_mobile,
                     id: this.list[index].id,
-                    opening_id: this.list[index].opening_id
+                    opening_id: this.$parseURL().onen_id
                 }
             })
         },

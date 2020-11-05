@@ -3,9 +3,14 @@
     <view :class="border ? 'min-view-item min-flex min-flex-main-between f28 min-border-bottom' :'min-view-item min-flex min-flex-main-between f28'">
         <text class="desc-width">{{sign}}{{desc}}</text>
         <view class="right-view">
-            <input class="oinput" :type="typeinput" :password="isMi" :placeholder="placeholder" :maxlength="maxlength" @input="input" :value='value' :disabled="disabled" @blur="onBlur" placeholder-style="color:#999" />
+            <input v-if="!isNewUser" class="oinput" :type="typeinput" :password="isMi" :placeholder="placeholder" :maxlength="maxlength" @input="input" :value='value' :disabled="disabled" @blur="onBlur" placeholder-style="color:#999" />
             <!--  :class="animation ? 'animation' : 'right-arrow-a animation' " -->
             <image class="right-arrow p-left-10" v-if="isRightRrrow" :class="animation ? 'right-arrow-a animation' : 'animation' " src="/static/images/arrow.png" />
+            <view v-if="isNewUser" class="min-flex">
+                <!-- :icon="$minCommon.getIcon(item.id)" v-model="isw" -->
+                <min-radio title="外联成员" :label="isws" v-model="a" />
+                <min-radio title="普通成员" class="p-left-30" :label="iswss" v-model="a" />
+            </view>
         </view>
 
     </view>
@@ -36,7 +41,7 @@ export default {
             default: 999
         },
         value: {
-            type: String,
+            type: [String, Number],
             default: ''
         },
         border: {
@@ -57,6 +62,22 @@ export default {
         isMi: {
             type: Boolean,
             default: false
+        },
+        isNewUser: {
+            type: Boolean,
+            default: false
+        }
+    },
+    watch: {
+        a(a) {
+            this.$emit('input', a)
+        }
+    },
+    data() {
+        return {
+            isws: 0,
+            iswss: 1,
+            a: 1
         }
     },
     methods: {
@@ -120,5 +141,9 @@ export default {
         transition-duration: 0.5s;
         transition-timing-function: ease;
     }
+}
+
+.new-user-chioce {
+    width: 50%;
 }
 </style>

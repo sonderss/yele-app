@@ -54,7 +54,6 @@ export default {
         }
     },
     onLoad() {
-        console.log(this.$parseURL())
         // 这里是开台时的客户信息
         this.list.content = [{
             name: '客户姓名',

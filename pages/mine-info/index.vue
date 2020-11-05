@@ -284,8 +284,33 @@ export default {
         },
         toFace() {
             // verify-name
+            if (this.userInfo.is_certify === 1) {
+                this.$minRouter.push({
+                    name: "verify-name",
+                    params: {
+                        id_card: this.userInfo.id_card,
+                        is_certify: this.userInfo.is_certify,
+                        name: this.userInfo.user_name,
+                        phone: this.userInfo.mobile,
+                    },
+                });
+                return
+            }
+            if (this.userInfo.is_bind_mobile) {
+                // 已绑定但未实名
+                this.$minRouter.push({
+                    name: "verify-name",
+                    params: {
+                        id_card: this.userInfo.id_card,
+                        is_certify: this.userInfo.is_certify,
+                        name: this.userInfo.user_name,
+                        phone: this.userInfo.mobile,
+                    },
+                });
+                return
+            }
             this.$minRouter.push({
-                name: "verify-name",
+                name: "bind-mobile",
                 params: {
                     id_card: this.userInfo.id_card,
                     is_certify: this.userInfo.is_certify,
@@ -293,6 +318,7 @@ export default {
                     phone: this.userInfo.mobile,
                 },
             });
+
         },
         // payMethods drawing-way
         payMethods(item) {

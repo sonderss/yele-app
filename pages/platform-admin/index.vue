@@ -409,7 +409,7 @@ export default {
         end(e) {
             if (this.top >= 300 && this.flag) {
                 this.$minRouter.push({
-                    name: 'seat',
+                    name: 'table-map',
                     params: {
                         url: 'platform-admin'
                     },

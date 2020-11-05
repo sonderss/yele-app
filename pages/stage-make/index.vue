@@ -47,10 +47,10 @@ export default {
     onLoad() {
         console.log(this.$parseURL())
         this.booking_id = this.$parseURL().booking_id
-         this.desk_open_minimum = this.$parseURL().desk_open_minimum
-        if(this.$parseURL().desk_open_minimum.split('.')[1] === '00'){
-           let a =   this.$parseURL().desk_open_minimum.split('.')[0]
-           this.desk_open_minimum  = a
+        this.desk_open_minimum = this.$parseURL().desk_open_minimum
+        if (this.$parseURL().desk_open_minimum.split('.')[1] === '00') {
+            let a = this.$parseURL().desk_open_minimum.split('.')[0]
+            this.desk_open_minimum = a
         }
         this.id = this.$parseURL().id
         this.$minApi.getBookedDetail({
@@ -69,7 +69,7 @@ export default {
             id: '',
             i: 0,
             btn_name: '预开台',
-            desk_open_minimum:''
+            desk_open_minimum: ''
         }
     },
     methods: {
@@ -89,7 +89,7 @@ export default {
 
             // 预开台
             if (this.i === 0) {
-                this.$minApi.startOrder({
+                this.$minApi.yuStartOrder({
                     desk_id: this.id,
                     booking_id: this.booking_id
                 }).then(res => {

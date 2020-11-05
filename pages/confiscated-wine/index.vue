@@ -110,7 +110,7 @@
         </view>
     </min-popup>
     <!-- 选择规格 -->
-    <min-popup :show="isSelSku" @close="closeSelectedSkuPop" :heightSize="skuObj.sku.length < 3 ? '700' : '850'">
+    <min-popup :show="isSelSku" @close="closeSelectedSkuPop" :heightSize="skuObj.sku.length <= 3 ? '700' : '850'">
         <!--  -->
         <view class="skuPop">
             <view class="skuTop">
@@ -131,7 +131,7 @@
                 </view>
             </view>
             <view class="min-border-bottom m-lr-30"></view>
-            <scroll-view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'" scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')',height:skuObj.sku.length >= 3 ? '280rpx':''}">
+            <scroll-view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'" scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')',height:skuObj.sku.length > 3 ? '280rpx':'130rpx'}">
                 <!-- 可选择规格项 -->
                 <view>
                     <view class="f26">规格</view>

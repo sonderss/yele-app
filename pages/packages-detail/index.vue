@@ -65,7 +65,7 @@
                 <span>
                     <span class="left-txt min-ellipsis" :style="{width: item.combination_name ? item.combination_name .length > 10 ? '300rpx':'auto' : '' ,display:'block',float:'left'}">{{ item.combination_name }}</span>
                     <text>{{item.combination_detail.length}}选{{ item.last_number }}</text>
-                    <!-- <text class="f28">{{item.is_check === 1 ? '（不可重复选）' : ''}}</text> -->
+                    <text class="f28">{{item.is_check === 1 ? '（不可重复选）' : ''}}</text>
                 </span>
                 <text v-if="type !== 3" class="right-txt f26">已选 <text class="num1">{{item.goodsCount}}</text> 份</text>
             </view>
@@ -195,15 +195,38 @@ export default {
 
                             }
                         })
-                        // if (item.necessary === 1) {
-                        //     item.combination_detail.map((item2, index2) => {
-                        //         this.changeCount(1, index, index2)
-                        //     })
-                        // }
+                        if (item.necessary === 1) {
+                            item.combination_detail.map((item2, index2) => {
+                                this.changeCount(1, index, index2)
+                            })
+                        }
+                        if (item.necessary === 0) {
+                            item.combination_detail.map((item2, index2) => {
+                                if (item2.step) {
+                                    this.changeCount(1, index, index2)
+                                }
+                            })
+                        }
                         if (item.necessary) {
                             this.isHaveBi = true
                         }
                     })
+                    // this.list.combination.map((item, index) => {
+                    //     if (item.necessary === 1) {
+                    //         item.combination_detail.map((item2, index2) => {
+                    //             this.changeCount(1, index, index2)
+                    //         })
+                    //     }
+                    //     // 不必选但是有step值
+                    //     if (item.necessary === 0) {
+                    //         item.combination_detail.map((item2, index2) => {
+                    //             if (item2.step) {
+                    //                 this.changeCount(1, index, index2)
+                    //             }
+                    //         })
+                    //     }
+
+                    // })
                 })
         },
         changeCount(n, index, index2) {
@@ -308,17 +331,26 @@ export default {
                     }
                 })
             })
-            this.list.combination.map((item, index) => {
-                if (item.necessary === 1) {
-                    item.combination_detail.map((item2, index2) => {
-                        this.changeCount(1, index, index2)
-                    })
-                }
+            // this.list.combination.map((item, index) => {
+            //     if (item.necessary === 1) {
+            //         item.combination_detail.map((item2, index2) => {
+            //             this.changeCount(1, index, index2)
+            //         })
+            //     }
+            //     // 不必选但是有step值
+            //     if (item.necessary === 0) {
+            //         item.combination_detail.map((item2, index2) => {
+            //             if (item2.step) {
+            //                 this.changeCount(1, index, index2)
+            //             }
+            //         })
+            //     }
 
-            })
+            // })
             let myIsSetID = {}
             let u = []
             let lastStr = ''
+            console.log('   this.selArr', this.selArr)
             this.selArr.map((iytem, index) => {
                 iytem.combination_detail.map((ite, ina) => {
                     u.push({
@@ -352,25 +384,24 @@ export default {
             // }
             // if (this.selArr.length === 0) return this.$showToast('请选择符合要求的份数')
             // 没有必选的情况
-            const result11 = this.selArr.some(item => {
-                if (!item.necessary) {
-                    console.log(item)
-                    let count = 0
-                    item.combination_detail.map(itemA => {
-                        count += itemA.quantity
-                    })
-                    if (item.last_number !== count) return true
-                }
-            })
+            // const result11 = this.selArr.some(item => {
+            //     if (!item.necessary) {
+            //         console.log(item)
+            //         let count = 0
+            //         item.combination_detail.map(itemA => {
+            //             count += itemA.quantity
+            //         })
+            //         if (item.last_number !== count) return true
+            //     }
+            // })
             const result22 = this.list.combination.some((item, index) => {
                 if (!item.necessary) {
                     if (item.last_number !== item.goodsCount) {
                         return true
                     }
-
                 }
             })
-            if (result11) return this.$showToast('请选择符合要求的份数')
+            // if (result11) return this.$showToast('请选择符合要求的份数')
             if (result22) return this.$showToast('请选择完整套餐')
             if (this.$parseURL().data.isIndex) {
                 // 添加购物车  并返回首页

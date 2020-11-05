@@ -172,13 +172,13 @@ export default {
             des: "加载中",
             page: 1,
             load: true,
-            isAll:false
+            isAll: false
         }
     },
     onReachBottom() {
         console.log('到底')
         this.falg = true
-       if(this.isAll){
+        if (this.isAll) {
             this.getAllData(this.page, 10, true).then(res => {
                 if (res.list.length === 0) {
                     this.load = false
@@ -216,7 +216,7 @@ export default {
     },
     onPullDownRefresh() {
         console.log('refresh');
-        if(this.isAll){
+        if (this.isAll) {
             this.getAllData(1, 10, true).then(res => {
                 this.list = res.list
                 this.page = 2
@@ -226,23 +226,28 @@ export default {
         }
         this.getData(1, 10, true).then(res => {
             this.list = res.list
+            this.list.map(item => {
+                if (item.order_product_list.length > 4) {
+                    item.order_product_list.splice(4)
+                }
+            })
             this.page = 2
             uni.stopPullDownRefresh();
         })
     },
     onNavigationBarButtonTap() {
-      this.isAll = true
-      this.getAllData(1,10).then(res => {
-          console.log(res)
-           this.list = []
-          this.list = res.list
+        this.isAll = true
+        this.getAllData(1, 10).then(res => {
+            console.log(res)
+            this.list = []
+            this.list = res.list
             this.page++
             this.list.map(item => {
                 if (item.order_product_list.length > 4) {
                     item.order_product_list.splice(4)
                 }
             })
-      })
+        })
     },
     mounted() {
         this.getData(1, 10).then(res => {

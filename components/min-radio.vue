@@ -23,7 +23,7 @@
 export default {
     props: {
         value: {
-            type: [String, Number],
+            type: [String, Number, Boolean],
             required: true
         },
         title: {
@@ -31,7 +31,7 @@ export default {
             default: ''
         },
         label: {
-            type: [String, Number],
+            type: [String, Number, Boolean],
             required: true
         },
         icon: {

@@ -382,7 +382,7 @@ export default {
                         console.log(res)
                         this.getSeatData(res)
                         this.$minRouter.push({
-                            name: 'seat',
+                            name: 'table-map',
                             params: {
                                 url: 'index'
                             }

@@ -67,6 +67,18 @@ minRequest.interceptors.response(response => {
         url: '/pages/login/index'
       })
     }
+    // 用户未注册
+    if(code === 1100001){
+        return Promise.reject({code})
+    }
+    // 等待审核
+    if(code ===  1100002){
+      return Promise.reject({code,data})
+    }
+    // 审核不通过
+    if(code ===  1100003){
+      return Promise.reject({code,data})
+    }
     return Promise.reject(data)
   }
   return data

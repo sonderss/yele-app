@@ -13,7 +13,7 @@
         <view class="min-border-bottom"></view>
     </view>
 
-    <view class="btm_desc p-lr-30" v-if="info_user.is_certify !== 1">
+    <!-- <view class="btm_desc p-lr-30" v-if="info_user.is_certify !== 1">
         <view class="top_view p-lr-30 p-top-20">
             <text>验证码将发送到尾号为{{rPhone}}手机上</text>
         </view>
@@ -22,7 +22,7 @@
             <text style="width:150rpx;text-align:center" class="code" @click="getVerificationCode" v-if="countDown === 0">获取验证码</text>
             <text style="width:150rpx;text-align:center" v-else>{{countDown}} s</text>
         </view>
-    </view>
+    </view> -->
     <view class="btn-wrap m-lr-20">
         <min-btn v-if="info_user.is_certify !== 1" @click="toTrue">去认证</min-btn>
     </view>
@@ -68,21 +68,21 @@ export default {
             this.$minApi.postNameTrue({
                 real_name: this.name,
                 identity_no: this.idCard,
-                msg_code: this.code
+                // msg_code: this.code
             }).then(res => {
                 this.$showToast('实名成功')
                 console.log(res);
                 this.$store.dispatch('user/setUserInfoAuth', res.apiAuth)
                 this.$store.dispatch('status/setisGetUser', true)
                 setTimeout(() => {
-                    // this.$minRouter.push({
-                    //   name: 'redmine-info',
-                    //   type:"redirectTo"
-                    // })
+                    this.$minRouter.push({
+                        name: 'redmine-info',
+                        type: "redirectTo"
+                    })
                     // 在C页面内 navigateBack，将返回A页面
-                    uni.navigateBack({
-                        delta: 1
-                    });
+                    // uni.navigateBack({
+                    //     delta: 1
+                    // });
                 }, 2000)
             })
         }

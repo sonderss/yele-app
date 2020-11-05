@@ -64,8 +64,8 @@
 
 <script>
 export default {
-    name: 'save-wine',
-    navigate: ['navigateTo'],
+    name: 'redsave-wine',
+    navigate: ['navigateTo', 'redirectTo'],
     onLoad() {
         console.log(this.$parseURL())
         this.$minApi.getSaveWineList({

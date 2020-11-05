@@ -48,7 +48,7 @@ export default {
             // }
             let obj = {
                 payment_id: this.payType,
-                target_id: this.$parseURL().billId,
+                target_id: this.list.checkoutId, // this.$parseURL().billId,
                 target_type: 2
             }
             this.$minApi.postPay(obj).then(res => {
@@ -91,7 +91,7 @@ export default {
         this.$minApi.getBillInfo({
             bill_id: this.$parseURL().billId
         }).then(res => {
-            console.log(res)
+            console.log(res) // checkoutId
             this.list = res
         })
 

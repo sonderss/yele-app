@@ -101,21 +101,32 @@ export default {
             id,
             store_name
         }, index) {
-            this.$refs.showModal.handleShow({
-                title: '提示',
-                // eslint-disable-next-line camelcase
-                content: `是否确认申请成为${store_name}的外联`,
-                contentCenter: true,
-                success: res => {
-                    if (res.id !== 1) return
-                    this.$minApi.applyStores({
-                        store_id: id
-                    }).then(res => {
-                        this.$showToast('申请成功')
-                        this.elseStoreList.splice(index, 1)
-                    })
+            console.log(id, store_name)
+            // 跳转页面
+            this.$minRouter.push({
+                name: 'new-user',
+                params: {
+                    isShensStore: true,
+                    phone: this.$store.state.user.userInfos.mobile,
+                    store_name,
+                    store_id: id
                 }
             })
+            // this.$refs.showModal.handleShow({
+            //     title: '提示',
+            //     // eslint-disable-next-line camelcase
+            //     content: `是否确认申请成为${store_name}的外联`,
+            //     contentCenter: true,
+            //     success: res => {
+            //         if (res.id !== 1) return
+            //         this.$minApi.applyStores({
+            //             store_id: id
+            //         }).then(res => {
+            //             this.$showToast('申请成功')
+            //             this.elseStoreList.splice(index, 1)
+            //         })
+            //     }
+            // })
         }
     }
 }

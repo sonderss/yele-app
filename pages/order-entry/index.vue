@@ -34,7 +34,8 @@ export default {
     navigate: ['navigateTo'],
     data() {
         return {
-            list: []
+            list: [],
+            pay_status: ''
         }
     },
     mounted() {
@@ -50,17 +51,26 @@ export default {
                 }
             })
         })
+
     },
     methods: {
         order() {
-            this.$minRouter.push({
-                name: 'placean-order',
-                params: {
-                    desk_id: this.$parseURL().desk_id,
-                    is_open_desk: this.$parseURL().is_open_desk,
-                    minim_charge: this.$parseURL().desk_info.charge
-                }
+
+            this.$minApi.billAllin({
+                opening_id: this.$parseURL().open_id,
+                desk_id: this.$parseURL().desk_id
+            }).then(res => {
+                if (res.pay_status === -1) return this.$showToast('当前桌台无法下单，请先联系后台管理员确认账单')
+                this.$minRouter.push({
+                    name: 'placean-order',
+                    params: {
+                        desk_id: this.$parseURL().desk_id,
+                        is_open_desk: this.$parseURL().is_open_desk,
+                        minim_charge: this.$parseURL().desk_info.charge
+                    }
+                })
             })
+
         },
         presentation() {
             // 请求赠送列表并带过去页面

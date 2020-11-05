@@ -175,7 +175,8 @@ export default {
                 params: {
                     desk_name: this.list.desk_info.desk_name,
                     name: this.list.desk_info.client_name,
-                    phone: this.list.desk_info.client_mobile
+                    phone: this.list.desk_info.client_mobile,
+                    onen_id: this.list.desk_info.opening_id
                 }
             })
         },

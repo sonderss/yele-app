@@ -5,7 +5,7 @@
             <view class="left">
                 <view class="title">{{item.name}}</view>
                 <view class="desc m-top-20" v-if="item.type === 1">最TOP营销 ：{{item.outstanding_list.title}} 业绩：{{item.outstanding_list.behavior}}元</view>
-                <view class="desc m-top-20" v-if="item.type === 2">开台冠军 ：{{item.outstanding_list.title}} 业绩：{{item.outstanding_list.behavior}}张</view>
+                <view class="desc m-top-20" v-if="item.type === 2">开台冠军 ：{{item.outstanding_list.title}} 开台：{{item.outstanding_list.behavior}}张</view>
                 <view class="desc m-top-20" v-if="item.type === 3">最TOP团队 ：{{item.outstanding_list.title}} 业绩：{{item.outstanding_list.behavior}}元</view>
                 <view class="desc m-top-20" v-if="item.type === 4">营销Loser：{{item.outstanding_list.title}} 无业绩天数：{{item.outstanding_list.behavior}}天</view>
             </view>

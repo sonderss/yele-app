@@ -58,18 +58,18 @@ export default {
             i: 0,
             btn_name: '预开台',
             test: false,
-            desk_open_minimum:''
+            desk_open_minimum: ''
         }
     },
     onLoad() {
         console.log(this.$parseURL())
         this.data = this.$parseURL()
-        if(this.$parseURL().desk_open_minimum.split('.')[1] === '00'){
-           let a =   this.$parseURL().desk_open_minimum.split('.')[0]
-           this.desk_open_minimum  = a
-           return
+        if (this.$parseURL().desk_open_minimum.split('.')[1] === '00') {
+            let a = this.$parseURL().desk_open_minimum.split('.')[0]
+            this.desk_open_minimum = a
+            return
         }
-         this.desk_open_minimum = this.$parseURL().desk_open_minimum
+        this.desk_open_minimum = this.$parseURL().desk_open_minimum
     },
     mounted() {
         // console.log(this.$route.params.name)
@@ -126,7 +126,8 @@ export default {
             }
             // 预开台
             if (this.i === 0) {
-                this.$minApi.startOrder({
+
+                this.$minApi.yuStartOrder({
                     desk_id: this.data.msg.desk_id,
                     booking_id: this.$parseURL().msg.status === 3 ? '' : '',
                     sales_uid: this.data.type === 1 ? this.$parseURL().seil.id : '',
@@ -147,7 +148,30 @@ export default {
                             },
                         })
                     }, 2000)
+
                 })
+                // this.$minApi.startOrder({
+                //     desk_id: this.data.msg.desk_id,
+                //     booking_id: this.$parseURL().msg.status === 3 ? '' : '',
+                //     sales_uid: this.data.type === 1 ? this.$parseURL().seil.id : '',
+                //     client_name: this.isName,
+                //     client_mobile: this.isPhone,
+                //     is_birthday: this.isShengri ? 1 : 0,
+                //     remark: this.value
+                // }).then(res => {
+                //     this.$showToast('预开台成功')
+                //     setTimeout(() => {
+                //         this.$minRouter.push({
+                //             name: 'redplatform-detail',
+                //             type: 'redirectTo',
+                //             params: {
+                //                 id: this.data.msg.desk_id,
+                //                 status: 4,
+                //                 date: this.$store.state.status.date.date
+                //             },
+                //         })
+                //     }, 2000)
+                // })
                 return
             }
 

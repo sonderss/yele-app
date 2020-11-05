@@ -114,6 +114,7 @@ export default {
             })
         },
         login() {
+
             // #ifdef APP-PLUS
             if (this.$store.state.status.intNet) return this.$showToast('无网络连接')
             // #endif
@@ -159,6 +160,52 @@ export default {
                 })
                 .catch(err => {
                     console.log(err)
+                    if (err.code === 1100001) {
+                        // 用户未注册
+                        // setTimeout(() => {
+                        this.$minRouter.push({
+                            name: 'new-user',
+                            params: {
+                                phone: this.mobile
+                            }
+                        })
+                        // }, 2000)
+                    }
+                    if (err.code === 1100002) {
+                        // 等待审核通过
+                        // setTimeout(() => {
+                        this.$minRouter.push({
+                            name: 'submit-success',
+                            params: {
+                                isLoading: true,
+                                phone: this.mobile,
+                                store_name: err.data.store_name,
+                                zhiwei_info: err.data.department_name + ' ' + err.data.position_name,
+                                isNewUsers: true
+                            }
+                        })
+                        // }, 2000)
+                    }
+                    if (err.code === 1100003) {
+                        // 审核不通过
+                        // setTimeout(() => {
+                        this.$minRouter.push({
+                            name: 'submit-success',
+                            params: {
+                                phone: this.mobile,
+                                user_name: err.data.name,
+                                position_id: err.data.position_id,
+                                department_id: err.data.department_id,
+                                store_id: err.data.store_id,
+                                store_name: err.data.store_name,
+                                zhiwei_info: err.data.department_name + ' ' + err.data.position_name,
+                                isNewUsers: true,
+                                invite_code: err.data.invite_code,
+                                isJujue: true
+                            }
+                        })
+                        // }, 2000)
+                    }
                     this.flag = false
                 })
 

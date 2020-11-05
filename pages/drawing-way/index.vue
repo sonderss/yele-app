@@ -1,12 +1,25 @@
 <template>
 <view class="drawing-way m-lr-30 p-top-20">
-    <view class="card p-lr-20" v-if="userInfo.bank_card_num">
+    <!-- <view class="card p-lr-20" v-if="userInfo.bank_card_num">
         <view class="left">
             <image v-if="!isZhao" class="icon" src="/static/images/bank/zhaoshang.png" />
             <view v-else class="icon-fon">{{isZhao}}</view>
             <p class="m-left-20 f30">{{userInfo.bank_card_name}}({{lastString}})</p>
         </view>
         <view style="color:#FF0000;font-size:25rpx" @click="jiebang">解绑</view>
+    </view> -->
+    <view class="card" v-if="userInfo.bank_card_num">
+        <min-slip theme='#fff' :rightwidth="150" class="card" btntxt="解绑" btncolor='red' @click-o='jiebang'>
+            <view style="height:100%" class="min-flex min-flex-main-between min-flex-main-center">
+                <view class="lefts   p-lr-20">
+                    <!-- v-if="!isZhao" -->
+                    <image class="icon" :src="$minCommon.getBankIcon(userInfo.bank_code)" />
+                    <!-- <view v-else class="icon-fon">{{isZhao}}</view> -->
+                    <p class="m-left-20 f30">{{userInfo.bank_card_name}}({{lastString}})</p>
+                </view>
+                <view class="p-right-20" style="color:#FF0000;font-size:25rpx;"></view>
+            </view>
+        </min-slip>
     </view>
     <view class="nodata-wrap" style="padding-top:130rpx" v-else>
         <image class="nodata" src="/static/images/nodata.png" />
@@ -15,14 +28,19 @@
             <view class="btn" @click="toBangding">绑定银行卡</view>
         </view>
     </view>
+
     <web-view :src="url" v-if="url"></web-view>
 </view>
 </template>
 
 <script>
+import MinSlip from '@/components/min-slip.vue'
 export default {
     name: 'drawing-way',
     navigate: ['navigateTo'],
+    components: {
+        MinSlip
+    },
     data() {
         return {
             userInfo: {},
@@ -40,13 +58,19 @@ export default {
                 console.log(res)
                 this.userInfo = res
                 this.$store.dispatch('status/setisNeed', false) //是否需要重新获取银行卡绑定信息
+                if (this.userInfo.bank_card_num) {
+                    this.getCardLast(this.userInfo.bank_card_num)
+                }
             })
             return
         }
         this.userInfo = this.$store.state.user.userInfos
         if (this.userInfo.bank_card_num) {
             this.getCardLast(this.userInfo.bank_card_num)
-            this.getWord(this.userInfo.bank_card_name)
+            // if (!this.userInfo.bank_code) {
+            //     this.getWord(this.userInfo.bank_card_name)
+            // }
+
         }
         // console.log(this.$store.state.status.vipUser)
     },
@@ -82,7 +106,7 @@ export default {
         },
         toBangding() {
             // 是否已经设置了支付密码  实名认证  弹窗
-            if (!this.userInfo.is_cash_pwd) return this.$showToast('请先设置支付密码')
+            if (!this.userInfo.is_cash_pwd) return this.$showToast('请先设置提现密码')
             if (this.userInfo.is_certify !== 1) return this.$showToast('请先进行实名认证')
             this.getVipInfo()
         },
@@ -93,6 +117,9 @@ export default {
                     card_num: this.userInfo.bank_card_num
                 }
             })
+        },
+        del(e) {
+            console.log(e)
         },
         getVipInfo() {
             this.$minApi
@@ -148,8 +175,8 @@ export default {
             align-items: center;
 
             .icon {
-                width: 44rpx;
-                height: 44rpx;
+                width: 54rpx;
+                height: 54rpx;
             }
 
             .icon-fon {
@@ -180,6 +207,29 @@ export default {
         text-align: center;
         margin-top: 20rpx;
         align-self: center;
+    }
+}
+
+.lefts {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+
+    .icon {
+        width: 54rpx;
+        height: 54rpx;
+    }
+
+    .icon-fon {
+        width: 54rpx;
+        height: 54rpx;
+        background: #e7e7e7;
+        border-radius: 50%;
+        font-size: 20rpx;
+        color: 333333;
+        text-align: center;
+        line-height: 54rpx;
     }
 }
 </style>

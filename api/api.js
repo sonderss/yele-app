@@ -1,3 +1,4 @@
+// import { get } from 'core-js/fn/dict'
 import { minRequest } from './index'
 
 export default {
@@ -37,8 +38,10 @@ export default {
   backBooked: data => minRequest.post('/5e71d3ee848e2', data),
   // 启用
   startUse: data => minRequest.get('/5e71c9488f983', data),
-  // 开台
+  // 开台 点单并开台
   startOrder: data => minRequest.post('/5e1ef9d780d5e', data),
+  // 预开台  5f979844c6618
+  yuStartOrder: data => minRequest.post('/5f979844c6618',data),
   // 停用
   stopUse: data => minRequest.get('/5e1efa0402ded', data),
   // 转台
@@ -200,7 +203,7 @@ export default {
   // 销售业绩汇总 5ed0773910f50
   getXSYJHZ: data => minRequest.get('/5ed0773910f50', data),
   // 预览账单 5ed626b967004?bill_id=29
-  getBillInfo: data => minRequest.get('/5ed626b967004', data),
+  getBillInfo: data => minRequest.post('/5ed626b967004', data),
   // 发起支付5ed610f19bfe0
   postPay: data => minRequest.post('/5ed610f19bfe0', data),
   // 获取支付状态 5ebf538b3fbe7?order_id=440
@@ -270,5 +273,13 @@ export default {
   // 会员电子协议查询 5f585a2806cd5
   getVipUserI: data  => minRequest.get('/5f585a2806cd5',data),
   // 获取通联验证码 5f2d266fc2e9f
-  getTongLianCode: data => minRequest.get('/5f2d266fc2e9f',data)
+  getTongLianCode: data => minRequest.get('/5f2d266fc2e9f',data),
+  // 绑定手机号5f9a29ac1bd4c
+  banddingPhoneL: data => minRequest.post('/5f9a29ac1bd4c',data),
+  // 获取门店列表 register/getStoreList
+  getStoreListRegister: data => minRequest.get('/register/getStoreList',data),
+  // 获取部门职位列表 egister/getPositionList?type=2&store_id=13
+  getPositionList:data => minRequest.get('/register/getPositionList',data),
+  // 提交注册申请 register/registerApply
+  postRegisterApply: data => minRequest.post('/register/registerApply',data)
 }

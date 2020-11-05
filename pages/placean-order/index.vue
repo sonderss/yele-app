@@ -32,7 +32,7 @@
         <min-goods-submit icon="/static/images/cart.png" bottomcolot="#666" @leftClick="selectedEvent" :totalAmount="totalAmountE" :totalLabel="$parseURL().is_open_desk ? '' :totalLabel" :goodsCount="countNums" buttonText="去下单" @submit="submit" leftV="90" topV="20"></min-goods-submit>
     </view>
     <!-- 选择规格 -->
-    <min-popup :show="isSelSku" @close="closeSelectedSkuPop" :heightSize="skuObj.sku.length < 3 ? '700' : '850' ">
+    <min-popup :show="isSelSku" @close="closeSelectedSkuPop" :heightSize="skuObj.sku.length <= 3 ? '700' : '850' ">
         <view>
             <view class="skuTop">
                 <view class="leftView">
@@ -53,7 +53,7 @@
                 </view>
             </view>
             <view class="min-border-bottom m-lr-30"></view>
-            <scroll-view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'" scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')',height:skuObj.sku.length >= 3 ? '280rpx':''}">
+            <scroll-view :class=" skuObj.sku.length < 3 ? 'sku-item-num' : 'sku-item'" scroll-y :style="{ transition: top === 0 ? 'transform 300ms' : '',transform: 'translateY(' + top + 'rpx' + ')',height:skuObj.sku.length > 3 ? '280rpx':'130rpx'}">
                 <!-- 可选择规格项 -->
                 <view>
                     <view class="f26">规格</view>

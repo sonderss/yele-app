@@ -2,8 +2,8 @@
     "name" : "YeleStore",
     "appid" : "__UNI__B2E64E2",
     "description" : "",
-    "versionName" : "1.1.6",
-    "versionCode" : 201019,
+    "versionName" : "1.1.7",
+    "versionCode" : 201031,
     "transformPx" : false,
     "plus" : {
         "hardwareAccelerated" : true,

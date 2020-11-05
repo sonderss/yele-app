@@ -1,6 +1,15 @@
 {
   "pages": [
-	  {
+    // {
+    //   "path": "pages/table-map/start",
+    //   "style": {
+    //     "app-plus": {
+    //       "titleNView": false,
+    //       "bounce": "none"
+    //     }
+    //   }
+    // },
+    {
       "path": "pages/start",
       "style": {
         "app-plus": {
@@ -26,6 +35,19 @@
           "bounce": false
         },
         "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/new-user/index",
+      "style": {
+        "app-plus": {
+          "bounce": "none",
+          "titleNView": {
+            "titleText": "填写审核信息",
+            "backgroundColor": "#030313",
+            "titleColor": "#FFE001"
+          }
+        }
       }
     },
     {
@@ -221,7 +243,7 @@
             "titleText": "我的充公记录",
             "backgroundColor": "#030313",
             "titleColor": "#FFE001",
-            "buttons":[{
+            "buttons": [{
               "width": "auto",
               "text": "所有充公记录",
               "fontSize": "28rpx"
@@ -1162,11 +1184,11 @@
           "titleNView": {
             "titleText": "绑定手机号码",
             "backgroundColor": "#030313",
-            "titleColor": "#FFE001",
-            "buttons": [{
-              "text": "完成",
-              "fontSize": "28rpx"
-            }]
+            "titleColor": "#FFE001"
+            // "buttons": [{
+            //   "text": "完成",
+            //   "fontSize": "28rpx"
+            // }]
           }
         }
       }
@@ -1194,6 +1216,17 @@
         "app-plus": {
           "titleNView": false,
           "bounce": false
+        }
+      }
+    },
+    {
+      "path": "pages/table-map/index",
+      "style": {
+        "app-plus": {
+          "titleNView": false,
+          "animationType": "slide-in-top",
+          "animationDuration": 300,
+          "bounce": "none"
         }
       }
     }
