@@ -46,11 +46,11 @@
     </min-cell>
 
     <min-cell :card="false" class="m-top-20" v-if="showData.length !== 0">
-        <view class="f30  top-view1 " v-if="showData.length > 0 && isHaveS">
+        <!-- <view class="f30  top-view1 " v-if="showData.length > 0 && isHaveS">
             <view class="left-view">
                 <text>已结订单</text>
             </view>
-        </view>
+        </view> -->
         <view v-for="(item,index) in showData" :key="index" @click="toDetail(item.id)">
             <view v-if="item.pay_status === 1">
                 <view class="min-border-bottom" style="height:1rpx"></view>

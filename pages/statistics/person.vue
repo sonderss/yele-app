@@ -24,7 +24,7 @@
             <view class="main p-tb-20">
                 <view>桌台号码：{{item.desk_name}}</view>
                 <view>开台时间：{{$minCommon.formatDate(new Date(item.open_time*1000),'yyyy/MM/dd hh:mm:ss') }}</view>
-                <view>销台时间：{{$minCommon.formatDate(new Date(item.close_time*1000),'yyyy/MM/dd hh:mm:ss') }}</view>
+                <view v-if="item.close_time*1">销台时间：{{$minCommon.formatDate(new Date(item.close_time*1000),'yyyy/MM/dd hh:mm:ss') }}</view>
                 <view>有效业绩：￥{{item.pay_price}}</view>
                 <view>账单金额：￥{{item.bill_price}}</view>
             </view>
@@ -40,7 +40,7 @@
                 <view>桌台号码：{{item.desk_name}}</view>
                 <view>当前状态：{{$minCommon.getOrderStatus(item.desk_status).desc }}</view>
                 <view>开台时间：{{$minCommon.formatDate(new Date(item.open_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
-                <view>销台时间：{{$minCommon.formatDate(new Date(item.close_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
+                <view v-if="item.close_time*1">销台时间：{{$minCommon.formatDate(new Date(item.close_time*1000),'yyyy-MM-dd hh:mm:ss') }}</view>
                 <view>有效业绩：￥{{item.pay_price}}</view>
                 <view>账单金额：￥{{item.bill_price}}</view>
             </view>

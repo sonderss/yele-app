@@ -276,10 +276,10 @@ export default {
   getTongLianCode: data => minRequest.get('/5f2d266fc2e9f',data),
   // 绑定手机号5f9a29ac1bd4c
   banddingPhoneL: data => minRequest.post('/5f9a29ac1bd4c',data),
-  // 获取门店列表 register/getStoreList
-  getStoreListRegister: data => minRequest.get('/register/getStoreList',data),
+  // 获取门店列表 register/getStoreList 5fa4b71fcb33c
+  getStoreListRegister: data => minRequest.get('/5fa4b71fcb33c',data),
   // 获取部门职位列表 egister/getPositionList?type=2&store_id=13
-  getPositionList:data => minRequest.get('/register/getPositionList',data),
+  getPositionList:data => minRequest.get('/5fa4b72ddcf8a',data),
   // 提交注册申请 register/registerApply
-  postRegisterApply: data => minRequest.post('/register/registerApply',data)
+  postRegisterApply: data => minRequest.post('/5fa4b733e3286',data)
 }
