@@ -107,7 +107,7 @@ export default {
         getZhiWei(store_id) {
             this.$minApi.getPositionList({
                 type: this.ruzhi_type ? 2 : 1,
-                store_id
+                store_id:store_id ? store_id : 0
             }).then(res => {
                 console.log(res)
                 this.zhiweidatas = res
@@ -213,10 +213,7 @@ export default {
         ruzhi_type(a) {
             console.log('123', a)
             this.zhiwei_info = ''
-            if (a === 0) {
-                this.getZhiWei(this.store_id)
-                // this.zhiwei_info = '外联部-外联'
-            }
+            this.getZhiWei(this.store_id)
             if (!a && !this.$parseURL().isShensStore) {
                 uni.setNavigationBarTitle({
                     title: '新成员注册'
